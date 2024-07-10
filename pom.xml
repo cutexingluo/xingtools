@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>pom</packaging>
+
+    <groupId>top.cutexingluo.tools</groupId>
+    <artifactId>xingtools-parent</artifactId>
+    <version>1.0.1</version>
+    <name>xingtools</name>
+    <description>xingtools 是一个小而全的Java工具 sdk 库，通过提供许多方法，降低相关API的学习成本，提高工作效率。
+        see repo: https://gitee.com/SangonomiyaKokomi/xingtool
+    </description>
+
+    <modules>
+        <module>xingtools-core</module>
+        <module>xingtools-web</module>
+    </modules>
+
+    <properties>
+        <projectUrl>https://gitee.com/SangonomiyaKokomi/xingtool.git</projectUrl>
+        <serverId>ossrh</serverId><!-- 服务id 也就是setting.xml中的servers.server.id -->
+        <releaseId>release</releaseId>
+
+        <!--        versions -->
+        <compile.version>8</compile.version>
+        <lombok.version>1.18.30</lombok.version>
+    </properties>
+
+
+    <!--填入开发者信息，姓名、邮箱、项目地址-->
+    <developers>
+        <developer>
+            <name>XingTian</name>
+            <email>2516633174@qq.com</email>
+            <url>${projectUrl}</url>
+        </developer>
+    </developers>
+
+    <!--以下部分内容不需要修改，直接复制咱贴即可-->
+    <url>${projectUrl}</url>
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo,manual</distribution>
+        </license>
+    </licenses>
+    <scm>
+        <!-- 采用projectUrl变量代替这个值，方便给重复利用这个配置，也就是上面的标签替换一下值就行 -->
+        <connection>${projectUrl}</connection>
+        <developerConnection>${projectUrl}</developerConnection>
+        <url>${projectUrl}</url>
+    </scm>
+    <distributionManagement>
+        <snapshotRepository>
+            <!--这个id和settings.xml中servers.server.id要相同，因为上传jar需要登录才有权限-->
+            <id>${serverId}</id>
+            <name>OSS Snapshots Repository</name>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
+        </snapshotRepository>
+        <repository>
+            <!--这个id和settings.xml中servers.server.id要相同，因为上传jar需要登录才有权限-->
+            <id>${serverId}</id>
+            <name>OSS Staging Repository</name>
+            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
+
+
+    <build>
+        <plugins>
+
+        </plugins>
+    </build>
+
+
+</project>
