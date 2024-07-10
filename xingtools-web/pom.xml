@@ -7,13 +7,16 @@
     <parent>
         <artifactId>xingtools-parent</artifactId>
         <groupId>top.cutexingluo.tools</groupId>
-        <version>1.0.1</version>
+        <version>1.1.1</version>
     </parent>
 
 
     <artifactId>xingtools-web</artifactId>
     <name>${project.artifactId}</name>
 
+    <properties>
+        <!-- versions -->
+    </properties>
 
     <dependencies>
         <dependency>

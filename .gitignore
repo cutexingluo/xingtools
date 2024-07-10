@@ -59,4 +59,3 @@ hs_err_pid*
 
 #no flattened-pom
 .flattened-pom.xml
-pom.xml

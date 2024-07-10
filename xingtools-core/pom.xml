@@ -5,15 +5,99 @@
     <packaging>jar</packaging>
 
 
+
     <parent>
         <artifactId>xingtools-parent</artifactId>
         <groupId>top.cutexingluo.tools</groupId>
-        <version>1.0.1</version>
+        <version>1.1.1</version>
     </parent>
 
     <artifactId>xingtools-core</artifactId>
     <name>${project.artifactId}</name>
     <description>xingtools 核心，包括各种接口，实体类和工具类</description>
 
+    <properties>
+
+        <!-- versions -->
+        <hutool.version>5.8.26</hutool.version>
+        <jetbrains.annotations.version>1.7.0</jetbrains.annotations.version>
+
+        <jackson.version>2.15.2</jackson.version>
+        <fastjson2.version>2.0.23</fastjson2.version>
+        <fastjson.version>1.2.83</fastjson.version>
+        <hessian.version>4.0.38</hessian.version>
+        <kryo.version>5.3.0</kryo.version>
+
+    </properties>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+        </dependency>
+
+
+        <!--   hutool 工具  -->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-core</artifactId>
+            <version>${hutool.version}</version>
+        </dependency>
+
+     <!--        idea 注解 -->
+        <dependency>
+            <groupId>org.realityforge.org.jetbrains.annotations</groupId>
+            <artifactId>org.jetbrains.annotations</artifactId>
+            <version>${jetbrains.annotations.version}</version>
+        </dependency>
+
+        <!--   jackson   -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+
+        <!--        optional    -->
+
+        <!-- 阿里JSON解析器 -->
+        <dependency>
+            <groupId>com.alibaba.fastjson2</groupId>
+            <artifactId>fastjson2</artifactId>
+            <version>${fastjson2.version}</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- hessian 解析器 -->
+        <dependency>
+            <groupId>com.caucho</groupId>
+            <artifactId>hessian</artifactId>
+            <version>${hessian.version}</version>
+            <optional>true</optional>
+        </dependency>
+
+        <!--    kryo 序列化    -->
+        <dependency>
+            <groupId>com.esotericsoftware</groupId>
+            <artifactId>kryo</artifactId>
+            <version>${kryo.version}</version>
+            <optional>true</optional>
+        </dependency>
+
+    </dependencies>
 
 </project>
