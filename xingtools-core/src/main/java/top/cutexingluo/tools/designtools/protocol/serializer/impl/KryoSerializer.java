@@ -13,6 +13,8 @@ import java.io.IOException;
  * Kryo 序列化器
  * <p>建议设置为全局唯一</p>
  *
+ * <p>需要导入 com.esotericsoftware:kryo 包</p>
+ *
  * @author XingTian
  * @version 1.0.0
  * @date 2024/4/25 20:04

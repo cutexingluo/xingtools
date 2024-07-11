@@ -14,7 +14,7 @@ import java.io.IOException;
  * @date 2023/9/15 15:22
  */
 public class JSONFileUtil {
-    /**
+    /**\
      * 读取json文件到对象（反射）
      */
     public static <T> T readJsonFile(File file, Class<T> clazz) {

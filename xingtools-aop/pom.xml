@@ -18,13 +18,13 @@
     <properties>
         <!-- versions -->
         <spring.version>5.3.27</spring.version>
-        <aspectj.version>1.9.7</aspectj.version>
+
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>top.cutexingluo.tools</groupId>
-            <artifactId>xingtools-core</artifactId>
+            <artifactId>xingtools-unified</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
 
@@ -32,7 +32,6 @@
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
-            <version>${aspectj.version}</version>
             <optional>true</optional>
         </dependency>
 

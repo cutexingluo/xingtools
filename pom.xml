@@ -8,18 +8,27 @@
     <artifactId>xingtools-parent</artifactId>
     <version>1.1.1</version>
     <name>xingtools</name>
-    <description>xingtools 是一个小而全的Java工具 sdk 库，通过提供许多方法，降低相关API的学习成本，提高工作效率。
+    <description>xingtools 是一个Java工具 sdk 库，通过提供许多方法，降低相关API的学习成本，提高工作效率。
+        详见仓库
         see repo: https://gitee.com/SangonomiyaKokomi/xingtool
     </description>
 
     <modules>
         <module>xingtools-core</module>
         <module>xingtools-web</module>
-        <module>xingtools-database</module>
+        <module>xingtools-pkg</module>
+        <module>xingtools-pkg-jdk8</module>
+        <module>xingtools-pkg-jdk17</module>
+        <module>xingtools-extra</module>
         <module>xingtools-mvc</module>
-        <module>xingtools-aop</module>
+        <module>xingtools-db</module>
         <module>xingtools-log</module>
+        <module>xingtools-aop</module>
+        <module>xingtools-unified</module>
     </modules>
+
+
+
 
     <properties>
         <projectUrl>https://gitee.com/SangonomiyaKokomi/xingtool.git</projectUrl>
@@ -29,7 +38,31 @@
         <!--        versions -->
         <compile.version>8</compile.version>
         <lombok.version>1.18.30</lombok.version>
+
+        <springboot.version>2.7.18</springboot.version>
+
+        <aspectj.version>1.9.7</aspectj.version>
+        <redisson.version>3.24.3</redisson.version>
     </properties>
+
+
+        <!-- 依赖管理    -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${springboot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson</artifactId>
+                <version>${redisson.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
 
     <!--填入开发者信息，姓名、邮箱、项目地址-->

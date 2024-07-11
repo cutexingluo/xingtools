@@ -11,6 +11,8 @@ import java.io.IOException;
 /**
  * FastJson2 序列化器
  *
+ * <p>需要导入 com.alibaba.fastjson2:fastjson2 包</p>
+ *
  * @author XingTian
  * @version 1.0.0
  * @date 2024/4/25 21:22

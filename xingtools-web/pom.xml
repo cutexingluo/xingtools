@@ -16,6 +16,12 @@
 
     <properties>
         <!-- versions -->
+
+
+        <httpcomponents.version>4.5.14</httpcomponents.version>
+        <yauaa.version>7.17.1</yauaa.version>
+
+        <sensitive-word.version>0.9.0</sensitive-word.version>
     </properties>
 
     <dependencies>
@@ -24,5 +30,39 @@
             <artifactId>xingtools-core</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
+
+<!--        optional -->
+
+
+        <!--httpclient-->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>${httpcomponents.version}</version>
+            <optional>true</optional>
+        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.apache.httpcomponents</groupId>-->
+<!--            <artifactId>httpmime</artifactId>-->
+<!--            <version>${httpcomponents.version}</version>-->
+<!--            <optional>true</optional>-->
+<!--        </dependency>-->
+
+        <!-- 解析客户端操作系统、浏览器等 -->
+        <dependency>
+            <groupId>nl.basjes.parse.useragent</groupId>
+            <artifactId>yauaa</artifactId>
+            <version>${yauaa.version}</version>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- 过滤敏感词 -->
+        <dependency>
+            <groupId>com.github.houbb</groupId>
+            <artifactId>sensitive-word</artifactId>
+            <version>${sensitive-word.version}</version>
+            <optional>true</optional>
+        </dependency>
+
     </dependencies>
 </project>

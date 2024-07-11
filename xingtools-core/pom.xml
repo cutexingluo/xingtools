@@ -28,6 +28,10 @@
         <hessian.version>4.0.38</hessian.version>
         <kryo.version>5.3.0</kryo.version>
 
+
+        <jjwt.version>0.9.1</jjwt.version>
+        <java-jwt.version>4.4.0</java-jwt.version>
+        <kaptcha.version>2.3.3</kaptcha.version>
     </properties>
 
 
@@ -43,6 +47,21 @@
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-core</artifactId>
+            <version>${hutool.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-jwt</artifactId>
+            <version>${hutool.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-json</artifactId>
+            <version>${hutool.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-captcha</artifactId>
             <version>${hutool.version}</version>
         </dependency>
 
@@ -81,7 +100,6 @@
             <version>${fastjson.version}</version>
             <optional>true</optional>
         </dependency>
-
         <!-- hessian 解析器 -->
         <dependency>
             <groupId>com.caucho</groupId>
@@ -89,7 +107,6 @@
             <version>${hessian.version}</version>
             <optional>true</optional>
         </dependency>
-
         <!--    kryo 序列化    -->
         <dependency>
             <groupId>com.esotericsoftware</groupId>
@@ -97,6 +114,32 @@
             <version>${kryo.version}</version>
             <optional>true</optional>
         </dependency>
+
+
+        <!--        jwt   -->
+        <!-- Token生成与解析-->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>${jjwt.version}</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>${java-jwt.version}</version>
+            <optional>true</optional>
+        </dependency>
+
+
+        <!-- 谷歌验证码 -->
+        <dependency>
+            <groupId>pro.fessional</groupId>
+            <artifactId>kaptcha</artifactId>
+            <version>${kaptcha.version}</version>
+            <optional>true</optional>
+        </dependency>
+
 
     </dependencies>
 
