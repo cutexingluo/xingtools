@@ -4,44 +4,32 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
+
     <parent>
         <artifactId>xingtools-parent</artifactId>
         <groupId>top.cutexingluo.tools</groupId>
         <version>1.1.1</version>
     </parent>
 
-    <artifactId>xingtools-database</artifactId>
+    <artifactId>xingtools-unified</artifactId>
     <name>${project.artifactId}</name>
-    <description>xingtools 数据库操作，包含mybatis-plus等操作</description>
-
 
     <properties>
         <!-- versions -->
-        <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
     </properties>
 
-
-
     <dependencies>
+    <dependency>
+        <groupId>top.cutexingluo.tools</groupId>
+        <artifactId>xingtools-pkg</artifactId>
+        <version>${project.parent.version}</version>
+    </dependency>
         <dependency>
             <groupId>top.cutexingluo.tools</groupId>
-            <artifactId>xingtools-core</artifactId>
+            <artifactId>xingtools-log</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
-        </dependency>
-
-
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-core</artifactId>
-            <version>${mybatis-plus.version}</version>
-            <optional>true</optional>
-        </dependency>
     </dependencies>
 
 </project>
