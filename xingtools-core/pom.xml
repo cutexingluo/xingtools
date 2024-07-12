@@ -19,7 +19,7 @@
     <properties>
 
         <!-- versions -->
-        <hutool.version>5.8.26</hutool.version>
+
         <jetbrains.annotations.version>1.7.0</jetbrains.annotations.version>
 
         <jackson.version>2.15.2</jackson.version>
@@ -32,6 +32,7 @@
         <jjwt.version>0.9.1</jjwt.version>
         <java-jwt.version>4.4.0</java-jwt.version>
         <kaptcha.version>2.3.3</kaptcha.version>
+        <jython.version>2.7.3</jython.version>
     </properties>
 
 
@@ -47,23 +48,27 @@
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-core</artifactId>
-            <version>${hutool.version}</version>
         </dependency>
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-jwt</artifactId>
-            <version>${hutool.version}</version>
         </dependency>
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-json</artifactId>
-            <version>${hutool.version}</version>
         </dependency>
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-captcha</artifactId>
-            <version>${hutool.version}</version>
         </dependency>
+
+
+
+<!--&lt;!&ndash;        lang 包&ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.apache.commons</groupId>-->
+<!--            <artifactId>commons-lang3</artifactId>-->
+<!--        </dependency>-->
 
      <!--        idea 注解 -->
         <dependency>
@@ -141,6 +146,14 @@
         </dependency>
 
 
+
+        <!-- jython依赖 可以编译python-->
+        <dependency>
+            <groupId>org.python</groupId>
+            <artifactId>jython-standalone</artifactId>
+            <version>${jython.version}</version>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
 
 </project>

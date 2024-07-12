@@ -18,7 +18,9 @@
     <properties>
         <!-- versions -->
         <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
-
+        <lock4j.version>2.2.5</lock4j.version>
+        <fastjson.version>1.2.83</fastjson.version>
+<!--        <amqp-client.version>5.14.3</amqp-client.version>-->
     </properties>
 
 
@@ -28,6 +30,11 @@
             <groupId>top.cutexingluo.tools</groupId>
             <artifactId>xingtools-core</artifactId>
             <version>${project.parent.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-db</artifactId>
         </dependency>
 
         <dependency>
@@ -50,6 +57,19 @@
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-extension</artifactId>
             <version>${mybatis-plus.version}</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-generator</artifactId>
+            <version>${mybatis-plus.version}</version>
+            <optional>true</optional>
+        </dependency>
+        <!-- 若使用redisson作为分布式锁底层，则需要引入 -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>lock4j-core</artifactId>
+            <version>${lock4j.version}</version>
             <optional>true</optional>
         </dependency>
 
@@ -77,6 +97,45 @@
             <optional>true</optional>
         </dependency>
 
+        <!--        mongodb -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-mongodb</artifactId>
+            <optional>true</optional>
+        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.data</groupId>-->
+<!--            <artifactId>spring-data-mongodb</artifactId>-->
+<!--            <optional>true</optional>-->
+<!--        </dependency>-->
+
+
+<!--        rabbit-mq -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+            <optional>true</optional>
+        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.amqp</groupId>-->
+<!--            <artifactId>spring-rabbit</artifactId>-->
+<!--            <version>2.4.17</version>-->
+<!--            <optional>true</optional>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>com.rabbitmq</groupId>-->
+<!--            <artifactId>amqp-client</artifactId>-->
+<!--            <version>${amqp-client.version}</version>-->
+<!--            <optional>true</optional>-->
+<!--        </dependency>-->
+
+<!--        fastjson -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
+            <optional>true</optional>
+        </dependency>
 
     </dependencies>
 

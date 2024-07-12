@@ -1,5 +1,8 @@
 package top.cutexingluo.tools.designtools.convert;
 
+import org.jetbrains.annotations.NotNull;
+import top.cutexingluo.tools.basepackage.bundle.AspectBundle;
+
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.util.function.BiFunction;
@@ -13,4 +16,13 @@ import java.util.function.BiFunction;
  * @since 1.0.4
  */
 public interface WebHandler extends BiFunction<Method, HttpServletRequest, String> {
+
+    /**
+     * 使用 bundle 的数据
+     *
+     * @since 1.1.1
+     */
+    default  String apply(@NotNull AspectBundle bundle) {
+        return this.apply(bundle.getMethod(), bundle.getRequest());
+    }
 }

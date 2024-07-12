@@ -11,7 +11,7 @@ import java.util.function.Function;
 
 /**
  * Redisson工具类
- * <p></p>
+ * <p>需要导入 org.redisson:redisson 包</p>
  *
  * @author XingTian
  * @version 1.0.0

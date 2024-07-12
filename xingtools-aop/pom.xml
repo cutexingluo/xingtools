@@ -24,8 +24,28 @@
     <dependencies>
         <dependency>
             <groupId>top.cutexingluo.tools</groupId>
-            <artifactId>xingtools-unified</artifactId>
+            <artifactId>xingtools-pkg</artifactId>
             <version>${project.parent.version}</version>
+        </dependency>
+
+        <!--    default version -->
+        <dependency>
+            <groupId>top.cutexingluo.tools</groupId>
+            <artifactId>xingtools-pkg-jdk8</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>top.cutexingluo.tools</groupId>
+            <artifactId>xingtools-log</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+            <optional>true</optional>
         </dependency>
 
 

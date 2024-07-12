@@ -20,7 +20,7 @@
     <properties>
         <java.version>1.8</java.version>
         <!-- versions -->
-        <ip2region.version>2.7.0</ip2region.version>
+
     </properties>
 
     <dependencies>
@@ -49,13 +49,43 @@
             <optional>true</optional>
         </dependency>
 
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-core</artifactId>
+            <optional>true</optional>
+        </dependency>
 
+
+<!--        redis -->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
+            <optional>true</optional>
+        </dependency>
+<!--        redisson -->
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+
+    <!--        ip  -->
         <dependency>
             <groupId>org.lionsoul</groupId>
             <artifactId>ip2region</artifactId>
-            <version>${ip2region.version}</version>
             <optional>true</optional>
         </dependency>
+
+
+        <!--        guava  -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+
 
     </dependencies>
 </project>

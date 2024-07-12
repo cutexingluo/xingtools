@@ -17,6 +17,7 @@
 
     <properties>
         <!-- versions -->
+        <httpcomponents.version>4.5.14</httpcomponents.version>
     </properties>
 
     <dependencies>
@@ -51,11 +52,10 @@
             <optional>true</optional>
         </dependency>
 
-
-        <!--redisson -->
         <dependency>
-            <groupId>org.redisson</groupId>
-            <artifactId>redisson</artifactId>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpmime</artifactId>
+            <version>${httpcomponents.version}</version>
             <optional>true</optional>
         </dependency>
 

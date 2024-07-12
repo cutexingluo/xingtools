@@ -21,17 +21,17 @@ public class XTLockMeta {
     /**
      * 锁名称,  仅分布式锁
      */
-    private String name;
+    protected String name;
 
     /**
      * 是否公平, 仅本地锁
      */
-    private boolean isFair = false;
+    protected boolean isFair = false;
 
     /**
      * 锁类型
      */
-    XTLockType lockType = XTLockType.NonLock;
+    protected XTLockType lockType = XTLockType.NonLock;
 
     // 由于Lock接口没有带 锁多长时间，所以这个只能适用于尝试获取锁。大于0则尝试获取，-1则直接锁
 
@@ -39,5 +39,5 @@ public class XTLockMeta {
      * 尝试获取锁的时长，tryLock() ,默认-1, 单位 second
      * <p>如果为-1则直接阻塞获取锁，即lock()</p>
      */
-    int tryTimeout = -1;
+    protected int tryTimeout = -1;
 }

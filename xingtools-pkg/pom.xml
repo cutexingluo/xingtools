@@ -21,6 +21,12 @@
         <!-- versions -->
         <javax.servlet-api.version>4.0.1</javax.servlet-api.version>
         <jakarta.servlet-api.version>6.0.0</jakarta.servlet-api.version>
+
+        <ip2region.version>2.7.0</ip2region.version>
+        <guava.version>16.0</guava.version>
+
+        <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
+
     </properties>
 
 
@@ -46,6 +52,30 @@
                 <artifactId>jakarta.servlet-api</artifactId>
                 <version>${jakarta.servlet-api.version}</version>
                 <scope>provided</scope>
+                <optional>true</optional>
+            </dependency>
+
+
+            <!--        ip  -->
+            <dependency>
+                <groupId>org.lionsoul</groupId>
+                <artifactId>ip2region</artifactId>
+                <version>${ip2region.version}</version>
+                <optional>true</optional>
+            </dependency>
+
+            <!--        guava  -->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+                <optional>true</optional>
+            </dependency>
+
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-core</artifactId>
+                <version>${mybatis-plus.version}</version>
                 <optional>true</optional>
             </dependency>
         </dependencies>
