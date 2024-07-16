@@ -1,7 +1,7 @@
 # AutoConfigureCache auto-configuration imports
 top.cutexingluo.tools.autoconfigure.server.aop.log.xtlog.WebLogAutoConfigure
 top.cutexingluo.tools.autoconfigure.server.aop.log.printlog.PrintLogAutoConfigure
-top.cutexingluo.tools.autoconfigure.server.aop.log.methodlog.WebLogAutoConfigure
+top.cutexingluo.tools.autoconfigure.server.aop.log.methodlog.MethodLogAutoConfigure
 top.cutexingluo.tools.autoconfigure.server.aop.log.systemlog.XTSystemLogAutoConfigure
 top.cutexingluo.tools.autoconfigure.server.aop.log.optlog.OptLogAutoConfigure
 top.cutexingluo.tools.autoconfigure.server.aop.exception.XTExceptionAutoConfigure

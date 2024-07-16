@@ -16,6 +16,11 @@
     <name>${project.artifactId}</name>
     <description>xingtool jdk 分类包，对不同的jdk版本提供兼容性</description>
 
+    <modules>
+        <module>xingtools-pkg-jdk8</module>
+        <module>xingtools-pkg-jdk17</module>
+    </modules>
+
 
     <properties>
         <!-- versions -->
@@ -85,5 +90,7 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+
 
 </project>

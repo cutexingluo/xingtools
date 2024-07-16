@@ -24,7 +24,13 @@
     <dependencies>
         <dependency>
             <groupId>top.cutexingluo.tools</groupId>
-            <artifactId>xingtools-pkg</artifactId>
+            <artifactId>xingtools-mvc</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>top.cutexingluo.tools</groupId>
+            <artifactId>xingtools-log</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
 
@@ -35,11 +41,7 @@
             <version>${project.parent.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>top.cutexingluo.tools</groupId>
-            <artifactId>xingtools-log</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
+
 
 
         <dependency>

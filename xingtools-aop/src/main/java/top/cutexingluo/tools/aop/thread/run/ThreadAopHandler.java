@@ -215,7 +215,7 @@ public interface ThreadAopHandler extends BaseJoinPointTaskHandler {
      * 任务加锁
      */
     default <T> Callable<T> addLock(Callable<T> task, SonThread sonThread) {
-        XTLockMeta meta = new XTLockMeta(sonThread.lockName(), sonThread.isFair(), sonThread.lockType(), sonThread.tryTimeout());
+        XTLockMeta meta = new XTLockMeta(sonThread.lockName(), sonThread.lockType(), sonThread.isFair(), sonThread.tryTimeout());
         return addLock(task, meta, sonThread.redisson());
     }
 

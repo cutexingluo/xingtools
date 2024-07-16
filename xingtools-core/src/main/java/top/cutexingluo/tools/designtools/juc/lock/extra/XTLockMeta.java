@@ -24,14 +24,15 @@ public class XTLockMeta {
     protected String name;
 
     /**
-     * 是否公平, 仅本地锁
-     */
-    protected boolean isFair = false;
-
-    /**
      * 锁类型
      */
     protected XTLockType lockType = XTLockType.NonLock;
+
+
+    /**
+     * 是否公平, 仅本地锁
+     */
+    protected boolean isFair = false;
 
     // 由于Lock接口没有带 锁多长时间，所以这个只能适用于尝试获取锁。大于0则尝试获取，-1则直接锁
 
@@ -40,4 +41,20 @@ public class XTLockMeta {
      * <p>如果为-1则直接阻塞获取锁，即lock()</p>
      */
     protected int tryTimeout = -1;
+
+
+    public XTLockMeta(XTLockType lockType) {
+        this.lockType = lockType;
+    }
+
+    public XTLockMeta(XTLockType lockType, boolean isFair) {
+        this.lockType = lockType;
+        this.isFair = isFair;
+    }
+
+    public XTLockMeta(XTLockType lockType, boolean isFair, int tryTimeout) {
+        this.lockType = lockType;
+        this.isFair = isFair;
+        this.tryTimeout = tryTimeout;
+    }
 }

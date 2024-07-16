@@ -54,7 +54,7 @@ public class XTAopLockHandler  implements CallableHandler {
      */
     @Contract("_ -> new")
     public static @NotNull XTLockMeta parseMeta(@NotNull XTAopLock lockAnno){
-        return new XTLockMeta(lockAnno.name(), lockAnno.isFair(), lockAnno.lockType(), lockAnno.tryTimeout());
+        return new XTLockMeta(lockAnno.name(), lockAnno.lockType(),  lockAnno.isFair(),lockAnno.tryTimeout());
     }
 
 

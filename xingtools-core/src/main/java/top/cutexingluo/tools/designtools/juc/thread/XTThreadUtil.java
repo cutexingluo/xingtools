@@ -1,6 +1,5 @@
 package top.cutexingluo.tools.designtools.juc.thread;
 
-import lombok.extern.slf4j.Slf4j;
 import top.cutexingluo.tools.designtools.juc.lock.XTLock;
 
 import java.util.concurrent.*;
@@ -15,7 +14,7 @@ import java.util.concurrent.*;
  * @version 1.0.0
  * @date 2023/4/6 21:54
  */
-@Slf4j
+//@Slf4j
 public class XTThreadUtil {
     //*********************************************************
 
