@@ -19,7 +19,7 @@ import java.util.Objects;
 @ConditionalOnClass(RequestContextHolder.class)
 public class HttpContextUtil {
 
-    private HttpContextUtil() {
+    protected HttpContextUtil() {
 
     }
 

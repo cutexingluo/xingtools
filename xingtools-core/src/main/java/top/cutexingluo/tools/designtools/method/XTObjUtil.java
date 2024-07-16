@@ -14,17 +14,47 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
  * <p>反射工具类</p>
  * <p>反射设置属性值</p>
+ * <p>于 v1.1.1 合并ruoyi BeanUtils</p>
  *
  * @author XingTian
  * @version 1.0.0
  * @date 2023/2/2 21:42
  */
 public class XTObjUtil {
+
+    /**
+     * Bean方法名中属性名开始的下标
+     */
+    protected static final int BEAN_METHOD_PROP_INDEX = 3;
+
+    /**
+     * get
+     */
+    public static final  String STR_GET = "get";
+
+    /**
+     * set
+     */
+    public static final  String STR_SET= "set";
+
+    /**
+     * 匹配getter方法的正则表达式
+     */
+    protected static final Pattern GET_PATTERN = Pattern.compile("get(\\p{javaUpperCase}\\w*)");
+
+    /**
+     * 匹配setter方法的正则表达式
+     */
+    protected static final Pattern SET_PATTERN = Pattern.compile("set(\\p{javaUpperCase}\\w*)");
+
+
 
 
     public static class Unsafe {
@@ -175,7 +205,7 @@ public class XTObjUtil {
      */
     public static <T> Object getProperty(@NotNull T item, @NotNull String property, boolean isDone) {
         Object value = null;
-        property = XTCharUtil.addCheckPrefix(property, "get", isDone);
+        property = XTCharUtil.addCheckPrefix(property, STR_GET, isDone);
         try {
             Method method = item.getClass().getMethod(property);
             method.setAccessible(true);
@@ -206,7 +236,7 @@ public class XTObjUtil {
      */
     public static <T> T setProperty(@NotNull T item, @NotNull String property,
                                     Object newValue, boolean isDone, @NotNull Class<?> param) {
-        property = XTCharUtil.addCheckPrefix(property, "set", isDone);
+        property = XTCharUtil.addCheckPrefix(property, STR_SET, isDone);
         try {
             Method method;
             method = item.getClass().getMethod(property, param);
@@ -237,7 +267,7 @@ public class XTObjUtil {
     @NotNull
     public static <T> List<Object> getListProperty(@NotNull List<T> items, String property) {
         List<Object> res = new ArrayList<Object>();
-        property = XTCharUtil.addCheckPrefix(property, "get", false);
+        property = XTCharUtil.addCheckPrefix(property, STR_GET, false);
         for (T item : items) {
             res.add(getProperty(item, property, true));
         }
@@ -257,12 +287,83 @@ public class XTObjUtil {
      * @param <T>      对象类型
      */
     public static <T> List<T> setListProperty(@NotNull List<T> items, String property, Object newValue, Class<?> param) {
-        property = XTCharUtil.addCheckPrefix(property, "set", false);
+        property = XTCharUtil.addCheckPrefix(property, STR_SET, false);
         for (T item : items) {
             setProperty(item, property, newValue, true, param);
         }
         return items;
     }
+
+    // ruoyi
+    /**
+     * 获取对象的setter方法。
+     *
+     * @param obj 对象
+     * @return 对象的setter方法列表
+     */
+    public static @NotNull List<Method> getSetterMethods(@NotNull Object obj) {
+        // setter方法列表
+        List<Method> setterMethods = new ArrayList<Method>();
+
+        // 获取所有方法
+        Method[] methods = obj.getClass().getMethods();
+
+        // 查找setter方法
+
+        for (Method method : methods) {
+            Matcher m = SET_PATTERN.matcher(method.getName());
+            if (m.matches() && (method.getParameterTypes().length == 1)) {
+                setterMethods.add(method);
+            }
+        }
+        // 返回setter方法列表
+        return setterMethods;
+    }
+
+    /**
+     * 获取对象的getter方法。
+     *
+     * @param obj 对象
+     * @return 对象的getter方法列表
+     */
+    public static @NotNull List<Method> getGetterMethods(@NotNull Object obj) {
+        // getter方法列表
+        List<Method> getterMethods = new ArrayList<Method>();
+        // 获取所有方法
+        Method[] methods = obj.getClass().getMethods();
+        // 查找getter方法
+        for (Method method : methods) {
+            Matcher m = GET_PATTERN.matcher(method.getName());
+            if (m.matches() && (method.getParameterTypes().length == 0)) {
+                getterMethods.add(method);
+            }
+        }
+        // 返回getter方法列表
+        return getterMethods;
+    }
+
+    /**
+     * 检查Bean方法名中的属性名是否相等。<br>
+     * 如getName()和setName()属性名一样，getName()和setAge()属性名不一样。
+     *
+     * @param m1 方法名1
+     * @param m2 方法名2
+     * @return 属性名一样返回true，否则返回false
+     */
+
+    public static boolean isMethodPropEquals(@NotNull String m1, @NotNull String m2) {
+        return m1.substring(BEAN_METHOD_PROP_INDEX).equals(m2.substring(BEAN_METHOD_PROP_INDEX));
+    }
+
+
+
+
+
+
+
+
+
+
 }
 
 /**

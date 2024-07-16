@@ -1,0 +1,29 @@
+{
+  "properties": [
+    {
+      "name": "xingtools.printlog-anno.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Add @PrintLog annotation.",
+      "defaultValue": false
+    },
+    {
+      "name": "xingtools.xtexception-anno.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Add @XTException annotation.",
+      "defaultValue": false
+    },
+    {
+      "name": "xingtools.ext-transaction-anno.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Add @ExtTransaction annotation.",
+      "defaultValue": false
+    },
+    {
+      "name": "server.ip",
+      "type": "java.lang.String",
+      "sourceType": " top.cutexingluo.tools.property.ServerProperty",
+      "description": "Http server IP address ,default value localhost.",
+      "defaultValue": "127.0.0.1"
+    }
+  ]
+}

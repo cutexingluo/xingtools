@@ -23,6 +23,7 @@
         <maven.compiler.target>17</maven.compiler.target>
         <!-- versions -->
         <springboot.version>3.0.5</springboot.version>
+        <oauth2.version>1.2.2</oauth2.version>
 
         <redisson.version>3.24.3</redisson.version>
 
@@ -47,6 +48,17 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-oauth2</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-oauth2-authorization-server</artifactId>
+            <version>${oauth2.version}</version>
             <optional>true</optional>
         </dependency>
 

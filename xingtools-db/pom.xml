@@ -17,7 +17,7 @@
 
     <properties>
         <!-- versions -->
-        <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
+
         <lock4j.version>2.2.5</lock4j.version>
         <fastjson.version>1.2.83</fastjson.version>
 <!--        <amqp-client.version>5.14.3</amqp-client.version>-->
@@ -69,7 +69,7 @@
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>lock4j-core</artifactId>
-            <version>${lock4j.version}</version>
+<!--            <version>${lock4j.version}</version>-->
             <optional>true</optional>
         </dependency>
 

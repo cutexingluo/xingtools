@@ -31,6 +31,10 @@
                 <groupId>top.cutexingluo.tools</groupId>
                 <artifactId>xingtools-pkg-jdk8</artifactId>
             </exclusion>
+            <exclusion>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+            </exclusion>
         </exclusions>
     </dependency>
 

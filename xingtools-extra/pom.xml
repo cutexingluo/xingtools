@@ -29,6 +29,13 @@
             <version>${project.parent.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-extra</artifactId>
+        </dependency>
+
+
+
 
 
 
@@ -48,6 +55,7 @@
             <artifactId>spring-boot-starter-aop</artifactId>
             <optional>true</optional>
         </dependency>
+
 
         <!--       springboot-valid   -->
 <!--        <dependency>-->

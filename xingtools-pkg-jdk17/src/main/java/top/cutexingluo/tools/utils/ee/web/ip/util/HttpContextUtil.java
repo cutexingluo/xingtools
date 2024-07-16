@@ -18,7 +18,7 @@ import java.util.Objects;
 
 public class HttpContextUtil {
 
-    private HttpContextUtil() {
+    protected HttpContextUtil() {
 
     }
 

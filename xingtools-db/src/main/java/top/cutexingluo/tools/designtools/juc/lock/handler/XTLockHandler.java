@@ -1,7 +1,6 @@
 package top.cutexingluo.tools.designtools.juc.lock.handler;
 
 import cn.hutool.core.util.StrUtil;
-import lombok.Data;
 import lombok.experimental.Accessors;
 import org.jetbrains.annotations.NotNull;
 import org.redisson.api.RedissonClient;
@@ -9,7 +8,6 @@ import top.cutexingluo.tools.basepackage.basehandler.CallableHandler;
 import top.cutexingluo.tools.common.Constants;
 import top.cutexingluo.tools.designtools.juc.lock.extra.XTLockMeta;
 import top.cutexingluo.tools.designtools.juc.lock.extra.XTLockType;
-import top.cutexingluo.tools.designtools.juc.lock.extra.XTLockTypeUtil;
 import top.cutexingluo.tools.exception.ConfigNullPointerException;
 
 import java.util.concurrent.Callable;
@@ -22,7 +20,9 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 /**
  * 锁处理器
  * <p> 原 XTLockHandler 和 XTAopLockHandler 合并版本</p>
+ * <p>v1.0.2 -> v1.1.1 翻新</p>
  * <p>推荐使用</p>
+ * <p>需要导入 org.redisson.api.RedissonClient 包</p>
  *
  *
  * @author XingTian
@@ -30,14 +30,10 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * @date 2024/7/12 9:53
  * @since 1.1.1
  */
-@Data
 @Accessors(chain = true)
-public class XTLockHandler  implements CallableHandler {
+public class XTLockHandler  extends LockHandler  implements CallableHandler {
 
-    /**
-     * 锁参数
-     */
-    protected XTLockMeta lockMeta;
+
     /**
      * RedissonClient 对象
      */
@@ -50,8 +46,8 @@ public class XTLockHandler  implements CallableHandler {
     /**
      * 默认本地锁
      */
-    public XTLockHandler(XTLockMeta lockMeta) {
-        this.lockMeta = lockMeta;
+    public XTLockHandler(@NotNull XTLockMeta lockMeta) {
+        super(lockMeta);
     }
 
     /**
@@ -59,7 +55,7 @@ public class XTLockHandler  implements CallableHandler {
      *
      * <p>useRedissonClient = true, 使用 RedissonClient , 如果不存在会自动从 Spring容器获取</p>
      */
-    public XTLockHandler(XTLockMeta lockMeta, RedissonClient redissonClient) {
+    public XTLockHandler(@NotNull XTLockMeta lockMeta, RedissonClient redissonClient) {
         this(lockMeta, redissonClient, true);
     }
 
@@ -67,8 +63,8 @@ public class XTLockHandler  implements CallableHandler {
      * 使用 RedissonClient
      * @param  useRedissonClient 使用 RedissonClient , 如果不存在会自动从 Spring容器获取
      */
-    public XTLockHandler(XTLockMeta lockMeta, RedissonClient redissonClient, boolean useRedissonClient) {
-        this.lockMeta = lockMeta;
+    public XTLockHandler(@NotNull XTLockMeta lockMeta, RedissonClient redissonClient, boolean useRedissonClient) {
+        super(lockMeta);
         this.redissonClient = redissonClient;
         this.useRedissonClient = useRedissonClient;
     }
@@ -80,7 +76,12 @@ public class XTLockHandler  implements CallableHandler {
         this(handlerMeta.getLockMeta(), handlerMeta.getRedissonClient(), handlerMeta.isUseRedissonClient());
     }
 
-
+    @Override
+    public void init() {
+        if(!useRedissonClient || redissonClient == null){// 转化类型
+            super.init();
+        }
+    }
 
     /**
      *对加锁任务进行封装
@@ -88,10 +89,7 @@ public class XTLockHandler  implements CallableHandler {
      */
     @Override
     public <T> Callable<T> decorate(Callable<T> callable) {
-        if(!useRedissonClient || redissonClient == null){// 转化类型
-            XTLockType lockType = XTLockTypeUtil.toReentrant(lockMeta.getLockType());
-            lockMeta.setLockType(lockType);
-        }
+        init();
         return ()->lock(callable);
     }
 
@@ -100,6 +98,7 @@ public class XTLockHandler  implements CallableHandler {
      * 核心加锁任务方法
      *
      * @param task 任务
+     * @return  任务执行返回值
      * @throws Exception InterruptedException 或 task 抛出的 Exception
      */
     public <T> T lock(Callable<T> task) throws Exception {
@@ -155,5 +154,23 @@ public class XTLockHandler  implements CallableHandler {
             lock.unlock();
         }
         return result;
+    }
+
+
+
+    public RedissonClient getRedissonClient() {
+        return redissonClient;
+    }
+
+    public void setRedissonClient(RedissonClient redissonClient) {
+        this.redissonClient = redissonClient;
+    }
+
+    public boolean isUseRedissonClient() {
+        return useRedissonClient;
+    }
+
+    public void setUseRedissonClient(boolean useRedissonClient) {
+        this.useRedissonClient = useRedissonClient;
     }
 }
