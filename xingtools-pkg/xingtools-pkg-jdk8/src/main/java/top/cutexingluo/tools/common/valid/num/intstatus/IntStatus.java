@@ -1,11 +1,11 @@
-package top.cutexingluo.tools.common.valid.num.longstatus;
+package top.cutexingluo.tools.common.valid.num.intstatus;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.*;
 
 /**
- * Long 验证器
+ * Integer 验证器
  *
  * <p>需要导入 spring-boot-starter-validation 包</p>
  * <ul>
@@ -16,15 +16,15 @@ import java.lang.annotation.*;
  * </ul>
  *
  * @author XingTian
- * @date 2023/12/8 16:12
- * @since 1.0.3
+ * @version 1.0.0
+ * @date 2023/7/19 17:21
  */
 @Documented
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.PARAMETER})
-@Constraint(validatedBy = {LongStatusValidator.class})
-public @interface LongStatus {
+@Constraint(validatedBy = {IntStatusValidator.class})
+public @interface IntStatus {
 
 
     /**
@@ -40,9 +40,9 @@ public @interface LongStatus {
     /**
      * 2.只要目标满足指定数字即可通过,无视大小限制
      *
-     * @return {@link long[]}
+     * @return {@link int[]}
      */
-    long[] matchNum() default {};
+    int[] matchNum() default {};
 
 
     /**
@@ -56,17 +56,17 @@ public @interface LongStatus {
      * lenLimit开启<br>
      * 3.最小长度
      *
-     * @return long
+     * @return int
      */
-    long min() default 0;
+    int min() default 0;
 
     /**
      * lenLimit开启<br>
      * 3.最大长度
      *
-     * @return long
+     * @return int
      */
-    long max() default Integer.MAX_VALUE;
+    int max() default Integer.MAX_VALUE;
 
 
     /**
@@ -74,10 +74,10 @@ public @interface LongStatus {
      * <p>如果设置了range，则判定是否在此范围内, [ inclusive, inclusive] </p>
      * <p>可以设置多个</p>
      *
-     * @return {@link LongRange[]}
+     * @return {@link IntRange[]}
      * @since 1.0.3
      */
-    LongRange[] range() default {};
+    IntRange[] range() default {};
 
 
     /**

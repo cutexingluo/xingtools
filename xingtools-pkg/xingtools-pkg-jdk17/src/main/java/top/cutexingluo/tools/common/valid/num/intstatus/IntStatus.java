@@ -1,11 +1,14 @@
-package top.cutexingluo.tools.common.valid.num;
+package top.cutexingluo.tools.common.valid.num.intstatus;
 
-import javax.validation.Constraint;
-import javax.validation.Payload;
+import jakarta.validation.Constraint;
+import jakarta.validation.Payload;
+
 import java.lang.annotation.*;
 
 /**
  * Integer 验证器
+ *
+ * <p>需要导入 spring-boot-starter-validation 包</p>
  * <ul>
  *     执行顺序
  *     <li>是否notNull，未设置则 null 会通过，建议@NotNull</li>

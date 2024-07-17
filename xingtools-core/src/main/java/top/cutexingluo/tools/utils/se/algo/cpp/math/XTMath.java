@@ -25,11 +25,32 @@ public class XTMath {
     public static double pi = Math.PI;
 
     /**
+     * 两数相减进行比较
+     *
      * @return 小于-1，等于0，大于1
      */
     public static int sgn(double value) {
         return value < -eps ? -1 : (value > eps ? 1 : 0);
     }
+
+    /**
+     * 获取 数值运算的 double  上界
+     * @param eps  精度值
+     * @since 1.1.1
+     */
+    public static double getUpValue(double value,double eps) {
+        return value > Double.MAX_VALUE -eps ? Double.MAX_VALUE : value + eps;
+    }
+
+    /**
+     * 获取 数值运算的 double  下界
+     * @param eps  精度值
+     * @since 1.1.1
+     */
+    public static double getDownValue(double value,double eps) {
+        return value < -Double.MAX_VALUE +eps ? -Double.MAX_VALUE : value - eps;
+    }
+
 
     /**
      * 二分查找

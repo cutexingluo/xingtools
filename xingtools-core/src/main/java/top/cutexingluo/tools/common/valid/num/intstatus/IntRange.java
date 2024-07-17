@@ -1,6 +1,8 @@
-package top.cutexingluo.tools.common.valid.num;
+package top.cutexingluo.tools.common.valid.num.intstatus;
 
 /**
+ * int 类型范围注解
+ *
  * @author XingTian
  * @version 1.0.0
  * @date 2023/12/8 18:47
