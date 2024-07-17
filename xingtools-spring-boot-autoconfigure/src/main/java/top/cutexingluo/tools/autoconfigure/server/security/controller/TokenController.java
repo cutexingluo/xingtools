@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import top.cutexingluo.tools.auto.server.XingToolsAutoConfiguration;
 import top.cutexingluo.tools.common.base.IResult;
 import top.cutexingluo.tools.common.utils.GlobalResultFactory;
 import top.cutexingluo.tools.security.oauth.controller.XTTokenController;
@@ -29,7 +30,7 @@ import java.util.Map;
  * @date 2023/6/15 16:55
  */
 @ConditionalOnProperty(value = "xingtools.security.enabled.override-oauth-token", havingValue = "true", matchIfMissing = false)
-@ConditionalOnBean({TokenEndpoint.class, SecurityControllerConfig.class})
+@ConditionalOnBean({XingToolsAutoConfiguration.class, TokenEndpoint.class, SecurityControllerConfig.class})
 @ConditionalOnClass({Principal.class, OAuth2AccessToken.class})
 @Slf4j
 @RestController

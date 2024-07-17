@@ -4,17 +4,20 @@ import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import top.cutexingluo.tools.auto.server.XingToolsAutoConfiguration;
 import top.cutexingluo.tools.start.log.LogInfoAuto;
 
 
 /**
  * MybatisPlus 分页插件
  */
+@ConditionalOnBean(XingToolsAutoConfiguration.class)
 @ConditionalOnClass({MybatisPlusInterceptor.class})
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(prefix = "xingtools.enabled", name = "mybatis-plus-config", havingValue = "true", matchIfMissing = false)

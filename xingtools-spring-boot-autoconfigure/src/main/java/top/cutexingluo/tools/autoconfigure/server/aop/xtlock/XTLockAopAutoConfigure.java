@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import top.cutexingluo.tools.auto.server.XingToolsAutoConfiguration;
 import top.cutexingluo.tools.designtools.juc.lock.XTAopLockAop;
 import top.cutexingluo.tools.start.log.LogInfoAuto;
 
@@ -22,6 +23,7 @@ import top.cutexingluo.tools.start.log.LogInfoAuto;
  */
 //@ConditionalOnBean(XingToolsAutoConfiguration.class)
 @Configuration(proxyBeanMethods = false)
+@ConditionalOnBean(XingToolsAutoConfiguration.class)
 @ConditionalOnProperty(prefix = "xingtools.enabled", name = "xt-aop-lock", havingValue = "true", matchIfMissing = false)
 //@EnableAspectJAutoProxy
 @ConditionalOnClass({RedissonClient.class, Config.class})

@@ -5,8 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import javax.annotation.PostConstruct;
-
 /**
  * 自动配置标识
  *
@@ -33,8 +31,12 @@ public class XingToolsAutoConfiguration {
                     " /_/\\_\\_|_| |_|\\__, |\\__\\___/ \\___/|_|\n" +
                     "               |___/                  ";
 
-    @PostConstruct
+    //    @PostConstruct //  移除支持jdk 17
     public void init() {
         log.info(" \n {}", BOOT_BANNER);
+    }
+
+    public XingToolsAutoConfiguration() {
+        init();
     }
 }

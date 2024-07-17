@@ -17,8 +17,6 @@ import top.cutexingluo.tools.common.base.IResult;
 import top.cutexingluo.tools.common.utils.GlobalResultFactory;
 import top.cutexingluo.tools.start.log.LogInfoAuto;
 
-import javax.annotation.PostConstruct;
-
 /**
  * 业务拦截返回异常并封装返回
  *
@@ -36,11 +34,14 @@ public class XTGlobalExceptionHandler {
     @Autowired(required = false)
     GlobalResultFactory globalResultFactory;
 
-    @PostConstruct
+    //    @PostConstruct //  移除支持jdk 17
     public void init() {
-        if(LogInfoAuto.enabled)log.info("XingTool GlobalExceptionHandler is enabled ---> {}", "全局异常拦截，已开启");
+        if (LogInfoAuto.enabled) log.info("XingTool GlobalExceptionHandler is enabled ---> {}", "全局异常拦截，已开启");
     }
 
+    public XTGlobalExceptionHandler() {
+        init();
+    }
 
     @ExceptionHandler(DuplicateKeyException.class)
     public <C, T> IResult<C, T> duplicateKeyException(DuplicateKeyException e) {

@@ -15,8 +15,6 @@ import top.cutexingluo.tools.common.Result;
 import top.cutexingluo.tools.common.base.IResult;
 import top.cutexingluo.tools.common.utils.GlobalResultFactory;
 
-import javax.annotation.PostConstruct;
-
 /**
  * Sa-token 异常拦截
  *
@@ -36,9 +34,13 @@ public class XTGlobalExceptionHandlerExt {
     @Autowired(required = false)
     GlobalResultFactory globalResultFactory;
 
-    @PostConstruct
+    //    @PostConstruct //  移除支持jdk 17
     public void init() {
         log.info("XingTool GlobalExceptionHandlerExt is enabled ---> {}", "全局异常扩展拦截，已开启，支持sa-token");
+    }
+
+    public XTGlobalExceptionHandlerExt() {
+        init();
     }
 
     @ConditionalOnClass(NotPermissionException.class)

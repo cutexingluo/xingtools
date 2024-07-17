@@ -4,7 +4,6 @@ package top.cutexingluo.tools.utils.ee.redis;
 import lombok.Data;
 import org.redisson.api.RedissonClient;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.context.annotation.Import;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import top.cutexingluo.tools.designtools.juc.thread.XTThreadPool;
@@ -14,14 +13,13 @@ import top.cutexingluo.tools.designtools.juc.thread.XTThreadPool;
  * <p>需要导入 spring-data-redis 相关的包 </p>
  * <p>需要导入 org.redisson:redisson 包</p>
  *
- *
  * @author XingTian
  * @version 1.0.0
  * @date 2023/2/4 16:12
  */
 @ConditionalOnBean({RedisUtil.class, RedissonClient.class})
 //@AutoConfigureAfter(RedisTemplate.class)
-@Import(XTRedisUtil.class)
+//@Import(XTRedisUtil.class)
 //@Component
 @Data
 public class XTRedisData {

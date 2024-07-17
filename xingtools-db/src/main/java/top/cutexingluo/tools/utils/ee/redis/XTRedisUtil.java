@@ -1,15 +1,13 @@
 package top.cutexingluo.tools.utils.ee.redis;
 
 import cn.hutool.core.util.StrUtil;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.stereotype.Component;
 import top.cutexingluo.tools.designtools.juc.thread.XTThreadPool;
 
-import javax.annotation.PostConstruct;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
@@ -33,9 +31,10 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 @ConditionalOnBean(XTRedisData.class)
 //@AutoConfigureAfter(XTRedisData.class)
-@Component
+//@Component
+@AllArgsConstructor
 @Data
-@Slf4j
+//@Slf4j
 public class XTRedisUtil {
     //*******************common**************
     @Autowired
@@ -46,13 +45,13 @@ public class XTRedisUtil {
     public static ThreadPoolExecutor threadPoolExecutor;
     public static RedissonClient redisson;
 
-    @PostConstruct
-    protected void init() {
+    //    @PostConstruct
+    public void init() {
         redisUtil = xtRedisData.getRedisUtil();
         xtThreadPool = xtRedisData.getXtThreadPool();
         if (xtThreadPool != null) threadPoolExecutor = xtThreadPool.getThreadPool();
         redisson = xtRedisData.getRedisson();
-        log.info("XTRedisUtil --->  XTRedisData, RedisUtil, RedissonClient  已注入,  Redisson工具类 XTRedisUtil{}", "自动注入完成");
+//        log.info("XTRedisUtil --->  XTRedisData, RedisUtil, RedissonClient  已注入,  Redisson工具类 XTRedisUtil{}", "自动注入完成");
     }
 
     public XTRedisUtil refreshThreadPool() {

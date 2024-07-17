@@ -6,9 +6,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import top.cutexingluo.tools.auto.server.XingToolsAutoConfiguration;
 
-import javax.annotation.PostConstruct;
-
 /**
+ * 自动配置标识
+ *
  * @author XingTian
  * @version 1.0.0
  * @date 2023/5/3 22:50
@@ -30,8 +30,12 @@ public class XTSpringCloudAutoConfiguration {
                     " /_/\\_\\_|_| |_|\\__, |\\__\\___/ \\___/|_|  \\___|_|\\___/ \\__,_|\\__,_|\n" +
                     "               |___/                                             ";
 
-    @PostConstruct
+    //    @PostConstruct //  移除支持jdk 17
     public void init() {
         log.info(" \n {}", CLOUD_BANNER);
+    }
+
+    public XTSpringCloudAutoConfiguration() {
+        init();
     }
 }

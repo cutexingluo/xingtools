@@ -4,7 +4,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 import top.cutexingluo.tools.auto.server.XingToolsAutoConfiguration;
 import top.cutexingluo.tools.utils.web.limit.guava.LimitAop;
 
@@ -15,13 +15,13 @@ import top.cutexingluo.tools.utils.web.limit.guava.LimitAop;
  */
 @ConditionalOnBean(XingToolsAutoConfiguration.class)
 @ConditionalOnProperty(prefix = "xingtools.cloud.enabled", name = "current-limit", havingValue = "true")
-@Component
+@Configuration(proxyBeanMethods = false)
 public class LimitAopAuto {
 
 
     @ConditionalOnMissingBean
     @Bean
-    public LimitAop limitAop(){
+    public LimitAop limitAop() {
         return new LimitAop();
     }
 

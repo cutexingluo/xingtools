@@ -1,5 +1,6 @@
 package top.cutexingluo.tools.utils.ee.redisson;
 
+import lombok.extern.slf4j.Slf4j;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
@@ -12,6 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import top.cutexingluo.tools.auto.server.XingToolsAutoConfiguration;
+import top.cutexingluo.tools.start.log.LogInfoAuto;
 
 import java.io.IOException;
 
@@ -28,6 +30,7 @@ import java.io.IOException;
 @Configuration(proxyBeanMethods = false)
 @Import(XTRedisUtilAutoConfigure.class)
 @ConditionalOnClass({RedissonClient.class, Config.class})
+@Slf4j
 public class RedissonConfig {
 
     public static final String PREFIX = "redis://";
@@ -43,6 +46,8 @@ public class RedissonConfig {
     public RedissonClient redisson() throws IOException {
         Config config = new Config();
         config.useSingleServer().setAddress(PREFIX + redisHost + ":" + redisPort);
+        if (LogInfoAuto.enabled)
+            log.info("RedissonConfig   ---> RedissonClient  {}", "自动装配完成");
         return Redisson.create(config);
     }
 

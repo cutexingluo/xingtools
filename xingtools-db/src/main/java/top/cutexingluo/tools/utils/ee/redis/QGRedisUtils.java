@@ -5,7 +5,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.data.redis.connection.RedisConnectionCommands;
 import org.springframework.data.redis.core.RedisTemplate;
 
-import javax.annotation.PostConstruct;
 import java.util.concurrent.TimeUnit;
 
 
@@ -50,12 +49,11 @@ public class QGRedisUtils {
 //    }
 
     // Springboot启动成功之后会调用这个方法
-    @PostConstruct
-    public void initRedis() {
-        // 初始化设置 静态staticRedisTemplate对象，方便后续操作数据
-        if (staticRedisTemplate == null) staticRedisTemplate = redisTemplate;
-
-    }
+//    @PostConstruct
+//    public void initRedis() {
+//        // 初始化设置 静态staticRedisTemplate对象，方便后续操作数据
+//        if (staticRedisTemplate == null) staticRedisTemplate = redisTemplate;
+//    }
 
     /**
      * 缓存基本的对象，Integer、String、实体类等

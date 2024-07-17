@@ -14,7 +14,7 @@ import org.springframework.core.annotation.Order;
  * @version 1.0.0
  * @date 2023/4/26 16:59
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(prefix = "xingtools.enabled", value = "log-info", havingValue = "false",
         matchIfMissing = false)
 @Order(1)

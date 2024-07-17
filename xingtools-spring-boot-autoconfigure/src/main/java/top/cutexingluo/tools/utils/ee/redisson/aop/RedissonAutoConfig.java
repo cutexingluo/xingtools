@@ -15,8 +15,6 @@ import top.cutexingluo.tools.start.log.LogInfoAuto;
 import top.cutexingluo.tools.utils.ee.redisson.CustomLockKeyBuilder;
 import top.cutexingluo.tools.utils.ee.redisson.GrabLockFailureStrategy;
 
-import javax.annotation.PostConstruct;
-
 /**
  * Redisson 自带注解
  * <p>需要导入  com.baomidou:lock4j-core 包</p>
@@ -32,21 +30,20 @@ import javax.annotation.PostConstruct;
 @Configuration
 public class RedissonAutoConfig {
 
-    @PostConstruct
-    public void init() {
-        if (LogInfoAuto.enabled)
-            log.info("RedissonAutoConfig RedissonAop   --->  {}", "自动装配完成");
-    }
 
     @ConditionalOnMissingBean(DefaultLockKeyBuilder.class)
     @Bean
     public DefaultLockKeyBuilder lockKeyBuilder(BeanFactory beanFactory) {
+        if (LogInfoAuto.enabled)
+            log.info("RedissonAutoConfig RedissonAop   ---> DefaultLockKeyBuilder  {}", "自动装配完成");
         return new CustomLockKeyBuilder(beanFactory);
     }
 
     @ConditionalOnMissingBean(LockFailureStrategy.class)
     @Bean
     public LockFailureStrategy lockFailureStrategy() {
+        if (LogInfoAuto.enabled)
+            log.info("RedissonAutoConfig RedissonAop   ---> LockFailureStrategy  {}", "自动装配完成");
         return new GrabLockFailureStrategy();
     }
 }
