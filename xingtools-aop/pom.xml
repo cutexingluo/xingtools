@@ -13,6 +13,7 @@
 
     <artifactId>xingtools-aop</artifactId>
     <name>${project.artifactId}</name>
+    <description>xingtools 依赖mvc，log，pkg三包，提供前面依赖的aop注解和切面类</description>
 
 
     <properties>

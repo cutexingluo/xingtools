@@ -14,7 +14,7 @@
 
     <artifactId>xingtools-extra</artifactId>
     <name>${project.artifactId}</name>
-    <description>xingtools 附加，也就是基于 SpringBoot 的一些工具或实体类</description>
+    <description>xingtools 依赖core，附加，也就是基于 SpringBoot 的一些工具或实体类</description>
 
     <properties>
         <!-- versions -->
@@ -63,12 +63,12 @@
 <!--            <artifactId>spring-boot-starter-validation</artifactId>-->
 <!--            <optional>true</optional>-->
 <!--        </dependency>-->
-        <dependency>
-            <groupId>jakarta.validation</groupId>
-            <artifactId>jakarta.validation-api</artifactId>
-            <version>${validation-api.version}</version>
-            <optional>true</optional>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>jakarta.validation</groupId>-->
+<!--            <artifactId>jakarta.validation-api</artifactId>-->
+<!--            <version>${validation-api.version}</version>-->
+<!--            <optional>true</optional>-->
+<!--        </dependency>-->
 
 
     </dependencies>

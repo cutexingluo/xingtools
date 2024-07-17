@@ -14,7 +14,7 @@
 
     <artifactId>xingtools-pkg-jdk17</artifactId>
     <name>${project.artifactId}</name>
-    <description>xingtool jdk 分类包，对不同的jdk版本提供兼容性</description>
+    <description>xingtools 依赖mvc和cloud包，jdk 分类包，对不同的jdk版本提供兼容性</description>
 
 
     <properties>

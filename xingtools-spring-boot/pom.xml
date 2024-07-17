@@ -13,6 +13,7 @@
 
     <artifactId>xingtools-spring-boot</artifactId>
     <name>${project.artifactId}</name>
+    <description>xingtools 整合版本，排除pkg-jdk依赖，在这之后需要配合pkg-jdk依赖使用</description>
 
     <properties>
         <!-- versions -->
@@ -41,6 +42,5 @@
 
 
     </dependencies>
-
 
 </project>

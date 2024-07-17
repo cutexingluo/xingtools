@@ -12,7 +12,7 @@
 
     <artifactId>xingtools-db</artifactId>
     <name>${project.artifactId}</name>
-    <description>xingtools 数据库操作，包含mybatis-plus等操作</description>
+    <description>xingtools 依赖core，数据库操作，包含mybatis-plus等操作</description>
 
 
     <properties>

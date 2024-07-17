@@ -13,6 +13,7 @@
 
     <artifactId>xingtools-unified</artifactId>
     <name>${project.artifactId}</name>
+    <description>xingtools 依赖aop，整合包，整合所有依赖并依赖 hutool-all </description>
 
     <properties>
         <!-- versions -->

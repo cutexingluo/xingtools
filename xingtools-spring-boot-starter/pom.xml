@@ -13,6 +13,8 @@
 
     <artifactId>xingtools-spring-boot-starter</artifactId>
     <name>${project.artifactId}</name>
+    <description>xingtools 最终依赖包，该包是一个功能丰富的 Java工具库，通过诸多实用工具类的使用，旨在帮助开发者快速进行开发工作。
+        see repo https://gitee.com/SangonomiyaKokomi/xingtools</description>
 
     <properties>
         <!-- versions -->

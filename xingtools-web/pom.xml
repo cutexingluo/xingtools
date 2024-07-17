@@ -13,6 +13,7 @@
 
     <artifactId>xingtools-web</artifactId>
     <name>${project.artifactId}</name>
+    <description>xingtools 依赖core，提供一些 http 工具</description>
 
     <properties>
         <!-- versions -->

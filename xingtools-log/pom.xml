@@ -15,6 +15,7 @@
 
     <artifactId>xingtools-log</artifactId>
     <name>${project.artifactId}</name>
+    <description>xingtools 依赖mvc，包含日志扩展操作的封装</description>
 
     <properties>
         <!-- versions -->

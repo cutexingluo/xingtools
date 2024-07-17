@@ -1,22 +1,24 @@
 @Author XingTian
 @Version v1.1.1
 @Since 2023-9-26
-@Update 2024-7-10
+@Update 2024-7-17
 
 
 
 更新公告
-2024-7-10 ~ 2024-7-16  v1.1.1
-中版本更新，为了保证灵活性。
+2024-7-10 ~ 2024-7-17  v1.1.1
+中版本更新，为了保证灵活性。更改工具 xingtool -> xingtools 。
 更改部分
-1.分离core 包和  log 大包，保证 log 大包能够使用
-2.移出 XTArrayUtil 的 logPrintln等方法
-3.更改designtools.http 包名-> designtools.convert
-4.designtools.distributed 合并到 utils.ee 里面
+1.分离为多个包，例如分离core 包和 log 大包，保证 log 大包能够使用
+2.部分强耦合方法被移除，例如移出 XTArrayUtil 的 logPrintln 等方法
+3.更改大部分包名，例如 designtools.http 包名-> designtools.convert
+4.部分类按包名合并，例如 designtools.distributed 合并到 utils.ee 里面
+5.部分类消失简化操作等，例如Security Oauth的装配
 
 移除部分
-移除类XTDataType
-暂时移除 ruoyi 和 ican 的代码
+1.多个历史遗留类移除，例如移除类XTDataType
+2.很多业务类和重复工具类移除，例如暂时移除 ruoyi 和 ican 的多个类，后续会合并到大工具类。如果已经使用了这些类的方法，请留级到 xingtool的 v1.0.5 版本
+3.移除其他暂时不需要的类和冗余类，例如kotlin依赖等
 
 支持 jdk8, jdk17 双版本
 (为保证移植性，javax包减少使用，无法去掉则移植到 pkg-jdk8 包)
