@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>jar</packaging>
+
+    <parent>
+        <artifactId>xingtools-parent</artifactId>
+        <groupId>top.cutexingluo.tools</groupId>
+        <version>1.1.1</version>
+    </parent>
+
+    <artifactId>xingtools-mvc</artifactId>
+    <name>${project.artifactId}</name>
+    <description>xingtools 依赖web，extra，db三包，基于 SpringBoot-Web 的一些集成工具或实体类</description>
+
+
+    <properties>
+        <!-- versions -->
+        <httpcomponents.version>4.5.14</httpcomponents.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>top.cutexingluo.tools</groupId>
+            <artifactId>xingtools-extra</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>top.cutexingluo.tools</groupId>
+            <artifactId>xingtools-web</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>top.cutexingluo.tools</groupId>
+            <artifactId>xingtools-db</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
+
+        <!--        optional -->
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpmime</artifactId>
+            <version>${httpcomponents.version}</version>
+            <optional>true</optional>
+        </dependency>
+
+
+            <!--        redisson -->
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+
+
+    </dependencies>
+
+</project>

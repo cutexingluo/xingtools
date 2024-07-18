@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>jar</packaging>
+
+
+
+    <parent>
+        <artifactId>xingtools-parent</artifactId>
+        <groupId>top.cutexingluo.tools</groupId>
+        <version>1.1.1</version>
+    </parent>
+
+    <artifactId>xingtools-core</artifactId>
+    <name>${project.artifactId}</name>
+    <description>xingtools 核心，包括各种接口，实体类和工具类</description>
+
+    <properties>
+
+        <!-- versions -->
+
+        <jetbrains.annotations.version>1.7.0</jetbrains.annotations.version>
+
+        <jackson.version>2.15.2</jackson.version>
+        <fastjson2.version>2.0.23</fastjson2.version>
+        <fastjson.version>1.2.83</fastjson.version>
+        <hessian.version>4.0.38</hessian.version>
+        <kryo.version>5.3.0</kryo.version>
+
+
+        <jjwt.version>0.9.1</jjwt.version>
+        <java-jwt.version>4.4.0</java-jwt.version>
+        <kaptcha.version>2.3.3</kaptcha.version>
+        <jython.version>2.7.3</jython.version>
+    </properties>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+        </dependency>
+
+
+        <!--   hutool 工具  -->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-jwt</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-json</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-captcha</artifactId>
+        </dependency>
+
+
+
+
+<!--&lt;!&ndash;        lang 包&ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.apache.commons</groupId>-->
+<!--            <artifactId>commons-lang3</artifactId>-->
+<!--        </dependency>-->
+
+     <!--        idea 注解 -->
+        <dependency>
+            <groupId>org.realityforge.org.jetbrains.annotations</groupId>
+            <artifactId>org.jetbrains.annotations</artifactId>
+            <version>${jetbrains.annotations.version}</version>
+        </dependency>
+
+        <!--   jackson   -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+
+        <!--        optional    -->
+
+        <!-- 阿里JSON解析器 -->
+        <dependency>
+            <groupId>com.alibaba.fastjson2</groupId>
+            <artifactId>fastjson2</artifactId>
+            <version>${fastjson2.version}</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
+            <optional>true</optional>
+        </dependency>
+        <!-- hessian 解析器 -->
+        <dependency>
+            <groupId>com.caucho</groupId>
+            <artifactId>hessian</artifactId>
+            <version>${hessian.version}</version>
+            <optional>true</optional>
+        </dependency>
+        <!--    kryo 序列化    -->
+        <dependency>
+            <groupId>com.esotericsoftware</groupId>
+            <artifactId>kryo</artifactId>
+            <version>${kryo.version}</version>
+            <optional>true</optional>
+        </dependency>
+
+
+        <!--        jwt   -->
+        <!-- Token生成与解析-->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>${jjwt.version}</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>${java-jwt.version}</version>
+            <optional>true</optional>
+        </dependency>
+
+
+        <!-- 谷歌验证码 -->
+        <dependency>
+            <groupId>pro.fessional</groupId>
+            <artifactId>kaptcha</artifactId>
+            <version>${kaptcha.version}</version>
+            <optional>true</optional>
+        </dependency>
+
+
+
+        <!-- jython依赖 可以编译python-->
+        <dependency>
+            <groupId>org.python</groupId>
+            <artifactId>jython-standalone</artifactId>
+            <version>${jython.version}</version>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
+
+</project>

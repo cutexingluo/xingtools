@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>pom</packaging>
+
+    <parent>
+        <artifactId>xingtools-parent</artifactId>
+        <groupId>top.cutexingluo.tools</groupId>
+        <version>1.1.1</version>
+    </parent>
+
+
+    <artifactId>xingtools-pkg</artifactId>
+    <name>${project.artifactId}</name>
+    <description>xingtool jdk 分类包，对不同的jdk版本提供兼容性</description>
+
+    <modules>
+        <module>xingtools-pkg-jdk8</module>
+        <module>xingtools-pkg-jdk17</module>
+    </modules>
+
+
+    <properties>
+        <!-- versions -->
+        <javax.servlet-api.version>4.0.1</javax.servlet-api.version>
+        <jakarta.servlet-api.version>6.0.0</jakarta.servlet-api.version>
+
+        <ip2region.version>2.7.0</ip2region.version>
+
+
+        <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
+
+    </properties>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>top.cutexingluo.tools</groupId>
+            <artifactId>xingtools-mvc</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>top.cutexingluo.tools</groupId>
+            <artifactId>xingtools-cloud</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>${javax.servlet-api.version}</version>
+                <scope>provided</scope>
+                <optional>true</optional>
+            </dependency>
+            <dependency>
+                <groupId>jakarta.servlet</groupId>
+                <artifactId>jakarta.servlet-api</artifactId>
+                <version>${jakarta.servlet-api.version}</version>
+                <scope>provided</scope>
+                <optional>true</optional>
+            </dependency>
+
+
+            <!--        ip  -->
+            <dependency>
+                <groupId>org.lionsoul</groupId>
+                <artifactId>ip2region</artifactId>
+                <version>${ip2region.version}</version>
+                <optional>true</optional>
+            </dependency>
+
+            <!--        guava  -->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+                <optional>true</optional>
+            </dependency>
+
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-core</artifactId>
+                <version>${mybatis-plus.version}</version>
+                <optional>true</optional>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+
+
+</project>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>jar</packaging>
+
+    <parent>
+        <artifactId>xingtools-parent</artifactId>
+        <groupId>top.cutexingluo.tools</groupId>
+        <version>1.1.1</version>
+    </parent>
+
+    <artifactId>xingtools-aop</artifactId>
+    <name>${project.artifactId}</name>
+    <description>xingtools 依赖mvc，log，pkg三包，提供前面依赖的aop注解和切面类</description>
+
+
+    <properties>
+        <!-- versions -->
+<!--        <spring.version>5.3.27</spring.version>-->
+
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>top.cutexingluo.tools</groupId>
+            <artifactId>xingtools-mvc</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>top.cutexingluo.tools</groupId>
+            <artifactId>xingtools-log</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
+        <!--    default version -->
+        <dependency>
+            <groupId>top.cutexingluo.tools</groupId>
+            <artifactId>xingtools-pkg-jdk8</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
+
+
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>16.0</version>
+        </dependency>
+
+
+        <!--        事务 -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!--        retry-->
+        <dependency>
+            <groupId>org.springframework.retry</groupId>
+            <artifactId>spring-retry</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!--        只引不导  -->
+<!--        <dependency>-->
+<!--            <groupId>javax.servlet</groupId>-->
+<!--            <artifactId>javax.servlet-api</artifactId>-->
+<!--            <optional>true</optional>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>jakarta.servlet</groupId>-->
+<!--            <artifactId>jakarta.servlet-api</artifactId>-->
+<!--            <optional>true</optional>-->
+<!--        </dependency>-->
+
+
+    </dependencies>
+
+</project>

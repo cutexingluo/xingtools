@@ -1,0 +1,18 @@
+# AutoConfigureCache auto-configuration imports
+top.cutexingluo.tools.autoconfigure.server.aop.log.xtlog.WebLogAutoConfigure
+top.cutexingluo.tools.autoconfigure.server.aop.log.printlog.PrintLogAutoConfigure
+top.cutexingluo.tools.autoconfigure.server.aop.log.methodlog.MethodLogAutoConfigure
+top.cutexingluo.tools.autoconfigure.server.aop.log.systemlog.XTSystemLogAutoConfigure
+top.cutexingluo.tools.autoconfigure.server.aop.log.optlog.OptLogAutoConfigure
+top.cutexingluo.tools.autoconfigure.server.aop.exception.XTExceptionAutoConfigure
+top.cutexingluo.tools.autoconfigure.server.aop.transaction.ExtTransactionAutoConfigure
+top.cutexingluo.tools.autoconfigure.server.aop.thread.AsyncThreadAopAutoConfigure
+top.cutexingluo.tools.exception.XTGlobalExceptionHandler
+top.cutexingluo.tools.exception.XTGlobalExceptionHandlerExt
+top.cutexingluo.tools.utils.ee.redis.RedisConfig
+top.cutexingluo.tools.utils.ee.redis.RedisUtilAutoConfigure
+top.cutexingluo.tools.utils.ee.redisson.RedissonConfig
+top.cutexingluo.tools.utils.ee.redisson.aop.RedissonAutoConfig
+top.cutexingluo.tools.utils.ee.web.limit.RequestLimitAuto
+top.cutexingluo.tools.utils.ee.web.limit.RedisLimitStrategyAuto
+top.cutexingluo.tools.autoconfigure.cloud.feign.dynamic.DynamicFeignClientFactoryAuto

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>jar</packaging>
+
+
+    <parent>
+        <artifactId>xingtools-parent</artifactId>
+        <groupId>top.cutexingluo.tools</groupId>
+        <version>1.1.1</version>
+    </parent>
+
+
+    <artifactId>xingtools-log</artifactId>
+    <name>${project.artifactId}</name>
+    <description>xingtools 依赖mvc，包含日志扩展操作的封装</description>
+
+    <properties>
+        <!-- versions -->
+        <log4j.version>1.2.17</log4j.version>
+        <slf4j.version>2.0.7</slf4j.version>
+        <log4j2.version>2.17.2</log4j2.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>top.cutexingluo.tools</groupId>
+            <artifactId>xingtools-mvc</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-log</artifactId>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+
+
+
+
+        <!--        log4j-->
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>${log4j.version}</version>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-to-slf4j</artifactId>
+            <version>${log4j2.version}</version>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
+
+
+
+</project>

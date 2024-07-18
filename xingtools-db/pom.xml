@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>jar</packaging>
+    <parent>
+        <artifactId>xingtools-parent</artifactId>
+        <groupId>top.cutexingluo.tools</groupId>
+        <version>1.1.1</version>
+    </parent>
+
+    <artifactId>xingtools-db</artifactId>
+    <name>${project.artifactId}</name>
+    <description>xingtools 依赖core，数据库操作，包含mybatis-plus等操作</description>
+
+
+    <properties>
+        <!-- versions -->
+
+        <lock4j.version>2.2.5</lock4j.version>
+        <fastjson.version>1.2.83</fastjson.version>
+<!--        <amqp-client.version>5.14.3</amqp-client.version>-->
+    </properties>
+
+
+
+    <dependencies>
+        <dependency>
+            <groupId>top.cutexingluo.tools</groupId>
+            <artifactId>xingtools-core</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-db</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+        </dependency>
+
+
+        <!--        optional -->
+
+        <!--        mybatis-plus -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-core</artifactId>
+            <version>${mybatis-plus.version}</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-extension</artifactId>
+            <version>${mybatis-plus.version}</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-generator</artifactId>
+            <version>${mybatis-plus.version}</version>
+            <optional>true</optional>
+        </dependency>
+        <!-- 若使用redisson作为分布式锁底层，则需要引入 -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>lock4j-core</artifactId>
+<!--            <version>${lock4j.version}</version>-->
+            <optional>true</optional>
+        </dependency>
+
+        <!--        redis  -->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-data-redis</artifactId>-->
+<!--            <optional>true</optional>-->
+<!--        </dependency>-->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+<!--        redisson -->
+<!--        <dependency>-->
+<!--            <groupId>org.redisson</groupId>-->
+<!--            <artifactId>redisson-spring-boot-starter</artifactId>-->
+<!--            <version>${redisson.version}</version>-->
+<!--        </dependency>-->
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!--        mongodb -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-mongodb</artifactId>
+            <optional>true</optional>
+        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.data</groupId>-->
+<!--            <artifactId>spring-data-mongodb</artifactId>-->
+<!--            <optional>true</optional>-->
+<!--        </dependency>-->
+
+
+<!--        rabbit-mq -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+            <optional>true</optional>
+        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.amqp</groupId>-->
+<!--            <artifactId>spring-rabbit</artifactId>-->
+<!--            <version>2.4.17</version>-->
+<!--            <optional>true</optional>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>com.rabbitmq</groupId>-->
+<!--            <artifactId>amqp-client</artifactId>-->
+<!--            <version>${amqp-client.version}</version>-->
+<!--            <optional>true</optional>-->
+<!--        </dependency>-->
+
+<!--        fastjson -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
+            <optional>true</optional>
+        </dependency>
+
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson</artifactId>
+                <version>${redisson.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+</project>

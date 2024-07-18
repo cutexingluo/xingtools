@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>jar</packaging>
+
+    <parent>
+        <artifactId>xingtools-parent</artifactId>
+        <groupId>top.cutexingluo.tools</groupId>
+        <version>1.1.1</version>
+    </parent>
+
+
+    <artifactId>xingtools-web</artifactId>
+    <name>${project.artifactId}</name>
+    <description>xingtools 依赖core，提供一些 http 工具</description>
+
+    <properties>
+        <!-- versions -->
+
+
+        <httpcomponents.version>4.5.14</httpcomponents.version>
+        <yauaa.version>7.17.1</yauaa.version>
+
+        <sensitive-word.version>0.9.0</sensitive-word.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>top.cutexingluo.tools</groupId>
+            <artifactId>xingtools-core</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
+<!--        optional -->
+
+
+        <!--httpclient-->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>${httpcomponents.version}</version>
+            <optional>true</optional>
+        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.apache.httpcomponents</groupId>-->
+<!--            <artifactId>httpmime</artifactId>-->
+<!--            <version>${httpcomponents.version}</version>-->
+<!--            <optional>true</optional>-->
+<!--        </dependency>-->
+
+        <!-- 解析客户端操作系统、浏览器等 -->
+        <dependency>
+            <groupId>nl.basjes.parse.useragent</groupId>
+            <artifactId>yauaa</artifactId>
+            <version>${yauaa.version}</version>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- 过滤敏感词 -->
+        <dependency>
+            <groupId>com.github.houbb</groupId>
+            <artifactId>sensitive-word</artifactId>
+            <version>${sensitive-word.version}</version>
+            <optional>true</optional>
+        </dependency>
+
+    </dependencies>
+</project>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>jar</packaging>
+
+    <parent>
+        <artifactId>xingtools-parent</artifactId>
+        <groupId>top.cutexingluo.tools</groupId>
+        <version>1.1.1</version>
+    </parent>
+
+    <artifactId>xingtools-spring-boot</artifactId>
+    <name>${project.artifactId}</name>
+    <description>xingtools 整合版本，排除pkg-jdk依赖，在这之后需要配合pkg-jdk依赖使用</description>
+
+    <properties>
+        <!-- versions -->
+    </properties>
+
+    <dependencies>
+
+
+    <!--        pkg版本依赖，后面需要自行导入 -->
+    <dependency>
+        <groupId>top.cutexingluo.tools</groupId>
+        <artifactId>xingtools-unified</artifactId>
+        <version>${project.parent.version}</version>
+        <exclusions>
+            <exclusion>
+                <groupId>top.cutexingluo.tools</groupId>
+                <artifactId>xingtools-pkg-jdk8</artifactId>
+            </exclusion>
+            <exclusion>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+            </exclusion>
+        </exclusions>
+    </dependency>
+
+
+
+    </dependencies>
+
+</project>
