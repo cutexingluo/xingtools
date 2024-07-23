@@ -6,6 +6,11 @@
 
 
 更新公告
+2024-7-23 v1.1.2
+bug 修复
+1.由于未导入 spring-boot-starter-aop ，故启用 @EnableXingToolsServer 时使用 某个 aop 报错，目前将所有 aop 关闭；现在不使用 aop 不导入 aop 包，依旧能运行服务。
+
+
 2024-7-10 ~ 2024-7-17  v1.1.1
 中版本更新，为了保证灵活性。更改工具 xingtool -> xingtools 。
 更改部分

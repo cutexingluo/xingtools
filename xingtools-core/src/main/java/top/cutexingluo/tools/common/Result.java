@@ -124,7 +124,7 @@ public class Result extends CommonResult<Integer, Object> implements XTStrCode {
         return put(constants, "");
     }
 
-    public static <C> Result put(IResult<C, Object> resultData) {
+    public static <C> Result put(IResult<C, ?> resultData) {
         return put(resultData, resultData.getData());
     }
 

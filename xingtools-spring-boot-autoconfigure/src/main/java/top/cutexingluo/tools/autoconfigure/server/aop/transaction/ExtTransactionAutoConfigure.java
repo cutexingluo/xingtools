@@ -28,7 +28,7 @@ import top.cutexingluo.tools.start.log.LogInfoAuto;
 @ConditionalOnClass(DataSourceTransactionManager.class)
 @ConditionalOnBean({XingToolsAutoConfiguration.class, DataSourceTransactionManager.class})
 @ConditionalOnProperty(prefix = "xingtools.ext-transaction-anno", value = "enabled", havingValue = "true",
-        matchIfMissing = true)
+        matchIfMissing = false)
 @Import({TransactionalUtils.class})
 //@EnableAspectJAutoProxy
 @EnableTransactionManagement
