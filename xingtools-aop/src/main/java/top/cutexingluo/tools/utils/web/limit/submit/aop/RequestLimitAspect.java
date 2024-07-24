@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import top.cutexingluo.tools.basepackage.basehandler.aop.BaseAspectAroundHandler;
 import top.cutexingluo.tools.basepackage.bundle.AspectBundle;
 import top.cutexingluo.tools.designtools.method.ClassUtil;
-import top.cutexingluo.tools.utils.ee.web.ip.util.HttpContextUtil;
+import top.cutexingluo.tools.utils.ee.web.holder.HttpContextUtil;
 import top.cutexingluo.tools.utils.ee.web.limit.submit.base.RequestLimit;
 import top.cutexingluo.tools.utils.ee.web.limit.submit.base.RequestLimitConfig;
 import top.cutexingluo.tools.utils.ee.web.limit.submit.base.RequestLimitSetting;
@@ -68,7 +68,7 @@ public class RequestLimitAspect implements BaseAspectAroundHandler<RequestLimit>
 
         // handler
         RequestLimitHandler limitHandler = new RequestLimitHandler(requestLimitConfig);
-        AspectBundle bundle = new AspectBundle(getMethod(joinPoint), HttpContextUtil.getHttpServletRequest(), joinPoint);
+        AspectBundle bundle = new AspectBundle(getMethod(joinPoint), HttpContextUtil.getHttpServletRequestData(), joinPoint);
         boolean pass = limitHandler.limit(bundle);
         Object result = null;
         if (pass) { // pass

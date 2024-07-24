@@ -1,8 +1,8 @@
 package top.cutexingluo.tools.aop.log.methodlog;
 
 import org.springframework.core.annotation.AliasFor;
+import top.cutexingluo.tools.aop.log.systemlog.XTSystemLog;
 import top.cutexingluo.tools.aop.log.xtlog.base.WebLog;
-import top.cutexingluo.tools.aop.systemlog.XTSystemLog;
 import top.cutexingluo.tools.utils.log.LogType;
 
 import java.lang.annotation.*;

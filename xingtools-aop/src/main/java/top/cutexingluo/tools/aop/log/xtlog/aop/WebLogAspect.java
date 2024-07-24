@@ -14,7 +14,7 @@ import top.cutexingluo.tools.aop.log.xtlog.pkg.WebLogHandler;
 import top.cutexingluo.tools.basepackage.basehandler.aop.BaseAspectAroundHandler;
 import top.cutexingluo.tools.basepackage.bundle.AspectBundle;
 import top.cutexingluo.tools.designtools.method.ClassUtil;
-import top.cutexingluo.tools.utils.ee.web.ip.util.HttpContextUtil;
+import top.cutexingluo.tools.utils.ee.web.holder.HttpContextUtil;
 import top.cutexingluo.tools.utils.se.string.XTPickUtil;
 
 import java.lang.reflect.Method;
@@ -77,7 +77,7 @@ public class WebLogAspect implements BaseAspectAroundHandler<WebLog> {
 
         WebLogHandler handler = new WebLogHandler(webLogConfig).initDefaultMap().modifyAll();
         Callable<Object> task = getTask(joinPoint);
-        AspectBundle bundle = new AspectBundle(getMethod(joinPoint), HttpContextUtil.getHttpServletRequest(), joinPoint);
+        AspectBundle bundle = new AspectBundle(getMethod(joinPoint), HttpContextUtil.getHttpServletRequestData(), joinPoint);
         Object result;
         if (log.before()) {
             handler.send(bundle);

@@ -20,7 +20,6 @@
 
         <!-- versions -->
 
-        <jetbrains.annotations.version>1.7.0</jetbrains.annotations.version>
 
         <jackson.version>2.15.2</jackson.version>
         <fastjson2.version>2.0.23</fastjson2.version>
@@ -75,7 +74,6 @@
         <dependency>
             <groupId>org.realityforge.org.jetbrains.annotations</groupId>
             <artifactId>org.jetbrains.annotations</artifactId>
-            <version>${jetbrains.annotations.version}</version>
         </dependency>
 
         <!--   jackson   -->

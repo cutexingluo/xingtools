@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
+import top.cutexingluo.tools.bridge.servlet.HttpServletRequestData;
 import top.cutexingluo.tools.security.base.BearerTokenExtractor;
 
 import javax.servlet.http.Cookie;
@@ -52,6 +53,19 @@ public class XTBearerTokenExtractor extends BearerTokenExtractor {
     public Authentication extract(HttpServletRequest request, String headerName) {
         this.headerName = headerName;
         return super.extract(request);
+    }
+
+    /**
+     * 提取为Authentication
+     *
+     * @param requestData 请求
+     * @param headerName  请求头名称
+     * @return {@link Authentication}
+     * @since 1.1.2
+     */
+    public Authentication extract(HttpServletRequestData requestData, String headerName) {
+        this.headerName = headerName;
+        return super.extract(requestData.getRequest());
     }
 
     @Override

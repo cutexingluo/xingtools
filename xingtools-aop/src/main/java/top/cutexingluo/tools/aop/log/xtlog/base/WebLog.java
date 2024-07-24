@@ -1,12 +1,12 @@
 package top.cutexingluo.tools.aop.log.xtlog.base;
 
 import org.springframework.core.annotation.AliasFor;
+import top.cutexingluo.tools.aop.log.systemlog.XTSystemLog;
 import top.cutexingluo.tools.aop.log.xtlog.pkg.WebLogHandler;
 import top.cutexingluo.tools.aop.log.xtlog.pkg.WebLogKeyMap;
 import top.cutexingluo.tools.aop.log.xtlog.strategy.WebLogFactory;
 import top.cutexingluo.tools.aop.log.xtlog.strategy.WebLogStrategy;
 import top.cutexingluo.tools.aop.log.xtlog.strategy.impl.DefaultWebLogStrategy;
-import top.cutexingluo.tools.aop.systemlog.XTSystemLog;
 import top.cutexingluo.tools.basepackage.bundle.AspectBundle;
 import top.cutexingluo.tools.utils.log.LogLevel;
 import top.cutexingluo.tools.utils.log.LogPkg;
