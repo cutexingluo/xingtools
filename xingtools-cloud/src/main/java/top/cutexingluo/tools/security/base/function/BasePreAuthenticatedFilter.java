@@ -1,4 +1,4 @@
-package top.cutexingluo.tools.security.base;
+package top.cutexingluo.tools.security.base.function;
 
 import org.springframework.security.core.Authentication;
 

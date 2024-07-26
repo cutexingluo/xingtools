@@ -13,12 +13,15 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Enumeration;
 
 /**
- * bearer标记器
+ * bearer 令牌解析器
+ *
+ * <p>未来将被移除，请使用 cloud 包里面的类</p>
  *
  * @author XingTian
  * @version 1.0.0
  * @date 2023/6/30 9:49
  */
+@Deprecated
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class XTBearerTokenExtractor extends BearerTokenExtractor {

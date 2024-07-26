@@ -12,6 +12,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiFunction;
 import java.util.function.BinaryOperator;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 
@@ -174,19 +175,19 @@ public class XTMapUtil {
      * <p>key为原来的key</p>
      * <p>value 为valueMapper的返回值</p>
      *
-     * @param map           原 map
+     * @param originMap     原 map
      * @param valueMapper   通过key,value 转化value
      * @param mergeFunction 合并函数
      * @return new Map
      * @since 1.0.4
      */
-    public static <K, V, C> Map<K, C> convertMapValue(Map<K, V> map,
+    public static <K, V, C> Map<K, C> convertMapValue(Map<K, V> originMap,
                                                       BiFunction<K, V, C> valueMapper,
                                                       BinaryOperator<C> mergeFunction) {
-        if (isNullOrEmpty(map)) {
+        if (isNullOrEmpty(originMap)) {
             return new HashMap<>();
         }
-        return map.entrySet().stream().collect(Collectors.toMap(
+        return originMap.entrySet().stream().collect(Collectors.toMap(
                 Map.Entry::getKey,
                 e -> valueMapper.apply(e.getKey(), e.getValue()),
                 mergeFunction
@@ -197,7 +198,7 @@ public class XTMapUtil {
      * map转化方法
      * <p>key为原来的key</p>
      * <p>value 为valueMapper的返回值</p>
-     * <p>合并方法采用 {@link XTCollUtil} XTCollUtil.pickSecond()</p>
+     * <p>冲突方法采用 {@link XTCollUtil} XTCollUtil.pickSecond()</p>
      *
      * @param originMap   原 map
      * @param valueMapper 通过key,value 转化value
@@ -208,5 +209,40 @@ public class XTMapUtil {
         return convertMapValue(originMap, valueMapper, XTCollUtil.pickSecond());
     }
 
+    /**
+     * map转化方法
+     * <p>key为原来的key</p>
+     * <p>value 为valueMapper的返回值</p>
+     *
+     * @param originMap     原 map
+     * @param valueMapper   通过key,value 转化value
+     * @param mergeFunction 合并函数
+     * @return new Map
+     * @since 1.1.2
+     */
+    public static <K, V, C> Map<K, C> convertMapValue(Map<K, V> originMap, Function<V, C> valueMapper, BinaryOperator<C> mergeFunction) {
+        if (isNullOrEmpty(originMap)) {
+            return new HashMap<>();
+        }
+        return originMap.entrySet().stream().collect(Collectors.toMap(
+                Map.Entry::getKey,
+                e -> valueMapper.apply(e.getValue()),
+                mergeFunction
+        ));
+    }
 
+    /**
+     * map转化方法
+     * <p>key为原来的key</p>
+     * <p>value 为valueMapper的返回值</p>
+     * <p>冲突方法采用 {@link XTCollUtil} XTCollUtil.pickSecond()</p>
+     *
+     * @param originMap   原 map
+     * @param valueMapper 通过key,value 转化value
+     * @return new Map
+     * @since 1.1.2
+     */
+    public static <K, V, C> Map<K, C> convertMapValue(Map<K, V> originMap, Function<V, C> valueMapper) {
+        return convertMapValue(originMap, valueMapper, XTCollUtil.pickSecond());
+    }
 }

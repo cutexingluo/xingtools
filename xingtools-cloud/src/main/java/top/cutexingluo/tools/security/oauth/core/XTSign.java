@@ -1,4 +1,4 @@
-package top.cutexingluo.tools.security.oauth.base;
+package top.cutexingluo.tools.security.oauth.core;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package top.cutexingluo.tools.security.base;
+package top.cutexingluo.tools.security.oauth.base.function;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;

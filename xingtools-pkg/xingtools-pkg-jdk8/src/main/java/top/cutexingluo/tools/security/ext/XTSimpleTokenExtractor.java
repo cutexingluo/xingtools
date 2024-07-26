@@ -11,12 +11,15 @@ import org.springframework.security.oauth2.provider.authentication.BearerTokenEx
 import javax.servlet.http.HttpServletRequest;
 
 /**
- *简易 BearerTokenExtractor
+ * 简易 BearerTokenExtractor
+ *
+ * <p>未来将被移除，请使用 cloud 包里面的类</p>
  *
  * @author XingTian
  * @version 1.0.0
  * @date 2023/6/30 11:35
  */
+@Deprecated
 @EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor

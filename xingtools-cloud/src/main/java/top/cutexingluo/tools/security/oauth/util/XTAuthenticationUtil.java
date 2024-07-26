@@ -1,4 +1,4 @@
-package top.cutexingluo.tools.security.utils;
+package top.cutexingluo.tools.security.oauth.util;
 
 import cn.hutool.core.util.StrUtil;
 import lombok.Data;
@@ -18,6 +18,7 @@ import top.cutexingluo.tools.designtools.builder.XTBuilder;
 import top.cutexingluo.tools.security.base.BearerTokenExtractor;
 import top.cutexingluo.tools.security.base.TokenExtractor;
 import top.cutexingluo.tools.security.ext.XTBearerTokenExtractor;
+import top.cutexingluo.tools.security.utils.XTAccessTokenUtil;
 
 import java.util.Collection;
 import java.util.Map;
@@ -31,6 +32,7 @@ import java.util.function.Function;
  * <code>new XTAuthenticationUtil.AuthenticationBuilder(request) </code>
  *
  * <p>SpringBoot 2 的 OAuth 2 可以使用，未来某些 oauth2 api 可能会过时</p>
+ * <p>推荐使用 XTAuthenticationUtils 和 XTAuthenticationBuilder</p>
  *
  * @author XingTian
  * @version 1.0.0
