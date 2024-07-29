@@ -3,7 +3,6 @@ package top.cutexingluo.tools.security.self.impl.parser;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import lombok.Data;
-import top.cutexingluo.tools.security.self.base.AuthAccessToken;
 import top.cutexingluo.tools.security.self.base.AuthAccessTokenParser;
 import top.cutexingluo.tools.security.self.impl.token.JJwtAuthAccessToken;
 
@@ -27,7 +26,7 @@ public class JJwtAuthAccessTokenParser implements AuthAccessTokenParser {
     }
 
     @Override
-    public AuthAccessToken parse(String token) throws Exception {
+    public JJwtAuthAccessToken parse(String token) throws Exception {
         Claims claims = parseJWT(secretKey, token);
         JJwtAuthAccessToken authAccessToken = new JJwtAuthAccessToken(claims);
 
