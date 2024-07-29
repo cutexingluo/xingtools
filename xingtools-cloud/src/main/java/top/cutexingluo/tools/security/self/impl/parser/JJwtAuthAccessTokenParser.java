@@ -29,7 +29,9 @@ public class JJwtAuthAccessTokenParser implements AuthAccessTokenParser {
     @Override
     public AuthAccessToken parse(String token) throws Exception {
         Claims claims = parseJWT(secretKey, token);
-        JJwtAuthAccessToken authAccessToken = JJwtAuthAccessToken.valueOf(claims);
+        JJwtAuthAccessToken authAccessToken = new JJwtAuthAccessToken(claims);
+
+        authAccessToken.setToken(token);
         return authAccessToken;
     }
 

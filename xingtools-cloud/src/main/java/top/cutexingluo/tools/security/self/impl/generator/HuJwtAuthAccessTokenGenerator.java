@@ -2,6 +2,7 @@ package top.cutexingluo.tools.security.self.impl.generator;
 
 import cn.hutool.jwt.JWT;
 import cn.hutool.jwt.signers.JWTSigner;
+import cn.hutool.jwt.signers.JWTSignerUtil;
 import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 import top.cutexingluo.tools.security.self.base.AuthAccessToken;
@@ -37,5 +38,13 @@ public class HuJwtAuthAccessTokenGenerator implements AuthTokenGenerator {
         if (jwt == null) initSelf();
         jwt.addPayloads(authAccessToken.getAdditionalInformation());
         return jwt.sign();
+    }
+
+    public static JWTSigner createSigner(String algorithmId, byte[] key) {
+        return JWTSignerUtil.createSigner(algorithmId, key);
+    }
+
+    public static JWTSigner createSigner(byte[] key) {
+        return JWTSignerUtil.hs256(key);
     }
 }

@@ -85,7 +85,12 @@ public class JJwtAuthAccessToken extends AbstractAuthAccessToken {
 
     @Override
     public JJwtAuthAccessToken refresh() {
-        super.refresh();
+        Map<String, Object> objectMap = getAdditionalInformation();
+        if (objectMap != null) {
+            if (getIssuedAt() != null) objectMap.put(ISSUED_AT, toSeconds(getIssuedAt()));
+            if (getExpiresAt() != null) objectMap.put(EXPIRES_AT, toSeconds(getExpiresAt()));
+            if (getScope() != null) objectMap.put(SCOPE, getScope());
+        }
         return this;
     }
 
@@ -96,19 +101,19 @@ public class JJwtAuthAccessToken extends AbstractAuthAccessToken {
         if (tokenParams.containsKey(EXPIRES_AT)) {
             long expiration = 0;
             try {
-                expiration = Long.parseLong(String.valueOf(tokenParams.get(EXPIRES_IN)));
+                expiration = Long.parseLong(String.valueOf(tokenParams.get(EXPIRES_AT)));
             } catch (NumberFormatException e) {
                 // fall through...
             }
-            token.setExpiresAt(new Date(expiration).toInstant());
+            token.setExpiresAt(new Date(expiration * 1000L).toInstant());
         } else if (tokenParams.containsKey(EXPIRES_IN)) {
-            long expiration = 0;
+            long expiresIn = 0;
             try {
-                expiration = Long.parseLong(String.valueOf(tokenParams.get(EXPIRES_IN)));
+                expiresIn = Long.parseLong(String.valueOf(tokenParams.get(EXPIRES_IN)));
             } catch (NumberFormatException e) {
                 // fall through...
             }
-            token.setExpiresAt(new Date(System.currentTimeMillis() + (expiration * 1000L)).toInstant());
+            token.setExpiresAt(new Date(System.currentTimeMillis() + (expiresIn * 1000L)).toInstant());
         }
 
         if (tokenParams.containsKey(ISSUED_AT)) {
@@ -118,7 +123,7 @@ public class JJwtAuthAccessToken extends AbstractAuthAccessToken {
             } catch (NumberFormatException e) {
                 // fall through...
             }
-            token.setIssuedAt(new Date(issuedAt).toInstant());
+            token.setIssuedAt(new Date(issuedAt * 1000L).toInstant());
         }
 
         if (tokenParams.containsKey(SCOPE)) {
@@ -150,4 +155,16 @@ public class JJwtAuthAccessToken extends AbstractAuthAccessToken {
     }
 
 
+    @Override
+    public String toString() {
+        return "JJwtAuthAccessToken{" +
+                "token='" + token + '\'' +
+                ", issuedAt=" + issuedAt +
+                ", expiresAt=" + expiresAt +
+                ", additionalInformation=" + additionalInformation +
+                ", scope=" + scope +
+                ", tokenType='" + tokenType + '\'' +
+                ", claims=" + claims +
+                '}';
+    }
 }

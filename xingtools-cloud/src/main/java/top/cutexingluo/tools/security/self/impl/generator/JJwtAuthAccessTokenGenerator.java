@@ -28,6 +28,7 @@ public class JJwtAuthAccessTokenGenerator implements AuthTokenGenerator {
      */
     protected JwtBuilder jwtBuilder;
 
+
     public JJwtAuthAccessTokenGenerator(@NotNull JwtBuilder jwtBuilder) {
         this.jwtBuilder = jwtBuilder;
     }
@@ -59,13 +60,13 @@ public class JJwtAuthAccessTokenGenerator implements AuthTokenGenerator {
     /**
      * 默认生成 JWT  Builder
      *
-     * @param uuid   唯一 id
-     * @param issuer 签发者
-     * @param jwtKey 加密秘钥
+     * @param uuid      唯一 id
+     * @param issuer    签发者
+     * @param secretKey 加密秘钥
      */
-    public static JwtBuilder getJwtBuilder(String uuid, String issuer, String jwtKey) {
+    public static JwtBuilder getJwtBuilder(String uuid, String issuer, SecretKey secretKey) {
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
-        SecretKey secretKey = generalKey(jwtKey);
+//        SecretKey secretKey = generalKey(jwtKey);
 //        long nowMillis = System.currentTimeMillis();
 //        Date now = new Date(nowMillis);
 //        if (ttlMillis == null) {
@@ -85,11 +86,11 @@ public class JJwtAuthAccessTokenGenerator implements AuthTokenGenerator {
     /**
      * 默认生成 JWT  Builder
      *
-     * @param issuer 签发者
-     * @param jwtKey 加密秘钥
+     * @param issuer    签发者
+     * @param secretKey 加密秘钥
      */
-    public static JwtBuilder getJwtBuilder(String issuer, String jwtKey) {
-        return getJwtBuilder(UUIDUtils.originSimpleUUID(), issuer, jwtKey);
+    public static JwtBuilder getJwtBuilder(String issuer, SecretKey secretKey) {
+        return getJwtBuilder(UUIDUtils.originSimpleUUID(), issuer, secretKey);
     }
 
 

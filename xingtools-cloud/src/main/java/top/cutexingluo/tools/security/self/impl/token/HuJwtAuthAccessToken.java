@@ -1,6 +1,8 @@
 package top.cutexingluo.tools.security.self.impl.token;
 
 import cn.hutool.jwt.RegisteredPayload;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.jetbrains.annotations.NotNull;
 import top.cutexingluo.tools.security.self.base.AbstractAuthAccessToken;
 import top.cutexingluo.tools.security.self.base.AuthAccessToken;
@@ -13,6 +15,8 @@ import java.util.*;
  * @version 1.0.0
  * @date 2024/7/26 10:28
  */
+@EqualsAndHashCode(callSuper = true)
+@Data
 public class HuJwtAuthAccessToken extends AbstractAuthAccessToken {
 
     public static String ACCESS_TOKEN = "access_token";
@@ -71,7 +75,12 @@ public class HuJwtAuthAccessToken extends AbstractAuthAccessToken {
 
     @Override
     public HuJwtAuthAccessToken refresh() {
-        super.refresh();
+        Map<String, Object> objectMap = getAdditionalInformation();
+        if (objectMap != null) {
+            if (getIssuedAt() != null) objectMap.put(ISSUED_AT, toSeconds(getIssuedAt()));
+            if (getExpiresAt() != null) objectMap.put(EXPIRES_AT, toSeconds(getExpiresAt()));
+            if (getScope() != null) objectMap.put(SCOPE, getScope());
+        }
         return this;
     }
 
@@ -85,19 +94,19 @@ public class HuJwtAuthAccessToken extends AbstractAuthAccessToken {
         if (tokenParams.containsKey(EXPIRES_AT)) {
             long expiration = 0;
             try {
-                expiration = Long.parseLong(String.valueOf(tokenParams.get(EXPIRES_IN)));
+                expiration = Long.parseLong(String.valueOf(tokenParams.get(EXPIRES_AT)));
             } catch (NumberFormatException e) {
                 // fall through...
             }
-            token.setExpiresAt(new Date(expiration).toInstant());
+            token.setExpiresAt(new Date(expiration * 1000L).toInstant());
         } else if (tokenParams.containsKey(EXPIRES_IN)) {
-            long expiration = 0;
+            long expiresIn = 0;
             try {
-                expiration = Long.parseLong(String.valueOf(tokenParams.get(EXPIRES_IN)));
+                expiresIn = Long.parseLong(String.valueOf(tokenParams.get(EXPIRES_IN)));
             } catch (NumberFormatException e) {
                 // fall through...
             }
-            token.setExpiresAt(new Date(System.currentTimeMillis() + (expiration * 1000L)).toInstant());
+            token.setExpiresAt(new Date(System.currentTimeMillis() + (expiresIn * 1000L)).toInstant());
         }
 
         if (tokenParams.containsKey(ISSUED_AT)) {
@@ -107,7 +116,7 @@ public class HuJwtAuthAccessToken extends AbstractAuthAccessToken {
             } catch (NumberFormatException e) {
                 // fall through...
             }
-            token.setIssuedAt(new Date(issuedAt).toInstant());
+            token.setIssuedAt(new Date(issuedAt * 1000L).toInstant());
         }
 
         if (tokenParams.containsKey(SCOPE)) {
@@ -138,5 +147,15 @@ public class HuJwtAuthAccessToken extends AbstractAuthAccessToken {
         return accessToken;
     }
 
-
+    @Override
+    public String toString() {
+        return "HuJwtAuthAccessToken{" +
+                "token='" + token + '\'' +
+                ", issuedAt=" + issuedAt +
+                ", expiresAt=" + expiresAt +
+                ", additionalInformation=" + additionalInformation +
+                ", scope=" + scope +
+                ", tokenType='" + tokenType + '\'' +
+                '}';
+    }
 }

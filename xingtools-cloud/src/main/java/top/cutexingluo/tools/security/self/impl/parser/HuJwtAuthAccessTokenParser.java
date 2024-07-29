@@ -32,9 +32,11 @@ public class HuJwtAuthAccessTokenParser implements AuthAccessTokenParser {
 
     @Override
     public HuJwtAuthAccessToken parse(String token) {
-        JWT jwt = JWTUtil.parseToken(token);
+        JWT jwt = JWTUtil.parseToken(token).setKey(secretKey);
         Map<String, ?> payloads = jwt.getPayloads();
-        HuJwtAuthAccessToken authAccessToken = HuJwtAuthAccessToken.valueOf((Map<String, Object>) payloads);
+        HuJwtAuthAccessToken authAccessToken = HuJwtAuthAccessToken.of((Map<String, Object>) payloads);
+
+        authAccessToken.setToken(token);
         return authAccessToken;
     }
 }

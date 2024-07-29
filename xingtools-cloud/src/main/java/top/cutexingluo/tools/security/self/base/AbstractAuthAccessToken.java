@@ -1,6 +1,7 @@
 package top.cutexingluo.tools.security.self.base;
 
 import lombok.Data;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import top.cutexingluo.tools.basepackage.base.Checkable;
 import top.cutexingluo.tools.basepackage.base.Refreshable;
@@ -105,8 +106,8 @@ public abstract class AbstractAuthAccessToken implements AuthAccessToken, Checka
     public AbstractAuthAccessToken refresh() {
         Map<String, Object> objectMap = getAdditionalInformation();
         if (objectMap != null) {
-            if (getIssuedAt() != null) objectMap.put(ISSUED_AT, getIssuedAt());
-            if (getExpiresAt() != null) objectMap.put(EXPIRES_AT, getExpiresAt());
+            if (getIssuedAt() != null) objectMap.put(ISSUED_AT, toSeconds(getIssuedAt()));
+            if (getExpiresAt() != null) objectMap.put(EXPIRES_AT, toSeconds(getExpiresAt()));
             if (getScope() != null) objectMap.put(SCOPE, getScope());
         }
         return this;
@@ -154,4 +155,16 @@ public abstract class AbstractAuthAccessToken implements AuthAccessToken, Checka
     }
 
 
+    public static Instant toInstant(long seconds) {
+        return Instant.ofEpochSecond(seconds * 1000L);
+    }
+
+    @Contract(pure = true)
+    public static long toSeconds(@NotNull Instant instant) {
+        return instant.toEpochMilli() / 1000L;
+    }
+
+    public static long timesBetween(@NotNull Instant before, @NotNull Instant after) {
+        return after.toEpochMilli() - before.toEpochMilli();
+    }
 }
