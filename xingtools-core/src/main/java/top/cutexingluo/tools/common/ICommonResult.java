@@ -1,5 +1,6 @@
 package top.cutexingluo.tools.common;
 
+import top.cutexingluo.tools.common.base.IData;
 import top.cutexingluo.tools.utils.se.array.XTArrayUtil;
 
 import java.util.ArrayList;
@@ -10,15 +11,17 @@ import java.util.Map;
 /**
  * IResult 公用方法
  * <p>v1.0.3 : 推荐用作函数式接口</p>
+ * <p>于 v1.1.2 getData 改为 data 方法 </p>
  *
  * @author XingTian
  * @version 1.0.0
  * @date 2023/7/13 21:18
  */
 @FunctionalInterface
-public interface ICommonResult<T> {
+public interface ICommonResult<T> extends IData<T> {
 
-    T getData();
+    @Override
+    T data();
 
     public static int intCode(String code) {
         return Integer.parseInt(code);
@@ -30,11 +33,11 @@ public interface ICommonResult<T> {
 
     /**
      * @param pairs Add the element you want to add,a pair of (key,value), odd totals. 数据对，最好是偶数
-     * @return Result:
+     * @return Result: Contains map
      */
     default Map<Object, Object> put(Object... pairs) {
         Map<Object, Object> map;
-        T data = getData();
+        T data = data();
         if (!(data instanceof Map)) map = new HashMap<>();
         else map = (Map<Object, Object>) data;
         XTArrayUtil.putMapFromDValues(map, pairs);
@@ -47,7 +50,7 @@ public interface ICommonResult<T> {
      */
     default List<Object> add(Object... items) {
         List<Object> list;
-        T data = getData();
+        T data = data();
         if (!(data instanceof List)) list = new ArrayList<>();
         else list = (List<Object>) data;
         list.add(items);

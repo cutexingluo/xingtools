@@ -16,6 +16,8 @@ import top.cutexingluo.tools.common.base.XTIntCode;
 /**
  * HttpStatus Constants枚举类
  *
+ * <p>如果习惯使用 词组 标识符可以使用 {@link HttpStatus}</p>
+ *
  * @author XingTian
  * @version 1.1.0
  * @date 2023/2/1 22:48

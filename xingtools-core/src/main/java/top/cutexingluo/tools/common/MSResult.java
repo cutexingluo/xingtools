@@ -117,6 +117,20 @@ public class MSResult<T> extends CommonResult<Integer, T> implements XTStrCode {
         return put(constants, "");
     }
 
+    /**
+     * @since 1.1.2
+     */
+    public static <T> MSResult<T> put(HttpStatus httpStatus, T data) {
+        return put(httpStatus.getCode(), httpStatus.getMsg(), data);
+    }
+
+    /**
+     * @since 1.1.2
+     */
+    public static MSResult<String> put(HttpStatus httpStatus) {
+        return put(httpStatus, "");
+    }
+
     public static <C, T> MSResult<T> put(IResult<C, T> resultData) {
         return put(resultData, resultData.getData());
     }
@@ -189,6 +203,20 @@ public class MSResult<T> extends CommonResult<Integer, T> implements XTStrCode {
 
     public static MSResult<Boolean> error(Constants constants, String msg) {
         return error(constants.intCode(), msg);
+    }
+
+    /**
+     * @since 1.1.2
+     */
+    public static MSResult<Boolean> error(HttpStatus httpStatus) {
+        return put(httpStatus, false);
+    }
+
+    /**
+     * @since 1.1.2
+     */
+    public static MSResult<Boolean> error(HttpStatus httpStatus, String msg) {
+        return error(httpStatus.getCode(), msg);
     }
 
     //----------------ext------------

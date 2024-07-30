@@ -4,6 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
@@ -12,11 +13,15 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 import top.cutexingluo.tools.basepackage.base.ExtInitializable;
 import top.cutexingluo.tools.bridge.servlet.HttpServletRequestData;
 import top.cutexingluo.tools.designtools.builder.XTBuilder;
+import top.cutexingluo.tools.security.base.function.BaseAccessTokenAdditionalConverter;
+import top.cutexingluo.tools.security.base.function.BaseAuthenticationConsumer;
+import top.cutexingluo.tools.security.base.function.BasePreAuthenticatedFilter;
 import top.cutexingluo.tools.security.oauth.util.XTAuthenticationUtil;
 import top.cutexingluo.tools.security.self.base.AuthAccessToken;
 import top.cutexingluo.tools.security.self.base.AuthAccessTokenParser;
 import top.cutexingluo.tools.security.self.base.AuthTokenExtractType;
 import top.cutexingluo.tools.security.self.base.AuthTokenExtractor;
+import top.cutexingluo.tools.security.self.base.function.BaseAuthenticationFilter;
 import top.cutexingluo.tools.security.self.core.XTAuthTokenExtractor;
 
 import java.util.Map;
@@ -26,9 +31,31 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
- * 认证转化工具类 Builder
+ * 认证转化 执行链工具类 Builder
  *
  * <p>SpringBoot security  任何版本均可使用</p>
+ * 身份验证构建器
+ * <p>执行链如下</p>
+ * <ul>
+ *     <li>1. authTokenExtractor 提取器 (非必需set，默认Bear，设置 HttpServletRequest 则执行)</li>
+ *     <li>2. preAuthenticatedAuthenticationTokenFilter  (非必需set，默认Bear)</li>
+ *     <li>3. tokenConsumer  (非必需set，直接获取 token 字符串)</li>
+ *     <li> 3. authAccessTokenParser  (*必需set，解析 token 字符串)</li>
+ *     <li>3. accessTokenConsumer  (非必需set，消费 OAuth2AccessToken 对象)</li>
+ *     <li>3. accessTokenAdditionalConverter  (非必需set，读取 OAuth2AccessToken 额外信息 返回新认证 （空则不覆盖原来认证）)</li>
+ *     <li>3. authenticationFilter  (非必需set，获得Authentication和 OAuth2AccessToken 对象，返回新认证 （空则不覆盖原来认证）)</li>
+ *     <li>4. authenticationManager  (非必需set，对Authentication进行认证)</li>
+ *     <li>4. authenticationConsumer  (非必需set，最后对Authentication进行操作)</li>
+ * </ul>
+ *  <p>使用样例</p>
+ *  <pre><code>
+ *      Authentication authentication = new XTAuthenticationBuilder(request)
+ *              .setAuthTokenExtractor(new XTAuthTokenExtractor())
+ *              .setAuthAccessTokenParser(new JJwtAuthAccessTokenParser()) // 这里没有提供默认的，必须设置
+ *              .setAccessTokenConsumer ( accessToken -> {  // to do  })
+ *              .setAccessTokenAdditionalConverter((map,auth) ->  {// to do})
+ *              .create("").build();
+ *   </code></pre>
  *
  * @author XingTian
  * @version 1.0.0
@@ -69,7 +96,6 @@ public class XTAuthenticationBuilder extends XTBuilder<Authentication> implement
      */
     public XTAuthenticationBuilder(String token) {
         this.token = token;
-        this.isExtracted = true;
     }
 
     /**
@@ -145,6 +171,7 @@ public class XTAuthenticationBuilder extends XTBuilder<Authentication> implement
     /**
      * 前验证身份验证标记过滤器
      * <p>设置该项可以在 isAuthenticated=true 之前 进行操作</p>
+     * <p>可使用 {@link BasePreAuthenticatedFilter}</p>
      */
     private Function<Authentication, Authentication> preAuthenticatedAuthenticationTokenFilter;
 
@@ -169,11 +196,14 @@ public class XTAuthenticationBuilder extends XTBuilder<Authentication> implement
     /**
      * 令牌额外信息转化器<br>
      * 例如可以适配 DefaultUserAuthenticationConverter::extractAuthentication
+     * <p>可使用 {@link BaseAccessTokenAdditionalConverter}</p>
+     * <p>后面四个处理器最好至少设置一个，否则未处理，最终结果还是原来的 token </p>
      */
     protected Function<Map<String, ?>, Authentication> accessTokenAdditionalConverter;
 
     /**
      * 令牌认证转化器
+     * <p>可使用 {@link BaseAuthenticationFilter}</p>
      */
     private BiFunction<Authentication, AuthAccessToken, Authentication> authenticationFilter; // 令牌认证转化器
 
@@ -184,6 +214,7 @@ public class XTAuthenticationBuilder extends XTBuilder<Authentication> implement
     private AuthenticationManager authenticationManager; //认证中心
     /**
      * 身份验证消费者
+     * <p>可使用 {@link BaseAuthenticationConsumer}</p>
      */
     private Consumer<Authentication> authenticationConsumer; //认证消费者
 
@@ -191,6 +222,23 @@ public class XTAuthenticationBuilder extends XTBuilder<Authentication> implement
 
 
     // methods 方法
+    // -static-
+
+    @Contract("_, _ -> new")
+    public static @NotNull XTAuthenticationBuilder builder(@NotNull HttpServletRequestData request, int mode) {
+        return new XTAuthenticationBuilder(request, mode);
+    }
+
+    @Contract("_ -> new")
+    public static @NotNull XTAuthenticationBuilder builder(@NotNull HttpServletRequestData request) {
+        return new XTAuthenticationBuilder(request);
+    }
+
+    @Contract("_ -> new")
+    public static @NotNull XTAuthenticationBuilder builder(@NotNull String token) {
+        return new XTAuthenticationBuilder(token);
+    }
+
     // -self-
     protected void setExtracted(boolean extracted) {
         isExtracted = extracted;
@@ -256,7 +304,6 @@ public class XTAuthenticationBuilder extends XTBuilder<Authentication> implement
         }
         return null;
     }
-    // -static-
 
 
     // -no static-
@@ -355,7 +402,7 @@ public class XTAuthenticationBuilder extends XTBuilder<Authentication> implement
      * <p>可以从这里读取 token 信息, 生成认证</p>
      * <ul>
      *     <li> tokenConsumer 获取消费 token字符串</li>
-     *     <li> tokenStore 读取 token信息，若没有提供则使用JWTUtil解析token</li>
+     *     <li> authAccessTokenParser 读取 token信息，若没有提供则不会执行以下操作</li>
      *     <li> accessTokenConsumer 读取 OAuth2AccessToken信息，并进行操作</li>
      *     <ul>
      *         <li> accessTokenAdditionalConverter 读取 token 额外信息并返回新认证（若为null则不覆盖认证）</li>
@@ -379,20 +426,20 @@ public class XTAuthenticationBuilder extends XTBuilder<Authentication> implement
                 if (authAccessToken == null) {
                     throw new AuthenticationServiceException("token parse failed");
                 }
-            }
-            if (authAccessTokenConsumer != null) {
-                authAccessTokenConsumer.accept(authAccessToken);
-            }
-            if (accessTokenAdditionalConverter != null) {
-                Authentication apply = accessTokenAdditionalConverter.apply(authAccessToken.getAdditionalInformation());
-                if (apply != null) {
-                    target = apply;
+                if (authAccessTokenConsumer != null) {
+                    authAccessTokenConsumer.accept(authAccessToken);
                 }
-            }
-            if (authenticationFilter != null) {
-                Authentication apply = authenticationFilter.apply(target, authAccessToken);
-                if (apply != null) {
-                    target = apply;
+                if (accessTokenAdditionalConverter != null) {
+                    Authentication apply = accessTokenAdditionalConverter.apply(authAccessToken.getAdditionalInformation());
+                    if (apply != null) {
+                        target = apply;
+                    }
+                }
+                if (authenticationFilter != null) {
+                    Authentication apply = authenticationFilter.apply(target, authAccessToken);
+                    if (apply != null) {
+                        target = apply;
+                    }
                 }
             }
         }
@@ -405,8 +452,6 @@ public class XTAuthenticationBuilder extends XTBuilder<Authentication> implement
      *     <li> 执行 authenticationManager 认证 (没有则不执行)</li>
      *     <li> 执行 authenticationConsumer 消费 (没有则不执行)</li>
      * </ul>
-     *
-     * @return {@link XTAuthenticationUtil.AuthenticationBuilder}
      */
     public XTAuthenticationBuilder authenticationWork() {
         if (target != null) {

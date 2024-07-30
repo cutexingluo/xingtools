@@ -17,7 +17,10 @@ import top.cutexingluo.tools.bridge.servlet.HttpServletRequestData;
 import top.cutexingluo.tools.designtools.builder.XTBuilder;
 import top.cutexingluo.tools.security.base.BearerTokenExtractor;
 import top.cutexingluo.tools.security.base.TokenExtractor;
+import top.cutexingluo.tools.security.bridge.OAuth2SecurityOldBridge;
 import top.cutexingluo.tools.security.ext.XTBearerTokenExtractor;
+import top.cutexingluo.tools.security.self.base.AuthAccessToken;
+import top.cutexingluo.tools.security.self.base.AuthAccessTokenParser;
 import top.cutexingluo.tools.security.utils.XTAccessTokenUtil;
 
 import java.util.Collection;
@@ -32,7 +35,7 @@ import java.util.function.Function;
  * <code>new XTAuthenticationUtil.AuthenticationBuilder(request) </code>
  *
  * <p>SpringBoot 2 的 OAuth 2 可以使用，未来某些 oauth2 api 可能会过时</p>
- * <p>推荐使用 XTAuthenticationUtils 和 XTAuthenticationBuilder</p>
+ * <p>如果使用spring-security 或者 spring-authorization-server 推荐使用 XTAuthenticationUtils 和 XTAuthenticationBuilder</p>
  *
  * @author XingTian
  * @version 1.0.0
@@ -231,6 +234,7 @@ public class XTAuthenticationUtil {
      *     <li>1. tokenExtractor 展开器 (非必需set，默认Bear，设置 HttpServletRequest 则执行)</li>
      *     <li>2. preAuthenticatedAuthenticationTokenFilter  (非必需set，默认Bear)</li>
      *     <li>3. tokenConsumer  (非必需set，直接获取 token 字符串)</li>
+     *     <li>3. tokenStore 或者 tokenParser  (*必需set，解析 token 字符串)</li>
      *     <li>3. accessTokenConsumer  (非必需set，消费 OAuth2AccessToken 对象)</li>
      *     <li>3. accessTokenAdditionalConverter  (非必需set，读取 OAuth2AccessToken 额外信息 返回新认证 （空则不覆盖原来认证）)</li>
      *     <li>3. authenticationFilter  (非必需set，获得Authentication和 OAuth2AccessToken 对象，返回新认证 （空则不覆盖原来认证）)</li>
@@ -335,6 +339,14 @@ public class XTAuthenticationUtil {
          * 解析 token 生成 OAuth2AccessToken
          */
         private TokenStore tokenStore; // 解析 token 生成 OAuth2AccessToken
+
+        /**
+         * 解析 token 生成 OAuth2AccessToken
+         * <p>如果 tokenStore 不存在则使用 tokenParser ，1.1.2 适配</p>
+         *
+         * @since 1.1.2
+         */
+        private AuthAccessTokenParser tokenParser; // 解析 token 生成 OAuth2AccessToken
 
         /**
          * 令牌消费者
@@ -501,14 +513,20 @@ public class XTAuthenticationUtil {
                 if (tokenStore != null) { // tokenStore存在 则使用tokenStore
                     try {
                         accessToken = XTAccessTokenUtil.getAccessToken(token, tokenStore);
-                        if (accessToken == null) {
-                            throw new AuthenticationServiceException("token 解析失败");
-                        }
                     } catch (Exception e) {
 //                        e.printStackTrace();
                         throw new AuthenticationServiceException("token 解析错误");
                     }
-                } else { // tokenStore不存在 则使用 hutool 的JWTUtil
+                } else if (tokenParser != null) { // tokenStore不存在 则使用 tokenParser  v1.1.2 版本支持
+                    try {
+                        AuthAccessToken authAccessToken = tokenParser.parse(token);
+                        // 使用桥接器转化
+                        accessToken = OAuth2SecurityOldBridge.toOAuth2AccessToken(authAccessToken);
+                    } catch (Exception e) {
+//                        e.printStackTrace();
+                        throw new AuthenticationServiceException("token 解析错误");
+                    }
+                } else { // tokenParser 不存在 则使用 hutool 的JWTUtil
                     try {
                         accessToken = XTAccessTokenUtil.getAccessToken(token);
                         if (accessToken == null) {

@@ -96,6 +96,21 @@ public class StrMSResult<T> extends CommonResult<String, T> implements XTIntCode
         return put(constants, "");
     }
 
+
+    /**
+     * @since 1.1.2
+     */
+    public static <T> StrMSResult<T> put(HttpStatus httpStatus, T data) {
+        return put(httpStatus.strCode(), httpStatus.getMsg(), data);
+    }
+
+    /**
+     * @since 1.1.2
+     */
+    public static StrMSResult<String> put(HttpStatus httpStatus) {
+        return put(httpStatus, "");
+    }
+
     public static <C, T> StrMSResult<T> put(IResult<C, T> resultData) {
         return put(resultData, resultData.getData());
     }
@@ -168,6 +183,20 @@ public class StrMSResult<T> extends CommonResult<String, T> implements XTIntCode
 
     public static StrMSResult<Boolean> error(Constants constants, String msg) {
         return error(constants.getCode(), msg);
+    }
+
+    /**
+     * @since 1.1.2
+     */
+    public static StrMSResult<Boolean> error(HttpStatus httpStatus) {
+        return put(httpStatus, false);
+    }
+
+    /**
+     * @since 1.1.2
+     */
+    public static StrMSResult<Boolean> error(HttpStatus httpStatus, String msg) {
+        return error(httpStatus.strCode(), msg);
     }
 
     //----------------ext------------
