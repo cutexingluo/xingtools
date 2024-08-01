@@ -14,6 +14,7 @@ import top.cutexingluo.tools.security.self.base.AuthTokenGenerator;
  * @author XingTian
  * @version 1.0.0
  * @date 2024/7/26 10:50
+ * @since 1.1.2
  */
 @Data
 public class HuJwtAuthAccessTokenGenerator implements AuthTokenGenerator {

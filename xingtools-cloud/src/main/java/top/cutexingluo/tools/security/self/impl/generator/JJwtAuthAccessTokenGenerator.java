@@ -19,6 +19,7 @@ import java.util.Base64;
  * @author XingTian
  * @version 1.0.0
  * @date 2024/7/26 11:46
+ * @since 1.1.2
  */
 @Data
 public class JJwtAuthAccessTokenGenerator implements AuthTokenGenerator {

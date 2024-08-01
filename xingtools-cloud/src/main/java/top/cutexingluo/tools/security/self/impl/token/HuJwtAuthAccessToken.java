@@ -11,9 +11,12 @@ import java.time.Instant;
 import java.util.*;
 
 /**
+ * hutool jwt token
+ *
  * @author XingTian
  * @version 1.0.0
  * @date 2024/7/26 10:28
+ * @since 1.1.2
  */
 @EqualsAndHashCode(callSuper = true)
 @Data

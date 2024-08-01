@@ -1,4 +1,4 @@
-package top.cutexingluo.tools.security.utils;
+package top.cutexingluo.tools.security.oauth.util;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONException;
@@ -19,8 +19,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Token 工具类封装 <br>
- * 推荐使用的工具类
+ * Token 工具类封装
+ * <p>如果使用老版的 OAuth2  推荐使用的工具类</p>
  *
  * @author XingTian
  * @version 1.0.0

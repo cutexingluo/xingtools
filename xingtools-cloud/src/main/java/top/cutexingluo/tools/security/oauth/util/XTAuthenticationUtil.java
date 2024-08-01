@@ -21,7 +21,6 @@ import top.cutexingluo.tools.security.bridge.OAuth2SecurityOldBridge;
 import top.cutexingluo.tools.security.ext.XTBearerTokenExtractor;
 import top.cutexingluo.tools.security.self.base.AuthAccessToken;
 import top.cutexingluo.tools.security.self.base.AuthAccessTokenParser;
-import top.cutexingluo.tools.security.utils.XTAccessTokenUtil;
 
 import java.util.Collection;
 import java.util.Map;

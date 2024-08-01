@@ -16,15 +16,12 @@ import java.util.Date;
 /**
  * JWT Token 原生工具类
  * <p>适用于Springboot </p>
- * <p>推荐使用 XTAccessTokenUtil </p>
  *
  * @author XingTian
+ * @version v1.0.0
  * @date 2023/11/14
  * @since 2022-11-14 v1.0.1
- *@version v1.0.0
  */
-
-
 public class TokenUtils {
 
     /**

@@ -11,9 +11,12 @@ import java.time.Instant;
 import java.util.*;
 
 /**
+ * jjwt token
+ *
  * @author XingTian
  * @version 1.0.0
  * @date 2024/7/26 11:48
+ * @since 1.1.2
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
