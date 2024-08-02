@@ -5,7 +5,6 @@
     <packaging>jar</packaging>
 
 
-
     <parent>
         <artifactId>xingtools-parent</artifactId>
         <groupId>top.cutexingluo.tools</groupId>
@@ -40,6 +39,8 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
+            <!--            other modules need -->
+            <!--            <scope>provided</scope>-->
         </dependency>
 
 
@@ -62,15 +63,13 @@
         </dependency>
 
 
+        <!--&lt;!&ndash;        lang 包&ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.commons</groupId>-->
+        <!--            <artifactId>commons-lang3</artifactId>-->
+        <!--        </dependency>-->
 
-
-<!--&lt;!&ndash;        lang 包&ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>org.apache.commons</groupId>-->
-<!--            <artifactId>commons-lang3</artifactId>-->
-<!--        </dependency>-->
-
-     <!--        idea 注解 -->
+        <!--        idea 注解 -->
         <dependency>
             <groupId>org.realityforge.org.jetbrains.annotations</groupId>
             <artifactId>org.jetbrains.annotations</artifactId>
@@ -143,7 +142,6 @@
             <version>${kaptcha.version}</version>
             <optional>true</optional>
         </dependency>
-
 
 
         <!-- jython依赖 可以编译python-->

@@ -1,6 +1,8 @@
 package top.cutexingluo.tools.designtools.builder.builderimpl;
 
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import top.cutexingluo.tools.basepackage.function.TriConsumer;
 import top.cutexingluo.tools.designtools.builder.XTBuilder;
 
@@ -24,6 +26,8 @@ import java.util.function.Supplier;
  * @version 1.0.0
  * @date 2023/5/5 22:51
  */
+@EqualsAndHashCode(callSuper = true)
+@Data
 public class Builder<T> extends XTBuilder<T> {
     private final Supplier<T> instantiation;
     private List<Consumer<T>> modifiers = new ArrayList<>();
@@ -50,6 +54,17 @@ public class Builder<T> extends XTBuilder<T> {
 
     public <P1, P2, P3> Builder<T> with(TetraConsumer<T, P1, P2, P3> consumer, P1 p1, P2 p2, P3 p3) {
         Consumer<T> c = instance -> consumer.accept(instance, p1, p2, p3);
+        modifiers.add(c);
+        return this;
+    }
+
+    /**
+     * 批量放入参数
+     *
+     * @since 1.1.2
+     */
+    public Builder<T> withAll(BiConsumer<T, Object[]> consumer, Object[] args) {
+        Consumer<T> c = instance -> consumer.accept(instance, args);
         modifiers.add(c);
         return this;
     }
