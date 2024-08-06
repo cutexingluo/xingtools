@@ -6,27 +6,27 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * 基础服务数据
- * <p>1.用于配合 server.port 等</p>
- * <p>2.配置文件代码提示</p>
- *
- * <p>历史遗留</p>
+ * <p>1.方便使用配置文件</p>
+ * <p>2.配置文件代码提示和复用</p>
+ * <p>3.未来将会使用该属性</p>
  *
  * @author XingTian
  * @version 1.0.0
- * @date 2023/2/3 17:08
+ * @date 2024/8/6 17:39
+ * @since 1.1.2
  */
 @Data
-@ConfigurationProperties(prefix = "server")
+@ConfigurationProperties(prefix = "target")
 @Configuration
-public class ServerProperty {
+public class TargetServerProperty {
 
     /**
-     * 本机/目标 ip
+     * 本机 ip
      */
     private String ip = "127.0.0.1";
 
     /**
-     * 本机/目标 url
+     * 目标服务 ip
      */
-    private String targetUrl = "/**";
+    private String targetIp = "127.0.0.1";
 }

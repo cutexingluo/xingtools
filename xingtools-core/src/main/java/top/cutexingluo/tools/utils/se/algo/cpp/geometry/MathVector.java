@@ -3,6 +3,7 @@ package top.cutexingluo.tools.utils.se.algo.cpp.geometry;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.jetbrains.annotations.NotNull;
+import top.cutexingluo.tools.common.data.Tuple;
 import top.cutexingluo.tools.designtools.method.ClassMaker;
 
 import java.lang.reflect.Constructor;
@@ -12,6 +13,8 @@ import static top.cutexingluo.tools.utils.se.algo.cpp.math.XTMath.sgn;
 /**
  * 向量
  *
+ * <p>于 v1.1.2 实现Tuple接口</p>
+ *
  * @author XingTian
  * @version 1.0.0
  * @date 2023/10/24 17:46
@@ -19,7 +22,7 @@ import static top.cutexingluo.tools.utils.se.algo.cpp.math.XTMath.sgn;
  */
 @Data
 @AllArgsConstructor
-public class MathVector {
+public class MathVector implements Tuple<Double, Double> {
     private double x, y;
 
     public MathVector() {
@@ -164,4 +167,47 @@ public class MathVector {
         return ClassMaker.newInstance(constructor, x, y);
     }
 
+    /**
+     * @return x
+     * @since 1.1.2
+     */
+    @Override
+    public Double getKey() {
+        return x;
+    }
+
+    /**
+     * @return y
+     * @since 1.1.2
+     */
+    @Override
+    public Double getValue() {
+        return y;
+    }
+
+    /**
+     * set x
+     *
+     * @return old x value
+     * @since 1.1.2
+     */
+    @Override
+    public Double setKey(Double key) {
+        double old = x;
+        this.x = key;
+        return old;
+    }
+
+    /**
+     * set y
+     *
+     * @return old y value
+     * @since 1.1.2
+     */
+    @Override
+    public Double setValue(Double value) {
+        double old = y;
+        this.y = value;
+        return old;
+    }
 }

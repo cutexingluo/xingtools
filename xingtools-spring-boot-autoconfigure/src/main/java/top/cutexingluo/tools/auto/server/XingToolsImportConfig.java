@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.core.Ordered;
 import org.springframework.core.type.AnnotationMetadata;
 import top.cutexingluo.tools.property.ServerProperty;
+import top.cutexingluo.tools.property.TargetServerProperty;
 import top.cutexingluo.tools.start.log.LogInfoAuto;
 
 /**
@@ -17,7 +18,7 @@ import top.cutexingluo.tools.start.log.LogInfoAuto;
  */
 @Primary
 @Slf4j
-@EnableConfigurationProperties({AutoInjectProperty.class, ServerProperty.class})
+@EnableConfigurationProperties({AutoInjectProperty.class, ServerProperty.class, TargetServerProperty.class})
 public class XingToolsImportConfig implements ImportSelector, Ordered {
 
 
