@@ -8,7 +8,7 @@ import java.lang.annotation.*;
 /**
  * SpringCloud 自动配置启动注解
  * 在任意类上开启此注解
- * 从而开启自动注入其他非工具的服务
+ * 从而开启自动注册其他非工具的服务
  * 启动微服务的一些配置
  *
  * @author XingTian

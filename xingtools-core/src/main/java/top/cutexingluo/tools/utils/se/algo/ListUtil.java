@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * list工具类
+ * list 辅助工具类
+ *
+ * <p>已过时，未来并入 {@link top.cutexingluo.tools.utils.se.collection.XTListUtil}</p>
  *
  * @author XingTian
  * @version 1.0.0
  * @date 2023/7/15 17:24
  */
+@Deprecated
 public class ListUtil extends XTFindUtil {
 
 

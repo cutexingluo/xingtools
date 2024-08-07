@@ -23,11 +23,11 @@ import top.cutexingluo.tools.start.log.LogInfoAuto;
 @ConditionalOnProperty(prefix = "xingtools.enabled", value = "optlog-anno", havingValue = "true",
         matchIfMissing = false)
 @Slf4j
-public class OptLogAutoConfigure{
+public class OptLogAutoConfigure {
     @ConditionalOnMissingBean
     @Bean
     public OptLogAop optLogAop() {
-        if (LogInfoAuto.enabled) log.info("OptLogAop ---->  {}", " 自定义操作 AOP，自动注入成功");
+        if (LogInfoAuto.enabled) log.info("OptLogAop ---->  {}", " 自定义操作 AOP，自动注册成功");
         return new OptLogAop();
     }
 }

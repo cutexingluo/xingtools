@@ -29,4 +29,9 @@ public class TargetServerProperty {
      * 目标服务 ip
      */
     private String serverIp = "127.0.0.1";
+
+    /**
+     * 目标服务 domain
+     */
+    private String serverDomain = "localhost";
 }

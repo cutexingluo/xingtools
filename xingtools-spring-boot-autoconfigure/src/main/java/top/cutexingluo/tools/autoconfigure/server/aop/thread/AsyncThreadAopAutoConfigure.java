@@ -28,13 +28,13 @@ import top.cutexingluo.tools.start.log.LogInfoAuto;
 @ConditionalOnProperty(prefix = "xingtools.enabled", value = "async-thread-aop-anno", havingValue = "true",
         matchIfMissing = false)
 @Slf4j
-public class AsyncThreadAopAutoConfigure{
+public class AsyncThreadAopAutoConfigure {
 
     @ConditionalOnMissingBean
     @Bean
     public AsyncThreadAop asyncThreadAop(PlatformTransactionManager transactionManager) {
         if (LogInfoAuto.enabled) log.info("AsyncThreadAop ---->  {}",
-                "异步注解Aop @MainThread  @SonThread ，自动注入成功");
+                "异步注解Aop @MainThread  @SonThread ，自动注册成功");
         return new AsyncThreadAop(transactionManager);
     }
 
@@ -42,7 +42,7 @@ public class AsyncThreadAopAutoConfigure{
     @Bean
     public ThreadResults threadResults(AsyncThreadAop asyncThreadAop) {
         if (LogInfoAuto.enabled) log.info("ThreadResults ---->  {}",
-                "异步线程结果 ThreadResults，自动注入成功");
+                "异步线程结果 ThreadResults，自动注册成功");
         return new ThreadResults(asyncThreadAop.map);
     }
 }

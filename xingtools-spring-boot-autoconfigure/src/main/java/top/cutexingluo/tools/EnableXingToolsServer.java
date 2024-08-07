@@ -8,7 +8,7 @@ import java.lang.annotation.*;
 /**
  * 一般服务启动注解
  * 在任意类上开启此注解
- * 从而开启自动注入其他非工具的服务
+ * 从而开启自动注册其他非工具的服务
  *
  * @author XingTian
  * @version 1.0.0

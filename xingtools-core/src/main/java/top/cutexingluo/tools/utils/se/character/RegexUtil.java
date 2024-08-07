@@ -13,6 +13,23 @@ import org.jetbrains.annotations.NotNull;
  * @date 2023/7/20 15:55
  */
 public class RegexUtil extends ReUtil implements RegexPool {
+
+    /**
+     * 小括号匹配
+     */
+    public static final String PARENTHESES = "\\((.+?)\\)";
+
+    /**
+     * 中括号匹配
+     */
+    public static final String BRACKETS = "\\[(.+?)\\]";
+
+    /**
+     * 大括号匹配
+     */
+    public static final String BRACES = "\\{(.+?)\\}";
+
+
     /**
      * 任意匹配即可成功
      *
