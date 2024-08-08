@@ -1,7 +1,7 @@
 # xingtools 工具包
 
 ## :book:相关介绍
-xingtools sdk 工具包，v1.1.1 正式版发布。( 依赖的版本不能低于 1.1.1 )
+xingtools sdk 工具包，v1.1.2 正式版发布。( 依赖的版本不能低于 1.1.1 )
 星天（xingtian）制作的 Java 工具包，是基于 Springboot 2.7.18 和 SpringBoot 3.0.5 制作的 ,  基于 Java 8 和 Java 17，它是一个整合各工具类的整合包。
 
 ### :scroll:简介
@@ -19,27 +19,27 @@ xingtools sdk 工具包，v1.1.1 正式版发布。( 依赖的版本不能低于
 | 模块                                | 介绍                                                         |
 | ----------------------------------- | ------------------------------------------------------------ |
 | xingtools-core                      | 核心，包括各种接口，实体类和工具类                           |
-| xingtools-web                       | 依赖core，提供一些 http 工具                                 |
+| xingtools-pkg-jdk8                  | 依赖core包，jdk 分类包，对不同的jdk版本提供兼容性            |
+| xingtools-pkg-jdk17                 | 依赖core包，jdk 分类包，对不同的jdk版本提供兼容性            |
+| xingtools-web                       | 依赖core和pkg包，提供一些 http 工具                          |
 | xingtools-extra                     | 依赖core，附加，也就是基于 SpringBoot 的一些工具或实体类     |
 | xingtools-db                        | 依赖core，数据库操作，包含mybatis-plus等操作                 |
 | xingtools-mvc                       | 依赖web，extra，db三包，基于 SpringBoot-Web的一些集成工具或实体类 |
 | xingtools-log                       | 依赖mvc，包含日志扩展操作的封装                              |
 | xingtools-cloud                     | 依赖mvc，基于SpringCloud，包括各种 cloud，security，oauth 的工具 |
-| xingtools-pkg-jdk8                  | 依赖mvc和cloud包，jdk 分类包，对不同的jdk版本提供兼容性      |
-| xingtools-pkg-jdk17                 | 依赖mvc和cloud包，jdk 分类包，对不同的jdk版本提供兼容性      |
-| xingtools-aop                       | 依赖mvc，log，pkg三包，提供前面依赖的aop注解和切面类         |
+| xingtools-aop                       | 依赖mvc，log，cloud三包，提供前面依赖的aop注解和切面类       |
 | xingtools-unified                   | 依赖aop，整合包，整合所有依赖并依赖 hutool-all               |
 | xingtools-spring-boot               | 整合版本，排除pkg-jdk依赖，在这之后需要配合pkg-jdk依赖使用   |
 | xingtools-spring-boot-autoconfigure | 整合版本的自动装配，含各种自动装配配置，开关，注解，类等     |
 | xingtools-spring-boot-starter       | 最终依赖包                                                   |
 
-当前版本组件之间的依赖关系如下：
+当前版本组件之间的依赖关系如下：（v1.1.2 组件依赖更新）
 
-![image-20240717180223630](./assets/image-20240717180223630.png)
+![image-20240808174556862](./assets/image-20240808174556862.png)
 
 ​																**组件依赖关系图**
 
-未来可能将会使 pkg包摆脱对其他包的依赖。
+目前使 pkg包 仅依赖 core 包，可以按需导入从前面开始的依赖。
 
 ## :bookmark:依赖使用
 
@@ -53,12 +53,12 @@ Maven 依赖（jdk8版本）
 <dependency>
 	<groupId>top.cutexingluo.tools</groupId>
 	<artifactId>xingtools-spring-boot-starter</artifactId>
-	<version>1.1.1</version>
+	<version>1.1.2</version>
 </dependency>
 <dependency>
 	<groupId>top.cutexingluo.tools</groupId>
 	<artifactId>xingtools-pkg-jdk8</artifactId>
-	<version>1.1.1</version>
+	<version>1.1.2</version>
 </dependency>
 ```
 
@@ -68,16 +68,16 @@ Maven 依赖（jdk17版本）
 <dependency>
 	<groupId>top.cutexingluo.tools</groupId>
 	<artifactId>xingtools-spring-boot-starter</artifactId>
-	<version>1.1.1</version>
+	<version>1.1.2</version>
 </dependency>
 <dependency>
 	<groupId>top.cutexingluo.tools</groupId>
 	<artifactId>xingtools-pkg-jdk17</artifactId>
-	<version>1.1.1</version>
+	<version>1.1.2</version>
 </dependency>
 ```
 
-第二个包代表兼容 jdk 版本的工具，必须存在。
+第二个包 （pkg包） 代表存在兼容 jdk 版本的工具，必须存在。
 
 ### :apple:使用方式
 
@@ -191,7 +191,7 @@ public class MyResult implements IResult<String,Object> {
 
 
 
-##### 2.工具类使用，拦截器 以 OAuth2 为例
+##### 2.工具类使用，拦截器 以 OAuth2 为例（springboot2.x版本）
 
 ```java
 @Component
@@ -368,6 +368,25 @@ public class TestService {
 具体内容详见使用文档。
 
 ##  :memo:更新公告
+
+**2024-8-8  v1.1.2**
+
+```txt
+bug 修复
+1.由于未导入 spring-boot-starter-aop ，故启用 @EnableXingToolsServer 时使用 某个 aop 报错，目前将所有 aop 关闭；现在不使用 aop 不导入 aop 包，依旧能运行服务。
+在v1.1.1版本需要配置  xingtools.ext-transaction-anno.enabled=false # v1.1.1 版本需要关闭。
+2.修复 IntStatus 等参数校验注解未初始化的问题，以及数字匹配 matchNum 绝对匹配放行的问题。
+
+更改部分
+1.将 pkg-jdk8 和 pkg-jdk17 部分代码移除或移出到mvc包和cloud等其他包下，只做javax 和 jakarta 包的兼容，该包只依赖 core包。依赖关系更新。
+2.cloud包将支持 cloud 和 security 两种模块，可以根据需要按需导入模块。
+
+新增部分
+1.cloud 包新增对 spring-security , spring-security-oauth2 和 spring-authorization-server 等不同依赖的支持。并提取两个依赖中的公共元素合并作为新的类集合。
+例如：AuthToken, AuthAccessToken, AuthTokenExtractor, AuthTokenGenerator 等作为新的框架，和新的 XTAuthenticationBuilder 工具建造类对授权执行链的支持。
+2.新增 HttpStatus 作为 Constants 的另一种实现形式。并对 Result 等一系列返回封装类添加对应方法。
+3.新增系列集合类对 short 和 float 的支持，并新增 @ShortStatus 和 @FloatStatus 等参数校验注解。
+```
 
 **2024-7-17  v1.1.1**
 
