@@ -1,4 +1,4 @@
-package top.cutexingluo.tools.common.valid.num.doublestatus;
+package top.cutexingluo.tools.common.valid.num.floatstatus;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,29 +7,25 @@ import lombok.NoArgsConstructor;
 import java.util.Set;
 
 /**
- * double 状态校验配置
+ * float 状态校验配置
  *
  * @author XingTian
  * @version 1.0.0
- * @date 2023/12/8 18:47
- * @since 1.0.3
+ * @date 2023/12/8 16:12
+ * @since 1.1.2
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DoubleStatusConfig {
-
+public class FloatStatusConfig {
     /**
      * 非空
      */
     boolean notNull = false;
-
     /**
      * 匹配数字
      */
-    Set<Double> matchNum = null;
-
-
+    Set<Float> matchNum = null;
     /**
      * 限制
      */
@@ -38,26 +34,25 @@ public class DoubleStatusConfig {
     /**
      * 误差
      */
-    double eps = 1E-6;
+    float eps = 1E-6f;
 
     /**
      * 最小值(包含)
      *
      * <p> min value (inclusive)</p>
      */
-    double min = 0;
-
+    float min = 0;
     /**
      * 最大值
      *
      * <p>max value (inclusive)</p>
      */
-    double max = Double.MAX_VALUE;
+    float max = Float.MAX_VALUE;
 
     /**
      * 区间
      */
-    DoubleRangeData[] range;
+    FloatRangeData[] range;
 
 
 }

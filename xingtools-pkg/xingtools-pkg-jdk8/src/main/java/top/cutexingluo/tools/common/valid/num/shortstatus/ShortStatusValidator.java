@@ -1,4 +1,4 @@
-package top.cutexingluo.tools.common.valid.num.doublestatus;
+package top.cutexingluo.tools.common.valid.num.shortstatus;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -9,38 +9,37 @@ import top.cutexingluo.tools.utils.se.map.XTSetUtil;
 import javax.validation.ConstraintValidatorContext;
 
 /**
- * DoubleStatus 检验器
+ * ShortStatus 检验器
  *
  * @author XingTian
  * @version 1.0.0
- * @date 2023/12/8 18:47
- * @since 1.0.3
+ * @date 2023/7/19 16:12
+ * @since 1.1.2
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
-public class DoubleStatusValidator extends StatusValidator<DoubleStatus, Double> {
+public class ShortStatusValidator extends StatusValidator<ShortStatus, Short> {
 
-    protected DoubleStatusConfig statusConfig;
+    protected ShortStatusConfig statusConfig;
 
-    protected DoubleValidator validator;
+    protected ShortValidator validator;
 
     @Override
-    public void initialize(DoubleStatus constraintAnnotation) {
-        statusConfig = new DoubleStatusConfig(
+    public void initialize(ShortStatus constraintAnnotation) {
+        statusConfig = new ShortStatusConfig(
                 constraintAnnotation.notNull(),
                 XTSetUtil.toSet(constraintAnnotation.matchNum()),
                 constraintAnnotation.limit(),
-                constraintAnnotation.eps(),
                 constraintAnnotation.min(),
                 constraintAnnotation.max(),
-                DoubleRangeData.parse(constraintAnnotation.range())
+                ShortRangeData.parse(constraintAnnotation.range())
         );
-        validator = new DoubleValidator(statusConfig);
+        validator = new ShortValidator(statusConfig);
     }
 
     @Override
-    public boolean isValid(Double value, ConstraintValidatorContext constraintValidatorContext) {
+    public boolean isValid(Short value, ConstraintValidatorContext constraintValidatorContext) {
         return validator.isValid(value);
     }
 }

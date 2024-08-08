@@ -199,9 +199,38 @@ public class XTArrayUtil {
 
     /**
      * [] 数组转为 List
+     *
+     * @since 1.1.2
+     */
+    public static List<Short> toList(short[] array) {
+        final int length = array.length;
+        final ArrayList<Short> newArray = new ArrayList<>(length);
+        for (short value : array) {
+            newArray.add(value);
+        }
+        return newArray;
+    }
+
+    /**
+     * [] 数组转为 List
      */
     public static List<Long> toList(long[] array) {
         return Arrays.stream(array).boxed().collect(Collectors.toList());
+    }
+
+
+    /**
+     * [] 数组转为 List
+     *
+     * @since 1.1.2
+     */
+    public static List<Float> toList(float[] array) {
+        final int length = array.length;
+        final ArrayList<Float> newArray = new ArrayList<>(length);
+        for (float value : array) {
+            newArray.add(value);
+        }
+        return newArray;
     }
 
     /**
@@ -221,11 +250,47 @@ public class XTArrayUtil {
         return Arrays.stream(array).boxed().toArray(Integer[]::new);
     }
 
+
+    /**
+     * short[] 转为 包装类
+     *
+     * @since 1.1.2
+     */
+    public static Short[] toBoxed(short[] array) {
+        final int length = array.length;
+        if (0 == length) {
+            return new Short[0];
+        }
+        final Short[] newArray = new Short[length];
+        for (int i = 0; i < length; i++) {
+            newArray[i] = array[i];
+        }
+        return newArray;
+    }
+
     /**
      * long[] 转为 包装类
      */
     public static Long[] toBoxed(long[] array) {
         return Arrays.stream(array).boxed().toArray(Long[]::new);
+    }
+
+
+    /**
+     * float[] 转为 包装类
+     *
+     * @since 1.1.2
+     */
+    public static Float[] toBoxed(float[] array) {
+        final int length = array.length;
+        if (0 == length) {
+            return new Float[0];
+        }
+        final Float[] newArray = new Float[length];
+        for (int i = 0; i < length; i++) {
+            newArray[i] = array[i];
+        }
+        return newArray;
     }
 
     /**
@@ -245,9 +310,44 @@ public class XTArrayUtil {
 
     /**
      * 拆除 包装类
+     *
+     * @since 1.1.2
+     */
+    public static short[] toNoBoxed(Short[] array) {
+        final int length = array.length;
+        if (0 == length) {
+            return new short[0];
+        }
+        final short[] newArray = new short[length];
+        for (int i = 0; i < length; i++) {
+            newArray[i] = array[i] == null ? 0 : array[i];
+        }
+        return newArray;
+    }
+
+    /**
+     * 拆除 包装类
      */
     public static long[] toNoBoxed(Long[] array) {
         return Arrays.stream(array).mapToLong(a -> a == null ? 0 : a).toArray();
+    }
+
+
+    /**
+     * 拆除 包装类
+     *
+     * @since 1.1.2
+     */
+    public static float[] toNoBoxed(Float[] array) {
+        final int length = array.length;
+        if (0 == length) {
+            return new float[0];
+        }
+        final float[] newArray = new float[length];
+        for (int i = 0; i < length; i++) {
+            newArray[i] = array[i] == null ? 0 : array[i];
+        }
+        return newArray;
     }
 
     /**

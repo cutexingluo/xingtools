@@ -28,6 +28,7 @@ public class IntStatusValidator extends StatusValidator<IntStatus, Integer> {
                 constraintAnnotation.max(),
                 IntRangeData.parse(constraintAnnotation.range())
         );
+        validator = new IntValidator(statusConfig);
     }
 
     @Override

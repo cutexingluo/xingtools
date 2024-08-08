@@ -2,7 +2,7 @@ package top.cutexingluo.tools.common.valid.num.doublestatus;
 
 import jakarta.validation.ConstraintValidatorContext;
 import top.cutexingluo.tools.common.valid.StatusValidator;
-import top.cutexingluo.tools.utils.se.array.XTArrayUtil;
+import top.cutexingluo.tools.utils.se.map.XTSetUtil;
 
 /**
  * DoubleStatus 检验器
@@ -22,7 +22,7 @@ public class DoubleStatusValidator extends StatusValidator<DoubleStatus, Double>
     public void initialize(DoubleStatus constraintAnnotation) {
         statusConfig = new DoubleStatusConfig(
                 constraintAnnotation.notNull(),
-                XTArrayUtil.toList(constraintAnnotation.matchNum()),
+                XTSetUtil.toSet(constraintAnnotation.matchNum()),
                 constraintAnnotation.limit(),
                 constraintAnnotation.eps(),
                 constraintAnnotation.min(),

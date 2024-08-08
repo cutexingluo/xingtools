@@ -1,28 +1,28 @@
-package top.cutexingluo.tools.common.valid.num.intstatus;
+package top.cutexingluo.tools.common.valid.num.shortstatus;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import top.cutexingluo.tools.common.valid.Validator;
 
 /**
- * Int 检验器
+ * Short 检验器
  *
  * @author XingTian
  * @version 1.0.0
- * @date 2024/7/17 12:00
- * @since 1.1.1
+ * @date 2024/7/17 12:21
+ * @since 1.1.2
  */
 @Data
 @AllArgsConstructor
-public class IntValidator implements Validator<Integer> {
+public class ShortValidator implements Validator<Short> {
 
     /**
      * 条件
      */
-    protected IntStatusConfig statusConfig;
+    protected ShortStatusConfig statusConfig;
 
     @Override
-    public boolean isValid(Integer value) {
+    public boolean isValid(Short value) {
         if (value == null) {
             return !statusConfig.notNull;
         } else {
@@ -46,7 +46,7 @@ public class IntValidator implements Validator<Integer> {
                     return false; // 二未通过
                 }
             }
-            return true; //not in match pass
+            return true; //pass
         }
     }
 }

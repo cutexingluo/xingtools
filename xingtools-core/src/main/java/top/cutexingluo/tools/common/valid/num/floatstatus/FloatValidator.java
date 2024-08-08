@@ -1,4 +1,4 @@
-package top.cutexingluo.tools.common.valid.num.doublestatus;
+package top.cutexingluo.tools.common.valid.num.floatstatus;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -6,30 +6,30 @@ import top.cutexingluo.tools.common.valid.Validator;
 import top.cutexingluo.tools.utils.se.algo.cpp.math.XTMath;
 
 /**
- * Double 检验器
+ * Float 检验器
  *
  * @author XingTian
  * @version 1.0.0
- * @date 2024/7/17 11:02
- * @since 1.1.1
+ * @date 2024/7/17 12:21
+ * @since 1.1.2
  */
 @Data
 @AllArgsConstructor
-public class DoubleValidator implements Validator<Double> {
+public class FloatValidator implements Validator<Float> {
 
     /**
      * 条件
      */
-    protected DoubleStatusConfig statusConfig;
+    protected FloatStatusConfig statusConfig;
 
     @Override
-    public boolean isValid(Double value) {
+    public boolean isValid(Float value) {
         if (value == null) {
             return !statusConfig.notNull;
         } else {
             // 1.条件匹配
             if (statusConfig.matchNum != null && !statusConfig.matchNum.isEmpty()) {
-                for (Double match : statusConfig.matchNum) {
+                for (Float match : statusConfig.matchNum) {
                     if (Math.abs(match - value) <= statusConfig.eps) {
                         return true;
                     }
@@ -38,8 +38,8 @@ public class DoubleValidator implements Validator<Double> {
             }
             // 2.大小限制
             if (statusConfig.limit) {
-                double valueUp = XTMath.getUpValue(value, statusConfig.eps);
-                double valueDown = XTMath.getDownValue(value, statusConfig.eps);
+                float valueUp = XTMath.getUpValue(value, statusConfig.eps);
+                float valueDown = XTMath.getDownValue(value, statusConfig.eps);
                 if (valueUp < statusConfig.min || valueDown > statusConfig.max) {
                     return false;
                 }
@@ -58,5 +58,4 @@ public class DoubleValidator implements Validator<Double> {
             return true; // 所有通过
         }
     }
-
 }
