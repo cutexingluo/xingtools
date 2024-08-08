@@ -3,15 +3,11 @@ package top.cutexingluo.tools.utils.se.map;
 import org.jetbrains.annotations.NotNull;
 import top.cutexingluo.tools.utils.se.collection.XTCollUtil;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.BiFunction;
-import java.util.function.BinaryOperator;
+import java.util.function.*;
 import java.util.stream.Collectors;
 
 
@@ -174,19 +170,19 @@ public class XTMapUtil {
      * <p>key为原来的key</p>
      * <p>value 为valueMapper的返回值</p>
      *
-     * @param map           原 map
+     * @param originMap     原 map
      * @param valueMapper   通过key,value 转化value
      * @param mergeFunction 合并函数
      * @return new Map
      * @since 1.0.4
      */
-    public static <K, V, C> Map<K, C> convertMapValue(Map<K, V> map,
+    public static <K, V, C> Map<K, C> convertMapValue(Map<K, V> originMap,
                                                       BiFunction<K, V, C> valueMapper,
                                                       BinaryOperator<C> mergeFunction) {
-        if (isNullOrEmpty(map)) {
+        if (isNullOrEmpty(originMap)) {
             return new HashMap<>();
         }
-        return map.entrySet().stream().collect(Collectors.toMap(
+        return originMap.entrySet().stream().collect(Collectors.toMap(
                 Map.Entry::getKey,
                 e -> valueMapper.apply(e.getKey(), e.getValue()),
                 mergeFunction
@@ -197,7 +193,7 @@ public class XTMapUtil {
      * map转化方法
      * <p>key为原来的key</p>
      * <p>value 为valueMapper的返回值</p>
-     * <p>合并方法采用 {@link XTCollUtil} XTCollUtil.pickSecond()</p>
+     * <p>冲突方法采用 {@link XTCollUtil} XTCollUtil.pickSecond()</p>
      *
      * @param originMap   原 map
      * @param valueMapper 通过key,value 转化value
@@ -208,5 +204,91 @@ public class XTMapUtil {
         return convertMapValue(originMap, valueMapper, XTCollUtil.pickSecond());
     }
 
+    /**
+     * map转化方法
+     * <p>key为原来的key</p>
+     * <p>value 为valueMapper的返回值</p>
+     *
+     * @param originMap     原 map
+     * @param valueMapper   通过key,value 转化value
+     * @param mergeFunction 合并函数
+     * @return new Map
+     * @since 1.1.2
+     */
+    public static <K, V, C> Map<K, C> convertMapValue(Map<K, V> originMap, Function<V, C> valueMapper, BinaryOperator<C> mergeFunction) {
+        if (isNullOrEmpty(originMap)) {
+            return new HashMap<>();
+        }
+        return originMap.entrySet().stream().collect(Collectors.toMap(
+                Map.Entry::getKey,
+                e -> valueMapper.apply(e.getValue()),
+                mergeFunction
+        ));
+    }
 
+    /**
+     * map转化方法
+     * <p>key为原来的key</p>
+     * <p>value 为valueMapper的返回值</p>
+     * <p>冲突方法采用 {@link XTCollUtil} XTCollUtil.pickSecond()</p>
+     *
+     * @param originMap   原 map
+     * @param valueMapper 通过key,value 转化value
+     * @return new Map
+     * @since 1.1.2
+     */
+    public static <K, V, C> Map<K, C> convertMapValue(Map<K, V> originMap, Function<V, C> valueMapper) {
+        return convertMapValue(originMap, valueMapper, XTCollUtil.pickSecond());
+    }
+
+
+    /**
+     * 检查map中是否存在key 的 list 集合，若不存在则调用supplier 获取新集合并放入map中。
+     *
+     * @param map                map
+     * @param key                map key
+     * @param supplier           supplier for new collection
+     * @param collectionConsumer collection consumer
+     * @since 1.1.2
+     */
+    public static <K, C extends Collection<E>, E> void checkCollection(@NotNull Map<K, C> map, K key, @NotNull Supplier<? extends C> supplier, Consumer<C> collectionConsumer) {
+        Objects.requireNonNull(map, "Map should not be empty.");
+        C check;
+        if (map.containsKey(key)) {
+            check = XTCollUtil.defaultIfEmptyCheck(map.get(key), supplier);
+        } else {
+            Objects.requireNonNull(supplier, "Supplier should not be empty.");
+            check = supplier.get();
+        }
+        if (collectionConsumer != null) {
+            collectionConsumer.accept(check);
+        }
+        map.put(key, check);
+    }
+
+    /**
+     * 检查map中是否存在key，如果存在则添加元素到集合中，不存在则新建集合添加元素并添加到map中。
+     *
+     * @param map      map
+     * @param key      map key
+     * @param supplier supplier for new collection
+     * @param value    an element to map collection
+     * @since 1.1.2
+     */
+    public static <K, C extends Collection<E>, E> void checkAdd(@NotNull Map<K, C> map, K key, @NotNull Supplier<? extends C> supplier, E value) {
+        checkCollection(map, key, supplier, c -> c.add(value));
+    }
+
+    /**
+     * 检查map中是否存在key，如果存在则添加元素到集合中，不存在则新建集合添加元素并添加到map中。
+     *
+     * @param map      map
+     * @param key      map key
+     * @param supplier supplier for new collection
+     * @param other    other elements to map collection
+     * @since 1.1.2
+     */
+    public static <K, C extends Collection<E>, E> void checkAddAll(@NotNull Map<K, C> map, K key, @NotNull Supplier<? extends C> supplier, Collection<? extends E> other) {
+        checkCollection(map, key, supplier, c -> c.addAll(other));
+    }
 }

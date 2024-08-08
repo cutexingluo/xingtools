@@ -7,13 +7,13 @@
     <parent>
         <artifactId>xingtools-parent</artifactId>
         <groupId>top.cutexingluo.tools</groupId>
-        <version>1.1.1</version>
+        <version>1.1.2</version>
     </parent>
 
 
     <artifactId>xingtools-web</artifactId>
     <name>${project.artifactId}</name>
-    <description>xingtools 依赖core，提供一些 http 工具</description>
+    <description>xingtools 依赖core和pkg包，提供一些 http 工具</description>
 
     <properties>
         <!-- versions -->
@@ -23,6 +23,8 @@
         <yauaa.version>7.17.1</yauaa.version>
 
         <sensitive-word.version>0.9.0</sensitive-word.version>
+
+        <ip2region.version>2.7.0</ip2region.version>
     </properties>
 
     <dependencies>
@@ -32,7 +34,34 @@
             <version>${project.parent.version}</version>
         </dependency>
 
-<!--        optional -->
+        <!--    default version -->
+        <dependency>
+            <groupId>top.cutexingluo.tools</groupId>
+            <artifactId>xingtools-pkg-jdk8</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
+
+        <!--        optional -->
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!--        aspect -->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <optional>true</optional>
+        </dependency>
 
 
         <!--httpclient-->
@@ -42,12 +71,12 @@
             <version>${httpcomponents.version}</version>
             <optional>true</optional>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.apache.httpcomponents</groupId>-->
-<!--            <artifactId>httpmime</artifactId>-->
-<!--            <version>${httpcomponents.version}</version>-->
-<!--            <optional>true</optional>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.httpcomponents</groupId>-->
+        <!--            <artifactId>httpmime</artifactId>-->
+        <!--            <version>${httpcomponents.version}</version>-->
+        <!--            <optional>true</optional>-->
+        <!--        </dependency>-->
 
         <!-- 解析客户端操作系统、浏览器等 -->
         <dependency>
@@ -65,5 +94,24 @@
             <optional>true</optional>
         </dependency>
 
+
+        <!--        web -->
+        <!--        ip  -->
+        <dependency>
+            <groupId>org.lionsoul</groupId>
+            <artifactId>ip2region</artifactId>
+            <version>${ip2region.version}</version>
+            <optional>true</optional>
+        </dependency>
+
+        <!--        mybatis-plus     -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-core</artifactId>
+            <optional>true</optional>
+        </dependency>
+
     </dependencies>
+
+
 </project>

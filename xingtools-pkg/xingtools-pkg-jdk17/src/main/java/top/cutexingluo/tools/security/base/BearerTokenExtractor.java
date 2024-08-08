@@ -1,5 +1,6 @@
 package top.cutexingluo.tools.security.base;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.security.core.Authentication;
@@ -7,21 +8,23 @@ import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 
-import jakarta.servlet.http.HttpServletRequest;
 import java.util.Enumeration;
 
 /**
  * BearerTokenExtractor
  * <p>oauth2 移植类</p>
  *
+ * <p>未来将被移除，请使用 cloud 包里面的类</p>
+ *
  * @author XingTian
  * @version 1.0.0
  * @date 2024/7/16 15:00
  * @since 1.1.1
  */
-public class BearerTokenExtractor  implements TokenExtractor {
+@Deprecated
+public class BearerTokenExtractor implements TokenExtractor {
 
-    private final static Log logger = LogFactory.getLog(org.springframework.security.oauth2.provider.authentication.BearerTokenExtractor.class);
+    private final static Log logger = LogFactory.getLog(BearerTokenExtractor.class);
 
     @Override
     public Authentication extract(HttpServletRequest request) {
@@ -43,8 +46,7 @@ public class BearerTokenExtractor  implements TokenExtractor {
             token = request.getParameter(OAuth2AccessToken.ACCESS_TOKEN);
             if (token == null) {
                 logger.debug("Token not found in request parameters.  Not an OAuth2 request.");
-            }
-            else {
+            } else {
                 request.setAttribute(OAuth2AuthenticationDetails.ACCESS_TOKEN_TYPE, OAuth2AccessToken.BEARER_TYPE);
             }
         }

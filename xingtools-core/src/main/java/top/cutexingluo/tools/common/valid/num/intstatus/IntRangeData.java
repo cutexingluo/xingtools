@@ -22,13 +22,13 @@ public class IntRangeData {
      *
      * <p> min value (inclusive)</p>
      */
-    protected double min;
+    protected int min;
     /**
      * 区间最大值
      *
      * <p>max value (inclusive)</p>
      */
-    protected double max;
+    protected int max;
 
     /**
      * 转化注解

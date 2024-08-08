@@ -17,6 +17,7 @@ import java.util.UUID;
  * JWT工具类
  *
  * <p>需要导入 io.jsonwebtoken:jjwt 包</p>
+ * <p>jdk 17 还需导入 javax.xml.bind:jaxb-api 包</p>
  */
 public class JwtUtil {
 

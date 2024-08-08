@@ -51,7 +51,6 @@ public class XTRedisUtil {
         xtThreadPool = xtRedisData.getXtThreadPool();
         if (xtThreadPool != null) threadPoolExecutor = xtThreadPool.getThreadPool();
         redisson = xtRedisData.getRedisson();
-//        log.info("XTRedisUtil --->  XTRedisData, RedisUtil, RedissonClient  已注入,  Redisson工具类 XTRedisUtil{}", "自动注入完成");
     }
 
     public XTRedisUtil refreshThreadPool() {

@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
@@ -152,5 +153,21 @@ public class XTCollUtil extends CollUtil {
         return collection.stream().collect(Collectors.toMap(keyMapper, valueMapper, mergeFunction));
     }
 
-
+    /**
+     * 如果给定集合为空，返回默认集合
+     * <p>此方法会检验参数</p>
+     *
+     * @param collection          集合
+     * @param nullDefaultSupplier –默认值懒加载函数
+     * @return 非空（empty）的原集合或默认集合
+     * @throws NullPointerException list 为null时且nullDefaultSupplier 为null时抛出
+     * @since 1.1.2
+     */
+    @NotNull
+    public static <T extends Collection<E>, E> T defaultIfEmptyCheck(T collection, Supplier<? extends T> nullDefaultSupplier) {
+        if (collection == null && nullDefaultSupplier == null) {
+            throw new NullPointerException("Collection and null Default Supplier should not be  null");
+        }
+        return defaultIfEmpty(collection, nullDefaultSupplier);
+    }
 }

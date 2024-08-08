@@ -1,13 +1,13 @@
 package top.cutexingluo.tools.security.ext;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
-
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
+import top.cutexingluo.tools.bridge.servlet.HttpServletRequestData;
 import top.cutexingluo.tools.security.base.BearerTokenExtractor;
 
 import java.util.Enumeration;
@@ -15,13 +15,16 @@ import java.util.Enumeration;
 /**
  * bearer标记器
  *
+ * <p>未来将被移除，请使用 cloud 包里面的类</p>
+ *
  * @author XingTian
  * @version 1.0.0
  * @date 2023/6/30 9:49
  */
+@Deprecated
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class XTBearerTokenExtractor  extends BearerTokenExtractor {
+public class XTBearerTokenExtractor extends BearerTokenExtractor {
 
     private String headerName = "Authorization";
 
@@ -53,6 +56,19 @@ public class XTBearerTokenExtractor  extends BearerTokenExtractor {
     public Authentication extract(HttpServletRequest request, String headerName) {
         this.headerName = headerName;
         return super.extract(request);
+    }
+
+    /**
+     * 提取为Authentication
+     *
+     * @param requestData 请求
+     * @param headerName  请求头名称
+     * @return {@link Authentication}
+     * @since 1.1.2
+     */
+    public Authentication extract(HttpServletRequestData requestData, String headerName) {
+        this.headerName = headerName;
+        return super.extract(requestData.getRequest());
     }
 
     @Override

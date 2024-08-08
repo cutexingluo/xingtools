@@ -1,11 +1,29 @@
 @Author XingTian
-@Version v1.1.1
+@Version v1.1.2
 @Since 2023-9-26
-@Update 2024-7-17
+@Update 2024-8-8
 
 
 
 更新公告
+2024-8-8  v1.1.2
+bug 修复
+1.由于未导入 spring-boot-starter-aop ，故启用 @EnableXingToolsServer 时使用 某个 aop 报错，目前将所有 aop 关闭；现在不使用 aop 不导入 aop 包，依旧能运行服务。
+在v1.1.1版本需要配置  xingtools.ext-transaction-anno.enabled=false # v1.1.1 版本需要关闭。
+2.修复 IntStatus 等参数校验注解未初始化的问题，以及数字匹配 matchNum 绝对匹配放行的问题。
+
+
+更改部分
+1.将 pkg-jdk8 和 pkg-jdk17 部分代码移除或移出到mvc包和cloud等其他包下，只做javax 和 jakarta 包的兼容，该包只依赖 core包。依赖关系更新。
+2.cloud包将支持 cloud 和 security 两种模块，可以根据需要按需导入模块。
+
+新增部分
+1.cloud 包新增对 spring-security , spring-security-oauth2 和 spring-authorization-server 等不同依赖的支持。并提取两个依赖中的公共元素合并作为新的类集合。
+例如：AuthToken, AuthAccessToken, AuthTokenExtractor, AuthTokenGenerator 等作为新的框架，和新的 XTAuthenticationBuilder 工具建造类对授权执行链的支持。
+2.新增 HttpStatus 作为 Constants 的另一种实现形式。并对 Result 等一系列返回封装类添加对应方法。
+3.新增系列集合类对 short 和 float 的支持，并新增 @ShortStatus 和 @FloatStatus 等参数校验注解。
+
+
 2024-7-10 ~ 2024-7-17  v1.1.1
 中版本更新，为了保证灵活性。更改工具 xingtool -> xingtools 。
 更改部分

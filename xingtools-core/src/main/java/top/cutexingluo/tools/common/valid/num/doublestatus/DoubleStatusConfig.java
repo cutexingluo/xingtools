@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * double 状态校验配置
@@ -27,7 +27,7 @@ public class DoubleStatusConfig {
     /**
      * 匹配数字
      */
-    List<Double> matchNum = null;
+    Set<Double> matchNum = null;
 
 
     /**

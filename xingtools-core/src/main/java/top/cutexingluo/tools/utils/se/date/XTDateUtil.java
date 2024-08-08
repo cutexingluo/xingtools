@@ -13,12 +13,33 @@ import java.util.Date;
  */
 
 public class XTDateUtil {
+
+
+    // to Date
+
+    public static Date toDate(Instant instant) {
+        return Date.from(instant);
+    }
+
+    public static Date toDate(ZonedDateTime zonedDateTime) {
+        return Date.from(zonedDateTime.toInstant());
+    }
+
     public static Date toDate(LocalDate localDate) {
         return Date.from(localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
     }
 
     public static Date toDate(LocalDateTime localDateTime) {
         return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+    }
+
+    // to LocalDate
+    public static LocalDate toLocalDate(Instant instant) {
+        return instant.atZone(ZoneId.systemDefault()).toLocalDate();
+    }
+
+    public static LocalDate toLocalDate(ZonedDateTime zonedDateTime) {
+        return zonedDateTime.toLocalDate();
     }
 
     public static LocalDate toLocalDate(Date date) {
@@ -29,11 +50,56 @@ public class XTDateUtil {
         return localDateTime.toLocalDate();
     }
 
+    // to LocalDateTime
+    public static LocalDateTime toLocalDateTime(Instant instant) {
+        return instant.atZone(ZoneId.systemDefault()).toLocalDateTime();
+    }
+
+    public static LocalDateTime toLocalDateTime(ZonedDateTime zonedDateTime) {
+        return zonedDateTime.toLocalDateTime();
+    }
+
     public static LocalDateTime toLocalDateTime(Date date) {
         return Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDateTime();
     }
 
     public static LocalDateTime toLocalDateTime(LocalDate localDate) {
         return localDate.atTime(LocalTime.from(localDate));
+    }
+
+    // to Instant
+
+    public static Instant toInstant(ZonedDateTime zonedDateTime) {
+        return zonedDateTime.toInstant();
+    }
+
+    public static Instant toInstant(Date date) {
+        return date.toInstant();
+    }
+
+    public static Instant toInstant(LocalDate localDate) {
+        return localDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
+    }
+
+    public static Instant toInstant(LocalDateTime localDateTime) {
+        return localDateTime.atZone(ZoneId.systemDefault()).toInstant();
+    }
+
+
+    // to ZonedDateTime
+    public static ZonedDateTime toZonedDateTime(Instant instant) {
+        return instant.atZone(ZoneId.systemDefault());
+    }
+
+    public static ZonedDateTime toZonedDateTime(Date date) {
+        return date.toInstant().atZone(ZoneId.systemDefault());
+    }
+
+    public static ZonedDateTime toZonedDateTime(LocalDate localDate) {
+        return localDate.atStartOfDay(ZoneId.systemDefault());
+    }
+
+    public static ZonedDateTime toZonedDateTime(LocalDateTime localDateTime) {
+        return localDateTime.atZone(ZoneId.systemDefault());
     }
 }
