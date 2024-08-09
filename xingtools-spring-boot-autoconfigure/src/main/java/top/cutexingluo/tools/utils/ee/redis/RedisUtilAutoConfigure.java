@@ -45,14 +45,14 @@ public class RedisUtilAutoConfigure {
     @Bean
     public QGRedisUtils qgRedisUtils(@Qualifier("xtRedisTemplate") RedisTemplate<String, Object> redisTemplate) {
         if (LogInfoAuto.enabled)
-            log.info("QGRedisUtils --->  RedisTemplate.class已存在,  Redis工具类  QGRedisUtils   {}", "自动注入完成");
+            log.info("QGRedisUtils --->  RedisTemplate.class已存在,  Redis工具类  QGRedisUtils   {}", "自动注册完成");
         return new QGRedisUtils(redisTemplate);
     }
 
     @ConditionalOnMissingBean
     @Bean
     public RedisUtil redisUtil(@Qualifier("xtRedisTemplate") RedisTemplate<String, Object> redisTemplate) {
-        if (LogInfoAuto.enabled) log.info("RedisUtil --->  RedisTemplate.class已存在, Redis工具类 RedisUtil  {}", "自动注入完成");
+        if (LogInfoAuto.enabled) log.info("RedisUtil --->  RedisTemplate.class已存在, Redis工具类 RedisUtil  {}", "自动注册完成");
         return new RedisUtil(redisTemplate);
     }
 
@@ -63,7 +63,7 @@ public class RedisUtilAutoConfigure {
     @Bean
     public RYRedisCache redisCache(@Qualifier("xtRedisTemplate") RedisTemplate<String, Object> redisTemplate) {
         if (LogInfoAuto.enabled)
-            log.info("RYRedisCache --->  RedisTemplate.class已存在, Redis工具类 RYRedisCache  {}", "自动注入完成");
+            log.info("RYRedisCache --->  RedisTemplate.class已存在, Redis工具类 RYRedisCache  {}", "自动注册完成");
         return new RYRedisCache(redisTemplate);
     }
 
@@ -71,7 +71,7 @@ public class RedisUtilAutoConfigure {
     @Bean
     public RedisLockUtil redisLockUtil(@Qualifier("xtRedisTemplate") RedisTemplate<String, Object> redisTemplate) {
         if (LogInfoAuto.enabled)
-            log.info("RedisLockUtil --->  RedisTemplate.class已存在, Redis工具类 RedisLockUtil  {}", "自动注入完成");
+            log.info("RedisLockUtil --->  RedisTemplate.class已存在, Redis工具类 RedisLockUtil  {}", "自动注册完成");
         return new RedisLockUtil(redisTemplate);
     }
 
@@ -79,7 +79,7 @@ public class RedisUtilAutoConfigure {
     @Bean
     public RedisRepository redisRepository(@Qualifier("xtRedisTemplate") RedisTemplate<String, Object> redisTemplate) {
         if (LogInfoAuto.enabled)
-            log.info("RedisRepository --->  RedisTemplate.class已存在, Redis工具类 RedisRepository  {}", "自动注入完成");
+            log.info("RedisRepository --->  RedisTemplate.class已存在, Redis工具类 RedisRepository  {}", "自动注册完成");
         return new RedisRepository(redisTemplate);
     }
 

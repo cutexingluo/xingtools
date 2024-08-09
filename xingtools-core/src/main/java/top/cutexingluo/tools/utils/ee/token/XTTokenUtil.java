@@ -9,8 +9,6 @@ import cn.hutool.jwt.JWTUtil;
 
 /**
  * XTToken 原生工具类<br>
- * 推荐使用 XTAccessTokenUtil <br>
- * 其次使用 TokenUtils<br>
  * 这个不推荐使用, 仅供参考
  *
  * @author XingTian

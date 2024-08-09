@@ -124,7 +124,23 @@ public class Result extends CommonResult<Integer, Object> implements XTStrCode {
         return put(constants, "");
     }
 
-    public static <C> Result put(IResult<C, Object> resultData) {
+
+    /**
+     * @since 1.1.2
+     */
+    public static Result put(HttpStatus httpStatus, Object data) {
+        return put(httpStatus.getCode(), httpStatus.getMsg(), data);
+    }
+
+    /**
+     * @since 1.1.2
+     */
+    public static Result put(HttpStatus httpStatus) {
+        return put(httpStatus, "");
+    }
+
+
+    public static <C> Result put(IResult<C, ?> resultData) {
         return put(resultData, resultData.getData());
     }
 
@@ -201,6 +217,20 @@ public class Result extends CommonResult<Integer, Object> implements XTStrCode {
 
     public static Result error(Constants constants, String msg) {
         return error(constants.intCode(), msg);
+    }
+
+    /**
+     * @since 1.1.2
+     */
+    public static Result error(HttpStatus httpStatus) {
+        return put(httpStatus, false);
+    }
+
+    /**
+     * @since 1.1.2
+     */
+    public static Result error(HttpStatus httpStatus, String msg) {
+        return error(httpStatus.getCode(), msg);
     }
 
     //----------------ext------------

@@ -8,7 +8,7 @@
     <parent>
         <artifactId>xingtools-parent</artifactId>
         <groupId>top.cutexingluo.tools</groupId>
-        <version>1.1.1</version>
+        <version>1.1.2</version>
     </parent>
 
     <artifactId>xingtools-mvc</artifactId>
@@ -60,8 +60,14 @@
             <optional>true</optional>
         </dependency>
 
+        <!--        redis-->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
+            <optional>true</optional>
+        </dependency>
 
-            <!--        redisson -->
+        <!--        redisson -->
         <dependency>
             <groupId>org.redisson</groupId>
             <artifactId>redisson</artifactId>
@@ -69,6 +75,12 @@
         </dependency>
 
 
+        <!--        guava  -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <optional>true</optional>
+        </dependency>
 
     </dependencies>
 

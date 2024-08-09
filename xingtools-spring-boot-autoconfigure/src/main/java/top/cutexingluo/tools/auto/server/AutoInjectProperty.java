@@ -42,7 +42,7 @@ public class AutoInjectProperty {
      * <p>
      * aop Lock锁注解是否开启 依赖于redissonConfig 所以上面redisconfig需要开启<br><br>
      * </p>
-     *<p>默认关闭</p>
+     * <p>默认关闭</p>
      * <p>xt-aop-lock</p>
      */
     private boolean xtAopLock = true;
@@ -101,7 +101,7 @@ public class AutoInjectProperty {
 
     /**
      * redis注入一系列的Redis工具类，默认关闭
-     * <p>例如RYRedisCache,QGRedisUtils,RedisUtil,XTRedisUtil等工具类全部自动注入</p>
+     * <p>例如RYRedisCache,QGRedisUtils,RedisUtil,XTRedisUtil等工具类全部自动注册</p>
      * <p>开启前需要把 redisconfig 项打开，并导入spring-data-redis 相关依赖</p>
      *
      * <p>redisconfig-util</p>
@@ -198,7 +198,8 @@ public class AutoInjectProperty {
      * 是否开启 @RequestLimit 防重复提交注解，默认关闭
      *
      * <p>如果需要默认的Redis策略，则需要把 request-limit-redis 配置打开</p>
-     *<p>request-limit</p>
+     * <p>request-limit</p>
+     *
      * @since 1.0.4
      */
     private boolean requestLimit = false;
@@ -208,7 +209,8 @@ public class AutoInjectProperty {
      * 提供自带的 Redis 策略 防重复提交注解，默认关闭
      * <p>1.需要导入 RedisTemplate 相关的包</p>
      * <p>2.需要开启request-limit配置，使注解 @RequestLimit  配置生效</p>
-     *<p>request-limit-redis</p>
+     * <p>request-limit-redis</p>
+     *
      * @since 1.0.4
      */
     private boolean requestLimitRedis = false;
@@ -218,7 +220,8 @@ public class AutoInjectProperty {
      * 是否启用 @WebLog 注解 AOP
      * <p>极力推荐，根据策略自定义打印字符串</p>
      * <p>默认关闭</p>
-     *<p>web-log-aop</p>
+     * <p>web-log-aop</p>
+     *
      * @since 1.0.4
      */
     private boolean webLogAop = false;

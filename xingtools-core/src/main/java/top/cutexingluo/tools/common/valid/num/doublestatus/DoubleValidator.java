@@ -22,7 +22,6 @@ public class DoubleValidator implements Validator<Double> {
      */
     protected DoubleStatusConfig statusConfig;
 
-
     @Override
     public boolean isValid(Double value) {
         if (value == null) {
@@ -30,8 +29,8 @@ public class DoubleValidator implements Validator<Double> {
         } else {
             // 1.条件匹配
             if (statusConfig.matchNum != null && !statusConfig.matchNum.isEmpty()) {
-                for (int i = 0; i < statusConfig.matchNum.size(); i++) {
-                    if (Math.abs(statusConfig.matchNum.get(i).compareTo(value)) <= statusConfig.eps) {
+                for (Double match : statusConfig.matchNum) {
+                    if (Math.abs(match - value) <= statusConfig.eps) {
                         return true;
                     }
                 }

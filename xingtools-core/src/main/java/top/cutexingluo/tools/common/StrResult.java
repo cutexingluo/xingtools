@@ -93,6 +93,20 @@ public class StrResult extends CommonResult<String, Object> implements XTIntCode
         return put(constants, "");
     }
 
+    /**
+     * @since 1.1.2
+     */
+    public static StrResult put(HttpStatus httpStatus, Object data) {
+        return put(httpStatus.strCode(), httpStatus.getMsg(), data);
+    }
+
+    /**
+     * @since 1.1.2
+     */
+    public static StrResult put(HttpStatus httpStatus) {
+        return put(httpStatus, "");
+    }
+
     public static <C> StrResult put(IResult<C, Object> resultData) {
         return put(resultData, resultData.getData());
     }
@@ -165,6 +179,20 @@ public class StrResult extends CommonResult<String, Object> implements XTIntCode
 
     public static StrResult error(Constants constants, String msg) {
         return error(constants.getCode(), msg);
+    }
+
+    /**
+     * @since 1.1.2
+     */
+    public static StrResult error(HttpStatus httpStatus) {
+        return put(httpStatus, false);
+    }
+
+    /**
+     * @since 1.1.2
+     */
+    public static StrResult error(HttpStatus httpStatus, String msg) {
+        return error(httpStatus.strCode(), msg);
     }
 
     //----------------ext------------

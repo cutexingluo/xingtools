@@ -157,8 +157,8 @@ public class XTHashMap<K, V> extends HashMap<K, V> implements XTBaseMap<K, V>, S
      * @return new map
      */
     @Override
-    public XTBaseMap<K, V> distinctValue() {
-        XTBaseMap<K, V> map2 = new XTHashMap<>(this);
+    public XTHashMap<K, V> distinctValue() {
+        XTHashMap<K, V> map2 = new XTHashMap<>(this);
         for (K key : this.keySet()) {
             if (!map2.containsValue(this.get(key))) {
                 map2.put(key, this.get(key));
@@ -180,8 +180,8 @@ public class XTHashMap<K, V> extends HashMap<K, V> implements XTBaseMap<K, V>, S
      * @return List 对象
      */
     @Override
-    public List<Entry<K, V>> sort(boolean byValue, boolean asc) {
-        List<Entry<K, V>> infoIds = new ArrayList<>(this.entrySet());
+    public ArrayList<Entry<K, V>> sort(boolean byValue, boolean asc) {
+        ArrayList<Entry<K, V>> infoIds = new ArrayList<>(this.entrySet());
         if (infoIds.size() == 0) return infoIds;
         if (byValue) {
             XTComparator<V> comparator = new XTComparator<>(asc);
@@ -198,7 +198,7 @@ public class XTHashMap<K, V> extends HashMap<K, V> implements XTBaseMap<K, V>, S
      *
      * @return List对象
      */
-    public List<Entry<K, V>> sortValue() {
+    public ArrayList<Entry<K, V>> sortValue() {
         return sort(true, true);
     }
 
@@ -207,7 +207,7 @@ public class XTHashMap<K, V> extends HashMap<K, V> implements XTBaseMap<K, V>, S
      *
      * @return List对象
      */
-    public List<Entry<K, V>> sortValue(boolean isAsc) {
+    public ArrayList<Entry<K, V>> sortValue(boolean isAsc) {
         return sort(true, isAsc);
     }
 
@@ -219,7 +219,7 @@ public class XTHashMap<K, V> extends HashMap<K, V> implements XTBaseMap<K, V>, S
      * @return {@link XTSortResult}<{@link K}, {@link V}>
      */
     public XTSortResult<K, V> sortAndGetNotNullCount(boolean byValue, boolean asc) {
-        List<Entry<K, V>> list = this.sort(byValue, asc);
+        ArrayList<Entry<K, V>> list = this.sort(byValue, asc);
         int count = 0;
         if (byValue) {
             for (Entry<K, V> entry : list) {

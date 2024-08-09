@@ -8,17 +8,17 @@
     <parent>
         <artifactId>xingtools-parent</artifactId>
         <groupId>top.cutexingluo.tools</groupId>
-        <version>1.1.1</version>
+        <version>1.1.2</version>
     </parent>
 
     <artifactId>xingtools-aop</artifactId>
     <name>${project.artifactId}</name>
-    <description>xingtools 依赖mvc，log，pkg三包，提供前面依赖的aop注解和切面类</description>
+    <description>xingtools 依赖mvc，log，cloud三包，提供前面依赖的aop注解和切面类</description>
 
 
     <properties>
         <!-- versions -->
-<!--        <spring.version>5.3.27</spring.version>-->
+        <!--        <spring.version>5.3.27</spring.version>-->
 
     </properties>
 
@@ -35,14 +35,11 @@
             <version>${project.parent.version}</version>
         </dependency>
 
-        <!--    default version -->
         <dependency>
             <groupId>top.cutexingluo.tools</groupId>
-            <artifactId>xingtools-pkg-jdk8</artifactId>
+            <artifactId>xingtools-cloud</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
-
-
 
 
         <dependency>
@@ -59,7 +56,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>16.0</version>
+            <optional>true</optional>
         </dependency>
 
 
@@ -102,16 +99,16 @@
         </dependency>
 
         <!--        只引不导  -->
-<!--        <dependency>-->
-<!--            <groupId>javax.servlet</groupId>-->
-<!--            <artifactId>javax.servlet-api</artifactId>-->
-<!--            <optional>true</optional>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>jakarta.servlet</groupId>-->
-<!--            <artifactId>jakarta.servlet-api</artifactId>-->
-<!--            <optional>true</optional>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>javax.servlet</groupId>-->
+        <!--            <artifactId>javax.servlet-api</artifactId>-->
+        <!--            <optional>true</optional>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>jakarta.servlet</groupId>-->
+        <!--            <artifactId>jakarta.servlet-api</artifactId>-->
+        <!--            <optional>true</optional>-->
+        <!--        </dependency>-->
 
 
     </dependencies>

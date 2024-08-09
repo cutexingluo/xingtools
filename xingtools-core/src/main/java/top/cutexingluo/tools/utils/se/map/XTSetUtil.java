@@ -51,10 +51,38 @@ public class XTSetUtil {
     }
 
     /**
+     * [] 数组转为 Set
+     *
+     * @since 1.1.2
+     */
+    public static Set<Short> toSet(short[] array) {
+        final int length = array.length;
+        Set<Short> set = new HashSet<>(length);
+        for (short item : array) {
+            set.add(item);
+        }
+        return set;
+    }
+
+
+    /**
      * [] 数组转为 List
      */
     public static Set<Long> toSet(long[] array) {
         return Arrays.stream(array).boxed().collect(Collectors.toSet());
+    }
+
+
+    /**
+     * [] 数组转为 List
+     */
+    public static Set<Float> toSet(float[] array) {
+        final int length = array.length;
+        Set<Float> set = new HashSet<>(length);
+        for (float item : array) {
+            set.add(item);
+        }
+        return set;
     }
 
     /**

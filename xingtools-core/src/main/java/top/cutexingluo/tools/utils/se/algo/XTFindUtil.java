@@ -1,5 +1,7 @@
 package top.cutexingluo.tools.utils.se.algo;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -15,6 +17,39 @@ import java.util.stream.Collectors;
  * @date 2023/2/2 21:55
  */
 public class XTFindUtil {
+    /********************普通查找****************
+     /**
+     * 查找符合条件的数据,查找第一个下标
+     *
+     * @param list          要查询的列表
+     * @param filterChecker 过滤器
+     * @return 下标，-1 没找到
+     */
+    public static <T> int findFirst(@NotNull List<T> list, @NotNull Predicate<T> filterChecker) {
+        for (int i = 0; i < list.size(); i++) {
+            if (filterChecker.test(list.get(i))) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * 查找符合条件的数据,查找第一个下标
+     *
+     * @param array         要查询的数组
+     * @param filterChecker 过滤器
+     * @return 下标，-1 没找到
+     */
+    public static <T> int findFirst(@NotNull T[] array, @NotNull Predicate<T> filterChecker) {
+        for (int i = 0; i < array.length; i++) {
+            if (filterChecker.test(array[i])) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     //********************基于数据量的查找****************
     //
 
