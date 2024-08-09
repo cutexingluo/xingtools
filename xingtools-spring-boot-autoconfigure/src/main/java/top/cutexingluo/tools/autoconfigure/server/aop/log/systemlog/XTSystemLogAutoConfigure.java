@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import top.cutexingluo.tools.aop.systemlog.XTSystemLogAop;
+import top.cutexingluo.tools.aop.log.systemlog.XTSystemLogAop;
 import top.cutexingluo.tools.auto.server.XingToolsAutoConfiguration;
 import top.cutexingluo.tools.start.log.LogInfoAuto;
 
@@ -22,12 +22,12 @@ import top.cutexingluo.tools.start.log.LogInfoAuto;
         matchIfMissing = false)
 @Slf4j
 @Configuration(proxyBeanMethods = false)
-public class XTSystemLogAutoConfigure{
+public class XTSystemLogAutoConfigure {
 
     @ConditionalOnMissingBean
     @Bean
     public XTSystemLogAop xtSystemLogAop() {
-        if (LogInfoAuto.enabled) log.info("XTSystemLog Aop ---->  {}", "接口调用日志 AOP，自动注入成功");
+        if (LogInfoAuto.enabled) log.info("XTSystemLog Aop ---->  {}", "接口调用日志 AOP，自动注册成功");
         return new XTSystemLogAop();
     }
 }

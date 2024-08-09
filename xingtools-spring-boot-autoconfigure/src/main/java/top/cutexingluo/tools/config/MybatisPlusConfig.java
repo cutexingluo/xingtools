@@ -32,7 +32,7 @@ public class MybatisPlusConfig {
     @ConditionalOnMissingBean
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
-        if (LogInfoAuto.enabled) log.info("MybatisPlusConfig ---->  {}", "分页插件配置，自动注入成功");
+        if (LogInfoAuto.enabled) log.info("MybatisPlusConfig ---->  {}", "分页插件配置，自动注册成功");
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
         interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
         return interceptor;

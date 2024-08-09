@@ -27,8 +27,8 @@ public class LongValidator implements Validator<Long> {
             return !statusConfig.notNull;
         } else {
             // 1.条件匹配
-            if (statusConfig.matchNum != null && !statusConfig.matchNum.isEmpty() && statusConfig.matchNum.contains(value)) {
-                return true; // 开始通过
+            if (statusConfig.matchNum != null && !statusConfig.matchNum.isEmpty()) {
+                return statusConfig.matchNum.contains(value); // 开始通过
             }
             // 2.大小限制
             if (statusConfig.limit) {

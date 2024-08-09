@@ -28,7 +28,7 @@ import top.cutexingluo.tools.start.log.LogInfoAuto;
 @ConditionalOnClass(DataSourceTransactionManager.class)
 @ConditionalOnBean({XingToolsAutoConfiguration.class, DataSourceTransactionManager.class})
 @ConditionalOnProperty(prefix = "xingtools.ext-transaction-anno", value = "enabled", havingValue = "true",
-        matchIfMissing = true)
+        matchIfMissing = false)
 @Import({TransactionalUtils.class})
 //@EnableAspectJAutoProxy
 @EnableTransactionManagement
@@ -37,7 +37,7 @@ public class ExtTransactionAutoConfigure {
     @ConditionalOnMissingBean
     @Bean
     public ExtTransactionalAop extTransactionAop() {
-        if (LogInfoAuto.enabled) log.info("ExtTransactionalAop ---->  {}", "Ext事务注解AOP，自动注入成功");
+        if (LogInfoAuto.enabled) log.info("ExtTransactionalAop ---->  {}", "Ext事务注解AOP，自动注册成功");
         return new ExtTransactionalAop();
     }
 

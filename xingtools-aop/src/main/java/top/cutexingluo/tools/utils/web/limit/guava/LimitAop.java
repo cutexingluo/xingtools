@@ -14,11 +14,13 @@ import top.cutexingluo.tools.common.Constants;
 import top.cutexingluo.tools.common.Result;
 import top.cutexingluo.tools.common.base.IResult;
 import top.cutexingluo.tools.common.utils.GlobalResultFactory;
-import top.cutexingluo.tools.utils.ee.servlet.util.HttpServletUtil;
+import top.cutexingluo.tools.utils.ee.web.front.XTResponseUtil;
+import top.cutexingluo.tools.utils.ee.web.holder.HttpContextUtil;
 import top.cutexingluo.tools.utils.ee.web.limit.guava.Limit;
 import top.cutexingluo.tools.utils.ee.web.limit.submit.base.RequestLimit;
 import top.cutexingluo.tools.utils.ee.web.limit.submit.pkg.RequestLimitHandler;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Map;
 
@@ -69,14 +71,14 @@ public class LimitAop {
                 // 创建令牌桶
                 rateLimiter = RateLimiter.create(limit.permitsPerSecond());
                 limitMap.put(key, rateLimiter);
-                if(logEnabled)log.info("新建了令牌桶={}，容量={}", key, limit.permitsPerSecond());
+                if (logEnabled) log.info("新建了令牌桶={}，容量={}", key, limit.permitsPerSecond());
             }
             rateLimiter = limitMap.get(key);
             // 拿令牌
             boolean acquire = rateLimiter.tryAcquire(limit.timeout(), limit.timeunit());
             // 拿不到命令，直接返回异常提示
             if (!acquire) {
-                if(logEnabled)log.debug("令牌桶={}，获取令牌失败", key);
+                if (logEnabled) log.debug("令牌桶={}，获取令牌失败", key);
                 this.responseFail(limit.msg());
                 return null;
             }
@@ -89,11 +91,10 @@ public class LimitAop {
      *
      * @param msg 提示信息
      */
-    private <C, T> void responseFail(String msg) {
-
+    private <C, T> void responseFail(String msg) throws IOException {
         IResult<C, T> err = globalResultFactory == null ?
                 (IResult<C, T>) Result.error(Constants.CODE_403, msg) :
                 globalResultFactory.newResult(Constants.CODE_403.intCode(), msg, null);
-        HttpServletUtil.rendString(JSONUtil.toJsonStr(err));
+        XTResponseUtil.forbidden(HttpContextUtil.getHttpServletResponse(), JSONUtil.toJsonStr(err));
     }
 }

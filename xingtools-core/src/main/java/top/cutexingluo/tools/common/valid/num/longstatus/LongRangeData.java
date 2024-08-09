@@ -22,13 +22,13 @@ public class LongRangeData {
      *
      * <p> min value (inclusive)</p>
      */
-    protected double min;
+    protected long min;
     /**
      * 区间最大值
      *
      * <p>max value (inclusive)</p>
      */
-    protected double max;
+    protected long max;
 
     /**
      * 转化注解

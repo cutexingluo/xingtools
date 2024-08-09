@@ -28,7 +28,7 @@ public class RequestLimitAuto {
     @ConditionalOnMissingBean(RequestLimitAspect.class)
     @Bean
     public RequestLimitAspect requestLimitAspect() {
-        if (LogInfoAuto.enabled) log.info("RequestLimitAspect ---->  {}", "请求限制 AOP，自动注入成功");
+        if (LogInfoAuto.enabled) log.info("RequestLimitAspect ---->  {}", "请求限制 AOP，自动注册成功");
         return new RequestLimitAspect();
     }
 }

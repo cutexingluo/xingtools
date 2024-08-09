@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Configuration;
  * <p>1.用于配合 server.port 等</p>
  * <p>2.配置文件代码提示</p>
  *
+ * <p>历史遗留</p>
+ *
  * @author XingTian
  * @version 1.0.0
  * @date 2023/2/3 17:08
@@ -17,6 +19,14 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "server")
 @Configuration
 public class ServerProperty {
-    private String ip = "localhost";
+
+    /**
+     * 本机/目标 ip
+     */
+    private String ip = "127.0.0.1";
+
+    /**
+     * 本机/目标 url
+     */
     private String targetUrl = "/**";
 }

@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import top.cutexingluo.tools.common.valid.StatusValidator;
-import top.cutexingluo.tools.utils.se.array.XTArrayUtil;
+import top.cutexingluo.tools.utils.se.map.XTSetUtil;
 
 import javax.validation.ConstraintValidatorContext;
 
@@ -29,7 +29,7 @@ public class DoubleStatusValidator extends StatusValidator<DoubleStatus, Double>
     public void initialize(DoubleStatus constraintAnnotation) {
         statusConfig = new DoubleStatusConfig(
                 constraintAnnotation.notNull(),
-                XTArrayUtil.toList(constraintAnnotation.matchNum()),
+                XTSetUtil.toSet(constraintAnnotation.matchNum()),
                 constraintAnnotation.limit(),
                 constraintAnnotation.eps(),
                 constraintAnnotation.min(),
