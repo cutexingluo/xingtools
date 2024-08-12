@@ -3,6 +3,7 @@ package top.cutexingluo.tools.security.self.core;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import top.cutexingluo.tools.bridge.servlet.HttpServletRequestData;
+import top.cutexingluo.tools.bridge.servlet.adapter.HttpServletRequestDataAdapter;
 import top.cutexingluo.tools.security.self.base.AbstractAuthTokenExtractor;
 
 /**
@@ -39,9 +40,9 @@ public class XTAuthTokenExtractor extends AbstractAuthTokenExtractor {
     @Override
     public String extractToken(HttpServletRequestData request) {
         if (useCookies) {
-            return super.extractCookieToken(request, headerName, prefix);
+            return super.extractCookieToken(HttpServletRequestDataAdapter.of(request), headerName, prefix);
         } else {
-            return super.extractHeaderToken(request, headerName, prefix);
+            return super.extractHeaderToken(HttpServletRequestDataAdapter.of(request), headerName, prefix);
         }
     }
 }

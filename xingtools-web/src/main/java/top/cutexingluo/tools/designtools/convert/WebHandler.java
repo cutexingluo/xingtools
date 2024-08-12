@@ -2,7 +2,8 @@ package top.cutexingluo.tools.designtools.convert;
 
 import org.jetbrains.annotations.NotNull;
 import top.cutexingluo.tools.basepackage.bundle.AspectBundle;
-import top.cutexingluo.tools.bridge.servlet.HttpServletRequestData;
+import top.cutexingluo.tools.bridge.servlet.adapter.HttpServletRequestAdapter;
+import top.cutexingluo.tools.bridge.servlet.adapter.HttpServletRequestDataAdapter;
 
 import java.lang.reflect.Method;
 import java.util.function.BiFunction;
@@ -15,7 +16,7 @@ import java.util.function.BiFunction;
  * @date 2024/1/13 13:16
  * @since 1.0.4
  */
-public interface WebHandler extends BiFunction<Method, HttpServletRequestData, String> {
+public interface WebHandler extends BiFunction<Method, HttpServletRequestAdapter, String> {
 
     /**
      * 使用 bundle 的数据
@@ -23,6 +24,6 @@ public interface WebHandler extends BiFunction<Method, HttpServletRequestData, S
      * @since 1.1.1
      */
     default String apply(@NotNull AspectBundle bundle) {
-        return this.apply(bundle.getMethod(), bundle.getRequest());
+        return this.apply(bundle.getMethod(), HttpServletRequestDataAdapter.of(bundle.getRequest()));
     }
 }

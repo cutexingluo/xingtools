@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.core.Authentication;
 import top.cutexingluo.tools.bridge.servlet.HttpServletRequestData;
+import top.cutexingluo.tools.bridge.servlet.adapter.HttpServletRequestDataAdapter;
 
 /**
  * bearer 令牌提取器
@@ -49,9 +50,9 @@ public class XTAuthBearTokenExtractor extends AuthBearerTokenExtractor {
     @Override
     protected String extractHeaderToken(HttpServletRequestData request) {
         if (useCookies) {
-            return super.extractCookieToken(request, headerName, BEARER);
+            return super.extractCookieToken(HttpServletRequestDataAdapter.of(request), headerName, BEARER);
         } else {
-            return super.extractHeaderToken(request, headerName, BEARER);
+            return super.extractHeaderToken(HttpServletRequestDataAdapter.of(request), headerName, BEARER);
         }
     }
 

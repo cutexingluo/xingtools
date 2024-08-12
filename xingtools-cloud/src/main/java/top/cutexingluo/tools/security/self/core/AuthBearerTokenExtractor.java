@@ -3,6 +3,7 @@ package top.cutexingluo.tools.security.self.core;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import top.cutexingluo.tools.bridge.servlet.HttpServletRequestData;
+import top.cutexingluo.tools.bridge.servlet.adapter.HttpServletRequestDataAdapter;
 import top.cutexingluo.tools.security.base.BearerTokenExtractor;
 import top.cutexingluo.tools.security.self.base.AbstractAuthTokenExtractor;
 
@@ -50,6 +51,6 @@ public class AuthBearerTokenExtractor extends AbstractAuthTokenExtractor {
      * @return The token, or null if no OAuth authorization header was supplied.
      */
     protected String extractHeaderToken(HttpServletRequestData request) {
-        return extractHeaderToken(request, "Authorization", BEARER);
+        return extractHeaderToken(HttpServletRequestDataAdapter.of(request), "Authorization", BEARER);
     }
 }

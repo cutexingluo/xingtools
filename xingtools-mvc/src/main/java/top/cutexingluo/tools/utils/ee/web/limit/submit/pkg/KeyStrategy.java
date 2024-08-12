@@ -2,8 +2,6 @@ package top.cutexingluo.tools.utils.ee.web.limit.submit.pkg;
 
 import top.cutexingluo.tools.utils.ee.web.limit.submit.base.RequestLimitKey;
 
-import javax.servlet.http.HttpServletRequest;
-
 /**
  * key string 组装策略
  *
@@ -20,7 +18,7 @@ public class KeyStrategy {
      * <p>例如 127.0.0.1</p>
      * <p> key = "ip"</p>
      *
-     * <p>HttpServletRequest:  {@link HttpServletRequest}</p>
+     * <p>HttpServletRequest</p>
      */
     public final static int IP = 0b10000;
 
@@ -30,7 +28,7 @@ public class KeyStrategy {
      * <p>例如 GET POST PUT DELETE 等</p>
      * <p> key = "httpMethod"</p>
      *
-     * <p>HttpServletRequest:  {@link HttpServletRequest}</p>
+     * <p>HttpServletRequest</p>
      */
     public final static int HTTP_METHOD = 0b01000;
 
@@ -40,7 +38,7 @@ public class KeyStrategy {
      * <p>例如 /xxx/xxx/xxx</p>
      * <p> key = "httpUri"</p>
      *
-     * <p>HttpServletRequest:  {@link HttpServletRequest}</p>
+     * <p>HttpServletRequest</p>
      */
     public final static int HTTP_URI = 0b00100;
 

@@ -1,7 +1,9 @@
 package top.cutexingluo.tools.utils.ee.web.front;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.jetbrains.annotations.NotNull;
+import top.cutexingluo.tools.bridge.servlet.HttpServletResponseData;
 import top.cutexingluo.tools.common.base.IResult;
+import top.cutexingluo.tools.designtools.protocol.serializer.impl.json.JacksonSerializer;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
@@ -25,8 +27,23 @@ public class WebUtils {
      * @param rspStatusCode 返回码
      */
     public static <C, T> void response(HttpServletResponse rsp, IResult<C, T> result, int rspStatusCode) throws IOException {
-        byte[] responseBytes = new ObjectMapper().writeValueAsBytes(result);
-        response(rsp, new String(responseBytes), rspStatusCode);
+        JacksonSerializer serializer = new JacksonSerializer();
+        String stringify = serializer.stringify(result);
+//        byte[] responseBytes = new ObjectMapper().writeValueAsBytes(result);
+//        new String(responseBytes)
+        response(rsp, stringify, rspStatusCode);
+    }
+
+    /**
+     * 返回请求
+     *
+     * @param rsp           返回请求
+     * @param result        返回消息
+     * @param rspStatusCode 返回码
+     * @since 1.1.3
+     */
+    public static <C, T> void response(@NotNull HttpServletResponseData rsp, String result, int rspStatusCode) throws IOException {
+        response(rsp.getResponse(), result, rspStatusCode);
     }
 
 

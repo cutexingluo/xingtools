@@ -5,7 +5,7 @@ import org.lionsoul.ip2region.xdb.Searcher;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.StringUtils;
-import top.cutexingluo.tools.bridge.servlet.HttpServletRequestData;
+import top.cutexingluo.tools.bridge.servlet.adapter.HttpServletRequestAdapter;
 import top.cutexingluo.tools.common.Constants;
 import top.cutexingluo.tools.exception.ServiceException;
 
@@ -41,27 +41,27 @@ public class IpUtils {
     /**
      * 在Nginx等代理之后获取用户真实IP地址
      */
-    public static String getIpAddress(HttpServletRequestData request) {
+    public static String getIpAddress(HttpServletRequestAdapter request) {
         String ip;
         try {
-            ip = request.getRequest().getHeader("X-Real-IP");
+            ip = request.getHeader("X-Real-IP");
             if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-                ip = request.getRequest().getHeader("x-forwarded-for");
+                ip = request.getHeader("x-forwarded-for");
             }
             if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-                ip = request.getRequest().getHeader("Proxy-Client-IP");
+                ip = request.getHeader("Proxy-Client-IP");
             }
             if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-                ip = request.getRequest().getHeader("WL-Proxy-Client-IP");
+                ip = request.getHeader("WL-Proxy-Client-IP");
             }
             if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-                ip = request.getRequest().getHeader("HTTP_CLIENT_IP");
+                ip = request.getHeader("HTTP_CLIENT_IP");
             }
             if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-                ip = request.getRequest().getHeader("HTTP_X_FORWARDED_FOR");
+                ip = request.getHeader("HTTP_X_FORWARDED_FOR");
             }
             if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-                ip = request.getRequest().getRemoteAddr();
+                ip = request.getRemoteAddr();
                 if ("127.0.0.1".equals(ip) || "0:0:0:0:0:0:0:1".equals(ip)) {
                     //根据网卡取本机配置的IP
                     InetAddress inet = null;

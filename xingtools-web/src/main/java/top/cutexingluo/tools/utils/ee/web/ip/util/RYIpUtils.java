@@ -2,7 +2,7 @@ package top.cutexingluo.tools.utils.ee.web.ip.util;
 
 
 import cn.hutool.core.util.StrUtil;
-import top.cutexingluo.tools.bridge.servlet.HttpServletRequestData;
+import top.cutexingluo.tools.bridge.servlet.adapter.HttpServletRequestAdapter;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -28,32 +28,32 @@ public class RYIpUtils {
      * @param request 请求对象
      * @return IP地址
      */
-    public static String getIpAddr(HttpServletRequestData request) {
+    public static String getIpAddr(HttpServletRequestAdapter request) {
         if (request == null) {
             return "unknown";
         }
-        String ip = request.getRequest().getHeader("x-forwarded-for");
+        String ip = request.getHeader("x-forwarded-for");
         if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
-            ip = request.getRequest().getHeader("Proxy-Client-IP");
+            ip = request.getHeader("Proxy-Client-IP");
         }
         if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
-            ip = request.getRequest().getHeader("X-Forwarded-For");
+            ip = request.getHeader("X-Forwarded-For");
         }
         if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
-            ip = request.getRequest().getHeader("WL-Proxy-Client-IP");
+            ip = request.getHeader("WL-Proxy-Client-IP");
         }
         if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
-            ip = request.getRequest().getHeader("X-Real-IP");
+            ip = request.getHeader("X-Real-IP");
         }
         if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
-            ip = request.getRequest().getHeader("HTTP_CLIENT_IP");
+            ip = request.getHeader("HTTP_CLIENT_IP");
         }
         if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
-            ip = request.getRequest().getHeader("HTTP_X_FORWARDED_FOR");
+            ip = request.getHeader("HTTP_X_FORWARDED_FOR");
         }
 
         if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
-            ip = request.getRequest().getRemoteAddr();
+            ip = request.getRemoteAddr();
         }
 
         return LOCALHOST_IPV6.equals(ip) ? LOCALHOST_IP : getMultistageReverseProxyIp(ip);
