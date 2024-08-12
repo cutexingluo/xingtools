@@ -7,14 +7,14 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.method.HandlerMethod;
-import top.cutexingluo.tools.bridge.servlet.HttpServletRequestData;
-import top.cutexingluo.tools.bridge.servlet.HttpServletResponseData;
+import top.cutexingluo.tools.bridge.servlet.adapter.HttpServletRequestAdapter;
+import top.cutexingluo.tools.bridge.servlet.adapter.HttpServletResponseAdapter;
+import top.cutexingluo.tools.common.HttpStatus;
 import top.cutexingluo.tools.common.Result;
 import top.cutexingluo.tools.common.base.IResult;
 import top.cutexingluo.tools.common.utils.GlobalResultFactory;
 import top.cutexingluo.tools.utils.ee.redis.RYRedisCache;
 import top.cutexingluo.tools.utils.ee.redis.RYRedisUtil;
-import top.cutexingluo.tools.utils.ee.web.front.XTResponseUtil;
 import top.cutexingluo.tools.utils.ee.web.ip.util.IpUtils;
 import top.cutexingluo.tools.utils.ee.web.limit.submit.base.RequestLimit;
 import top.cutexingluo.tools.utils.ee.web.limit.submit.pkg.RequestLimitHandler;
@@ -89,7 +89,7 @@ public class AccessLimitUtil {
      * @return boolean
      * @throws Exception 异常
      */
-    public static boolean limitFilter(HttpServletRequestData request, HttpServletResponseData response, Object handler) throws Exception {
+    public static boolean limitFilter(HttpServletRequestAdapter request, HttpServletResponseAdapter response, Object handler) throws Exception {
         if (firstTime && !checkRedis()) { //第一次对配置进行检查
             return false;
         }
@@ -121,11 +121,11 @@ public class AccessLimitUtil {
      * @throws Exception 异常
      * @updateFrom 1.0.4
      */
-    public static boolean limitAll(HttpServletRequestData request, HttpServletResponseData response,
+    public static boolean limitAll(HttpServletRequestAdapter request, HttpServletResponseAdapter response,
                                    int interval, int maxCount, String outLimitMsg) throws Exception {
         String ip = IpUtils.getIpAddress(request);
-        String method = request.getRequest().getMethod();
-        String requestUri = request.getRequest().getRequestURI();
+        String method = request.getMethod();
+        String requestUri = request.getRequestURI();
         String redisKey = "IP-" + ip + ":" + method + ":" + requestUri;
         return limit(response, redisKey, interval, maxCount, outLimitMsg);
     }
@@ -143,11 +143,11 @@ public class AccessLimitUtil {
      * @throws Exception 例外
      * @since 1.0.4
      */
-    public static <T> boolean limitStrategy(HttpServletRequestData request, HttpServletResponseData response,
+    public static <T> boolean limitStrategy(HttpServletRequestAdapter request, HttpServletResponseAdapter response,
                                             int interval, int maxCount, @NotNull Function<String, T> keyToResponseResult) throws Exception {
         String ip = IpUtils.getIpAddress(request);
-        String method = request.getRequest().getMethod();
-        String requestUri = request.getRequest().getRequestURI();
+        String method = request.getMethod();
+        String requestUri = request.getRequestURI();
         String redisKey = "IP-" + ip + ":" + method + ":" + requestUri;
         return limit(response, redisKey, interval, maxCount, keyToResponseResult.apply(redisKey));
     }
@@ -163,7 +163,7 @@ public class AccessLimitUtil {
      * @return boolean
      * @throws Exception 异常
      */
-    public static boolean limitIP(HttpServletRequestData request, HttpServletResponseData response,
+    public static boolean limitIP(HttpServletRequestAdapter request, HttpServletResponseAdapter response,
                                   int interval, int maxCount, String outLimitMsg) throws Exception {
         String ip = IpUtils.getIpAddress(request);
         String redisKey = "limitIp:" + ip;
@@ -182,7 +182,7 @@ public class AccessLimitUtil {
      * @throws Exception 异常
      * @updateFrom 1.0.3
      */
-    public static <C, T> boolean limit(HttpServletResponseData response,
+    public static <C, T> boolean limit(HttpServletResponseAdapter response,
                                        String redisKey,
                                        int interval, int maxCount, String outLimitMsg) throws Exception {
         if (globalResultFactory == null && applicationContext != null) {
@@ -209,7 +209,7 @@ public class AccessLimitUtil {
      * @return boolean 是否通过
      * @throws Exception 异常
      */
-    public static <T> boolean limit(HttpServletResponseData response,
+    public static <T> boolean limit(HttpServletResponseAdapter response,
                                     String redisKey,
                                     int interval, int maxCount, T responseResult) throws Exception {
         if (firstTime && !checkRedis()) { //第一次对配置进行检查
@@ -222,7 +222,8 @@ public class AccessLimitUtil {
             if (Objects.nonNull(count) && count == 1) {
                 redisCache.expire(redisKey, interval, TimeUnit.SECONDS);
             } else if (count > maxCount) {
-                XTResponseUtil.success(response.getResponse(), JSONUtil.toJsonStr(responseResult));
+                response.response(JSONUtil.toJsonStr(responseResult), HttpStatus.SUCCESS.getCode());
+//                XTResponseUtil.success(response.getResponse(), JSONUtil.toJsonStr(responseResult));
                 if (showLog) log.warn(redisKey + "请求次数超过每" + interval + "秒" + maxCount + "次");
                 result = false;
             }

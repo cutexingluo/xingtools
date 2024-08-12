@@ -1,12 +1,12 @@
 # xingtools 工具包
 
 ## :book:相关介绍
-xingtools sdk 工具包，v1.1.2 正式版发布。( 依赖的版本不能低于 1.1.1 )
+xingtools sdk 工具包，v1.1.3 正式版发布。( 依赖的版本不能低于 1.1.1 )
 星天（xingtian）制作的 Java 工具包，是基于 Springboot 2.7.18 和 SpringBoot 3.0.5 制作的 ,  基于 Java 8 和 Java 17，它是一个整合各工具类的整合包。
 
 ### :scroll:简介
 
-是一个功能丰富且易用的 **Java工具库**，通过诸多实用工具类的使用，旨在帮助开发者快速、便捷地完成各类开发任务。 这些封装的工具涵盖了hutool包（依赖[hutool包](https://gitee.com/dromara/hutool)）, 部分 ruoyi 工具类，包含了系列字符串、数字、集合、编码、日期、文件、IO、加密、数据库JDBC、JSON、HTTP客户端等一系列操作，还包含了 ACM算法，jdk版本兼容包，各种base接口，注解AOP装配，配置自动装配，可以满足各种不同的开发需求。
+是一个功能丰富且易用的 **Java工具库**，通过诸多实用工具类的使用，旨在帮助开发者快速、便捷地完成各类开发任务。 这些封装的工具涵盖了hutool包（依赖[hutool包](https://gitee.com/dromara/hutool)）, 部分 ruoyi 工具类，包含了系列字符串、数字、集合、编码、日期、文件、IO、加密、数据库JDBC、JSON、HTTP客户端等一系列操作，还包含了 ACM算法，JDK版本兼容包，各种base接口，注解AOP装配，配置自动装配，可以满足各种不同的开发需求。
 
 目前仍使用 xingtool 文档 v1.0.5 [使用文档](使用文档.md)，未来会更新。
 
@@ -33,7 +33,7 @@ xingtools sdk 工具包，v1.1.2 正式版发布。( 依赖的版本不能低于
 | xingtools-spring-boot-autoconfigure | 整合版本的自动装配，含各种自动装配配置，开关，注解，类等     |
 | xingtools-spring-boot-starter       | 最终依赖包                                                   |
 
-当前版本组件之间的依赖关系如下：（v1.1.2 组件依赖更新）
+当前版本组件之间的依赖关系如下：（v1.1.2 开始组件依赖更新，后续沿用该依赖关系）
 
 ![image-20240808174556862](./assets/image-20240808174556862.png)
 
@@ -47,37 +47,54 @@ xingtools sdk 工具包，v1.1.2 正式版发布。( 依赖的版本不能低于
 
 > 使用 Maven 导入依赖
 
-Maven 依赖（jdk8版本）
+Maven 依赖（JDK8版本）
 
 ```xml
 <dependency>
 	<groupId>top.cutexingluo.tools</groupId>
 	<artifactId>xingtools-spring-boot-starter</artifactId>
-	<version>1.1.2</version>
+	<version>1.1.3</version>
 </dependency>
 <dependency>
 	<groupId>top.cutexingluo.tools</groupId>
 	<artifactId>xingtools-pkg-jdk8</artifactId>
-	<version>1.1.2</version>
+	<version>1.1.3</version>
 </dependency>
 ```
 
-Maven 依赖（jdk17版本）
+Maven 依赖（JDK17版本）
 
 ```xml
 <dependency>
 	<groupId>top.cutexingluo.tools</groupId>
 	<artifactId>xingtools-spring-boot-starter</artifactId>
-	<version>1.1.2</version>
+	<version>1.1.3</version>
 </dependency>
 <dependency>
 	<groupId>top.cutexingluo.tools</groupId>
 	<artifactId>xingtools-pkg-jdk17</artifactId>
-	<version>1.1.2</version>
+	<version>1.1.3</version>
 </dependency>
 ```
 
 第二个包 （pkg包） 代表存在兼容 jdk 版本的工具，必须存在。
+
+目前推荐使用的版本如下：（其他版本有一定bug，如需使用请参考更新公告的版本使用攻略）
+
+```wiki
+xingtools v1.1.3
+xingtool v1.0.1, v1.0.4, v1.0.5
+```
+
+如果想使用老版本依赖，可以使用以下依赖 (xingtool 仅支持 JDK8 )
+
+```xml
+<dependency>
+	<groupId>top.cutexingluo.tools</groupId>
+	<artifactId>xingtool-spring-boot-starter</artifactId>
+	<version>1.0.5</version>
+</dependency>
+```
 
 ### :apple:使用方式
 
@@ -369,9 +386,25 @@ public class TestService {
 
 ##  :memo:更新公告
 
+**2024-8-12  v1.1.3**
+
+```txt
+bug 修复
+1.由于源码包只识别签名，所以在支持 jdk17 的众多方法会抛出 NoSuchMethodError 错误，故 jdk17 版本不推荐使用 v1.1.2 版本，现对该版本进行紧急修复。
+
+更改部分
+1.部分方法参数从 HttpServletRequestData 实体类更改为 HttpServletRequestAdapter接口
+
+新增部分
+1.新增HttpServletRequestAdapter和 HttpServletResponseAdapter 针对 HttpServlet 系列的适配方法，并替换之前的长链调用，以便通过对包的支持来达到对jdk支持的目的。
+2.新增 HttpServletRequestDataAdapter 和 HttpServletResponseDataAdapter 作为上面两个接口的实现，通过导入不同 jdk 包或者自行实现的方式 满足工具方法的需求。
+```
+
 **2024-8-8  v1.1.2**
 
 ```txt
+版本使用攻略：jdk17 禁止使用含 HttpServletRequest 参数的大部分方法。该版本不推荐使用，请移步下一版本。
+
 bug 修复
 1.由于未导入 spring-boot-starter-aop ，故启用 @EnableXingToolsServer 时使用 某个 aop 报错，目前将所有 aop 关闭；现在不使用 aop 不导入 aop 包，依旧能运行服务。
 在v1.1.1版本需要配置  xingtools.ext-transaction-anno.enabled=false # v1.1.1 版本需要关闭。
@@ -391,6 +424,8 @@ bug 修复
 **2024-7-17  v1.1.1**
 
 ```txt
+版本使用攻略：如果没有导入spring-boot-starter-aop包并且开启@EnableXingToolsServer，需要配置文件配置 xingtools.ext-transaction-anno.enabled=false
+
 中版本更新，为了保证灵活性。更改工具名 xingtool -> xingtools 。
 更改部分
 1.分离为多个包，例如分离core 包和 log 大包，保证 log 大包能够使用
@@ -431,7 +466,7 @@ bug 修复
 
 ```
 bug修复
-1.紧急修复XTCallable 的 getSupplier 和 canRunTask 问题，并修复逻辑。
+1.紧急修复 XTCallable 的 getSupplier 和 canRunTask 问题，并修复逻辑。
 2.紧急修复 XTStrUtil findFirstOf错误调用自身的问题。 1.0.2-1.0.3 两个版本不要使用该方法。
 3.修复单 pick 问题, 解决并发注解 @MainThread @SonThread 事务问题, 修复 TreeUtil 树转列表的问题
 4.修复 ResultUtil 对 R类 的支持问题
@@ -455,6 +490,8 @@ bug修复
 **2023-12-25 v1.0.3**
 
 ```txt
+版本使用攻略：禁止使用 XTStrUtil.findFirstOf，XTCallable的 getSupplier 和 canRunTask，TreeUtil.flatListBfs 等所有树转列表方法
+
 bug修复
 1. 修复了 AccessLimitUtil.limitIP 加载 Ipdb 错误 的bug
 
@@ -476,6 +513,8 @@ bug修复
 **2023-10-21 v1.0.2**
 
 ```txt
+版本使用攻略：禁止使用XTStrUtil.findFirstOf，AccessLimitUtil.limitIP
+
 1. 添加了 Supplier 接口,。与之对应各种适配类的调整。
 2. 添加多线程注解AOP @MainThread @SonThread
 3. 调整 XTAsync 类 , 并且添加 ThreadHelper接口，更快速使用。
@@ -514,4 +553,4 @@ bug修复
 
 在 properties/yml 配置文件输入 xingtools 即可查看相关自动配置。
 
-在该版本中，使用 @EnableXingToolsServer 开启自动配置后，仅开启 配置开启日志和SpringUtils 注册，其他均默认关闭。
+在最新版本中，使用 @EnableXingToolsServer 开启自动配置后，仅开启 配置开启日志和SpringUtils 注册，其他均默认关闭。

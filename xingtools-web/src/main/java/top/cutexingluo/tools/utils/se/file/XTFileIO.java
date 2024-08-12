@@ -1,6 +1,5 @@
 package top.cutexingluo.tools.utils.se.file;
 
-import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.ReflectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.web.multipart.MultipartFile;
@@ -9,13 +8,10 @@ import top.cutexingluo.tools.utils.se.file.pkg.XTFile;
 import top.cutexingluo.tools.utils.se.file.pkg.XTFileBundle;
 import top.cutexingluo.tools.utils.se.file.pkg.XTFileSource;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -74,32 +70,6 @@ public class XTFileIO {
             parentFile.mkdirs();
         }
         file.transferTo(uploadFile); // 存储到磁盘中
-    }
-
-    /**
-     * 根据文件路径返回文件
-     * <p>下载，输入 下载路径和下载文件名 以及 请求对象</p>
-     *
-     * @param filePath 文件父路径 /xx/xx
-     * @param fileUUID 文件名 abc.txt
-     * @param response 请求
-     * @throws IOException 读写异常
-     */
-    //
-    public static void download(String filePath, String fileUUID, HttpServletResponse response) throws IOException {
-        filePath = addUrlSlash(filePath);
-        File file = new File(filePath + fileUUID);
-        ServletOutputStream os = response.getOutputStream();
-        response.addHeader("Content-Disposition", "attachment;filename=" +
-                URLEncoder.encode(fileUUID, StandardCharsets.UTF_8.name()));
-        response.setContentType("application/octet-stream");
-        //读取文件字节流
-        try {
-            os.write(FileUtil.readBytes(file));
-        } finally {
-            os.flush();
-            os.close();
-        }
     }
 
 

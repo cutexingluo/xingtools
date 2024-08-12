@@ -8,9 +8,8 @@ import java.lang.annotation.Target;
 /**
  * ip拦截注解
  *
- * @className: Ip
- * @author: woniu
- * @date: 2023/4/5
+ * @author woniu, XingTian
+ * @date 2023/4/5
  **/
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

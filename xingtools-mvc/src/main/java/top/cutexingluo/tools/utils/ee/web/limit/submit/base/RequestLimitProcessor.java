@@ -4,7 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.jetbrains.annotations.NotNull;
-import top.cutexingluo.tools.bridge.servlet.HttpServletRequestData;
+import top.cutexingluo.tools.bridge.servlet.adapter.HttpServletRequestAdapter;
 import top.cutexingluo.tools.designtools.method.ClassMaker;
 import top.cutexingluo.tools.designtools.method.XTMethodUtil;
 import top.cutexingluo.tools.utils.ee.web.ip.util.RYIpUtils;
@@ -41,7 +41,7 @@ public class RequestLimitProcessor {
     /**
      * 获取 IP
      */
-    public static String getIp(HttpServletRequestData request) {
+    public static String getIp(HttpServletRequestAdapter request) {
         if (request == null) {
             return "";
         }
@@ -51,21 +51,21 @@ public class RequestLimitProcessor {
     /**
      * 获取 HttpMethod
      */
-    public static String getHttpMethod(HttpServletRequestData request) {
+    public static String getHttpMethod(HttpServletRequestAdapter request) {
         if (request == null) {
             return "";
         }
-        return request.getRequest().getMethod();
+        return request.getMethod();
     }
 
     /**
      * 获取 Request HTTP_URI
      */
-    public static String getHttpUri(HttpServletRequestData request) {
+    public static String getHttpUri(HttpServletRequestAdapter request) {
         if (request == null) {
             return "";
         }
-        return request.getRequest().getRequestURI();
+        return request.getRequestURI();
     }
 
     /**

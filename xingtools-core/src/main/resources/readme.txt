@@ -1,11 +1,27 @@
 @Author XingTian
-@Version v1.1.2
+@Version v1.1.3
 @Since 2023-9-26
 @Update 2024-8-8
 
+推荐使用版本
+xingtool v1.0.1, v1.0.4, v1.0.5
+xingtools v1.1.1, v1.1.3
 
 
 更新公告
+2024-8-12 v1.1.3
+bug 修复
+1.由于源码包只识别签名，所以在支持 jdk17 的众多方法会抛出 NoSuchMethodError 错误，故 jdk17 版本不推荐使用 v1.1.2 版本，现对该版本进行紧急修复。
+
+更改部分
+1.部分方法参数从 HttpServletRequestData 实体类更改为 HttpServletRequestAdapter接口
+
+新增部分
+1.新增HttpServletRequestAdapter和 HttpServletResponseAdapter 针对 HttpServlet 系列的适配方法，并替换之前的长链调用，以便通过对包的支持来达到对jdk支持的目的。
+2.新增 HttpServletRequestDataAdapter 和 HttpServletResponseDataAdapter 作为上面两个接口的实现，通过导入不同 jdk 包或者自行实现的方式 满足工具方法的需求。
+
+
+
 2024-8-8  v1.1.2
 bug 修复
 1.由于未导入 spring-boot-starter-aop ，故启用 @EnableXingToolsServer 时使用 某个 aop 报错，目前将所有 aop 关闭；现在不使用 aop 不导入 aop 包，依旧能运行服务。

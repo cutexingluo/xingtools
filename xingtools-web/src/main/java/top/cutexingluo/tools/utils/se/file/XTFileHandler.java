@@ -1,18 +1,13 @@
 package top.cutexingluo.tools.utils.se.file;
 
-import cn.hutool.core.io.FileUtil;
 import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.web.multipart.MultipartFile;
 import top.cutexingluo.tools.utils.se.file.pkg.XTFile;
 import top.cutexingluo.tools.utils.se.file.pkg.XTFileBundle;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 
 /**
  * 文件处理器
@@ -90,26 +85,6 @@ public class XTFileHandler {
 
 
     /**
-     * 把文件解析成字节数组到 response
-     *
-     * @param targetFile 目标文件
-     * @param response   response 对象
-     */
-    public static void sendToResponse(@NotNull File targetFile, @NotNull HttpServletResponse response) throws IOException {
-        response.addHeader("Content-Disposition", "attachment;filename=" +
-                URLEncoder.encode(targetFile.getName(), StandardCharsets.UTF_8.name()));
-        response.setContentType("application/octet-stream");
-        ServletOutputStream os = response.getOutputStream();
-        //读取文件字节流
-        try {
-            os.write(FileUtil.readBytes(targetFile));
-        } finally {
-            os.flush();
-            os.close();
-        }
-    }
-
-    /**
      * 存储到磁盘
      *
      * @param file       文件
@@ -152,18 +127,18 @@ public class XTFileHandler {
     }
 
 
-    /**
-     * 把文件解析成字节数组到 response
-     *
-     * @param xtFileDirPath xtFile 目标文件的目录地址
-     * @param response      response 对象
-     */
-    public XTFileHandler sendToResponse(@NotNull String xtFileDirPath, @NotNull HttpServletResponse response) throws IOException {
-        xtFileDirPath = addSuffix(xtFileDirPath, separator);
-        File file = new File(xtFileDirPath + xtFile.getFilename());
-        sendToResponse(file, response);
-        return this;
-    }
+//    /**
+//     * 把文件解析成字节数组到 response
+//     *
+//     * @param xtFileDirPath xtFile 目标文件的目录地址
+//     * @param response      response 对象
+//     */
+//    public XTFileHandler sendToResponse(@NotNull String xtFileDirPath, @NotNull HttpServletResponse response) throws IOException {
+//        xtFileDirPath = addSuffix(xtFileDirPath, separator);
+//        File file = new File(xtFileDirPath + xtFile.getFilename());
+//        sendToResponse(file, response);
+//        return this;
+//    }
 
 
 }
