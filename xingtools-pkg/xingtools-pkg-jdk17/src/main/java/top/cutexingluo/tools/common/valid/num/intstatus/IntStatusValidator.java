@@ -1,6 +1,9 @@
 package top.cutexingluo.tools.common.valid.num.intstatus;
 
 import jakarta.validation.ConstraintValidatorContext;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import top.cutexingluo.tools.common.valid.StatusValidator;
 import top.cutexingluo.tools.utils.se.map.XTSetUtil;
 
@@ -12,6 +15,9 @@ import top.cutexingluo.tools.utils.se.map.XTSetUtil;
  * @date 2023/7/19 16:12
  * @since 1.0.3
  */
+@EqualsAndHashCode(callSuper = true)
+@Data
+@NoArgsConstructor
 public class IntStatusValidator extends StatusValidator<IntStatus, Integer> {
 
     protected IntStatusConfig statusConfig;

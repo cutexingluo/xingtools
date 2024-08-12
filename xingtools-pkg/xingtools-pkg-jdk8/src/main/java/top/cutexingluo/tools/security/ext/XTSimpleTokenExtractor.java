@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
-import org.springframework.security.oauth2.provider.authentication.BearerTokenExtractor;
+import top.cutexingluo.tools.security.base.BearerTokenExtractor;
 
 import javax.servlet.http.HttpServletRequest;
 

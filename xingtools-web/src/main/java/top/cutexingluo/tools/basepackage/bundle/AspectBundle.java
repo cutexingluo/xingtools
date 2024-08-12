@@ -24,7 +24,7 @@ public class AspectBundle implements IAspectBundle {
     protected Method method;
 
     /**
-     * HttpServletRequest 兼容类
+     * HttpServletRequest 兼容适配类
      */
     protected HttpServletRequestData request;
     @Nullable

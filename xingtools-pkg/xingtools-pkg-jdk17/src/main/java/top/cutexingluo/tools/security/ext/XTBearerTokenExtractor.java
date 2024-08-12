@@ -13,7 +13,9 @@ import top.cutexingluo.tools.security.base.BearerTokenExtractor;
 import java.util.Enumeration;
 
 /**
- * bearer标记器
+ * bearer 令牌解析器
+ *
+ * <p>未来将被移除，请使用 cloud 包里面的类</p>
  *
  * <p>未来将被移除，请使用 cloud 包里面的类</p>
  *

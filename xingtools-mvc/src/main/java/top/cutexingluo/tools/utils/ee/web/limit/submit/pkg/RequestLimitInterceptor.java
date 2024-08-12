@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Nullable;
 import org.springframework.util.Assert;
 import top.cutexingluo.tools.basepackage.bundle.AspectBundle;
 import top.cutexingluo.tools.bridge.servlet.HttpServletRequestData;
+import top.cutexingluo.tools.bridge.servlet.adapter.HttpServletRequestDataAdapter;
 import top.cutexingluo.tools.utils.ee.web.limit.submit.base.RequestLimitConfig;
 import top.cutexingluo.tools.utils.ee.web.limit.submit.base.RequestLimitProcessor;
 import top.cutexingluo.tools.utils.ee.web.limit.submit.strategy.LimitStrategy;
@@ -100,39 +101,34 @@ public class RequestLimitInterceptor {
      * 生成 key 放进map
      */
     public static void getKeyMap(@NotNull LinkedHashMap<String, String> keyMap, @NotNull RequestLimitConfig requestLimitConfig, @Nullable HttpServletRequestData requestData, @Nullable Method method) {
-        if ((requestLimitConfig.getKeyStrategy() & KeyStrategy.IP) != 0) {// IP-127.0.0.1
-            if (requestData != null) {
-                String ip = RequestLimitProcessor.getIp(requestData);
+        if (requestData != null) {
+            HttpServletRequestDataAdapter adapter = HttpServletRequestDataAdapter.of(requestData);
+            if ((requestLimitConfig.getKeyStrategy() & KeyStrategy.IP) != 0) {// IP-127.0.0.1
+                String ip = RequestLimitProcessor.getIp(adapter);
                 if (StrUtil.isNotBlank(ip)) {
                     keyMap.put("ip", "IP-" + ip);
                 }
             }
-        }
-        if ((requestLimitConfig.getKeyStrategy() & KeyStrategy.HTTP_METHOD) != 0) {
-            if (requestData != null) {
-                String httpMethod = RequestLimitProcessor.getHttpMethod(requestData);
+            if ((requestLimitConfig.getKeyStrategy() & KeyStrategy.HTTP_METHOD) != 0) {
+                String httpMethod = RequestLimitProcessor.getHttpMethod(adapter);
                 if (StrUtil.isNotBlank(httpMethod)) {
                     keyMap.put("httpMethod", httpMethod);
                 }
             }
-        }
-        if ((requestLimitConfig.getKeyStrategy() & KeyStrategy.HTTP_URI) != 0) {
-            if (requestData != null) {
-                String httpUri = RequestLimitProcessor.getHttpUri(requestData);
+            if ((requestLimitConfig.getKeyStrategy() & KeyStrategy.HTTP_URI) != 0) {
+                String httpUri = RequestLimitProcessor.getHttpUri(adapter);
                 if (StrUtil.isNotBlank(httpUri)) {
                     keyMap.put("httpUri", httpUri);
                 }
             }
         }
-        if ((requestLimitConfig.getKeyStrategy() & KeyStrategy.METHOD) != 0) {
-            if (method != null) {
+        if (method != null) {
+            if ((requestLimitConfig.getKeyStrategy() & KeyStrategy.METHOD) != 0) {
                 if (StrUtil.isNotBlank(method.toString())) {
                     keyMap.put("method", method.toString());
                 }
             }
-        }
-        if ((requestLimitConfig.getKeyStrategy() & KeyStrategy.KEY_ANNO) != 0) {
-            if (method != null) {
+            if ((requestLimitConfig.getKeyStrategy() & KeyStrategy.KEY_ANNO) != 0) {
                 StringBuilder sb = new StringBuilder();
                 String delimiter = requestLimitConfig.getDelimiter(); // 分割符
                 String requestLimitKey = RequestLimitProcessor.getRequestLimitKey(method, sb, delimiter).toString();
@@ -141,6 +137,8 @@ public class RequestLimitInterceptor {
                 }
             }
         }
+
+
     }
 
 }

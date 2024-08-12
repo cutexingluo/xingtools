@@ -2,7 +2,7 @@ package top.cutexingluo.tools.utils.ee.web.ip.util;
 
 import cn.hutool.core.util.StrUtil;
 import org.jetbrains.annotations.NotNull;
-import top.cutexingluo.tools.bridge.servlet.HttpServletRequestData;
+import top.cutexingluo.tools.bridge.servlet.adapter.HttpServletRequestAdapter;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -35,15 +35,15 @@ public class IPUtil {
 
 
     @NotNull
-    public static Map<String, String> getHeader(HttpServletRequestData request) {
+    public static Map<String, String> getHeader(HttpServletRequestAdapter request) {
         if (request == null) {
             return new HashMap<>();
         }
         Map<String, String> headerMap = new HashMap<>();
-        Enumeration<String> headerNames = request.getRequest().getHeaderNames();
+        Enumeration<String> headerNames = request.getHeaderNames();
         while (headerNames.hasMoreElements()) {
             String headerName = headerNames.nextElement();
-            headerMap.put(headerName, request.getRequest().getHeader(headerName));
+            headerMap.put(headerName, request.getHeader(headerName));
         }
         return headerMap;
     }
@@ -56,31 +56,31 @@ public class IPUtil {
      *
      * @param localHost 是否获取localhost 取为 127.0.0.1
      */
-    public static String getRealIpAddress(HttpServletRequestData request, boolean localHost) {
+    public static String getRealIpAddress(HttpServletRequestAdapter request, boolean localHost) {
         if (request == null) {
             return "";
         }
-        String ip = request.getRequest().getHeader("x-forwarded-for");
+        String ip = request.getHeader("x-forwarded-for");
         if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
-            ip = request.getRequest().getHeader("Proxy-Client-IP");
+            ip = request.getHeader("Proxy-Client-IP");
         }
         if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
-            ip = request.getRequest().getHeader("X-Forwarded-For");
+            ip = request.getHeader("X-Forwarded-For");
         }
         if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
-            ip = request.getRequest().getHeader("WL-Proxy-Client-IP");
+            ip = request.getHeader("WL-Proxy-Client-IP");
         }
         if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
-            ip = request.getRequest().getHeader("X-Real-IP");
+            ip = request.getHeader("X-Real-IP");
         }
         if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
-            ip = request.getRequest().getHeader("HTTP_CLIENT_IP");
+            ip = request.getHeader("HTTP_CLIENT_IP");
         }
         if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
-            ip = request.getRequest().getHeader("HTTP_X_FORWARDED_FOR");
+            ip = request.getHeader("HTTP_X_FORWARDED_FOR");
         }
         if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
-            ip = request.getRequest().getRemoteAddr();
+            ip = request.getRemoteAddr();
             if (!localHost && (LOCALHOST_IP.equalsIgnoreCase(ip) || LOCALHOST_IPV6.equalsIgnoreCase(ip))) {
                 // 根据网卡取本机配置的 IP
                 InetAddress iNet = null;
@@ -107,14 +107,14 @@ public class IPUtil {
     /**
      * 获取 ip
      */
-    public static String getIpAddr(HttpServletRequestData request) {
+    public static String getIpAddr(HttpServletRequestAdapter request) {
         return getRealIpAddress(request, true);
     }
 
     /**
      * 获取真实 IP
      */
-    public static String getRealIpAddr(HttpServletRequestData request) {
+    public static String getRealIpAddr(HttpServletRequestAdapter request) {
         return getRealIpAddress(request, false);
     }
 

@@ -1,6 +1,5 @@
 package top.cutexingluo.tools.utils.web.limit.guava;
 
-import cn.hutool.json.JSONUtil;
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.RateLimiter;
 import lombok.Data;
@@ -10,11 +9,12 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
+import top.cutexingluo.tools.bridge.servlet.adapter.HttpServletResponseDataAdapter;
 import top.cutexingluo.tools.common.Constants;
+import top.cutexingluo.tools.common.HttpStatus;
 import top.cutexingluo.tools.common.Result;
 import top.cutexingluo.tools.common.base.IResult;
 import top.cutexingluo.tools.common.utils.GlobalResultFactory;
-import top.cutexingluo.tools.utils.ee.web.front.XTResponseUtil;
 import top.cutexingluo.tools.utils.ee.web.holder.HttpContextUtil;
 import top.cutexingluo.tools.utils.ee.web.limit.guava.Limit;
 import top.cutexingluo.tools.utils.ee.web.limit.submit.base.RequestLimit;
@@ -95,6 +95,8 @@ public class LimitAop {
         IResult<C, T> err = globalResultFactory == null ?
                 (IResult<C, T>) Result.error(Constants.CODE_403, msg) :
                 globalResultFactory.newResult(Constants.CODE_403.intCode(), msg, null);
-        XTResponseUtil.forbidden(HttpContextUtil.getHttpServletResponse(), JSONUtil.toJsonStr(err));
+        HttpServletResponseDataAdapter.of(HttpContextUtil.getHttpServletResponseData())
+                .response(err, HttpStatus.FORBIDDEN.getCode());
+//        XTResponseUtil.forbidden(HttpContextUtil.getHttpServletResponse(), JSONUtil.toJsonStr(err));
     }
 }

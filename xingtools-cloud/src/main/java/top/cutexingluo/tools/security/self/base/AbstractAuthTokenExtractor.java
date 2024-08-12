@@ -5,7 +5,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import top.cutexingluo.tools.basepackage.function.Parser;
 import top.cutexingluo.tools.bridge.servlet.HttpServletRequestData;
-import top.cutexingluo.tools.common.opt.OptionalUtil;
+import top.cutexingluo.tools.bridge.servlet.adapter.HttpServletRequestAdapter;
 
 import java.util.Enumeration;
 
@@ -47,8 +47,8 @@ public abstract class AbstractAuthTokenExtractor implements AuthTokenExtractor, 
      * @param prefix     The prefix that indicates a bearer token (typically "Bearer ").
      * @return The token, or null if no OAuth authorization header was supplied.
      */
-    protected String extractHeaderToken(HttpServletRequestData request, String headerName, @Nullable String prefix) {
-        Enumeration<String> headers = request.getRequest().getHeaders(headerName);
+    protected String extractHeaderToken(HttpServletRequestAdapter request, String headerName, @Nullable String prefix) {
+        Enumeration<String> headers = request.getHeaders(headerName);
         while (headers.hasMoreElements()) { // typically there is only one (most servers enforce that)
             String value = headers.nextElement();
             return parseToken(value, prefix);
@@ -64,15 +64,12 @@ public abstract class AbstractAuthTokenExtractor implements AuthTokenExtractor, 
      * @param prefix     The prefix that indicates a bearer token (typically "Bearer ").
      * @return The token, or null if no OAuth authorization header was supplied.
      */
-    protected String extractCookieToken(HttpServletRequestData request, String headerName, @Nullable String prefix) {
-        return OptionalUtil.ifPresentFilter(request.getRequest().getCookies(), cookies -> {
-            for (int i = 0; i < cookies.length; i++) {
-                if (cookies[i].getName().equals(headerName)) {
-                    return parseToken(cookies[i].getValue(), prefix);
-                }
-            }
-            return null;
-        });
+    protected String extractCookieToken(HttpServletRequestAdapter request, String headerName, @Nullable String prefix) {
+        String cookieValue = request.getCookieValue(headerName);
+        if (cookieValue != null) {
+            return parseToken(cookieValue, prefix);
+        }
+        return null;
     }
 
 

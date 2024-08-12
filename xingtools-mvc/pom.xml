@@ -8,7 +8,7 @@
     <parent>
         <artifactId>xingtools-parent</artifactId>
         <groupId>top.cutexingluo.tools</groupId>
-        <version>1.1.2</version>
+        <version>1.1.3</version>
     </parent>
 
     <artifactId>xingtools-mvc</artifactId>

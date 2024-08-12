@@ -36,7 +36,7 @@ public class RedisLockUtil {
 //    @PostConstruct
     public void init(RedisTemplate redisTemplate) {
         RedisLockUtil.redisTemplate = redisTemplate;
-        if (RedisLockUtil.redisTemplate != null) log.info("redisTemplate autoInjected success !");
+//        if (RedisLockUtil.redisTemplate != null) log.info("redisTemplate autoInjected success !");
     }
 
     private static RedisTemplate redisTemplate;
