@@ -37,7 +37,7 @@ public class KeyHttpManager {
     /**
      * http_uri   uri
      */
-    public static final KeyHttpConvertor HTTP_URI = new KeyHttpConvertor("uri", (method, request) -> request == null ? "" : request.getRequestURI());
+    public static final KeyHttpConvertor HTTP_URI = new KeyHttpConvertor("uri", (method, request) -> request == null ? "" : request.getRequest().getRequestURI());
 
 
     /**
@@ -50,7 +50,7 @@ public class KeyHttpManager {
      * http_method  uri
      * <p> GET, POST, PUT, DELETE </p>
      */
-    public static final KeyHttpConvertor HTTP_METHOD = new KeyHttpConvertor("httpMethod", (method, request) -> request == null ? "" : request.getMethod());
+    public static final KeyHttpConvertor HTTP_METHOD = new KeyHttpConvertor("httpMethod", (method, request) -> request == null ? "" : request.getRequest().getMethod());
 
 
     /**
