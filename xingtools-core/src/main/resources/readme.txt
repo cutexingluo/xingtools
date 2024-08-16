@@ -1,14 +1,22 @@
 @Author XingTian
-@Version v1.1.3
+@Version v1.1.4
 @Since 2023-9-26
-@Update 2024-8-8
+@Update 2024-8-16
 
 推荐使用版本
 xingtool v1.0.1, v1.0.4, v1.0.5
-xingtools v1.1.1, v1.1.3
+xingtools v1.1.3
 
 
 更新公告
+2024-8-16 v1.1.4
+
+更改部分
+1.恢复 mybatis-plus 插件自动配置
+
+新增部分
+
+
 2024-8-12 v1.1.3
 bug 修复
 1.由于源码包只识别签名，所以在支持 jdk17 的众多方法会抛出 NoSuchMethodError 错误，故 jdk17 版本不推荐使用 v1.1.2 版本，现对该版本进行紧急修复。

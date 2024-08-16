@@ -10,6 +10,7 @@ top.cutexingluo.tools.autoconfigure.server.aop.transaction.ExtTransactionAutoCon
 top.cutexingluo.tools.autoconfigure.server.aop.thread.AsyncThreadAopAutoConfigure,\
 top.cutexingluo.tools.exception.XTGlobalExceptionHandler,\
 top.cutexingluo.tools.exception.XTGlobalExceptionHandlerExt,\
+top.cutexingluo.tools.config.MybatisPlusConfig,\
 top.cutexingluo.tools.utils.ee.redis.RedisConfig,\
 top.cutexingluo.tools.utils.ee.redis.RedisUtilAutoConfigure,\
 top.cutexingluo.tools.utils.ee.redisson.RedissonConfig,\

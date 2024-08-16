@@ -6,7 +6,7 @@
 
     <groupId>top.cutexingluo.tools</groupId>
     <artifactId>xingtools-parent</artifactId>
-    <version>1.1.3</version>
+    <version>1.1.4</version>
     <name>xingtools</name>
     <description>xingtools 是一个Java工具 sdk 库，通过提供许多方法，降低相关API的学习成本，提高工作效率。
         please don't use it for project, please use xingtools-spring-boot-starter for your own project.
