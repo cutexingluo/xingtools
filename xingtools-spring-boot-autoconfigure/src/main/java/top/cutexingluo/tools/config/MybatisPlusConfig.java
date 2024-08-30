@@ -16,6 +16,10 @@ import top.cutexingluo.tools.start.log.LogInfoAuto;
 
 /**
  * MybatisPlus 分页插件
+ *
+ * @author XingTian
+ * @version 1.0.0
+ * @date 2023/9/24 11:34
  */
 @ConditionalOnBean(XingToolsAutoConfiguration.class)
 @ConditionalOnClass({MybatisPlusInterceptor.class})

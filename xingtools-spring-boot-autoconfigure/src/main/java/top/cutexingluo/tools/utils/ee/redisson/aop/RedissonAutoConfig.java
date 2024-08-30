@@ -27,7 +27,7 @@ import top.cutexingluo.tools.utils.ee.redisson.GrabLockFailureStrategy;
 @ConditionalOnBean(XingToolsAutoConfiguration.class)
 @ConditionalOnClass({DefaultLockKeyBuilder.class})
 @ConditionalOnProperty(prefix = "xingtools.enabled", name = "redisson-aop", havingValue = "true")
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class RedissonAutoConfig {
 
 

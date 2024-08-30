@@ -15,7 +15,7 @@ import top.cutexingluo.tools.common.base.IResult;
 import top.cutexingluo.tools.common.utils.GlobalResultFactory;
 import top.cutexingluo.tools.utils.ee.redis.RYRedisCache;
 import top.cutexingluo.tools.utils.ee.redis.RYRedisUtil;
-import top.cutexingluo.tools.utils.ee.web.ip.util.IpUtils;
+import top.cutexingluo.tools.utils.ee.web.ip.util.IPUtil;
 import top.cutexingluo.tools.utils.ee.web.limit.submit.base.RequestLimit;
 import top.cutexingluo.tools.utils.ee.web.limit.submit.pkg.RequestLimitHandler;
 import top.cutexingluo.tools.utils.spring.SpringUtils;
@@ -28,6 +28,7 @@ import java.util.function.Function;
  * 限流工具类
  *
  * <p>1.0.4 及以后版本推荐使用 {@link RequestLimit} 注解 或 {@link RequestLimitHandler} 编程式工具</p>
+ * <p>为防止过多依赖, 1.1.4 之后采用 IPUtil 代替原来的 IpUtils</p>
  * <p>需要导入 spring-data-redis 相关的包</p>
  *
  * @author XingTian
@@ -123,7 +124,7 @@ public class AccessLimitUtil {
      */
     public static boolean limitAll(HttpServletRequestAdapter request, HttpServletResponseAdapter response,
                                    int interval, int maxCount, String outLimitMsg) throws Exception {
-        String ip = IpUtils.getIpAddress(request);
+        String ip = IPUtil.getIpAddr(request);
         String method = request.getMethod();
         String requestUri = request.getRequestURI();
         String redisKey = "IP-" + ip + ":" + method + ":" + requestUri;
@@ -145,7 +146,7 @@ public class AccessLimitUtil {
      */
     public static <T> boolean limitStrategy(HttpServletRequestAdapter request, HttpServletResponseAdapter response,
                                             int interval, int maxCount, @NotNull Function<String, T> keyToResponseResult) throws Exception {
-        String ip = IpUtils.getIpAddress(request);
+        String ip = IPUtil.getIpAddr(request);
         String method = request.getMethod();
         String requestUri = request.getRequestURI();
         String redisKey = "IP-" + ip + ":" + method + ":" + requestUri;
@@ -165,7 +166,7 @@ public class AccessLimitUtil {
      */
     public static boolean limitIP(HttpServletRequestAdapter request, HttpServletResponseAdapter response,
                                   int interval, int maxCount, String outLimitMsg) throws Exception {
-        String ip = IpUtils.getIpAddress(request);
+        String ip = IPUtil.getIpAddr(request);
         String redisKey = "limitIp:" + ip;
         return limit(response, redisKey, interval, maxCount, outLimitMsg);
     }

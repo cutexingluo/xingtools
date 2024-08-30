@@ -202,21 +202,34 @@ public class RYRedisCache {
 
     /**
      * 获得缓存的long 数值。
-     * <p>必须存的 int 值</p>
      *
      * @param key 缓存键值
      * @return 缓存键值对应的数据
      * @since 1.0.4
      */
-    public long getCacheLong(final String key) {
-        if (hasKey(key)) {
-            Object valueObj = redisTemplate.opsForValue().get(key);
-            if (valueObj instanceof Integer) {
-                Integer obj = (Integer) valueObj;
-                return obj.longValue();
-            }
+    public Long getCacheLong(final String key) {
+        Object valueObj = redisTemplate.opsForValue().get(key);
+        if (valueObj instanceof Number) {
+            Number obj = (Number) valueObj;
+            return obj.longValue();
         }
-        return 0;
+        return null;
+    }
+
+
+    /**
+     * 获得缓存的number 数值。
+     *
+     * @param key 缓存键值
+     * @return 缓存键值对应的数据
+     * @since 1.1.4
+     */
+    public Number getCacheNumber(final String key) {
+        Object valueObj = redisTemplate.opsForValue().get(key);
+        if (valueObj instanceof Number) {
+            return (Number) valueObj;
+        }
+        return null;
     }
 
     /**

@@ -25,7 +25,7 @@ import top.cutexingluo.tools.utils.ee.redis.XTRedisUtil;
 @ConditionalOnProperty(prefix = "xingtools.enabled", name = "redisson-config", havingValue = "true", matchIfMissing = false)
 @ConditionalOnBean({XingToolsAutoConfiguration.class, RedissonClient.class, RedisUtil.class})
 @AutoConfigureAfter(RedissonConfig.class)
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @Slf4j
 public class XTRedisUtilAutoConfigure {
 

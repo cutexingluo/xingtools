@@ -3,6 +3,7 @@ package top.cutexingluo.tools.utils.se.file.space;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import top.cutexingluo.tools.common.base.IResultData;
 
 import java.util.Comparator;
 
@@ -13,7 +14,7 @@ import java.util.Comparator;
  * @version 1.0.0
  * @date 2024/3/6 13:48
  */
-public enum SpaceEnums {
+public enum SpaceEnums implements IResultData<Long> {
     /**
      * Byte 字节
      */
@@ -132,6 +133,16 @@ public enum SpaceEnums {
             return B;
         }
         return SpaceEnums.parseBySize(bytes);
+    }
+
+    @Override
+    public String getMsg() {
+        return unit;
+    }
+
+    @Override
+    public Long getCode() {
+        return bytes;
     }
 
 

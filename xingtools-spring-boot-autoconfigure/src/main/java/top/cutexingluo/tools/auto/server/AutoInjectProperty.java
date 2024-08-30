@@ -45,7 +45,7 @@ public class AutoInjectProperty {
      * <p>默认关闭</p>
      * <p>xt-aop-lock</p>
      */
-    private boolean xtAopLock = true;
+    private boolean xtAopLock = false;
 
     // 全局异常拦截是否开启
     /**
@@ -174,6 +174,12 @@ public class AutoInjectProperty {
      * <p>mybatis-plus-config</p>
      */
     private boolean mybatisPlusConfig = false;
+
+    /**
+     * 事务自动配置 使用分页插件推荐开启<br> 默认关闭
+     * <p>transaction-config</p>
+     */
+    private boolean transactionConfig = false;
     // 跨域拦截
 //    /**
 //     * 跨域拦截默认配置是否开启<br>默认关闭

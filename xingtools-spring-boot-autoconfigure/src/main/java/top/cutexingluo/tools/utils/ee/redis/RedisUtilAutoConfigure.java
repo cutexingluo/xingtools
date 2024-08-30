@@ -22,7 +22,7 @@ import top.cutexingluo.tools.start.log.LogInfoAuto;
 @ConditionalOnProperty(prefix = "xingtools.enabled", name = "redisconfig-util", havingValue = "true", matchIfMissing = false)
 @AutoConfigureAfter(value = {RedisConfig.class, RedisTemplate.class}, name = {"xtRedisTemplate"})
 @ConditionalOnBean(value = {XingToolsAutoConfiguration.class, RedisTemplate.class}, name = {"xtRedisTemplate"})
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @Slf4j
 public class RedisUtilAutoConfigure {
 

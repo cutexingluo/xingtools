@@ -18,9 +18,12 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @Slf4j
 public class XingToolsAutoConfiguration {
-    public static final String INFO = "@author XingTian\n" +
+    public static final String ORIGIN_INFO = "@author XingTian\n" +
             "  @version 1.0.0\n" +
             " @since 2022/10/1";
+
+    public static boolean printBanner = true;
+    public static boolean printBannerLogInfo = true;
 
 
     public static final String BOOT_BANNER =
@@ -33,7 +36,10 @@ public class XingToolsAutoConfiguration {
 
     //    @PostConstruct //  移除支持jdk 17
     public void init() {
-        log.info(" \n {}", BOOT_BANNER);
+        if (printBanner) {
+            if (printBannerLogInfo) log.info(" \n {}", BOOT_BANNER);
+            else System.out.println(BOOT_BANNER);
+        }
     }
 
     public XingToolsAutoConfiguration() {

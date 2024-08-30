@@ -22,7 +22,7 @@ import top.cutexingluo.tools.start.log.LogInfoAuto;
  * @version 1.0.0
  * @date 2023/10/2 21:49
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @ConditionalOnClass({PlatformTransactionManager.class})
 @ConditionalOnBean({XingToolsAutoConfiguration.class, PlatformTransactionManager.class})
 @ConditionalOnProperty(prefix = "xingtools.enabled", value = "async-thread-aop-anno", havingValue = "true",

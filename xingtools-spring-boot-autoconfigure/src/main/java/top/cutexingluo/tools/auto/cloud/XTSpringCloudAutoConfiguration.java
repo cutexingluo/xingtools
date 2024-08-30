@@ -18,9 +18,12 @@ import top.cutexingluo.tools.auto.server.XingToolsAutoConfiguration;
 @Slf4j
 @Configuration
 public class XTSpringCloudAutoConfiguration {
-    public static final String INFO = "@author XingTian\n" +
+    public static final String ORIGIN_INFO = "@author XingTian\n" +
             "  @version 1.0.0\n" +
             " @since 2023/5/3";
+
+    public static boolean printBanner = true;
+    public static boolean printBannerLogInfo = true;
 
     public static final String CLOUD_BANNER =
             "      _             _              _        _                 _ \n" +
@@ -30,9 +33,13 @@ public class XTSpringCloudAutoConfiguration {
                     " /_/\\_\\_|_| |_|\\__, |\\__\\___/ \\___/|_|  \\___|_|\\___/ \\__,_|\\__,_|\n" +
                     "               |___/                                             ";
 
+
     //    @PostConstruct //  移除支持jdk 17
     public void init() {
-        log.info(" \n {}", CLOUD_BANNER);
+        if (printBanner) {
+            if (printBannerLogInfo) log.info(" \n {}", CLOUD_BANNER);
+            else System.out.println(CLOUD_BANNER);
+        }
     }
 
     public XTSpringCloudAutoConfiguration() {

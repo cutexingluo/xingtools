@@ -5,14 +5,18 @@
 
 推荐使用版本
 xingtool v1.0.1, v1.0.4, v1.0.5
-xingtools v1.1.3
+xingtools v1.1.3, v1.1.4
+极力推荐使用最新版 v1.1.4
 
 
 更新公告
 2024-8-16 v1.1.4
 
 更改部分
-1.恢复 mybatis-plus 插件自动配置
+1.恢复 mybatis-plus 插件自动配置, 默认关闭 xt-lock-aop
+2.日志包ILogProvider从静态改为面向对象
+3.WebHandler 接口 参数 HttpServletRequestAdapter 变更为 HttpServletRequestDataAdapter
+4.*为适应不同需求，ResultUtil新增select方法返回封装对象
 
 新增部分
 

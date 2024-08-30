@@ -19,7 +19,7 @@ import top.cutexingluo.tools.start.log.LogInfoAuto;
 @Slf4j
 @ConditionalOnBean(XingToolsAutoConfiguration.class)
 @ConditionalOnProperty(prefix = "xingtools.enabled", name = "web-log-aop", havingValue = "true", matchIfMissing = false)
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class WebLogAutoConfigure {
     @ConditionalOnMissingBean
     @Bean

@@ -1,16 +1,21 @@
 package top.cutexingluo.tools.common.utils;
 
 import org.jetbrains.annotations.NotNull;
+import top.cutexingluo.tools.basepackage.function.TriFunction;
 import top.cutexingluo.tools.common.Constants;
 import top.cutexingluo.tools.common.MSResult;
 import top.cutexingluo.tools.common.R;
 import top.cutexingluo.tools.common.Result;
 import top.cutexingluo.tools.common.base.IResult;
+import top.cutexingluo.tools.common.base.IResultData;
 import top.cutexingluo.tools.common.base.IResultSource;
+
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 /**
  * Result 工具类
- * <p>减少判断情况</p>
+ * <p>减少判断情况, 智能根据结果封装返回类</p>
  *
  * @author XingTian
  * @version 1.0.0
@@ -18,9 +23,240 @@ import top.cutexingluo.tools.common.base.IResultSource;
  */
 public class ResultUtil {
 
+    //-------------common----------------
+
+    /**
+     * 根据结果返回对应数据
+     * <p>该方法可适用于自定义IResult 实现类</p>
+     * <p>（如果 data 为 null ）或者 （data 是 IResult的实现类并且getData 为 null 或者false） 则返回 error</p>
+     * <p>其他情况返回 successResult , 注意data 为false 依然会返回 success</p>
+     *
+     * @param data                     数据
+     * @param successResult            成功返回（其他情况）
+     * @param errorResult              错误返回 （data 为null）
+     * @param successResultWithIResult 成功返回 （data 是 IResult的实现类）
+     * @param errorResultWithIResult   错误返回 （data 是 IResult的实现类并且getData 为 null 或者false）
+     * @since 1.1.4
+     */
+    @NotNull
+    public static <R extends IResult<C, O>, C, O> R select(Object data,
+                                                           @NotNull Function<Object, R> successResult,
+                                                           @NotNull Function<Object, R> errorResult,
+                                                           @NotNull Function<IResult<C, O>, R> successResultWithIResult,
+                                                           @NotNull Function<IResult<C, O>, R> errorResultWithIResult
+    ) {
+        if (data == null) {
+            return errorResult.apply(null);
+        } else if (data instanceof IResult) {
+            IResult<C, O> result = (IResult<C, O>) data;
+            if (result.getData() == null || Boolean.FALSE.equals(result.getData())) {
+                return errorResultWithIResult.apply(result);
+            } else {
+                return successResultWithIResult.apply(result);
+            }
+        } else {
+            return successResult.apply(data);
+        }
+    }
+
+    /**
+     * 根据结果返回对应数据
+     * <p>*推荐使用</p>
+     * <p>该方法可适用于自定义IResult 实现类</p>
+     * <p>（如果 data 为 null ）或者 （data 是 IResult的实现类并且getData 为 null 或者false） 则返回 error</p>
+     * <p>其他情况返回 successResult , 注意data 为false 依然会返回 success</p>
+     *
+     * @param data          数据
+     * @param successResult 成功返回（其他情况）
+     * @param errorResult   错误返回 （如果 data 为 null ）或者 （data 是 IResult的实现类并且getData 为 null 或者false）
+     * @since 1.1.4
+     */
+    @NotNull
+    public static <RS extends IResultSource<C, O>, C, O> RS select(Object data,
+                                                                   @NotNull RS successResult,
+                                                                   @NotNull RS errorResult
+    ) {
+        if (data == null) {
+            return errorResult;
+        } else if (data instanceof IResult) {
+            IResult<C, O> result = (IResult<C, O>) data;
+            if (result.getData() == null || Boolean.FALSE.equals(result.getData())) {
+                if (errorResult.getMsg() == null) errorResult.setMsg(result.getMsg());
+                errorResult.setData(result.getData());
+                return errorResult;
+            } else {
+                if (successResult.getMsg() == null) successResult.setMsg(result.getMsg());
+                successResult.setData(result.getData());
+                return successResult;
+            }
+        } else {
+            successResult.setData((O) data);
+            return successResult;
+        }
+    }
+
+    /**
+     * 根据结果返回对应数据
+     * <p>该方法可适用于自定义IResult 实现类</p>
+     * <p>（如果 data 为 null ）或者 （data 是 IResult的实现类并且getData 为 null 或者false） 则返回 error</p>
+     * <p>其他情况返回 successResult , 注意data 为false 依然会返回 success</p>
+     *
+     * @param data              数据
+     * @param successResultData 成功返回（其他情况）
+     * @param errorResultData   错误返回 （如果 data 为 null ）或者 （data 是 IResult的实现类并且getData 为 null 或者false）
+     * @param resultFactory     结果工厂, 自行对结果进行组装 (三个参数分别为 resultData, data具体数据 ,传入的原data)
+     * @since 1.1.4
+     */
+    @NotNull
+    public static <R extends IResult<C, O>, RD extends IResultData<C>, C, O> R selectFill(Object data,
+                                                                                          @NotNull RD successResultData,
+                                                                                          @NotNull RD errorResultData,
+                                                                                          @NotNull TriFunction<RD, Object, IResult<C, O>, R> resultFactory
+    ) {
+        if (data == null) {
+            return resultFactory.apply(errorResultData, null, null);
+        } else if (data instanceof IResult) {
+            IResult<C, O> result = (IResult<C, O>) data;
+            if (result.getData() == null || Boolean.FALSE.equals(result.getData())) {
+                return resultFactory.apply(errorResultData, result.getData(), result);
+            } else {
+                return resultFactory.apply(successResultData, result.getData(), result);
+            }
+        } else {
+            return resultFactory.apply(successResultData, data, null);
+        }
+    }
+
+    /**
+     * 根据结果返回对应数据
+     * <p>该方法可适用于自定义IResult 实现类</p>
+     * <p>（如果 data 为 null ）或者 （data 是 IResult的实现类并且getData 为 null 或者false） 则返回 error</p>
+     * <p>其他情况返回 successResult , 注意data 为false 依然会返回 success</p>
+     *
+     * @param data              数据
+     * @param successResultData 成功返回（其他情况）
+     * @param errorResultData   错误返回 （如果 data 为 null ）或者 （data 是 IResult的实现类并且getData 为 null 或者false）
+     * @param resultFactory     结果工厂, 自行对结果进行组装 (三个参数分别为 resultData, data具体数据 )
+     * @since 1.1.4
+     */
+    @NotNull
+    public static <R extends IResult<C, O>, RD extends IResultData<C>, C, O> R selectFill(Object data,
+                                                                                          @NotNull RD successResultData,
+                                                                                          @NotNull RD errorResultData,
+                                                                                          @NotNull BiFunction<RD, Object, R> resultFactory
+    ) {
+        if (data == null) {
+            return resultFactory.apply(errorResultData, null);
+        } else if (data instanceof IResult) {
+            IResult<C, O> result = (IResult<C, O>) data;
+            if (result.getData() == null || Boolean.FALSE.equals(result.getData())) {
+                return resultFactory.apply(errorResultData, result.getData());
+            } else {
+                return resultFactory.apply(successResultData, result.getData());
+            }
+        } else {
+            return resultFactory.apply(successResultData, data);
+        }
+    }
+
+    /**
+     * 根据结果返回对应数据
+     * <p>*推荐使用</p>
+     * <p>该方法可适用于自定义IResult 实现类</p>
+     * <p>（如果 data 为 null ）或者 （data 是 IResult的实现类并且getData 为 null 或者false） 则返回 error</p>
+     * <p>其他情况返回 successResult , 注意data 为false 依然会返回 success</p>
+     *
+     * @param data              数据
+     * @param successResultData 成功返回（其他情况）
+     * @param errorResultData   错误返回 （如果 data 为 null ）或者 （data 是 IResult的实现类并且getData 为 null 或者false）
+     * @param newResult         最终结果, 成功数据会存入 newResult.getData() , (可以传 errorResult, 因为错误不会填充数据)
+     * @since 1.1.4
+     */
+    @NotNull
+    public static <RS extends IResultSource<C, O>, RD extends IResultData<C>, C, O> RS selectFill(Object data,
+                                                                                                  @NotNull RD successResultData,
+                                                                                                  @NotNull RD errorResultData,
+                                                                                                  @NotNull RS newResult
+    ) {
+        if (data == null) {
+            newResult.setCode(errorResultData.getCode());
+            newResult.setMsg(errorResultData.getMsg());
+            return newResult;
+        } else if (data instanceof IResult) {
+            IResult<C, O> result = (IResult<C, O>) data;
+            if (result.getData() == null || Boolean.FALSE.equals(result.getData())) {
+                newResult.setCode(errorResultData.getCode());
+                newResult.setMsg(errorResultData.getMsg());
+                return newResult;
+            } else {
+                newResult.setCode(successResultData.getCode());
+                newResult.setMsg(successResultData.getMsg());
+                newResult.setData(result.getData());
+                return newResult;
+            }
+        } else {
+            newResult.setCode(successResultData.getCode());
+            newResult.setMsg(successResultData.getMsg());
+            newResult.setData((O) data);
+            return newResult;
+        }
+    }
+
+    /**
+     * 根据结果返回对应数据
+     * <p>*推荐使用</p>
+     * <p>该方法可适用于自定义IResult 实现类</p>
+     * <p>（如果 data 为 null ）或者 （data 是 IResult的实现类并且getData 为 null 或者false） 则返回 error</p>
+     * <p>其他情况返回 successResult , 注意data 为false 依然会返回 success</p>
+     *
+     * @param data              数据
+     * @param successResultData 成功返回（其他情况）
+     * @param errorResultData   错误返回 （如果 data 为 null ）或者 （data 是 IResult的实现类并且getData 为 null 或者false）
+     * @param newResult         最终结果, 成功数据会存入 newResult.getData() , 错误数据会填入 errorDefaultData
+     * @param errorDefaultData  错误数据, 默认会填入的数据
+     * @since 1.1.4
+     */
+    @NotNull
+    public static <RS extends IResultSource<C, O>, RD extends IResultData<C>, C, O> RS selectFill(Object data,
+                                                                                                  @NotNull RD successResultData,
+                                                                                                  @NotNull RD errorResultData,
+                                                                                                  @NotNull RS newResult,
+                                                                                                  O errorDefaultData
+    ) {
+        if (data == null) {
+            newResult.setCode(errorResultData.getCode());
+            newResult.setMsg(errorResultData.getMsg());
+            newResult.setData(errorDefaultData);
+            return newResult;
+        } else if (data instanceof IResult) {
+            IResult<C, O> result = (IResult<C, O>) data;
+            if (result.getData() == null || Boolean.FALSE.equals(result.getData())) {
+                newResult.setCode(errorResultData.getCode());
+                newResult.setMsg(errorResultData.getMsg());
+                newResult.setData(errorDefaultData);
+                return newResult;
+            } else {
+                newResult.setCode(successResultData.getCode());
+                newResult.setMsg(successResultData.getMsg());
+                newResult.setData(result.getData());
+                return newResult;
+            }
+        } else {
+            newResult.setCode(successResultData.getCode());
+            newResult.setMsg(successResultData.getMsg());
+            newResult.setData((O) data);
+            return newResult;
+        }
+    }
+
+
+    //-----------result-------------
+
     /**
      * 根据结果返回对应数据
      * <p>若是IResult的实现类，则会排除code</p>
+     * <p>（如果 data 为 null ）或者 （data 是 IResult的实现类并且getData 为 null 或者false） 则返回 error</p>
+     * <p>其他情况返回 successResult , 注意data 为false 依然会返回 success</p>
      *
      * @param data 数据
      * @return {@link Result}
@@ -44,6 +280,8 @@ public class ResultUtil {
     /**
      * 根据结果返回对应数据
      * <p>若是IResult的实现类，则会排除code</p>
+     * <p>（如果 data 为 null ）或者 （data 是 IResult的实现类并且getData 为 null 或者false） 则返回 error</p>
+     * <p>其他情况返回 successResult , 注意data 为false 依然会返回 success</p>
      *
      * @param data       数据
      * @param successMsg 成功msg
@@ -73,6 +311,8 @@ public class ResultUtil {
     /**
      * 根据结果返回对应数据
      * <p>若是IResult的实现类，则会排除code</p>
+     * <p>（如果 data 为 null ）或者 （data 是 IResult的实现类并且getData 为 null 或者false） 则返回 error</p>
+     * <p>其他情况返回 successResult , 注意data 为false 依然会返回 success</p>
      *
      * @param data       数据
      * @param successMsg 成功msg
@@ -87,6 +327,9 @@ public class ResultUtil {
 
     /**
      * 根据结果返回对应数据
+     * <p>若是IResult的实现类，则会排除code</p>
+     * <p>（如果 data 为 null ）或者 （data 是 IResult的实现类并且getData 为 null 或者false） 则返回 error</p>
+     * <p>其他情况返回 successResult , 注意data 为false 依然会返回 success</p>
      *
      * @param data 数据
      * @return {@link MSResult}
@@ -110,6 +353,9 @@ public class ResultUtil {
 
     /**
      * 根据结果返回对应数据
+     * <p>若是IResult的实现类，则会排除code</p>
+     * <p>（如果 data 为 null ）或者 （data 是 IResult的实现类并且getData 为 null 或者false） 则返回 error</p>
+     * <p>其他情况返回 successResult , 注意data 为false 依然会返回 success</p>
      *
      * @param data 数据
      * @return {@link MSResult}
@@ -168,6 +414,8 @@ public class ResultUtil {
     }
 
 
+    //---------override------
+
     /**
      * 根据data 填写source
      * <p>万能方法，类似 selectResult 和 selectR</p>
@@ -176,7 +424,7 @@ public class ResultUtil {
      * @param source   源 IResult 对象 需要继承 {@link IResultSource}
      * @param data     填入的数据
      * @param codeType source 的 code 类型
-     * @return {@link T}
+     * @return {@link T} result
      */
     @NotNull
     public static <T extends IResultSource<C, O>, C, O> T fillResult(T source, O data, Class<C> codeType) {

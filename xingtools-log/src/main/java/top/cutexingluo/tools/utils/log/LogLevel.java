@@ -46,7 +46,7 @@ public class LogLevel {
      */
     public static final int ERROR = 0b010000;
     /**
-     * log.error
+     * log.trace
      */
     public static final int TRACE = 0b100000;
 
