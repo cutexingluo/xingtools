@@ -1,6 +1,7 @@
 package top.cutexingluo.tools.designtools.helper;
 
 import org.jetbrains.annotations.NotNull;
+import top.cutexingluo.tools.designtools.juc.lock.handler.LockHandler;
 import top.cutexingluo.tools.designtools.juc.lock.handler.XTLockHandler;
 import top.cutexingluo.tools.designtools.juc.lock.handler.XTLockHandlerMeta;
 
@@ -22,12 +23,19 @@ public interface LockHelper {
      * 设置锁基本数据
      *
      * @return 基本数据
+     * @deprecated 1.1.4 版本 已弃用, 请直接使用 lockHandler() 方法
      */
-    XTLockHandlerMeta lockHandlerMeta();
+    @Deprecated
+    default XTLockHandlerMeta lockHandlerMeta() {
+        return null;
+    }
 
     /**
      * 获取 LockerHandler 操作工具
+     *
+     * @deprecated 1.1.4 版本 已弃用, 请直接使用 lockHandler() 方法
      */
+    @Deprecated
     default XTLockHandler newLockHandler() {
         XTLockHandlerMeta handlerMeta = lockHandlerMeta();
         if (handlerMeta == null) {
@@ -37,16 +45,28 @@ public interface LockHelper {
     }
 
     /**
+     * lockHandler 操作工具
+     *
+     * @since 1.1.4
+     */
+    LockHandler lockHandler();
+
+
+    /**
      * 添加锁
      */
-    default <V> Callable<V> lockTask(@NotNull XTLockHandler lockHandler, Callable<V> task) {
+    default <V> Callable<V> lockTask(@NotNull LockHandler lockHandler, Callable<V> task) {
         return lockHandler.decorate(task);
     }
 
     /**
      * 添加锁
+     *
+     * <p>于 1.1.4 更改为lockHandler() 方法</p>
      */
     default <V> Callable<V> lockTask(Callable<V> task) {
-        return newLockHandler().decorate(task);
+        return lockHandler().decorate(task);
     }
+
+
 }

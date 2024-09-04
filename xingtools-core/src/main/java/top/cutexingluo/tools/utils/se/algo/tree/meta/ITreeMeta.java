@@ -14,14 +14,14 @@ public interface ITreeMeta<T> {
     /**
      * 得到children
      *
-     * @return {@link Collection}<{@link T}>
+     * @return {@link Collection}<{@link T}> 子节点
      */
     Collection<T> getChildren();
 
     /**
      * 是否存在children
      *
-     * @return boolean
+     * @return boolean 是否有子节点
      */
     boolean hasChildren();
 }

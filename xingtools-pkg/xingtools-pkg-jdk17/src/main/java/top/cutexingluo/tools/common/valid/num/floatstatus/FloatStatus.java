@@ -41,8 +41,6 @@ public @interface FloatStatus {
 
     /**
      * 2.只要目标满足指定数字即可通过,无视大小限制
-     *
-     * @return {@link double[]}
      */
     float[] matchNum() default {};
 
@@ -63,16 +61,12 @@ public @interface FloatStatus {
     /**
      * <p>limit开启</p>
      * 3.最小长度
-     *
-     * @return double
      */
     float min() default 0;
 
     /**
      * <p>limit开启</p>
      * 3.最大长度
-     *
-     * @return double
      */
     float max() default Float.MAX_VALUE;
 

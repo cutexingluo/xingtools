@@ -17,8 +17,11 @@ xingtools v1.1.3, v1.1.4
 2.日志包ILogProvider从静态改为面向对象
 3.WebHandler 接口 参数 HttpServletRequestAdapter 变更为 HttpServletRequestDataAdapter
 4.*为适应不同需求，ResultUtil新增select方法返回封装对象
+5.*对锁的类进行解耦操作, 修改LockHandler, XTLockHandler 等类, 修改LockHelper接口
 
 新增部分
+1.新增节点状态机 NodeStateMachine ，适配于无边权无事件情况
+2.新增Entry类代替hutool的Pair类，更改新增Entry, Pair, TupleEntry, TuplePair 等适应不同情况的二元组, 部分类开始继承Entry而不是hutool的Pair
 
 
 2024-8-12 v1.1.3
