@@ -1,17 +1,18 @@
 package top.cutexingluo.tools.common.base;
 
 /**
- * get the data
+ * get the value
  * <p>得到数据</p>
  *
  * @author XingTian
  * @version 1.0.0
- * @date 2023/12/10 17:41
- * @since 1.0.3
+ * @date 2024/9/6 11:35
+ * @since 1.1.4
  */
-public interface IData<V> {
+public interface IValue<V> {
+
     /**
-     * @return the data
+     * @return the value
      */
-    V data();
+    V getValue();
 }

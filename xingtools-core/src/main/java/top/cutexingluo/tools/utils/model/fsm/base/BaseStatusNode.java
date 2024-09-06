@@ -1,6 +1,7 @@
 package top.cutexingluo.tools.utils.model.fsm.base;
 
-import top.cutexingluo.tools.utils.se.algo.tree.meta.ITreeMeta;
+import top.cutexingluo.tools.common.data.node.INode;
+import top.cutexingluo.tools.common.data.node.INodeMeta;
 
 import java.util.Collection;
 
@@ -11,7 +12,7 @@ import java.util.Collection;
  * @version 1.0.0
  * @date 2024/9/3 14:47
  */
-public interface BaseStatusNode<T, S> extends ITreeMeta<S> {
+public interface BaseStatusNode<T, S> extends INodeMeta<S>, INode<T> {
     /**
      * 节点
      */

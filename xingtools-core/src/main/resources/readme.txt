@@ -10,19 +10,19 @@ xingtools v1.1.3, v1.1.4
 
 
 更新公告
-2024-8-16 v1.1.4
+2024-8-16 ~ 2024-9-14  v1.1.4
 
 更改部分
 1.恢复 mybatis-plus 插件自动配置, 默认关闭 xt-lock-aop
 2.日志包ILogProvider从静态改为面向对象
 3.WebHandler 接口 参数 HttpServletRequestAdapter 变更为 HttpServletRequestDataAdapter
 4.*为适应不同需求，ResultUtil新增select方法返回封装对象
-5.*对锁的类进行解耦操作, 修改LockHandler, XTLockHandler 等类, 修改LockHelper接口
+5.*对锁的类进行解耦操作, 修改LockHandler, XTLockHandler 等类, 修改LockHelper接口, LockHandler 移植到 core 包
 
 新增部分
 1.新增节点状态机 NodeStateMachine ，适配于无边权无事件情况
 2.新增Entry类代替hutool的Pair类，更改新增Entry, Pair, TupleEntry, TuplePair 等适应不同情况的二元组, 部分类开始继承Entry而不是hutool的Pair
-
+3.*新增链式接口，过滤器链接口及其实现类，核心类为 FilterChain (CompositeFilterChainFactory) , StreamChain , 可分别模拟过滤器链Filter和流式Stream的调用方式，加快开发
 
 2024-8-12 v1.1.3
 bug 修复

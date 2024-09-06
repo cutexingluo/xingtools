@@ -90,8 +90,8 @@ public class Entry<K, V> implements PairEntry<K, V>, Serializable {
     public boolean equals(Object o) {
         if (this == o)
             return true;
-        if (o instanceof Entry) {
-            Entry<?, ?> pair = (Entry<?, ?>) o;
+        if (o instanceof PairEntry) {
+            PairEntry<?, ?> pair = (PairEntry<?, ?>) o;
             return Objects.equals(getKey(), pair.getKey()) &&
                     Objects.equals(getValue(), pair.getValue());
         }

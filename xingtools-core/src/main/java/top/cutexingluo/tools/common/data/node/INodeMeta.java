@@ -1,24 +1,23 @@
-package top.cutexingluo.tools.utils.se.algo.tree.meta;
-
-import top.cutexingluo.tools.common.data.node.INodeMeta;
+package top.cutexingluo.tools.common.data.node;
 
 import java.util.Collection;
 
 /**
- * 元数据接口，是否存在孩子节点
+ * 节点元数据接口
  *
+ * @param <T> 节点类型
  * @author XingTian
  * @version 1.0.0
- * @date 2023/8/11 19:41
+ * @date 2024/9/5 11:53
+ * @since 1.1.4
  */
-public interface ITreeMeta<T> extends INodeMeta<T> {
+public interface INodeMeta<T> {
 
     /**
      * 得到children
      *
      * @return {@link Collection}<{@link T}> 子节点
      */
-    @Override
     Collection<T> getChildren();
 
     /**
@@ -26,6 +25,6 @@ public interface ITreeMeta<T> extends INodeMeta<T> {
      *
      * @return boolean 是否有子节点
      */
-    @Override
     boolean hasChildren();
+
 }

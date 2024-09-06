@@ -3,6 +3,7 @@ package top.cutexingluo.tools.designtools.juc.lock.handler;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.jetbrains.annotations.NotNull;
+import top.cutexingluo.tools.basepackage.base.Clearable;
 import top.cutexingluo.tools.basepackage.base.Initializable;
 import top.cutexingluo.tools.basepackage.basehandler.CallableHandler;
 import top.cutexingluo.tools.common.data.Entry;
@@ -16,6 +17,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.function.BiConsumer;
 
 /**
  * 锁处理器
@@ -30,7 +32,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  */
 @Data
 @Accessors(chain = true)
-public class LockHandler implements CallableHandler, Initializable {
+public class LockHandler implements CallableHandler, Initializable, Clearable {
 
     /**
      * 锁参数
@@ -80,6 +82,16 @@ public class LockHandler implements CallableHandler, Initializable {
     }
 
     /**
+     * 清除里面的锁，并重置初始化
+     */
+    @Override
+    public void clear() {
+        lock = null;
+        readWriteLock = null;
+        initialized = false;
+    }
+
+    /**
      * 单独提出初始化方法
      * <p>不建议直接使用该方法，建议调用 init 方法</p>
      *
@@ -107,7 +119,7 @@ public class LockHandler implements CallableHandler, Initializable {
     }
 
     /**
-     * 核心加锁任务方法
+     * 加锁方法
      *
      * @param task 任务
      * @return 任务执行返回值
@@ -115,6 +127,23 @@ public class LockHandler implements CallableHandler, Initializable {
      */
     public <T> T lock(Callable<T> task) throws Exception {
         return lockTask(task).getValue();
+    }
+
+    /**
+     * 加锁方法
+     *
+     * @param task 任务
+     * @return 任务执行返回值
+     */
+    public <T> T lock(Callable<T> task, BiConsumer<Boolean, Exception> inCatchHandler) {
+        Entry<Boolean, T> ret = null;
+        try {
+            ret = lockTask(task);
+            if (inCatchHandler != null) inCatchHandler.accept(ret.getKey(), null);
+        } catch (Exception e) {
+            if (inCatchHandler != null) inCatchHandler.accept(false, e);
+        }
+        return ret == null ? null : ret.getValue();
     }
 
     /**
@@ -191,7 +220,7 @@ public class LockHandler implements CallableHandler, Initializable {
      */
     @NotNull
     public <T> Entry<Boolean, T> tryLockTask(Callable<T> task) throws Exception {
-        if (lockMeta.getLockType() == XTLockType.NonLock) {
+        if (lock == null) {
             return new Entry<>(false, task.call());
         }
         // 是否获取了锁
@@ -208,5 +237,6 @@ public class LockHandler implements CallableHandler, Initializable {
         }
         return new Entry<>(tryLock, result);
     }
+
 
 }

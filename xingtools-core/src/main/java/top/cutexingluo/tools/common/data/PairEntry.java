@@ -1,5 +1,7 @@
 package top.cutexingluo.tools.common.data;
 
+import top.cutexingluo.tools.common.base.IValue;
+
 import java.util.Map;
 
 /**
@@ -11,7 +13,7 @@ import java.util.Map;
  * @date 2024/7/7 13:21
  * @since 1.0.5
  */
-public interface PairEntry<K, V> {
+public interface PairEntry<K, V> extends IValue<V> {
 
     /**
      * @return the key corresponding to this entry
