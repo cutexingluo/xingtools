@@ -1,10 +1,13 @@
 package top.cutexingluo.tools.basepackage.chain.base;
 
+import top.cutexingluo.tools.common.base.IDataValue;
 import top.cutexingluo.tools.common.data.PairEntry;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 /**
  * stream 流式 处理器 接口
@@ -16,7 +19,107 @@ import java.util.function.Predicate;
  * @see java.util.stream.Stream
  * @since 1.1.4
  */
-public interface StreamChainProcessor<T> {
+public interface StreamChainProcessor<T> extends IDataValue<T> {
+
+    // Optional
+
+    /**
+     * f a value is present, returns the value, otherwise throws NoSuchElementException.
+     * <p>如果存在则返回，否则抛出异常</p>
+     */
+    T get();
+
+    /**
+     * If a value is present, returns true, otherwise false.
+     * <p>目标是否不为空</p>
+     */
+    boolean isPresent();
+
+    /**
+     * If a value is not present, returns true, otherwise false.
+     * <p>目标是否为空</p>
+     */
+    boolean isEmpty();
+
+    /**
+     * If a value is present, performs the given action with the value, otherwise does nothing.
+     * <p>目标不为空时执行</p>
+     */
+    void ifPresent(Consumer<? super T> action);
+
+    /**
+     * If a value is present, performs the given action with the value, otherwise performs the given empty-based action.
+     * <p>不为空时执行action，为空时执行emptyAction</p>
+     *
+     * @param action      the action to be performed, if a value is present
+     * @param emptyAction the empty-based action to be performed, if no value is present
+     */
+    void ifPresentOrElse(Consumer<? super T> action, Runnable emptyAction);
+
+
+    /**
+     * If a value is present, and the value matches the given predicate, returns an Optional describing the value, otherwise returns an empty Optional.
+     * <p>不为空时执行，若 predicate 返回值 为false 则返回空对象</p>
+     */
+    StreamChainProcessor<T> filter(Predicate<? super T> predicate);
+
+
+    /**
+     * If a value is present, returns a StreamChainProcessor describing (as if by ofNullable) the result of applying the given mapping function to the value, otherwise returns an empty StreamChainProcessor.
+     *
+     * <p>为空时返回空对象，不为空时执行mapper </p>
+     * <p>检查的映射操作</p>
+     * <p>将当前对象映射为目标对象或null value 对象</p>
+     */
+    <R> StreamChainProcessor<R> map(Function<? super T, ? extends R> mapper);
+
+
+    /**
+     * If a value is present, returns the result of applying the given Optional-bearing mapping function to the value, otherwise returns an empty StreamChainProcessor.
+     * <p>为空时返回空对象，不为空时执行mapper ，并且检查非空 </p>
+     */
+    <R> StreamChainProcessor<R> flatMap(Function<? super T, ? extends StreamChainProcessor<? extends R>> mapper);
+
+
+    /**
+     * If a value is present, returns an Optional describing the value, otherwise returns an Optional produced by the supplying function.
+     * <p>为空时进行替换, 返回新对象</p>
+     */
+    StreamChainProcessor<T> or(Supplier<? extends StreamChainProcessor<? extends T>> supplier);
+
+    /**
+     * If a value is present, returns a sequential Stream containing only that value, otherwise returns an empty Stream.
+     * <p>获取stream</p>
+     * <p>为空时返回空Stream, 不为空时返回Stream.of</p>
+     */
+    Stream<T> stream();
+
+    /**
+     * If a value is present, returns the value, otherwise returns other.
+     * <p>为空时返回 other value</p>
+     */
+    T orElse(T other);
+
+
+    /**
+     * If a value is present, returns the value, otherwise returns the result produced by the supplying function.
+     * <p>为空时返回 supplier 的值</p>
+     */
+    T orElseGet(Supplier<? extends T> supplier);
+
+    /**
+     * If a value is present, returns the value, otherwise throws NoSuchElementException.
+     * <p>为空时抛出异常</p>
+     */
+    T orElseThrow();
+
+    /**
+     * If a value is present, returns the value, otherwise throws an exception produced by the exception supplying function.
+     * <p>为空时抛出异常</p>
+     */
+    <X extends Throwable> T orElseThrow(Supplier<? extends X> exceptionSupplier) throws X;
+
+    // Self
 
     /**
      * 转化类型
@@ -35,15 +138,22 @@ public interface StreamChainProcessor<T> {
     /**
      * 转化类型
      * <p>将当前对象转化为指定类型</p>
+     * <p>如果转化失败，则抛出异常</p>
+     */
+    <R, X extends Throwable> StreamChainProcessor<R> castThrow(Class<R> clazz, Supplier<? extends X> exceptionSupplier) throws X;
+
+    /**
+     * 转化类型
+     * <p>将当前对象转化为指定类型</p>
      * <p>如果转化失败，则返回默认mapper 的返回值</p>
      */
     <R> StreamChainProcessor<R> castOrElse(Class<R> clazz, Function<T, R> elseMapper);
 
     /**
      * 映射操作
-     * <p>将当前对象映射为目标对象</p>
+     * <p>将当前对象直接映射为目标对象</p>
      */
-    <R> StreamChainProcessor<R> map(Function<? super T, ? extends R> mapper);
+    <R> StreamChainProcessor<R> directMap(Function<? super T, ? extends R> mapper);
 
     /**
      * 过滤映射操作

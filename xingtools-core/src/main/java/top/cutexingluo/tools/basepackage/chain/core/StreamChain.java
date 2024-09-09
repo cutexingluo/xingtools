@@ -1,15 +1,20 @@
 package top.cutexingluo.tools.basepackage.chain.core;
 
 
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import top.cutexingluo.tools.basepackage.chain.base.StreamChainProcessor;
 import top.cutexingluo.tools.common.data.Entry;
-import top.cutexingluo.tools.designtools.builder.XTBuilder;
+import top.cutexingluo.tools.designtools.builder.AbstractBuilder;
 
+import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 /**
  * 流式链式处理器实体类
@@ -19,45 +24,250 @@ import java.util.function.Predicate;
  * @author XingTian
  * @version 1.0.0
  * @date 2024/9/6 9:37
+ * @see Optional
  * @since 1.1.4
  */
-public class StreamChain<T> extends XTBuilder<T> implements StreamChainProcessor<T> {
+public class StreamChain<T> extends AbstractBuilder<T> implements StreamChainProcessor<T> {
 
 
+    /**
+     * Creates an instance with the given source.
+     * <p>不推荐直接使用构造方法，但还是提供了出来</p>
+     * <p>建议使用 of 和 ofNullable 静态方法</p>
+     *
+     * @param source 原数据
+     */
     public StreamChain(T source) {
         this.target = source;
     }
 
+    @Override
+    public T getValue() {
+        return target;
+    }
+
+    //---------static----------
+
+    /**
+     * Common instance for empty().
+     * <p>空对象</p>
+     */
+    private static final StreamChain<?> EMPTY = new StreamChain<>(null);
+
+
+    /**
+     * Returns an empty Optional instance. No value is present for this Optional.
+     * <p>返回一个空对象</p>
+     */
+    public static <T> StreamChain<T> empty() {
+        @SuppressWarnings("unchecked")
+        StreamChain<T> t = (StreamChain<T>) EMPTY;
+        return t;
+    }
+
+    /**
+     * Returns an Optional describing the given non-null value.
+     * <p>返回一个非空对象</p>
+     */
+    @Contract("_ -> new")
+    @NotNull
+    public static <T> StreamChain<T> of(T value) {
+        return new StreamChain<>(Objects.requireNonNull(value));
+    }
+
+    /**
+     * Returns an Optional describing the given value, if non-null, otherwise returns an empty
+     * <p>返回一个可空对象</p>
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> StreamChain<T> ofNullable(T value) {
+        return value == null ? (StreamChain<T>) EMPTY
+                : new StreamChain<>(value);
+    }
+
+    /**
+     * <p>从其他实现类获取数据</p>
+     */
+    public static <T> StreamChain<T> ofOther(StreamChainProcessor<T> other) {
+        Objects.requireNonNull(other);
+        return other.isPresent() ? StreamChain.of(other.getValue())
+                : empty();
+    }
+
+    /**
+     * <p>从任意实现类获取数据 (包含当前对象)</p>
+     */
+    public static <T> StreamChain<T> ofInstance(StreamChainProcessor<T> instance) {
+        Objects.requireNonNull(instance);
+        if (instance instanceof StreamChain) {
+            return (StreamChain<T>) instance;
+        } else {
+            return ofOther(instance);
+        }
+    }
+
+
+    //---------override----------
+    //-----optional-----
 
     @Override
-    public <R> StreamChain<R> cast(@NotNull Class<R> clazz) {
-        if (clazz.isInstance(target)) {
-            return new StreamChain<>((R) target);
+    public T get() {
+        if (target == null) {
+            throw new NoSuchElementException("No target value present");
         }
-        return new StreamChain<>(null);
+        return target;
     }
 
     @Override
-    public <R> StreamChain<R> castThrow(@NotNull Class<R> clazz) {
-        if (clazz.isInstance(target)) {
-            return new StreamChain<>((R) target);
-        }
-        throw new ClassCastException("the target is not " + clazz.getName() + ", the target is " + (target != null ? target.getClass().getName() : "null"));
+    public boolean isPresent() {
+        return target != null;
     }
 
     @Override
-    public <R> StreamChain<R> castOrElse(@NotNull Class<R> clazz, Function<T, R> elseMapper) {
-        Objects.requireNonNull(elseMapper);
-        if (clazz.isInstance(target)) {
-            return new StreamChain<>((R) target);
+    public boolean isEmpty() {
+        return target == null;
+    }
+
+    @Override
+    public void ifPresent(Consumer<? super T> action) {
+        if (target != null) {
+            action.accept(target);
         }
-        return new StreamChain<>(elseMapper.apply(target));
+    }
+
+    @Override
+    public void ifPresentOrElse(Consumer<? super T> action, Runnable emptyAction) {
+        if (target != null) {
+            action.accept(target);
+        } else {
+            emptyAction.run();
+        }
+    }
+
+    @Override
+    public StreamChain<T> filter(Predicate<? super T> predicate) {
+        Objects.requireNonNull(predicate);
+        if (!isPresent()) {
+            return this;
+        } else {
+            return predicate.test(target) ? this : empty();
+        }
     }
 
     @Override
     public <R> StreamChain<R> map(Function<? super T, ? extends R> mapper) {
         Objects.requireNonNull(mapper);
-        return new StreamChain<>(mapper.apply(target));
+        if (!isPresent()) {
+            return empty();
+        } else {
+            return StreamChain.ofNullable(mapper.apply(target));
+        }
+    }
+
+    @Override
+    public <R> StreamChain<R> flatMap(Function<? super T, ? extends StreamChainProcessor<? extends R>> mapper) {
+        Objects.requireNonNull(mapper);
+        if (!isPresent()) {
+            return empty();
+        } else {
+            @SuppressWarnings("unchecked")
+            StreamChain<R> r = (StreamChain<R>) ofInstance(mapper.apply(target));
+            return Objects.requireNonNull(r);
+        }
+    }
+
+    @Override
+    public StreamChain<T> or(Supplier<? extends StreamChainProcessor<? extends T>> supplier) {
+        Objects.requireNonNull(supplier);
+        if (isPresent()) {
+            return this;
+        } else {
+            @SuppressWarnings("unchecked")
+            StreamChain<T> r = (StreamChain<T>) ofInstance(supplier.get());
+            return Objects.requireNonNull(r);
+        }
+    }
+
+    @Override
+    public Stream<T> stream() {
+        if (!isPresent()) {
+            return Stream.empty();
+        } else {
+            return Stream.of(target);
+        }
+    }
+
+    @Override
+    public T orElse(T other) {
+        return target != null ? target : other;
+    }
+
+    @Override
+    public T orElseGet(Supplier<? extends T> supplier) {
+        return target != null ? target : supplier.get();
+    }
+
+    @Override
+    public T orElseThrow() {
+        if (target == null) {
+            throw new NoSuchElementException("No target value present");
+        }
+        return target;
+    }
+
+    @Override
+    public <X extends Throwable> T orElseThrow(Supplier<? extends X> exceptionSupplier) throws X {
+        if (target != null) {
+            return target;
+        } else {
+            throw exceptionSupplier.get();
+        }
+    }
+
+    //-----self-----
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <R> StreamChain<R> cast(@NotNull Class<R> clazz) {
+        if (clazz.isInstance(target)) {
+            return of((R) target);
+        }
+        return empty();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <R> StreamChain<R> castThrow(@NotNull Class<R> clazz) {
+        if (clazz.isInstance(target)) {
+            return of((R) target);
+        }
+        throw new ClassCastException("the target is not " + clazz.getName() + ", the target is " + (target != null ? target.getClass().getName() : "null"));
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <R, X extends Throwable> StreamChainProcessor<R> castThrow(@NotNull Class<R> clazz, Supplier<? extends X> exceptionSupplier) throws X {
+        if (clazz.isInstance(target)) {
+            return of((R) target);
+        }
+        throw exceptionSupplier.get();
+    }
+
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <R> StreamChain<R> castOrElse(@NotNull Class<R> clazz, Function<T, R> elseMapper) {
+        Objects.requireNonNull(elseMapper);
+        if (clazz.isInstance(target)) {
+            return of((R) target);
+        }
+        return ofNullable(elseMapper.apply(target));
+    }
+
+    @Override
+    public <R> StreamChain<R> directMap(Function<? super T, ? extends R> mapper) {
+        Objects.requireNonNull(mapper);
+        return ofNullable(mapper.apply(target));
     }
 
     @Override
@@ -65,9 +275,9 @@ public class StreamChain<T> extends XTBuilder<T> implements StreamChainProcessor
         Objects.requireNonNull(condition);
         Objects.requireNonNull(mapper);
         if (condition.test(target)) {
-            return new StreamChain<>(mapper.apply(target));
+            return ofNullable(mapper.apply(target));
         } else {
-            return new StreamChain<>(null);
+            return empty();
         }
     }
 
@@ -78,12 +288,12 @@ public class StreamChain<T> extends XTBuilder<T> implements StreamChainProcessor
         if (condition.test(target)) {
             return new Entry<>(
                     this,
-                    new StreamChain<>(mapper.apply(target))
+                    ofNullable(mapper.apply(target))
             );
         } else {
             return new Entry<>(
                     this,
-                    new StreamChain<>(target)
+                    ofNullable(target)
             );
         }
     }
@@ -93,5 +303,31 @@ public class StreamChain<T> extends XTBuilder<T> implements StreamChainProcessor
         Objects.requireNonNull(chain);
         chain.accept(target);
         return this;
+    }
+
+    //-----object-----
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj instanceof StreamChain<?>) {
+            return Objects.equals(target, ((StreamChain<?>) obj).target);
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(target);
+    }
+
+    @Override
+    public String toString() {
+        return target != null
+                ? String.format("StreamChain[%s]", target)
+                : "StreamChain.empty";
     }
 }
