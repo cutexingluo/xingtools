@@ -37,7 +37,7 @@ public class ExtTransactionAutoConfigure {
     @ConditionalOnMissingBean
     @Bean
     public ExtTransactionalAop extTransactionAop() {
-        if (LogInfoAuto.enabled) log.info("ExtTransactionalAop ---->  {}", "Ext事务注解AOP，自动注册成功");
+        if (LogInfoAuto.enabled) log.info("ExtTransactionalAop ---> {}", "Ext事务注解AOP，自动注册成功");
         return new ExtTransactionalAop();
     }
 

@@ -1,4 +1,4 @@
-package top.cutexingluo.tools.utils.ee.redis;
+package top.cutexingluo.tools.autoconfigure.utils.ee.redis;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;

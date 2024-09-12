@@ -27,7 +27,7 @@ public class MethodLogAutoConfigure {
     @ConditionalOnMissingBean
     @Bean
     public MethodLogAop methodLogAop() {
-        if (LogInfoAuto.enabled) log.info("MethodLog Aop ---->  {}", "方法调用日志 AOP，自动注册成功");
+        if (LogInfoAuto.enabled) log.info("MethodLog Aop ---> {}", "方法调用日志 AOP，自动注册成功");
         return new MethodLogAop();
     }
 }

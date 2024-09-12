@@ -1,4 +1,4 @@
-package top.cutexingluo.tools.utils.ee.redisson.aop;
+package top.cutexingluo.tools.autoconfigure.utils.ee.redisson.aop;
 
 import com.baomidou.lock.DefaultLockKeyBuilder;
 import com.baomidou.lock.LockFailureStrategy;

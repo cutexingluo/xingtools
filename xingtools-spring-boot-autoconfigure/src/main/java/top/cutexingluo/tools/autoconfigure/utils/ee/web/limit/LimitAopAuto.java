@@ -1,4 +1,4 @@
-package top.cutexingluo.tools.utils.ee.web.limit;
+package top.cutexingluo.tools.autoconfigure.utils.ee.web.limit;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;

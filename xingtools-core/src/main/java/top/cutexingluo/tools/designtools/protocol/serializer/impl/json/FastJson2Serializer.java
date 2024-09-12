@@ -23,33 +23,21 @@ public class FastJson2Serializer implements Serializer, StringSerializer {
 
     @Override
     public <T> byte[] serialize(T obj) throws IOException {
-        if (obj == null) {
-            return new byte[0];
-        }
         return JSON.toJSONBytes(obj);
     }
 
     @Override
     public <T> T deserialize(byte[] data, Class<T> clz) throws IOException {
-        if (data == null || data.length == 0) {
-            return null;
-        }
         return JSON.parseObject(data, clz);
     }
 
     @Override
-    public <T> String stringify(T obj) throws IOException {
-        if (obj == null) {
-            return "";
-        }
+    public <T> String stringify(T obj) {
         return JSON.toJSONString(obj, JSONWriter.Feature.WriteClassName);
     }
 
     @Override
     public <T> T parse(String data, Class<T> clz) throws IOException {
-        if (data == null) {
-            return null;
-        }
         return JSON.parseObject(data, clz);
     }
 }

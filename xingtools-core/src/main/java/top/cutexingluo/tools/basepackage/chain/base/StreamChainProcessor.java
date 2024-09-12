@@ -3,6 +3,7 @@ package top.cutexingluo.tools.basepackage.chain.base;
 import top.cutexingluo.tools.common.base.IDataValue;
 import top.cutexingluo.tools.common.data.PairEntry;
 
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -19,7 +20,7 @@ import java.util.stream.Stream;
  * @see java.util.stream.Stream
  * @since 1.1.4
  */
-public interface StreamChainProcessor<T> extends IDataValue<T> {
+public interface StreamChainProcessor<T> extends IDataValue<T>, ChainProcessor {
 
     // Optional
 
@@ -149,11 +150,64 @@ public interface StreamChainProcessor<T> extends IDataValue<T> {
      */
     <R> StreamChainProcessor<R> castOrElse(Class<R> clazz, Function<T, R> elseMapper);
 
+
+    /**
+     * 提取操作
+     * <p>使用当前对象值</p>
+     */
+    StreamChainProcessor<T> peek(Consumer<? super T> action);
+
+
+    /**
+     * @return this
+     * @see #ifPresent(Consumer)
+     */
+    StreamChainProcessor<T> peekIfPresent(Consumer<? super T> action);
+
+    /**
+     * @return this
+     * @see #ifPresentOrElse(Consumer, Runnable)
+     */
+    StreamChainProcessor<T> peekIfPresentOrElse(Consumer<? super T> action, Runnable emptyAction);
+
+
+    /**
+     * 提取操作
+     * <p>不为空则执行, 为空返回空对象</p>
+     * <p>hutool 包的 Opt 扩展操作 peek</p>
+     */
+    StreamChainProcessor<T> peekIfPresentOrEmpty(Consumer<? super T> action);
+
+    /**
+     * 提取操作
+     * <p>不为空则执行, 为空返回空对象</p>
+     * <p>hutool 包的 Opt 扩展操作 peeks</p>
+     */
+    StreamChainProcessor<T> peeksIfPresentOrEmpty(Consumer<? super T>... actions);
+
+
     /**
      * 映射操作
      * <p>将当前对象直接映射为目标对象</p>
      */
     <R> StreamChainProcessor<R> directMap(Function<? super T, ? extends R> mapper);
+
+
+    /**
+     * 存在执行 mapper , 不存在执行 emptyAction
+     *
+     * @see #map(Function)
+     * @see #peekIfPresentOrElse(Consumer, Runnable)
+     */
+    <R> StreamChainProcessor<R> mapOrElse(Function<? super T, ? extends R> mapper, Runnable emptyAction);
+
+
+    /**
+     * 如果存在则执行mapper ,  mapper 返回的是 Optional 对象
+     *
+     * @see #flatMap(Function)
+     */
+    <R> StreamChainProcessor<R> flattedMap(Function<? super T, ? extends Optional<? extends R>> mapper);
 
     /**
      * 过滤映射操作
@@ -162,6 +216,7 @@ public interface StreamChainProcessor<T> extends IDataValue<T> {
      * @param condition 条件, 满足条件返回 true, 如果结果为 true 则会执行 mapper 映射操作
      */
     <R> StreamChainProcessor<R> filterMap(Predicate<? super T> condition, Function<? super T, ? extends R> mapper);
+
 
     /**
      * 过滤映射操作
@@ -174,8 +229,9 @@ public interface StreamChainProcessor<T> extends IDataValue<T> {
 
 
     /**
-     * 提取操作
-     * <p>使用当前对象值</p>
+     * 将当前对象转化为 Optional 对象
      */
-    StreamChainProcessor<T> peek(Consumer<? super T> consumer);
+    default Optional<T> toOptional() {
+        return Optional.ofNullable(getValue());
+    }
 }

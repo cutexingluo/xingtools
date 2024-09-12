@@ -66,7 +66,7 @@ public class RequestLimitInterceptor {
             limitKey = generateKey(map, requestLimitConfig.getDelimiter());
         }
         requestLimitConfig.setLimitKey(limitKey);
-        boolean pass = limitStrategy.interceptor(requestLimitConfig, limitKey);
+        boolean pass = limitStrategy.interceptorConfig(requestLimitConfig, limitKey);
         if (!pass) {
             throw limitStrategy.refuseException(requestLimitConfig.getMsg());
         }

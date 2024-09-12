@@ -12,7 +12,7 @@ import top.cutexingluo.tools.common.base.IDataValue;
  * @since 1.0.4
  */
 @Data
-public class OptRes<T> implements IDataValue<T> {
+public class OptRes<T> implements IOptRes<T>, IDataValue<T> {
 
     protected T value;
 

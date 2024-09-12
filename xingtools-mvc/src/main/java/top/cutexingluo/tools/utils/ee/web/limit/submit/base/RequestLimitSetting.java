@@ -11,6 +11,7 @@ import top.cutexingluo.tools.utils.ee.web.limit.submit.strategy.LimitStrategy;
  * @author XingTian
  * @version 1.0.0
  * @date 2024/1/18 19:51
+ * @since 1.0.4
  */
 @Data
 @AllArgsConstructor

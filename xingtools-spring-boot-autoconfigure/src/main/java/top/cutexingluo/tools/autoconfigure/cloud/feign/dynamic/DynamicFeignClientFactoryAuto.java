@@ -13,7 +13,7 @@ import top.cutexingluo.tools.cloud.feign.dynamic.DynamicFeignClientFactory;
 import top.cutexingluo.tools.start.log.LogInfoAuto;
 
 /**
- *  dynamic-feign 开启
+ * dynamic-feign 开启
  *
  * @author XingTian
  * @version 1.0.0
@@ -27,8 +27,8 @@ import top.cutexingluo.tools.start.log.LogInfoAuto;
 public class DynamicFeignClientFactoryAuto {
     @ConditionalOnMissingBean
     @Bean
-    public<T> DynamicFeignClientFactory<T> dynamicFeignClientFactory() {
-        if(LogInfoAuto.enabled)log.info("FeignRetryAop init ---> {}", "自动装配完成");
+    public <T> DynamicFeignClientFactory<T> dynamicFeignClientFactory() {
+        if (LogInfoAuto.enabled) log.info("DynamicFeignClientFactory init ---> {}", "自动装配完成");
         return new DynamicFeignClientFactory<>();
     }
 

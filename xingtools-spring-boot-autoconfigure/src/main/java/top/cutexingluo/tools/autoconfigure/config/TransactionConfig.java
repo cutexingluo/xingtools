@@ -1,4 +1,4 @@
-package top.cutexingluo.tools.config;
+package top.cutexingluo.tools.autoconfigure.config;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;

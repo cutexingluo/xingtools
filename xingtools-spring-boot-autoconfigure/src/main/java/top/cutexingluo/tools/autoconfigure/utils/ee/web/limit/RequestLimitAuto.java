@@ -1,4 +1,4 @@
-package top.cutexingluo.tools.utils.ee.web.limit;
+package top.cutexingluo.tools.autoconfigure.utils.ee.web.limit;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -28,7 +28,7 @@ public class RequestLimitAuto {
     @ConditionalOnMissingBean(RequestLimitAspect.class)
     @Bean
     public RequestLimitAspect requestLimitAspect() {
-        if (LogInfoAuto.enabled) log.info("RequestLimitAspect ---->  {}", "请求限制 AOP，自动注册成功");
+        if (LogInfoAuto.enabled) log.info("RequestLimitAspect ---> {}", "请求限制 AOP，自动注册成功");
         return new RequestLimitAspect();
     }
 }

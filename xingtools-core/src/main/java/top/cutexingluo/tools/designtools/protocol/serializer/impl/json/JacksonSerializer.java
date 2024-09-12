@@ -9,12 +9,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.Data;
+import org.jetbrains.annotations.NotNull;
 import top.cutexingluo.tools.common.base.IData;
 import top.cutexingluo.tools.designtools.protocol.serializer.Serializer;
 import top.cutexingluo.tools.designtools.protocol.serializer.StringSerializer;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.function.Consumer;
 
 /**
  * Jackson 序列化器
@@ -62,8 +64,21 @@ public class JacksonSerializer implements Serializer, StringSerializer, IData<Ob
         return objectMapper.readValue(data, clz);
     }
 
+    //------------ other ------------
+
 
     //-----默认初始化方法列表----------
+
+    /**
+     * 自定义初始化
+     *
+     * @since 1.1.4
+     */
+    public JacksonSerializer initMapper(@NotNull Consumer<ObjectMapper> consumer) {
+        consumer.accept(objectMapper);
+        return this;
+    }
+
 
     public JacksonSerializer initDefault(JsonInclude.Include include) {
         objectMapper.setSerializationInclusion(include);
@@ -79,6 +94,27 @@ public class JacksonSerializer implements Serializer, StringSerializer, IData<Ob
 
 
     /**
+     * 仅包含非 null 字段
+     * <p>忽略 null 字段</p>
+     *
+     * @since 1.1.4
+     */
+    public JacksonSerializer includeNonNull() {
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        return this;
+    }
+
+    /**
+     * 注册 时间类型序列化
+     */
+    public JacksonSerializer registerJavaTimeModule() {
+        // 解决jackson无法反序列化LocalDateTime的问题
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        objectMapper.registerModule(new JavaTimeModule());
+        return this;
+    }
+
+    /**
      * Redis 序列化常用配置
      */
     public JacksonSerializer initRedis() {
@@ -88,9 +124,7 @@ public class JacksonSerializer implements Serializer, StringSerializer, IData<Ob
 //        obm.activateDefaultTyping(LaissezFaireSubTypeValidator.instance, ObjectMapper.DefaultTyping.NON_FINAL);
         objectMapper.activateDefaultTyping(objectMapper.getPolymorphicTypeValidator(), ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
 
-        // 解决jackson无法反序列化LocalDateTime的问题
-        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        objectMapper.registerModule(new JavaTimeModule());
+        registerJavaTimeModule();
         return this;
     }
 

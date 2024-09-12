@@ -1,4 +1,4 @@
-package top.cutexingluo.tools.utils.ee.web.limit;
+package top.cutexingluo.tools.autoconfigure.utils.ee.web.limit;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ public class RedisLimitStrategyAuto {
     @ConditionalOnMissingBean
     @Bean
     public RedisLimitStrategy redisLimitStrategy(@Autowired(required = false) RYRedisCache redisCache, RedisTemplate<String, Object> redisTemplate) {
-        if (LogInfoAuto.enabled) log.info("RedisLimitStrategy ---->  {}", "RequestLimitAspect 开启 自动注册 redis 策略，自动注册成功");
+        if (LogInfoAuto.enabled) log.info("RedisLimitStrategy ---> {}", "RequestLimitAspect 开启 自动注册 redis 策略，自动注册成功");
         return new RedisLimitStrategy(redisCache, redisTemplate);
     }
 }

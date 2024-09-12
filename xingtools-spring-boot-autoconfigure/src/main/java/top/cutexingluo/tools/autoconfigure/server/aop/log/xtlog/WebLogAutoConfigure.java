@@ -24,14 +24,14 @@ public class WebLogAutoConfigure {
     @ConditionalOnMissingBean
     @Bean
     public WebLogAspect webLogAspect() {
-        if (LogInfoAuto.enabled) log.info("WebLogAspect ---->  {}", "WebLog 注解 AOP，自动注册成功");
+        if (LogInfoAuto.enabled) log.info("WebLogAspect ---> {}", "WebLog 注解 AOP，自动注册成功");
         return new WebLogAspect();
     }
 
     @ConditionalOnMissingBean
     @Bean
     public DefaultWebLogStrategy defaultWebLogStrategy() {
-        if (LogInfoAuto.enabled) log.info("DefaultWebLogStrategy ---->  {}", "WebLog 注解 AOP 默认策略，自动注册成功");
+        if (LogInfoAuto.enabled) log.info("DefaultWebLogStrategy ---> {}", "WebLog 注解 AOP 默认策略，自动注册成功");
         return new DefaultWebLogStrategy();
     }
 

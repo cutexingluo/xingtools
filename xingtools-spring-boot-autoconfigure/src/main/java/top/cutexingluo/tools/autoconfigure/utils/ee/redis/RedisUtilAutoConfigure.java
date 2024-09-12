@@ -1,4 +1,4 @@
-package top.cutexingluo.tools.utils.ee.redis;
+package top.cutexingluo.tools.autoconfigure.utils.ee.redis;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
 import top.cutexingluo.tools.auto.server.XingToolsAutoConfiguration;
 import top.cutexingluo.tools.start.log.LogInfoAuto;
+import top.cutexingluo.tools.utils.ee.redis.*;
 
 /**
  * RedisUtil 工具

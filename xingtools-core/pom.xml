@@ -103,6 +103,12 @@
             <version>${fastjson.version}</version>
             <optional>true</optional>
         </dependency>
+        <!--    gson 序列化    -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <optional>true</optional>
+        </dependency>
         <!-- hessian 解析器 -->
         <dependency>
             <groupId>com.caucho</groupId>

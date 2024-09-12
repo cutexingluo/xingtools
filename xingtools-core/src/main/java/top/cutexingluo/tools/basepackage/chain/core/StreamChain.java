@@ -160,7 +160,7 @@ public class StreamChain<T> extends AbstractBuilder<T> implements StreamChainPro
         if (!isPresent()) {
             return empty();
         } else {
-            return StreamChain.ofNullable(mapper.apply(target));
+            return ofNullable(mapper.apply(target));
         }
     }
 
@@ -265,9 +265,68 @@ public class StreamChain<T> extends AbstractBuilder<T> implements StreamChainPro
     }
 
     @Override
+    public StreamChain<T> peek(Consumer<? super T> action) {
+        Objects.requireNonNull(action);
+        action.accept(target);
+        return this;
+    }
+
+    @Override
+    public StreamChain<T> peekIfPresent(Consumer<? super T> action) {
+        ifPresent(action);
+        return this;
+    }
+
+    @Override
+    public StreamChain<T> peekIfPresentOrElse(Consumer<? super T> action, Runnable emptyAction) {
+        ifPresentOrElse(action, emptyAction);
+        return this;
+    }
+
+    @Override
+    public StreamChain<T> peekIfPresentOrEmpty(Consumer<? super T> action) {
+        Objects.requireNonNull(action);
+        if (isEmpty()) {
+            return empty();
+        }
+        action.accept(this.target);
+        return this;
+    }
+
+    @SafeVarargs
+    @Override
+    public final StreamChain<T> peeksIfPresentOrEmpty(Consumer<? super T>... actions) {
+        // 第三个参数 (opts, opt) -> null其实并不会执行到该函数式接口所以直接返回了个null
+        return Stream.of(actions).reduce(this, StreamChain<T>::peekIfPresentOrEmpty, (opts, opt) -> null);
+    }
+
+    @Override
     public <R> StreamChain<R> directMap(Function<? super T, ? extends R> mapper) {
         Objects.requireNonNull(mapper);
         return ofNullable(mapper.apply(target));
+    }
+
+
+    @Override
+    public <R> StreamChain<R> mapOrElse(Function<? super T, ? extends R> mapper, Runnable emptyAction) {
+        Objects.requireNonNull(mapper);
+        Objects.requireNonNull(emptyAction);
+        if (isPresent()) {
+            return ofNullable(mapper.apply(target));
+        } else {
+            emptyAction.run();
+            return empty();
+        }
+    }
+
+    @Override
+    public <R> StreamChain<R> flattedMap(Function<? super T, ? extends Optional<? extends R>> mapper) {
+        Objects.requireNonNull(mapper);
+        if (isEmpty()) {
+            return empty();
+        } else {
+            return ofNullable(mapper.apply(target).orElse(null));
+        }
     }
 
     @Override
@@ -298,12 +357,6 @@ public class StreamChain<T> extends AbstractBuilder<T> implements StreamChainPro
         }
     }
 
-    @Override
-    public StreamChain<T> peek(Consumer<? super T> chain) {
-        Objects.requireNonNull(chain);
-        chain.accept(target);
-        return this;
-    }
 
     //-----object-----
 

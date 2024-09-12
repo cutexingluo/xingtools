@@ -109,6 +109,17 @@ public class AutoInjectProperty {
     private boolean redisconfigUtil = false;
 
 
+    /**
+     * JacksonSerializer 默认序列化器 全局配置 (默认会调用 initRedis() )，默认关闭
+     * <p>若开启 并且 redisconfig-setting 为 jackson, redisconfig 配置 会自动识别并导入</p>
+     *
+     * <p>jackson-serializer</p>
+     *
+     * @see top.cutexingluo.tools.designtools.protocol.serializer.impl.json.JacksonSerializer
+     */
+    private boolean jacksonSerializer = false;
+
+
     //********以上一般都会遇到
 
     //sa-token整合jwt，默认关闭
