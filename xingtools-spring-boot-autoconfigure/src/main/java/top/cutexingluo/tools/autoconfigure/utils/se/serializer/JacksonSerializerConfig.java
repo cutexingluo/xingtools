@@ -32,7 +32,7 @@ public class JacksonSerializerConfig {
     @Bean("jacksonSerializer")
     public JacksonSerializer jacksonSerializer() {
         if (LogInfoAuto.enabled)
-            log.info("JacksonSerializer ---> {}", "jacksonSerializer 开启, 自动注册 Jackson 序列化器, 自动注册成功");
+            log.info("JacksonSerializerConfig ---> {}", "jacksonSerializer 开启, 自动注册 Jackson 序列化器, 自动注册成功");
         return new JacksonSerializer();
     }
 
@@ -40,7 +40,7 @@ public class JacksonSerializerConfig {
     @Bean("redisJacksonSerializer")
     public JacksonSerializer redisJacksonSerializer() {
         if (LogInfoAuto.enabled)
-            log.info("JacksonSerializer ---> {}", "redisJacksonSerializer 开启, 自动注册 Redis Jackson 序列化器, 自动注册成功");
+            log.info("JacksonSerializerConfig ---> {}", "redisJacksonSerializer 开启, 自动注册 Redis Jackson 序列化器, 自动注册成功");
         return new JacksonSerializer().initRedis();
     }
 
