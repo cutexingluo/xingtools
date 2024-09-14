@@ -164,6 +164,43 @@ public class ResultUtil {
      * <p>*推荐使用</p>
      * <p>该方法可适用于自定义IResult 实现类</p>
      * <p>（如果 data 为 null ）或者 （data 是 IResult的实现类并且getData 为 null 或者false） 则返回 error</p>
+     * <p>其他情况返回 returnResult , 注意data 为false 依然会返回 success</p>
+     *
+     * @param data            数据
+     * @param returnResult    成功返回（其他情况）(错误返回会对该对象进行填充)
+     * @param errorResultData 错误返回 （如果 data 为 null ）或者 （data 是 IResult的实现类并且getData 为 null 或者false）
+     * @since 1.1.4
+     */
+    @NotNull
+    public static <RS extends IResultSource<C, O>, RD extends IResultData<C>, C, O> RS selectFill(Object data,
+                                                                                                  @NotNull RS returnResult,
+                                                                                                  @NotNull RD errorResultData
+    ) {
+        if (data == null) {
+            returnResult.setCode(errorResultData.getCode());
+            returnResult.setMsg(errorResultData.getMsg());
+            return returnResult;
+        } else if (data instanceof IResult) {
+            IResult<C, O> result = (IResult<C, O>) data;
+            if (result.getData() == null || Boolean.FALSE.equals(result.getData())) {
+                returnResult.setCode(errorResultData.getCode());
+                returnResult.setMsg(errorResultData.getMsg());
+                return returnResult;
+            } else {
+                returnResult.setData(result.getData());
+                return returnResult;
+            }
+        } else {
+            returnResult.setData((O) data);
+            return returnResult;
+        }
+    }
+
+    /**
+     * 根据结果返回对应数据
+     * <p>*推荐使用</p>
+     * <p>该方法可适用于自定义IResult 实现类</p>
+     * <p>（如果 data 为 null ）或者 （data 是 IResult的实现类并且getData 为 null 或者false） 则返回 error</p>
      * <p>其他情况返回 successResult , 注意data 为false 依然会返回 success</p>
      *
      * @param data              数据
