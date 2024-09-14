@@ -87,7 +87,7 @@ public class XTMethodUtil {
      */
     public static <A extends Annotation> void methodParamsHandler(@NotNull Parameter[] params, Class<A> annotationClass, TriConsumer<Parameter[], Integer, A> parameterHandler) {
         for (int i = 0; i < params.length; i++) {
-            A paramAnno = top.cutexingluo.tools.designtools.method.ClassUtil.getAnnotation(params[i], annotationClass);
+            A paramAnno = ClassUtil.getAnnotation(params[i], annotationClass);
             if (parameterHandler != null) {
                 parameterHandler.accept(params, i, paramAnno);
             }

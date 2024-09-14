@@ -2,7 +2,7 @@ package top.cutexingluo.tools.common.opt;
 
 
 import lombok.Data;
-import top.cutexingluo.tools.common.base.IData;
+import top.cutexingluo.tools.common.base.IDataValue;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -16,7 +16,7 @@ import java.util.function.Supplier;
  * @since 1.0.4
  */
 @Data
-public class OptionalResult<T> implements IData<T> {
+public class OptionalResult<T> implements IDataValue<T> {
 
     /**
      * 值

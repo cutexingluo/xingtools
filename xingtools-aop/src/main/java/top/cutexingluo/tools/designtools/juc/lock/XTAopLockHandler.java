@@ -6,32 +6,34 @@ import lombok.experimental.Accessors;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.redisson.api.RedissonClient;
+import top.cutexingluo.tools.basepackage.base.ExtInitializable;
 import top.cutexingluo.tools.basepackage.basehandler.CallableHandler;
 import top.cutexingluo.tools.designtools.juc.lock.extra.XTLockMeta;
 import top.cutexingluo.tools.designtools.juc.lock.handler.XTExtLockHandler;
 import top.cutexingluo.tools.designtools.juc.lock.handler.XTLockHandler;
+import top.cutexingluo.tools.utils.spring.SpringUtils;
 
 import java.util.concurrent.Callable;
 
 /**
- *  XTAopLock 注解 handler
+ * XTAopLock 注解 handler
  * <p>建议直接使用 {@link  top.cutexingluo.tools.designtools.juc.lock.handler.XTLockHandler}</p>
  *
  * @author XingTian
  * @version 1.0.0
  * @date 2023/4/6 21:13
  * @update 1.0.2, v1.1.1
- * @since  1.1.1
+ * @since 1.1.1
  */
 @Data
 @NoArgsConstructor
 @Accessors(chain = true)
-public class XTAopLockHandler  implements CallableHandler {
+public class XTAopLockHandler implements CallableHandler, ExtInitializable<XTAopLockHandler> {
     protected XTAopLock lockAnno;
     protected XTLockMeta lockMeta;
     protected RedissonClient redissonClient;
     /**
-     * 是否使用 RedissonClient 参数, true 且 redissonClient 不为空，则使用自动获取 RedissonClient  bean
+     * 是否使用 RedissonClient 参数, true 且 redissonClient 为空，调用 initSelf 则使用自动获取 RedissonClient  bean
      */
     protected boolean openRedissonClient = false;
 
@@ -42,19 +44,19 @@ public class XTAopLockHandler  implements CallableHandler {
     }
 
     public XTAopLockHandler(XTAopLock lockAnno, RedissonClient redissonClient) {
-        this(lockAnno,redissonClient,true);
+        this(lockAnno, redissonClient, true);
     }
 
     public XTAopLockHandler(XTAopLock lockAnno, boolean openRedissonClient) {
-        this(lockAnno,null,openRedissonClient);
+        this(lockAnno, null, openRedissonClient);
     }
 
     /**
      * 获取 XTLockMeta 对象
      */
     @Contract("_ -> new")
-    public static @NotNull XTLockMeta parseMeta(@NotNull XTAopLock lockAnno){
-        return new XTLockMeta(lockAnno.name(), lockAnno.lockType(),  lockAnno.isFair(),lockAnno.tryTimeout());
+    public static @NotNull XTLockMeta parseMeta(@NotNull XTAopLock lockAnno) {
+        return new XTLockMeta(lockAnno.name(), lockAnno.lockType(), lockAnno.isFair(), lockAnno.tryTimeout());
     }
 
 
@@ -62,7 +64,7 @@ public class XTAopLockHandler  implements CallableHandler {
      * 转成 XTLockHandler
      */
     @NotNull
-    public XTLockHandler toXTLockHandler(){
+    public XTLockHandler toXTLockHandler() {
         return new XTLockHandler(parseMeta(lockAnno), redissonClient, openRedissonClient);
     }
 
@@ -71,7 +73,7 @@ public class XTAopLockHandler  implements CallableHandler {
      * 转成 XTExtLockHandler
      */
     @NotNull
-    public XTExtLockHandler toXTExtLockHandler(){
+    public XTExtLockHandler toXTExtLockHandler() {
         return new XTExtLockHandler(parseMeta(lockAnno), redissonClient, openRedissonClient);
     }
 
@@ -83,6 +85,7 @@ public class XTAopLockHandler  implements CallableHandler {
         XTLockHandler handler = toXTLockHandler();
         return handler.decorate(task).call();
     }
+
     /**
      * 直接使用 XTExtLockHandler 执行器并初始化调用lock方法
      */
@@ -100,5 +103,16 @@ public class XTAopLockHandler  implements CallableHandler {
     public <T> Callable<T> decorate(Callable<T> callable) {
         XTExtLockHandler lockHandler = toXTExtLockHandler().initSelf();
         return lockHandler.decorate(callable);
+    }
+
+    @Override
+    public XTAopLockHandler initSelf() {
+        if (openRedissonClient && redissonClient == null) {
+            redissonClient = SpringUtils.getBean(RedissonClient.class);
+//            if (redissonClient == null) { // auto check
+//                throw new IllegalStateException("RedissonClient is null !!!");
+//            }
+        }
+        return this;
     }
 }

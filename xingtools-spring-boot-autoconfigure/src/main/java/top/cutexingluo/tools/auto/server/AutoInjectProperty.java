@@ -45,7 +45,7 @@ public class AutoInjectProperty {
      * <p>默认关闭</p>
      * <p>xt-aop-lock</p>
      */
-    private boolean xtAopLock = true;
+    private boolean xtAopLock = false;
 
     // 全局异常拦截是否开启
     /**
@@ -107,6 +107,17 @@ public class AutoInjectProperty {
      * <p>redisconfig-util</p>
      */
     private boolean redisconfigUtil = false;
+
+
+    /**
+     * JacksonSerializer 默认序列化器 全局配置 (默认会调用 initRedis() )，默认关闭
+     * <p>若开启 并且 redisconfig-setting 为 jackson, redisconfig 配置 会自动识别并导入</p>
+     *
+     * <p>jackson-serializer</p>
+     *
+     * @see top.cutexingluo.tools.designtools.protocol.serializer.impl.json.JacksonSerializer
+     */
+    private boolean jacksonSerializer = false;
 
 
     //********以上一般都会遇到
@@ -174,6 +185,12 @@ public class AutoInjectProperty {
      * <p>mybatis-plus-config</p>
      */
     private boolean mybatisPlusConfig = false;
+
+    /**
+     * 事务自动配置 使用分页插件推荐开启<br> 默认关闭
+     * <p>transaction-config</p>
+     */
+    private boolean transactionConfig = false;
     // 跨域拦截
 //    /**
 //     * 跨域拦截默认配置是否开启<br>默认关闭

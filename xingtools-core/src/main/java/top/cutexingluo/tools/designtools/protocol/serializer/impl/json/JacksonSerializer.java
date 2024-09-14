@@ -1,20 +1,23 @@
 package top.cutexingluo.tools.designtools.protocol.serializer.impl.json;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.Data;
+import org.jetbrains.annotations.NotNull;
 import top.cutexingluo.tools.common.base.IData;
+import top.cutexingluo.tools.designtools.protocol.adapter.ModuleAdapter;
+import top.cutexingluo.tools.designtools.protocol.adapter.impl.JacksonAdapter;
+import top.cutexingluo.tools.designtools.protocol.jackson.adapter.JacksonDefaultAdapter;
+import top.cutexingluo.tools.designtools.protocol.jackson.adapter.JacksonRedisAdapter;
+import top.cutexingluo.tools.designtools.protocol.jackson.adapter.JacksonToFastJsonAdapter;
 import top.cutexingluo.tools.designtools.protocol.serializer.Serializer;
 import top.cutexingluo.tools.designtools.protocol.serializer.StringSerializer;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.function.Consumer;
 
 /**
  * Jackson 序列化器
@@ -62,32 +65,106 @@ public class JacksonSerializer implements Serializer, StringSerializer, IData<Ob
         return objectMapper.readValue(data, clz);
     }
 
+    //------------ other ------------
+
+
+    //------------ builder ------------
+
+    /**
+     * 自定义初始化
+     *
+     * @since 1.1.4
+     */
+    public JacksonSerializer initMapper(@NotNull Consumer<ObjectMapper> consumer) {
+        consumer.accept(objectMapper);
+        return this;
+    }
+
+    /**
+     * 自定义适配器注册
+     *
+     * @since 1.1.4
+     */
+    public JacksonSerializer registerAdapter(@NotNull ModuleAdapter<ObjectMapper> adapter) {
+        adapter.setMapper(objectMapper).initSelf();
+        return this;
+    }
+
+    /**
+     * 自定义适配器注册
+     *
+     * @since 1.1.4
+     */
+    public JacksonSerializer registerAdapter(@NotNull JacksonAdapter adapter) {
+        adapter.setMapper(objectMapper).initSelf();
+        return this;
+    }
 
     //-----默认初始化方法列表----------
 
+    /**
+     * 使用默认配置
+     */
+    public JacksonSerializer initDefault() {
+        registerAdapter(new JacksonDefaultAdapter());
+        return this;
+    }
+
+    /**
+     * Redis 序列化常用配置
+     *
+     * @since 1.1.4
+     */
+    public JacksonSerializer initRedis() {
+        registerAdapter(new JacksonRedisAdapter());
+        return this;
+    }
+
+    /**
+     * 模拟 fastjson 配置
+     *
+     * @since 1.1.4
+     */
+    public JacksonSerializer initToFactJson() {
+        registerAdapter(new JacksonToFastJsonAdapter());
+        return this;
+    }
+
+    //------------ include ------------
+
+    public JacksonSerializer setSerializationInclusion(JsonInclude.Include include) {
+        objectMapper.setSerializationInclusion(include);
+        return this;
+    }
+
+    /**
+     * 仅序列化非 null 字段
+     * <p>忽略 null 字段</p>
+     *
+     * @since 1.1.4
+     */
+    public JacksonSerializer includeNonNull() {
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        return this;
+    }
+
+    //------------ ext ------------
+
+    /**
+     * 使用默认配置
+     */
     public JacksonSerializer initDefault(JsonInclude.Include include) {
         objectMapper.setSerializationInclusion(include);
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        objectMapper.configure(DeserializationFeature.FAIL_ON_NUMBERS_FOR_ENUMS, true);
+        initDefault();
         objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
         return this;
     }
 
-    public JacksonSerializer initDefault() {
-        return initDefault(JsonInclude.Include.ALWAYS);
-    }
-
 
     /**
-     * Redis 序列化常用配置
+     * 注册 时间类型序列化
      */
-    public JacksonSerializer initRedis() {
-        // 指定要序列化的域，field,get和set,以及修饰符范围，ANY是都有包括private和public
-        objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-        // 指定序列化输入的类型，类必须是非final修饰的，final修饰的类，比如String,Integer等会抛出异常
-//        obm.activateDefaultTyping(LaissezFaireSubTypeValidator.instance, ObjectMapper.DefaultTyping.NON_FINAL);
-        objectMapper.activateDefaultTyping(objectMapper.getPolymorphicTypeValidator(), ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
-
+    public JacksonSerializer registerJavaTimeModule() {
         // 解决jackson无法反序列化LocalDateTime的问题
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         objectMapper.registerModule(new JavaTimeModule());

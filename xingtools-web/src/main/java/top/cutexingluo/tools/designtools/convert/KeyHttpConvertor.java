@@ -1,7 +1,7 @@
 package top.cutexingluo.tools.designtools.convert;
 
-import cn.hutool.core.lang.Pair;
 import org.jetbrains.annotations.NotNull;
+import top.cutexingluo.tools.common.data.Entry;
 
 import java.util.Map;
 
@@ -13,7 +13,7 @@ import java.util.Map;
  * @date 2024/1/12 10:32
  * @since 1.0.4
  */
-public class KeyHttpConvertor extends Pair<String, WebHandler> {
+public class KeyHttpConvertor extends Entry<String, WebHandler> {
     /**
      * 构造
      *

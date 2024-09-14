@@ -11,10 +11,11 @@ import java.nio.charset.StandardCharsets;
  * 字符集工具类
  *
  * @author XingTian
- * @version 1.0.0
+ * @version 1.0.1
  * @date 2023/4/22 19:53
  */
 public class CharsetKit {
+
     /**
      * ISO-8859-1
      */
@@ -31,11 +32,11 @@ public class CharsetKit {
     /**
      * ISO-8859-1
      */
-    public static final Charset CHARSET_ISO_8859_1 = Charset.forName(ISO_8859_1);
+    public static final Charset CHARSET_ISO_8859_1 = StandardCharsets.ISO_8859_1;
     /**
      * UTF-8
      */
-    public static final Charset CHARSET_UTF_8 = Charset.forName(UTF_8);
+    public static final Charset CHARSET_UTF_8 = StandardCharsets.UTF_8;
     /**
      * GBK
      */
