@@ -3,6 +3,7 @@ package top.cutexingluo.tools.utils.ee.redis.core;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
@@ -10,8 +11,10 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import top.cutexingluo.tools.designtools.protocol.serializer.impl.json.JacksonSerializer;
 import top.cutexingluo.tools.utils.ee.fastjson.FastJsonRedisSerializer;
 
+import java.util.Objects;
+
 /**
- *Redis 配置初始化工厂
+ * Redis 配置初始化工厂
  *
  * @author XingTian
  * @version 1.0.0
@@ -24,13 +27,15 @@ public class RedisConfigInitFactory {
      *
      * @param template 模板
      */
-    public static <T, V> void initTemplate(@NotNull RedisTemplate<T, V> template) {
+    public static <T, V> void initTemplate(@NotNull RedisTemplate<T, V> template, @Nullable ObjectMapper obm) {
         //配置序列化方式
         Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer =
                 new Jackson2JsonRedisSerializer<>(Object.class);
 
-        // 1.0.5 封装进入
-        ObjectMapper obm = new JacksonSerializer().initRedis().getObjectMapper();
+        // 1.0.5 封装进入 1.1.4 增加全局判断
+        if (Objects.isNull(obm)) {
+            obm = new JacksonSerializer().initRedis().getObjectMapper();
+        }
 
 
         jackson2JsonRedisSerializer.setObjectMapper(obm);
@@ -54,10 +59,10 @@ public class RedisConfigInitFactory {
      *
      * @param redisConnectionFactory 连接工厂
      */
-    public static @NotNull RedisTemplate<String, Object> initTemplate(RedisConnectionFactory redisConnectionFactory) {
+    public static @NotNull RedisTemplate<String, Object> initTemplate(RedisConnectionFactory redisConnectionFactory, @Nullable ObjectMapper objectMapper) {
         RedisTemplate<String, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(redisConnectionFactory);
-        initTemplate(template);
+        initTemplate(template, objectMapper);
         return template;
     }
 

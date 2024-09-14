@@ -1,5 +1,6 @@
 package top.cutexingluo.tools.utils.log.pkg;
 
+import lombok.Data;
 import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.Logger;
 import top.cutexingluo.tools.basepackage.baseimpl.XTRunnable;
@@ -14,13 +15,28 @@ import top.cutexingluo.tools.utils.log.LogLevel;
  * @since 1.0.4
  */
 @Log4j2
+@Data
 public class LogLog4j2 implements ILogProvider<Logger> {
     public static final int TAG = 2;
-    public static final Logger LOG = org.apache.logging.log4j.LogManager.getLogger(LogLog4j2.class); // pass javadoc
+    public static Logger LOG = org.apache.logging.log4j.LogManager.getLogger(LogLog4j2.class); // pass javadoc
+
+    /**
+     * LOG 对象
+     * <p>于 1.1.4  变为面向对象</p>
+     */
+    protected Logger logger;
+
+    public LogLog4j2() {
+        logger = LOG;
+    }
+
+    public LogLog4j2(Logger log) {
+        this.logger = log;
+    }
 
     @Override
     public Logger getLog() {
-        return LOG;
+        return logger;
     }
 
     @Override
@@ -35,19 +51,19 @@ public class LogLog4j2 implements ILogProvider<Logger> {
                 System.out.println(msg);
             }
             if ((levelCode & LogLevel.DEBUG) != 0) {
-                LOG.debug(msg);
+                logger.debug(msg);
             }
             if ((levelCode & LogLevel.INFO) != 0) {
-                LOG.info(msg);
+                logger.info(msg);
             }
             if ((levelCode & LogLevel.WARN) != 0) {
-                LOG.warn(msg);
+                logger.warn(msg);
             }
             if ((levelCode & LogLevel.ERROR) != 0) {
-                LOG.error(msg);
+                logger.error(msg);
             }
             if ((levelCode & LogLevel.TRACE) != 0) {
-                LOG.trace(msg);
+                logger.trace(msg);
             }
         });
     }
@@ -69,19 +85,19 @@ public class LogLog4j2 implements ILogProvider<Logger> {
                 System.out.println(msg);
                 break;
             case LogLevel.DEBUG:
-                LOG.debug(msg);
+                logger.debug(msg);
                 break;
             case LogLevel.INFO:
-                LOG.info(msg);
+                logger.info(msg);
                 break;
             case LogLevel.WARN:
-                LOG.warn(msg);
+                logger.warn(msg);
                 break;
             case LogLevel.ERROR:
-                LOG.error(msg);
+                logger.error(msg);
                 break;
             case LogLevel.TRACE:
-                LOG.trace(msg);
+                logger.trace(msg);
                 break;
             default:
                 break;

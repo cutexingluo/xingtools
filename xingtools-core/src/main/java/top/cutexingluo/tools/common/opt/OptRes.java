@@ -1,7 +1,7 @@
 package top.cutexingluo.tools.common.opt;
 
 import lombok.Data;
-import top.cutexingluo.tools.common.base.IData;
+import top.cutexingluo.tools.common.base.IDataValue;
 
 /**
  * Optional 扩展类
@@ -12,7 +12,7 @@ import top.cutexingluo.tools.common.base.IData;
  * @since 1.0.4
  */
 @Data
-public class OptRes<T> implements IData<T> {
+public class OptRes<T> implements IOptRes<T>, IDataValue<T> {
 
     protected T value;
 

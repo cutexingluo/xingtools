@@ -2,7 +2,7 @@ package top.cutexingluo.tools.common.opt;
 
 import lombok.Data;
 import org.jetbrains.annotations.NotNull;
-import top.cutexingluo.tools.common.base.IData;
+import top.cutexingluo.tools.common.base.IDataValue;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -19,7 +19,7 @@ import java.util.function.Function;
  * @since 1.0.4
  */
 @Data
-public class OptBundle<T, Meta> implements IData<T> {
+public class OptBundle<T, Meta> implements IDataValue<T> {
 
     /**
      * 执行函数
@@ -103,6 +103,7 @@ public class OptBundle<T, Meta> implements IData<T> {
      *
      * @since 1.0.5
      */
+    @Override
     public T getValue() {
         return data.value;
     }

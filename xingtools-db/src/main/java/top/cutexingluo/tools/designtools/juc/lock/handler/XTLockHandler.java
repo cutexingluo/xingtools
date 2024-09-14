@@ -7,13 +7,9 @@ import org.redisson.api.RedissonClient;
 import top.cutexingluo.tools.basepackage.basehandler.CallableHandler;
 import top.cutexingluo.tools.common.Constants;
 import top.cutexingluo.tools.designtools.juc.lock.extra.XTLockMeta;
-import top.cutexingluo.tools.designtools.juc.lock.extra.XTLockType;
 import top.cutexingluo.tools.exception.ConfigNullPointerException;
 
 import java.util.concurrent.Callable;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -24,14 +20,13 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * <p>推荐使用</p>
  * <p>需要导入 org.redisson.api.RedissonClient 包</p>
  *
- *
  * @author XingTian
  * @version 1.0.0
  * @date 2024/7/12 9:53
  * @since 1.1.1
  */
 @Accessors(chain = true)
-public class XTLockHandler  extends LockHandler  implements CallableHandler {
+public class XTLockHandler extends LockHandler implements CallableHandler {
 
 
     /**
@@ -61,7 +56,8 @@ public class XTLockHandler  extends LockHandler  implements CallableHandler {
 
     /**
      * 使用 RedissonClient
-     * @param  useRedissonClient 使用 RedissonClient , 如果不存在会自动从 Spring容器获取
+     *
+     * @param useRedissonClient 使用 RedissonClient , 如果不存在会自动从 Spring容器获取
      */
     public XTLockHandler(@NotNull XTLockMeta lockMeta, RedissonClient redissonClient, boolean useRedissonClient) {
         super(lockMeta);
@@ -78,37 +74,30 @@ public class XTLockHandler  extends LockHandler  implements CallableHandler {
 
     @Override
     public void init() {
-        if(!useRedissonClient || redissonClient == null){// 转化类型
+        if (!useRedissonClient || redissonClient == null) {// 转化类型
             super.init();
         }
     }
 
+
     /**
-     *对加锁任务进行封装
+     * 对加锁任务进行封装
      * <p>自动判断获取和转化 RedissonClient</p>
      */
     @Override
     public <T> Callable<T> decorate(Callable<T> callable) {
         init();
-        return ()->lock(callable);
+        return () -> lock(callable);
     }
 
-
-    /**
-     * 核心加锁任务方法
-     *
-     * @param task 任务
-     * @return  任务执行返回值
-     * @throws Exception InterruptedException 或 task 抛出的 Exception
-     */
-    public <T> T lock(Callable<T> task) throws Exception {
-        if (lockMeta.getLockType() == XTLockType.NonLock) {
-            return task.call();
-        }
-        Lock lock;
-        ReadWriteLock readWriteLock;
+    @Override
+    protected void initLock() {
+//        Lock lock;
+//        ReadWriteLock readWriteLock;
         String lockName = lockMeta.getName();
         switch (lockMeta.getLockType()) {
+            case NonLock:
+                break;
             case RLock:
                 if (redissonClient == null)
                     throw new ConfigNullPointerException(Constants.CODE_500.getCode(), "No  RedissonClient");
@@ -138,25 +127,8 @@ public class XTLockHandler  extends LockHandler  implements CallableHandler {
             default: //ReentrantLock
                 lock = new ReentrantLock(lockMeta.isFair());
         }
-        T result = null;
-        if (lockMeta.getTryTimeout() != -1) {
-            try {
-                boolean b = lock.tryLock(lockMeta.getTryTimeout(), TimeUnit.SECONDS);
-                if (!b) return null;
-            } catch (InterruptedException e) {
-                throw  e; // throw exception
-            }
-        } else lock.lock();
-        try { // 进行到这里一定获取到了锁
-            if (task != null) result = task.call();
-//            result=joinPoint.proceed();
-        } finally {
-            lock.unlock();
-        }
-        return result;
     }
-
-
+    
 
     public RedissonClient getRedissonClient() {
         return redissonClient;

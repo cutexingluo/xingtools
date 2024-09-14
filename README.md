@@ -1,7 +1,7 @@
 # xingtools 工具包
 
 ## :book:相关介绍
-xingtools sdk 工具包，v1.1.3 正式版发布。( 依赖的版本不能低于 1.1.1 )
+xingtools sdk 工具包，v1.1.4 正式版发布。( 依赖的版本不能低于 1.1.1 )
 星天（xingtian）制作的 Java 工具包，是基于 Springboot 2.7.18 和 SpringBoot 3.0.5 制作的 ,  基于 Java 8 和 Java 17，它是一个整合各工具类的整合包。
 
 ### :scroll:简介
@@ -53,12 +53,12 @@ Maven 依赖（JDK8版本）
 <dependency>
 	<groupId>top.cutexingluo.tools</groupId>
 	<artifactId>xingtools-spring-boot-starter</artifactId>
-	<version>1.1.3</version>
+	<version>1.1.4</version>
 </dependency>
 <dependency>
 	<groupId>top.cutexingluo.tools</groupId>
 	<artifactId>xingtools-pkg-jdk8</artifactId>
-	<version>1.1.3</version>
+	<version>1.1.4</version>
 </dependency>
 ```
 
@@ -68,12 +68,12 @@ Maven 依赖（JDK17版本）
 <dependency>
 	<groupId>top.cutexingluo.tools</groupId>
 	<artifactId>xingtools-spring-boot-starter</artifactId>
-	<version>1.1.3</version>
+	<version>1.1.4</version>
 </dependency>
 <dependency>
 	<groupId>top.cutexingluo.tools</groupId>
 	<artifactId>xingtools-pkg-jdk17</artifactId>
-	<version>1.1.3</version>
+	<version>1.1.4</version>
 </dependency>
 ```
 
@@ -82,7 +82,8 @@ Maven 依赖（JDK17版本）
 目前推荐使用的版本如下：（其他版本有一定bug，如需使用请参考更新公告的版本使用攻略）
 
 ```wiki
-xingtools v1.1.3
+极力推荐使用最新版 v1.1.4
+xingtools v1.1.3, v1.1.4
 xingtool v1.0.1, v1.0.4, v1.0.5
 ```
 
@@ -385,6 +386,25 @@ public class TestService {
 具体内容详见使用文档。
 
 ##  :memo:更新公告
+
+**2024-9-14  v1.1.4**
+
+```txt
+更改部分
+1.恢复 mybatis-plus 插件自动配置, 默认关闭 xt-lock-aop
+2.日志包ILogProvider从静态改为面向对象
+3.WebHandler 接口 参数 HttpServletRequestAdapter 变更为 HttpServletRequestDataAdapter
+4.*为适应不同需求，ResultUtil新增select方法返回封装对象
+5.*对锁的类进行解耦操作, 修改LockHandler, XTLockHandler 等类, 修改LockHelper接口, LockHandler 移植到 core 包
+6.针对 Redis 的 AccessLimitUtil 工具类进行更改, 将使用 LimitStrategy 策略; 更改 RedisLimitStrategy 可保证原子性
+7.对 RequestLimit 系列部分方法进行了修改, 新增 XTRedisScript 组合获取lua限流脚本
+
+新增部分
+1.新增多个节点接口，节点状态机 NodeStateMachine ，适配于无边权无事件情况
+2.新增Entry类代替hutool的Pair类，更改新增Entry, Pair, TupleEntry, TuplePair 等适应不同情况的二元组, 部分类开始继承Entry而不是hutool的Pair
+3.*新增链式接口，过滤器链接口及其实现类，核心类为 FilterChain (CompositeFilterChainFactory) , StreamChain , BuilderChain , BuilderMapChain可分别模拟过滤器链Filter, 流式Stream的调用方式 和 建造者链, 建造者扩展链, 加快开发
+4.*新添 ModuleAdapter 及其实现类，针对 JacksonSerializer 进行了增强，支持更多类似 FastJson 功能，并提供配置全局序列化器，RYRedisCache 支持从容器获取序列化器，容器bean名称分别为 jacksonSerializer 和 redisJacksonSerializer
+```
 
 **2024-8-12  v1.1.3**
 

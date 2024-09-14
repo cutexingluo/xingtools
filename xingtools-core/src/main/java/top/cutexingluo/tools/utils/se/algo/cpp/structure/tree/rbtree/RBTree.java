@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import top.cutexingluo.tools.common.base.IData;
+import top.cutexingluo.tools.common.base.IValue;
 import top.cutexingluo.tools.designtools.method.ClassMaker;
 import top.cutexingluo.tools.utils.se.algo.cpp.base.BaseBiNodeSource;
 import top.cutexingluo.tools.utils.se.algo.cpp.base.BaseEntryBiNode;
@@ -88,7 +89,7 @@ public class RBTree<K extends Comparable<K>, V> extends AbstractMap<K, V> implem
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
-    static class RBNode<K extends Comparable<K>, V> implements BaseBiNodeSource<RBNode<K, V>>, BaseEntryBiNode<RBNode<K, V>, K, V>, IData<Entry<K, V>> {
+    static class RBNode<K extends Comparable<K>, V> implements BaseBiNodeSource<RBNode<K, V>>, BaseEntryBiNode<RBNode<K, V>, K, V>, IData<Entry<K, V>>, IValue<V> {
         private RBNode<K, V> parentNode;
         private RBNode<K, V> leftNode;
         private RBNode<K, V> rightNode;

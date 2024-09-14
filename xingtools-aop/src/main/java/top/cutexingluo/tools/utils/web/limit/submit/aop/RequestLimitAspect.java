@@ -11,6 +11,7 @@ import top.cutexingluo.tools.designtools.method.ClassUtil;
 import top.cutexingluo.tools.utils.ee.web.holder.HttpContextUtil;
 import top.cutexingluo.tools.utils.ee.web.limit.submit.base.RequestLimit;
 import top.cutexingluo.tools.utils.ee.web.limit.submit.base.RequestLimitConfig;
+import top.cutexingluo.tools.utils.ee.web.limit.submit.base.RequestLimitFactory;
 import top.cutexingluo.tools.utils.ee.web.limit.submit.base.RequestLimitSetting;
 import top.cutexingluo.tools.utils.ee.web.limit.submit.pkg.RequestLimitHandler;
 
@@ -46,6 +47,7 @@ public class RequestLimitAspect implements BaseAspectAroundHandler<RequestLimit>
             return joinPoint.proceed();
         }
         RequestLimitConfig requestLimitConfig = null;
+        RequestLimitFactory limitFactory = new RequestLimitFactory(limit); // 配置工厂
 
         if (!limit.useSelf()) {
             Class<?> aClass = joinPoint.getTarget().getClass();
@@ -53,16 +55,17 @@ public class RequestLimitAspect implements BaseAspectAroundHandler<RequestLimit>
             if (classAnnotation != null) {
                 RequestLimitSetting setting = settingMap.get(aClass);
                 if (setting != null) { // get setting
-                    requestLimitConfig = new RequestLimitConfig(limit, setting);
+                    requestLimitConfig = limitFactory.getRequestLimitConfig(setting);
                 } else {
-                    RequestLimitSetting limitSetting = new RequestLimitSetting(new RequestLimitConfig(classAnnotation));
-                    requestLimitConfig = new RequestLimitConfig(limit, limitSetting);
+                    limitFactory.setRequestLimit(classAnnotation); // 重新设置源注解
+                    RequestLimitSetting limitSetting = new RequestLimitSetting(limitFactory.getRequestLimitConfig());
+                    requestLimitConfig = limitFactory.getRequestLimitConfig(limitSetting);
                     settingMap.put(aClass, limitSetting);
                 }
             }
         }
         if (requestLimitConfig == null) {
-            requestLimitConfig = new RequestLimitConfig(limit);
+            requestLimitConfig = limitFactory.getRequestLimitConfig();
         }
 
 

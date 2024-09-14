@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import top.cutexingluo.tools.common.base.IResult;
+import top.cutexingluo.tools.common.base.IResultData;
 import top.cutexingluo.tools.common.base.IResultSource;
 
 /**
@@ -26,11 +27,18 @@ public class CommonResult<C, T> implements IResultSource<C, T> {
     protected String msg;
     protected T data;
 
+    /**
+     * @since 1.1.4
+     */
+    public CommonResult(@NotNull IResultData<C> resultData) {
+        this.code = resultData.getCode();
+        this.msg = resultData.getMsg();
+    }
+
     public CommonResult(@NotNull IResult<C, T> result) {
         this.code = result.getCode();
         this.msg = result.getMsg();
         this.data = result.getData();
-
     }
 
     @Override
