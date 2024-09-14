@@ -3,6 +3,7 @@ package top.cutexingluo.tools.utils.ee.web.front.vue;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 
@@ -23,6 +24,7 @@ public class RouteRecordRaw<T> {
      * 路由路径
      * <p>不可为空</p>
      */
+    @NotNull
     protected String path;
     /**
      * 名称
@@ -84,14 +86,14 @@ public class RouteRecordRaw<T> {
      *
      * @param path 路由路径
      */
-    public RouteRecordRaw(String path) {
+    public RouteRecordRaw(@NotNull String path) {
         this.path = path;
     }
 
     /**
      * 常规项
      */
-    public RouteRecordRaw(String path, Object component) {
+    public RouteRecordRaw(@NotNull String path, Object component) {
         this.path = path;
         this.component = component;
     }
@@ -99,7 +101,7 @@ public class RouteRecordRaw<T> {
     /**
      * 常规项
      */
-    public RouteRecordRaw(String path, String name, Object component) {
+    public RouteRecordRaw(@NotNull String path, String name, Object component) {
         this.path = path;
         this.name = name;
         this.component = component;

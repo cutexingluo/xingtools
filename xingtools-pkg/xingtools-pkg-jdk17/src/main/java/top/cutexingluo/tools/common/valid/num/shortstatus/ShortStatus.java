@@ -41,8 +41,6 @@ public @interface ShortStatus {
 
     /**
      * 2.只要目标满足指定数字即可通过,无视大小限制
-     *
-     * @return {@link int[]}
      */
     short[] matchNum() default {};
 
@@ -57,16 +55,12 @@ public @interface ShortStatus {
     /**
      * lenLimit开启<br>
      * 3.最小长度
-     *
-     * @return int
      */
     short min() default 0;
 
     /**
      * lenLimit开启<br>
      * 3.最大长度
-     *
-     * @return int
      */
     short max() default Short.MAX_VALUE;
 

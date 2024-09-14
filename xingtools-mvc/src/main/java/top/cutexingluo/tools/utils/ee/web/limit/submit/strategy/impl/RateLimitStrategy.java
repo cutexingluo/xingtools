@@ -5,7 +5,7 @@ import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import top.cutexingluo.tools.utils.ee.web.limit.submit.base.RequestLimitConfig;
+import top.cutexingluo.tools.utils.ee.web.limit.submit.base.RequestLimitData;
 import top.cutexingluo.tools.utils.ee.web.limit.submit.strategy.LimitStrategy;
 
 import java.util.Map;
@@ -38,10 +38,10 @@ public class RateLimitStrategy implements LimitStrategy {
     }
 
     @Override
-    public boolean checkRequestLimit(@NotNull RequestLimitConfig requestLimitConfig) throws IllegalArgumentException {
-        boolean b = LimitStrategy.super.checkRequestLimit(requestLimitConfig);
+    public boolean checkRequestLimit(@NotNull RequestLimitData requestLimitData) throws IllegalArgumentException {
+        boolean b = LimitStrategy.super.checkRequestLimit(requestLimitData);
         if (b) {
-            if (requestLimitConfig.getTimeout() != 1) {
+            if (requestLimitData.getTimeout() != 1) {
                 throw new IllegalArgumentException("the RateLimitStrategy need timeout must be equal to 1");
             }
         }
@@ -50,15 +50,15 @@ public class RateLimitStrategy implements LimitStrategy {
 
 
     @Override
-    public boolean interceptor(@NotNull RequestLimitConfig requestLimitConfig, @NotNull String key) {
+    public boolean interceptor(@NotNull RequestLimitData requestLimitData, @NotNull String key) {
         RateLimiter rateLimiter = null;
         if (!limitMap.containsKey(key)) {
-            rateLimiter = RateLimiter.create(requestLimitConfig.getMaxCount());
+            rateLimiter = RateLimiter.create(requestLimitData.getMaxCount());
             limitMap.put(key, rateLimiter);
         }
         rateLimiter = limitMap.get(key);
         // get one
-        boolean acquire = rateLimiter.tryAcquire(requestLimitConfig.getWaitTime(), requestLimitConfig.getTimeUnit());
+        boolean acquire = rateLimiter.tryAcquire(requestLimitData.getWaitTime(), requestLimitData.getTimeUnit());
         if (!acquire) {
             return false;
         }

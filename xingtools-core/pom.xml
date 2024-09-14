@@ -8,7 +8,7 @@
     <parent>
         <artifactId>xingtools-parent</artifactId>
         <groupId>top.cutexingluo.tools</groupId>
-        <version>1.1.3</version>
+        <version>1.1.4</version>
     </parent>
 
     <artifactId>xingtools-core</artifactId>
@@ -101,6 +101,12 @@
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>${fastjson.version}</version>
+            <optional>true</optional>
+        </dependency>
+        <!--    gson 序列化    -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
             <optional>true</optional>
         </dependency>
         <!-- hessian 解析器 -->

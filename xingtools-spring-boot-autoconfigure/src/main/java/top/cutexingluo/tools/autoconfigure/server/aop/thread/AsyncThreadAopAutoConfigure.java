@@ -22,7 +22,7 @@ import top.cutexingluo.tools.start.log.LogInfoAuto;
  * @version 1.0.0
  * @date 2023/10/2 21:49
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @ConditionalOnClass({PlatformTransactionManager.class})
 @ConditionalOnBean({XingToolsAutoConfiguration.class, PlatformTransactionManager.class})
 @ConditionalOnProperty(prefix = "xingtools.enabled", value = "async-thread-aop-anno", havingValue = "true",
@@ -33,7 +33,7 @@ public class AsyncThreadAopAutoConfigure {
     @ConditionalOnMissingBean
     @Bean
     public AsyncThreadAop asyncThreadAop(PlatformTransactionManager transactionManager) {
-        if (LogInfoAuto.enabled) log.info("AsyncThreadAop ---->  {}",
+        if (LogInfoAuto.enabled) log.info("AsyncThreadAop ---> {}",
                 "异步注解Aop @MainThread  @SonThread ，自动注册成功");
         return new AsyncThreadAop(transactionManager);
     }
@@ -41,7 +41,7 @@ public class AsyncThreadAopAutoConfigure {
     @ConditionalOnMissingBean(name = "threadResults")
     @Bean
     public ThreadResults threadResults(AsyncThreadAop asyncThreadAop) {
-        if (LogInfoAuto.enabled) log.info("ThreadResults ---->  {}",
+        if (LogInfoAuto.enabled) log.info("ThreadResults ---> {}",
                 "异步线程结果 ThreadResults，自动注册成功");
         return new ThreadResults(asyncThreadAop.map);
     }

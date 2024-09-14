@@ -4,6 +4,7 @@ package top.cutexingluo.tools.utils.se.collection;
 import cn.hutool.core.collection.CollUtil;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.function.BinaryOperator;
@@ -159,7 +160,7 @@ public class XTCollUtil extends CollUtil {
      *
      * @param collection          集合
      * @param nullDefaultSupplier –默认值懒加载函数
-     * @return 非空（empty）的原集合或默认集合
+     * @return 非空的原集合或默认集合
      * @throws NullPointerException list 为null时且nullDefaultSupplier 为null时抛出
      * @since 1.1.2
      */
@@ -169,5 +170,59 @@ public class XTCollUtil extends CollUtil {
             throw new NullPointerException("Collection and null Default Supplier should not be  null");
         }
         return defaultIfEmpty(collection, nullDefaultSupplier);
+    }
+
+
+    /**
+     * 如果给定集合为null ，返回默认集合
+     *
+     * <pre>
+     *         List<String> list = data.getList();
+     *         List<String> list1 = XTCollUtil.defaultFillIfNull(list, ArrayList::new,data::setList);
+     * </pre>
+     *
+     * @param collection          集合
+     * @param nullDefaultSupplier 默认集合懒加载函数
+     * @param fillConsumer        填充函数, 用于消费supplier返回的默认集合
+     * @return 原集合或默认集合
+     * @since 1.1.4
+     */
+    public static <T extends Collection<E>, E> T defaultFillIfNull(T collection, Supplier<? extends T> nullDefaultSupplier, java.util.function.Consumer<T> fillConsumer) {
+        if (collection == null && nullDefaultSupplier != null) {
+            T t = nullDefaultSupplier.get();
+            if (fillConsumer != null) {
+                fillConsumer.accept(t);
+            }
+            return t;
+        }
+        return collection;
+    }
+
+    /**
+     * 如果给定集合为null ，返回默认集合
+     * <p>会进行参数校验，保证返回非空集合</p>
+     *
+     * <pre>
+     *         List<String> list = data.getList();
+     *         List<String> list1 = XTCollUtil.defaultFillIfNull(list, ArrayList::new,data::setList);
+     * </pre>
+     *
+     * @param collection          集合
+     * @param nullDefaultSupplier 默认集合懒加载函数
+     * @param fillConsumer        填充函数, 用于消费supplier返回的默认集合
+     * @return 非空的原集合或默认集合
+     * @since 1.1.4
+     */
+    @NotNull
+    public static <T extends Collection<E>, E> T defaultFillIfNullCheck(T collection, @NotNull Supplier<? extends T> nullDefaultSupplier, @Nullable java.util.function.Consumer<T> fillConsumer) {
+        if (collection == null) {
+            Objects.requireNonNull(nullDefaultSupplier, "nullDefaultSupplier should not be null");
+            T t = nullDefaultSupplier.get();
+            if (fillConsumer != null) {
+                fillConsumer.accept(t);
+            }
+            return t;
+        }
+        return collection;
     }
 }

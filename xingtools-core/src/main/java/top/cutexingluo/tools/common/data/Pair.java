@@ -6,15 +6,21 @@ import top.cutexingluo.tools.utils.se.map.XTComparator;
 import java.util.Map;
 
 /**
- * Pair 二元组
+ * Pair 二元组 (可比较)
+ *
  * <p>键值对对象，只能在构造时传入键值</p>
+ * <p>于1.1.4 改为继承 Entry </p>
  *
  * @author XingTian
  * @version 1.0.0
  * @date 2023/10/26 21:45
+ * @see Entry Entry - 不可比较不可set 二元组
+ * @see Pair  Pair  - 可比较不可set 二元组
+ * @see TupleEntry  TupleEntry  - 不可比较可set 二元组
+ * @see TuplePair TuplePair - 可比较可set 二元组
  * @since 1.0.3
  */
-public class Pair<K extends Comparable<K>, V extends Comparable<V>> extends cn.hutool.core.lang.Pair<K, V> implements Comparable<Pair<K, V>>, PairEntry<K, V> {
+public class Pair<K extends Comparable<K>, V extends Comparable<V>> extends Entry<K, V> implements Comparable<Pair<K, V>> {
     /**
      * 构造
      *
@@ -26,6 +32,13 @@ public class Pair<K extends Comparable<K>, V extends Comparable<V>> extends cn.h
     }
 
     public Pair(@NotNull Map.Entry<K, V> entry) {
+        super(entry.getKey(), entry.getValue());
+    }
+
+    /**
+     * @since 1.1.4
+     */
+    public Pair(@NotNull PairEntry<K, V> entry) {
         super(entry.getKey(), entry.getValue());
     }
 

@@ -1,5 +1,9 @@
 package top.cutexingluo.tools.common.data;
 
+import top.cutexingluo.tools.common.base.IValue;
+
+import java.util.Map;
+
 /**
  * 二元组方法接口
  * <p>A map entry (key-value pair).  like Map.Entry</p>
@@ -9,7 +13,7 @@ package top.cutexingluo.tools.common.data;
  * @date 2024/7/7 13:21
  * @since 1.0.5
  */
-public interface PairEntry<K, V> {
+public interface PairEntry<K, V> extends IValue<V> {
 
     /**
      * @return the key corresponding to this entry
@@ -20,4 +24,27 @@ public interface PairEntry<K, V> {
      * @return the value corresponding to this entry
      */
     V getValue();
+
+    /**
+     * @return the map entry
+     * @since 1.1.4
+     */
+    default Map.Entry<K, V> toMapEntry() {
+        return new Map.Entry<K, V>() {
+            @Override
+            public K getKey() {
+                return PairEntry.this.getKey();
+            }
+
+            @Override
+            public V getValue() {
+                return PairEntry.this.getValue();
+            }
+
+            @Override
+            public V setValue(V value) {
+                throw new UnsupportedOperationException();
+            }
+        };
+    }
 }

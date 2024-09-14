@@ -12,13 +12,13 @@ import top.cutexingluo.tools.utils.log.utils.XTLogUtil;
  * <p>通过 new 得到新对象</p>
  *
  * <p>构造需要传入实现的 ILogHandler</p>
- * <p></p>
+ * <p>于 1.1.4 更新</p>
  *
  * @author XingTian
  * @version 1.0.0
  * @date 2023/4/6 19:04
- * @updateFrom 1.0.4
- * @update 2024/1/8 15:00
+ * @updateFrom 1.0.4, 1.1.4
+ * @update 2024/1/8 15:00, 2024/8/20 17:23
  */
 @Data
 public class LogHandler implements ILogHandler {
@@ -33,21 +33,6 @@ public class LogHandler implements ILogHandler {
      */
     protected int levelCode;
 
-
-    /**
-     * WillDo 未来将被移除
-     * <p>不要使用该 set get 方法</p>
-     */
-    @Deprecated
-    protected LogType type;
-
-    /**
-     * WillDo 未来将被移除
-     */
-    @Deprecated
-    public LogHandler(LogType type) {
-        this(new LogSlf4j(), type);
-    }
 
     /**
      * 默认 Slf4j
@@ -109,11 +94,16 @@ public class LogHandler implements ILogHandler {
         getTask(msg).run();
     }
 
-    @Override
-    public XTRunnable getTask(int levelCode, String msg) {
+
+    protected void checkLogHandler() {
         if (this.logHandler == null) {
             throw new NullPointerException("logHandler is null");
         }
+    }
+
+    @Override
+    public XTRunnable getTask(int levelCode, String msg) {
+        checkLogHandler();
         return new XTRunnable(() -> {
             this.logHandler.send(levelCode, msg);
         });
@@ -121,9 +111,7 @@ public class LogHandler implements ILogHandler {
 
     @Override
     public Runnable getTask(String levelStr, String msg) {
-        if (this.logHandler == null) {
-            throw new NullPointerException("logHandler is null");
-        }
+        checkLogHandler();
         return new XTRunnable(() -> {
             this.logHandler.send(levelStr, msg);
         });
@@ -131,10 +119,8 @@ public class LogHandler implements ILogHandler {
 
     @Override
     public void sendOne(int levelCode, String msg) {
-        if (this.logHandler == null) {
-            throw new NullPointerException("logHandler is null");
-        }
-        this.logHandler.send(levelCode, msg);
+        checkLogHandler();
+        this.logHandler.sendOne(levelCode, msg);
     }
 
 }

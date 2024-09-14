@@ -30,7 +30,7 @@ public class PrintLogAutoConfigure {
     @ConditionalOnMissingBean(PrintLogAop.class)
     @Bean
     public PrintLogAop printLogAop() {
-        if (LogInfoAuto.enabled) log.info("PrintLogAop ---->  {}", "打印输出AOP，自动注册成功");
+        if (LogInfoAuto.enabled) log.info("PrintLogAop ---> {}", "打印输出AOP，自动注册成功");
         return new PrintLogAop();
     }
 }

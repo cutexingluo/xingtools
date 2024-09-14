@@ -219,19 +219,26 @@ public class StrResult extends CommonResult<String, Object> implements XTIntCode
 
     //-----------convertor---------------
 
-    public <C, T> StrResult(IResult<C, T> result) {
-        if (result.getCode() == null) {
+    /**
+     * @since 1.1.4
+     */
+    public <C> StrResult(IResultData<C> resultData) {
+        if (resultData.getCode() == null) {
             this.code = Constants.CODE_200.getCode();
-        } else if (result.getCode() instanceof Integer) {
-            this.code = String.valueOf(result.getCode());
+        } else if (resultData.getCode() instanceof Integer) {
+            this.code = String.valueOf(resultData.getCode());
         } else {
             try {
-                this.code = result.getCode().toString();
-            } catch (NumberFormatException e) {
-                throw new NumberFormatException("code transform eror ==> " + e.getMessage());
+                this.code = resultData.getCode().toString();
+            } catch (NullPointerException e) {
+                throw new NullPointerException("code transform error : " + e.getMessage());
             }
         }
-        this.msg = result.getMsg();
+        this.msg = resultData.getMsg();
+    }
+
+    public <C, T> StrResult(IResult<C, T> result) {
+        this((IResultData<C>) result);
         this.data = result.getData();
     }
 

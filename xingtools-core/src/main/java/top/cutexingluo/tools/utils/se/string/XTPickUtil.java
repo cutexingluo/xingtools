@@ -3,6 +3,7 @@ package top.cutexingluo.tools.utils.se.string;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import top.cutexingluo.tools.utils.se.character.symbol.SymbolPairEnum;
 
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -13,7 +14,7 @@ import java.util.function.Predicate;
  * 专门替换 ${} 字符串
  *
  * <p>于 1.0.4 版本翻新</p>
- * </p>
+ * <p>于 1.1.4 版本,新增可替换符号,修改行为会导致一些依赖该方法的行为发生变化,如</p>
  *
  * @author XingTian
  * @version 1.0.0
@@ -23,21 +24,30 @@ import java.util.function.Predicate;
  */
 public class XTPickUtil {
 
+    /**
+     * 开始符号
+     */
+    public static String beginPattern = SymbolPairEnum.INTERPOLATION_BRACES.getPrefix();
+
+    /**
+     * 结束符号
+     */
+    public static String endPattern = SymbolPairEnum.INTERPOLATION_BRACES.getSuffix();
 
     /**
      * 截取 fromIndex 开始 第一个单个括号内的内容
-     * <p>${}</p>
+     * <p>默认 ${}</p
      */
     @Nullable
     public static String getKeyFromBraces(String line, int fromIndex) {
         XTString string = new XTString(line);
-        return string.getKeyBetweenPatterns("${", "}", fromIndex);
+        return string.getKeyBetweenPatterns(beginPattern, endPattern, fromIndex);
     }
 
 
     /**
      * 替换第一个单个括号内的内容
-     * <p>${}</p>
+     * <p>默认 ${}</p
      */
     // 替换
     public static String putValueFromBraces(String line, String value) {
@@ -46,7 +56,7 @@ public class XTPickUtil {
 
     /**
      * 替换第一个单个括号内的内容
-     * <p>${}</p>
+     * <p>默认 ${}</p
      */
     // 替换
     public static String putValueFromBraces(String line, Predicate<String> isContains, String value) {
@@ -55,12 +65,12 @@ public class XTPickUtil {
 
     /**
      * 替换第一个单个括号内的内容
-     * <p>${}</p>
+     * <p>默认 ${}</p>
      */
     //替换
     public static String putValueFromBraces(String line, Predicate<String> isContains, Function<String, String> map) {
         XTString string = new XTString(line);
-        return string.replaceBetweenPatterns("${", "}", (s) -> {
+        return string.replaceBetweenPatterns(beginPattern, endPattern, (s) -> {
             if (isContains != null) {
                 boolean test = isContains.test(s);
                 if (!test) return s;
@@ -74,17 +84,17 @@ public class XTPickUtil {
 
     /**
      * 取出第一个单个括号内的内容
-     * <p>${}</p>
+     * <p>默认 ${}</p
      */
     // 取出
     public static String takeValueFromBraces(String line, Function<String, String> map) {
         XTString string = new XTString(line);
-        return string.replaceBetweenPatterns("${", "}", map);
+        return string.replaceBetweenPatterns(beginPattern, endPattern, map);
     }
 
     /**
      * 替换所有括号内的内容
-     * <p>${}</p>
+     * <p>默认 ${}</p
      */
     // 替换
     public static String putAllValueFromBraces(String line, String value) {
@@ -93,7 +103,7 @@ public class XTPickUtil {
 
     /**
      * 替换所有括号内的内容
-     * <p>${}</p>
+     * <p>默认 ${}</p
      */
     // 替换
     public static String putAllValueFromBraces(String line, Predicate<String> isContains, String value) {
@@ -102,12 +112,12 @@ public class XTPickUtil {
 
     /**
      * 替换所有括号内的内容
-     * <p>${}</p>
+     * <p>默认 ${}</p
      */
     //替换
     public static String putAllValueFromBraces(String line, Predicate<String> isContains, Function<String, String> map) {
         XTString string = new XTString(line);
-        return string.replaceAllBetweenPatterns("${", "}", (s) -> {
+        return string.replaceAllBetweenPatterns(beginPattern, endPattern, (s) -> {
             if (isContains != null) {
                 boolean test = isContains.test(s);
                 if (!test) return s;
@@ -121,12 +131,12 @@ public class XTPickUtil {
 
     /**
      * 取出所有括号内的内容
-     * <p>${}</p>
+     * <p>默认 ${}</p
      */
     // 取出
     public static String takeAllValueFromBraces(String line, Function<String, String> map) {
         XTString string = new XTString(line);
-        return string.replaceAllBetweenPatterns("${", "}", map);
+        return string.replaceAllBetweenPatterns(beginPattern, endPattern, map);
     }
 
 

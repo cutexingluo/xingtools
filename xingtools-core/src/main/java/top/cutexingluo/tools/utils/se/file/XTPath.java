@@ -61,6 +61,10 @@ public class XTPath {
         return EnvType.PROD;
     }
 
+
+    /**
+     * 系统分隔符
+     */
     public static final String SEPARATOR = File.separator;
 
     public static final char UNIX_CHAR_SEPARATOR = '/';
@@ -75,6 +79,13 @@ public class XTPath {
     public static final String CLASSPATH = "classpath:/";
     public static final String MAIN_PATH = SEPARATOR + "src" + SEPARATOR + "main";
 
+
+    /**
+     * 可自定义全局默认分隔符
+     *
+     * @since 1.1.4
+     */
+    public static String defaultSeparator = SEPARATOR;
 
     /**
      * 获取地址分隔符
@@ -170,7 +181,7 @@ public class XTPath {
      * @return 路径
      */
     public static String packageNameToSrcPath(String packageName) {
-        return packageName.replaceAll("\\.", Matcher.quoteReplacement(File.separator));
+        return packageName.replaceAll("\\.", Matcher.quoteReplacement(defaultSeparator));
     }
 
     // 类路径
@@ -319,7 +330,7 @@ public class XTPath {
      */
     @NotNull
     public static String combinePath(@NotNull String parentPath, @NotNull String sonPath) {
-        return combinePath(parentPath, sonPath, SEPARATOR);
+        return combinePath(parentPath, sonPath, defaultSeparator);
     }
 
 

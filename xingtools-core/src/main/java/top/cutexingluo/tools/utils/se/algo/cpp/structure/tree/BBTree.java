@@ -3,6 +3,7 @@ package top.cutexingluo.tools.utils.se.algo.cpp.structure.tree;
 import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import top.cutexingluo.tools.common.base.IData;
+import top.cutexingluo.tools.common.base.IValue;
 import top.cutexingluo.tools.utils.se.algo.cpp.base.BaseNode;
 import top.cutexingluo.tools.utils.se.algo.cpp.base.BaseNodeIterator;
 
@@ -33,7 +34,7 @@ public class BBTree<K extends Comparable<K>, V> extends AbstractMap<K, V> {
      * 节点类
      */
     @AllArgsConstructor
-    protected class Node implements Entry<K, V>, BaseNode<Node>, IData<Entry<K, V>> {
+    protected class Node implements Entry<K, V>, BaseNode<Node>, IData<Entry<K, V>>, IValue<V> {
         private K key;
         private V value;
         private Node left;

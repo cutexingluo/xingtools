@@ -54,20 +54,33 @@ public class XTComparator<T> implements Comparator<T> {
 
 
     /**
-     * 比较空值，空的对象排在后面
+     * 比较空值，空的对象排在后面 ("null 最后")
      *
-     * @return 返回0则都为null，返回1则o1为null，返回-1则o2为null，若返回2则都不为空
+     * @return 返回0则都为null，返回1则单o1为null，返回-1则单o2为null，若返回2则都不为空
      */
     public static <T> int tryCompareNull(@Nullable T o1, @Nullable T o2) {
-        if (o1 == null && o2 == null) {
-            return 0;
-        } else if (o1 == null) {
-            return 1;
-        } else if (o2 == null) {
-            return -1;
+        if (o1 == null) {
+            if (o2 == null) {
+                return 0;
+            } else {
+                return 1;
+            }
         } else {
-            return BOTH_NOT_NULL; // 1.0.5
+            if (o2 == null) {
+                return -1;
+            } else {
+                return BOTH_NOT_NULL;
+            }
         }
+//        if (o1 == null && o2 == null) {
+//            return 0;
+//        } else if (o1 == null) {
+//            return 1;
+//        } else if (o2 == null) {
+//            return -1;
+//        } else {
+//            return BOTH_NOT_NULL; // 1.0.5
+//        }
     }
 
     //                infoIds.sort(((o1, o2) -> asc ?
