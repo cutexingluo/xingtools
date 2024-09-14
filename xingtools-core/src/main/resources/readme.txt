@@ -1,14 +1,33 @@
 @Author XingTian
-@Version v1.1.3
+@Version v1.1.4
 @Since 2023-9-26
-@Update 2024-8-8
+@Update 2024-8-16
 
 推荐使用版本
 xingtool v1.0.1, v1.0.4, v1.0.5
-xingtools v1.1.1, v1.1.3
+xingtools v1.1.3, v1.1.4
+极力推荐使用最新版 v1.1.4
 
 
 更新公告
+2024-8-16 ~ 2024-9-14  v1.1.4
+
+更改部分
+1.恢复 mybatis-plus 插件自动配置, 默认关闭 xt-lock-aop
+2.日志包ILogProvider从静态改为面向对象
+3.WebHandler 接口 参数 HttpServletRequestAdapter 变更为 HttpServletRequestDataAdapter
+4.*为适应不同需求，ResultUtil新增select方法返回封装对象
+5.*对锁的类进行解耦操作, 修改LockHandler, XTLockHandler 等类, 修改LockHelper接口, LockHandler 移植到 core 包
+6.针对 Redis 的 AccessLimitUtil 工具类进行更改, 将使用 LimitStrategy 策略; 更改 RedisLimitStrategy 可保证原子性
+7.对 RequestLimit 系列部分方法进行了修改, 新增 XTRedisScript 组合获取lua限流脚本
+
+新增部分
+1.新增多个节点接口，节点状态机 NodeStateMachine ，适配于无边权无事件情况
+2.新增Entry类代替hutool的Pair类，更改新增Entry, Pair, TupleEntry, TuplePair 等适应不同情况的二元组, 部分类开始继承Entry而不是hutool的Pair
+3.*新增链式接口，过滤器链接口及其实现类，核心类为 FilterChain (CompositeFilterChainFactory) , StreamChain , BuilderChain , BuilderMapChain可分别模拟过滤器链Filter, 流式Stream的调用方式 和 建造者链, 建造者扩展链, 加快开发
+4.*新添 ModuleAdapter 及其实现类，针对 JacksonSerializer 进行了增强，支持更多类似 FastJson 功能，并提供配置全局序列化器，RYRedisCache 支持从容器获取序列化器，容器bean名称分别为 jacksonSerializer 和 redisJacksonSerializer
+
+
 2024-8-12 v1.1.3
 bug 修复
 1.由于源码包只识别签名，所以在支持 jdk17 的众多方法会抛出 NoSuchMethodError 错误，故 jdk17 版本不推荐使用 v1.1.2 版本，现对该版本进行紧急修复。

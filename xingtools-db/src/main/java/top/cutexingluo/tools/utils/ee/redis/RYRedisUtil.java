@@ -1,10 +1,12 @@
 package top.cutexingluo.tools.utils.ee.redis;
 
+import org.jetbrains.annotations.Nullable;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.redis.core.RedisTemplate;
-import top.cutexingluo.tools.designtools.builder.XTBuilder;
+import top.cutexingluo.tools.basepackage.chain.core.BuilderMapChain;
+import top.cutexingluo.tools.common.data.Entry;
 
-import java.util.concurrent.Callable;
+import java.util.Arrays;
 
 /**
  * RYRedisCache 组合操作工具类
@@ -31,121 +33,33 @@ public class RYRedisUtil {
      * @param applicationContext 应用程序上下文
      * @return boolean
      */
-    public static boolean checkRedisSource(RYRedisCache redisCache, RedisTemplate<String, Object> redisTemplate, ApplicationContext applicationContext) {
-        if (redisCache == null) {
-            if (redisTemplate == null) {
-                if (applicationContext == null) {
-                    return false;
-                }
-                try {
-                    RYRedisCache rc = applicationContext.getBean(RYRedisCache.class);
-                    if (rc == null) {
-                        RedisTemplate rt = applicationContext.getBean(RedisTemplate.class);
-                        if (rt == null) {
-                            return false;
-                        }
-                        redisTemplate = rt;
-                    }
-                    redisCache = rc;
-                } catch (Exception e) {
-                    return false;
-                }
-            }
-            if (redisTemplate != null) redisCache = new RYRedisCache(redisTemplate);
-        }
-        return true;
-    }
+    @Nullable
+    public static RYRedisCache checkRedisSource(RYRedisCache redisCache, RedisTemplate<String, Object> redisTemplate, ApplicationContext applicationContext) {
 
 
-    private static Builder lastBuilder;
+        BuilderMapChain chain = new BuilderMapChain(3, applicationContext)
+                .with(redisTemplate, o -> {
+                    ApplicationContext ac = (ApplicationContext) o;
+                    return ac.getBean(RedisTemplate.class);
+                }).withList(redisCache, Arrays.asList(
+                                o -> {
+                                    RedisTemplate<String, Object> rt = (RedisTemplate<String, Object>) o;
+                                    return new RYRedisCache(rt);
+                                },
+                                o -> {
+                                    ApplicationContext ac = (ApplicationContext) o;
+                                    return ac.getBean(RYRedisCache.class);
+                                }
+                        )
+                );
 
-    public static Builder builder(RYRedisCache redisCache) {
-        lastBuilder = new Builder(redisCache);
-        return lastBuilder;
-    }
-
-    public static Builder getLastBuilder() {
-        return lastBuilder;
-    }
-
-
-    public static class Builder extends XTBuilder<RYRedisCache> {
-        Builder(RYRedisCache redisCache) {
-            this.target = redisCache;
-        }
-
-        /**
-         * 如果没有得到缓存对象
-         * 组合操作类
-         * <ul>
-         *     <li>
-         *         如果key存在，则获得key
-         *     </li>
-         *     <li>
-         *         如果key不存在，则执行任务，结果存入redis，并返回对象
-         *     </li>
-         * </ul>
-         *
-         * @param key             关键
-         * @param ifAbsentSetTask 如果没有对象则执行的任务
-         * @param nullable        任务结果为空 是否 可以存入redis
-         * @return {@link T}
-         * @throws Exception 异常
-         */
-        public <T> T getCacheObjectIfAbsentSet(String key, Callable<T> ifAbsentSetTask, boolean nullable) throws Exception {
-            T tar = target.getCacheObject(key);
-            if (tar == null) {
-                tar = ifAbsentSetTask.call();
-                if (nullable || tar != null) target.setCacheObject(key, tar);
-            }
-            return tar;
-        }
-
-        /**
-         * 如果没有得到缓存对象
-         * 组合操作类
-         * <ul>
-         *     <li>
-         *         如果key存在，则获得对象
-         *     </li>
-         *     <li>
-         *         如果key不存在，则执行任务，结果非空存入redis，并返回对象
-         *     </li>
-         * </ul>
-         *
-         * @param key             关键
-         * @param ifAbsentSetTask 如果没有对象则执行的任务
-         * @return {@link T}
-         * @throws Exception 异常
-         */
-        public <T> T getCacheObjectIfAbsentSet(String key, Callable<T> ifAbsentSetTask) throws Exception {
-            return getCacheObjectIfAbsentSet(key, ifAbsentSetTask, false);
-        }
-
-        /**
-         * 组合操作类 (确保无异常)
-         * <ul>
-         *     <li>
-         *         如果key存在，则获得对象
-         *     </li>
-         *     <li>
-         *         如果key不存在，则执行任务，结果存入redis，并返回对象
-         *     </li>
-         * </ul>
-         *
-         * @param key             关键
-         * @param ifAbsentSetTask 如果没有对象则执行的任务
-         * @return {@link T}
-         */
-        public <T> T getCacheObjectIfAbsentSetCheck(String key, Callable<T> ifAbsentSetTask) {
-            try {
-                return getCacheObjectIfAbsentSet(key, ifAbsentSetTask);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        try {
+            Entry<Integer, RYRedisCache> entry = chain.createFrontDfs(3);
+            return entry.getValue();
+        } catch (Exception e) {
             return null;
         }
 
-
     }
+
 }

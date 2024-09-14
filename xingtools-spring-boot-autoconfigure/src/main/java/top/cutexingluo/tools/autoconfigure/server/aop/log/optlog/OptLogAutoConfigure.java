@@ -27,7 +27,7 @@ public class OptLogAutoConfigure {
     @ConditionalOnMissingBean
     @Bean
     public OptLogAop optLogAop() {
-        if (LogInfoAuto.enabled) log.info("OptLogAop ---->  {}", " 自定义操作 AOP，自动注册成功");
+        if (LogInfoAuto.enabled) log.info("OptLogAop ---> {}", " 自定义操作 AOP，自动注册成功");
         return new OptLogAop();
     }
 }

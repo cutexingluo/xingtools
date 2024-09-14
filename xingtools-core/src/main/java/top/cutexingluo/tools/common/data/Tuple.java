@@ -38,4 +38,27 @@ public interface Tuple<K, V> extends Map.Entry<K, V>, PairEntry<K, V> {
      * @return {@link V } old value corresponding to the entry
      */
     V setValue(V value);
+
+    /**
+     * @since 1.1.4
+     */
+    @Override
+    default Map.Entry<K, V> toMapEntry() {
+        return new Map.Entry<K, V>() {
+            @Override
+            public K getKey() {
+                return Tuple.this.getKey();
+            }
+
+            @Override
+            public V getValue() {
+                return Tuple.this.getValue();
+            }
+
+            @Override
+            public V setValue(V value) {
+                return Tuple.this.setValue(value);
+            }
+        };
+    }
 }

@@ -242,19 +242,27 @@ public class MSResult<T> extends CommonResult<Integer, T> implements XTStrCode {
     }
     //-----------convertor---------------
 
-    public <C> MSResult(IResult<C, T> result) {
-        if (result.getCode() == null) {
+    /**
+     * @since 1.1.4
+     */
+    public <C> MSResult(IResultData<C> resultData) {
+        if (resultData.getCode() == null) {
             this.code = Constants.CODE_200.intCode();
-        } else if (result.getCode() instanceof Integer) {
-            this.code = (Integer) result.getCode();
+        } else if (resultData.getCode() instanceof Integer) {
+            this.code = (Integer) resultData.getCode();
         } else {
             try {
-                this.code = Integer.parseInt(result.getCode().toString());
+                this.code = Integer.parseInt(resultData.getCode().toString());
             } catch (NumberFormatException e) {
-                throw new NumberFormatException("code transform error ==> " + e.getMessage());
+                throw new NumberFormatException("code transform error : " + e.getMessage());
             }
         }
-        this.msg = result.getMsg();
+        this.msg = resultData.getMsg();
+    }
+
+
+    public <C> MSResult(IResult<C, T> result) {
+        this((IResultData<C>) result);
         this.data = result.getData();
     }
 

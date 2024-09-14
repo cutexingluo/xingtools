@@ -1,5 +1,6 @@
 package top.cutexingluo.tools.utils.ee.web.limit.easylimit;
 
+import top.cutexingluo.tools.utils.ee.web.limit.LimitKey;
 import top.cutexingluo.tools.utils.ee.web.limit.submit.base.RequestLimit;
 import top.cutexingluo.tools.utils.ee.web.limit.submit.pkg.RequestLimitHandler;
 
@@ -35,6 +36,6 @@ public @interface AccessLimit {
     /**
      * 触发限制时的消息提示
      */
-    String msg() default "操作过于频繁请稍后再试";
+    String msg() default LimitKey.QUICK_MSG;
 
 }

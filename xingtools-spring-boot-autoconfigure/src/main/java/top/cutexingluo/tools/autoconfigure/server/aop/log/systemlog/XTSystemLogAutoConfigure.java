@@ -27,7 +27,7 @@ public class XTSystemLogAutoConfigure {
     @ConditionalOnMissingBean
     @Bean
     public XTSystemLogAop xtSystemLogAop() {
-        if (LogInfoAuto.enabled) log.info("XTSystemLog Aop ---->  {}", "接口调用日志 AOP，自动注册成功");
+        if (LogInfoAuto.enabled) log.info("XTSystemLog Aop ---> {}", "接口调用日志 AOP，自动注册成功");
         return new XTSystemLogAop();
     }
 }

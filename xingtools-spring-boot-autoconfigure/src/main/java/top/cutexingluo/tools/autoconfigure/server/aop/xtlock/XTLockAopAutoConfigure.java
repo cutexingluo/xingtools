@@ -33,7 +33,7 @@ public class XTLockAopAutoConfigure {
     @ConditionalOnMissingBean
     @Bean
     public XTAopLockAop xtAopLockAop() {
-        if (LogInfoAuto.enabled) log.info("LogInfoAuto ---->  {}", "XT锁注解AOP，自动注册成功");
+        if (LogInfoAuto.enabled) log.info("LogInfoAuto ---> {}", "XT锁注解AOP，自动注册成功");
         return new XTAopLockAop();
     }
 }

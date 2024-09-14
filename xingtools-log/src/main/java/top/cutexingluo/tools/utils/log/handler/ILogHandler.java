@@ -1,6 +1,7 @@
 package top.cutexingluo.tools.utils.log.handler;
 
 
+import top.cutexingluo.tools.utils.log.LogLevel;
 import top.cutexingluo.tools.utils.log.XTLog;
 import top.cutexingluo.tools.utils.log.strategy.LogStrategy;
 
@@ -22,7 +23,17 @@ public interface ILogHandler {
 
     Runnable getTask(int levelCode, String msg);
 
-    Runnable getTask(String levelStr, String msg);
+    /**
+     * <p>于1.1.4 转为默认方法</p>
+     */
+    default Runnable getTask(String levelStr, String msg) {
+        return () -> {
+            int[] codes = LogLevel.getLevelCodesByBit(levelStr);
+            for (int code : codes) {
+                sendOne(code, msg);
+            }
+        };
+    }
 
 
     /**

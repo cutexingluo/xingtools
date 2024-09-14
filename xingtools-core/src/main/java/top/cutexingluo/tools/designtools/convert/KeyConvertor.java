@@ -1,8 +1,8 @@
 package top.cutexingluo.tools.designtools.convert;
 
 
-import cn.hutool.core.lang.Pair;
 import org.jetbrains.annotations.NotNull;
+import top.cutexingluo.tools.common.data.Entry;
 
 import java.util.Map;
 import java.util.function.Supplier;
@@ -16,7 +16,7 @@ import java.util.function.Supplier;
  * @since 1.0.4
  */
 
-public class KeyConvertor extends Pair<String, Supplier<String>> {
+public class KeyConvertor extends Entry<String, Supplier<String>> {
 
     /**
      * 构造

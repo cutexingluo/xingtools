@@ -34,6 +34,8 @@ public class StatusEventPair<S extends BaseStatus, E extends BaseEvent> implemen
 
     @Override
     public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
         if (obj instanceof StatusEventPair) {
             StatusEventPair<S, E> other = (StatusEventPair<S, E>) obj;
             return this.status.equals(other.status) && this.event.equals(other.event);

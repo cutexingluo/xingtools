@@ -29,7 +29,7 @@ public class XTExceptionAutoConfigure {
     @ConditionalOnMissingBean(XTExceptionAop.class)
     @Bean
     public XTExceptionAop xtExceptionAop() {
-        if (LogInfoAuto.enabled) log.info("XTExceptionAop ---->  {}", "异常拦截AOP，自动注册成功");
+        if (LogInfoAuto.enabled) log.info("XTExceptionAop ---> {}", "异常拦截AOP，自动注册成功");
         return new XTExceptionAop();
     }
 }

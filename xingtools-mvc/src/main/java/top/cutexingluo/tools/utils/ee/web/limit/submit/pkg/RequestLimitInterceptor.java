@@ -10,7 +10,8 @@ import top.cutexingluo.tools.bridge.servlet.adapter.HttpServletRequestDataAdapte
 import top.cutexingluo.tools.utils.ee.web.limit.submit.base.RequestLimitConfig;
 import top.cutexingluo.tools.utils.ee.web.limit.submit.base.RequestLimitProcessor;
 import top.cutexingluo.tools.utils.ee.web.limit.submit.strategy.LimitStrategy;
-import top.cutexingluo.tools.utils.se.string.XTPickUtil;
+import top.cutexingluo.tools.utils.se.character.symbol.SymbolPairEnum;
+import top.cutexingluo.tools.utils.se.string.XTString;
 
 import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
@@ -24,6 +25,16 @@ import java.util.LinkedHashMap;
  * @since 1.0.4
  */
 public class RequestLimitInterceptor {
+
+    /**
+     * 前驱符号
+     */
+    public static String prefixBraces = SymbolPairEnum.INTERPOLATION_BRACES.getPrefix();
+
+    /**
+     * 后驱符号
+     */
+    public static String suffixBraces = SymbolPairEnum.INTERPOLATION_BRACES.getSuffix();
 
     /**
      * RequestLimit 拦截主方法
@@ -55,7 +66,7 @@ public class RequestLimitInterceptor {
             limitKey = generateKey(map, requestLimitConfig.getDelimiter());
         }
         requestLimitConfig.setLimitKey(limitKey);
-        boolean pass = limitStrategy.interceptor(requestLimitConfig, limitKey);
+        boolean pass = limitStrategy.interceptorConfig(requestLimitConfig, limitKey);
         if (!pass) {
             throw limitStrategy.refuseException(requestLimitConfig.getMsg());
         }
@@ -80,13 +91,14 @@ public class RequestLimitInterceptor {
                 sb.append(delimiter);
             }
             String tmp = sb.append(key).toString();
-            return XTPickUtil.takeAllValueFromBraces(tmp, s -> {
-                String value = keyMap.get(s);
-                if (StrUtil.isNotBlank(value)) {
-                    return value;
-                }
-                return s;
-            });
+            return new XTString(tmp)
+                    .replaceAllBetweenPatterns(prefixBraces, suffixBraces, s -> {
+                        String value = keyMap.get(s);
+                        if (StrUtil.isNotBlank(value)) {
+                            return value;
+                        }
+                        return s;
+                    });
         }
         keyMap.forEach((k, v) -> { // other
             if (sb.length() != 0) {
