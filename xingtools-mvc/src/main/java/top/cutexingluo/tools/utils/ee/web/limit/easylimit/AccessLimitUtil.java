@@ -19,7 +19,7 @@ import top.cutexingluo.tools.utils.ee.web.ip.util.IPUtil;
 import top.cutexingluo.tools.utils.ee.web.limit.submit.base.RequestLimit;
 import top.cutexingluo.tools.utils.ee.web.limit.submit.base.RequestLimitData;
 import top.cutexingluo.tools.utils.ee.web.limit.submit.pkg.RequestLimitHandler;
-import top.cutexingluo.tools.utils.ee.web.limit.submit.strategy.impl.RedisLimitStrategy;
+import top.cutexingluo.tools.utils.ee.web.limit.submit.strategy.LimitStrategy;
 import top.cutexingluo.tools.utils.spring.SpringUtils;
 
 import java.util.Objects;
@@ -30,7 +30,7 @@ import java.util.function.Function;
  * 限流工具类
  *
  * <p>1.0.4 及以后版本推荐使用 {@link RequestLimit} 注解 或 {@link RequestLimitHandler} 编程式工具</p>
- * <p>为防止过多依赖, 1.1.4 之后采用 IPUtil 代替原来的 IpUtils, 并且使用 RedisLimitStrategy 策略作为新的限制策略, 后续将移除大部分方法</p>
+ * <p>为防止过多依赖, 1.1.4 之后采用 IPUtil 代替原来的 IpUtils, 并且使用 LimitStrategy 策略接口 作为新的限制策略, 后续将移除大部分方法</p>
  * <p>需要导入 spring-data-redis 相关的包</p>
  *
  * @author XingTian
@@ -60,9 +60,9 @@ public class AccessLimitUtil {
 
 
     /**
-     * redis 限制策略
+     * 限制策略
      */
-    protected static RedisLimitStrategy redisLimitStrategy;
+    protected static LimitStrategy limitStrategy;
 
 
     public static void setShowLog(boolean showLog) {
@@ -86,8 +86,8 @@ public class AccessLimitUtil {
         AccessLimitUtil.globalResultFactory = globalResultFactory;
     }
 
-    public static void setRedisLimitStrategy(RedisLimitStrategy redisLimitStrategy) {
-        AccessLimitUtil.redisLimitStrategy = redisLimitStrategy;
+    public static void setLimitStrategy(LimitStrategy limitStrategy) {
+        AccessLimitUtil.limitStrategy = limitStrategy;
     }
 
     @Deprecated
@@ -112,8 +112,8 @@ public class AccessLimitUtil {
         if (!firstTime) { //第一次对配置进行检查
             return true;
         }
-        if (redisLimitStrategy == null) {
-            throw new NullPointerException("RedisLimitStrategy 未设置！使用该方法必须设置！");
+        if (limitStrategy == null) {
+            throw new NullPointerException("limitStrategy 未设置！使用该方法必须设置！");
         }
         firstTime = false;
         return true;
@@ -293,8 +293,8 @@ public class AccessLimitUtil {
         if (!checkRedisStrategy()) { //第一次对配置进行检查
             return false;
         }
-        redisLimitStrategy.checkRequestLimit(requestLimitData);
-        return redisLimitStrategy.interceptor(requestLimitData, redisKey);
+        limitStrategy.checkRequestLimit(requestLimitData);
+        return limitStrategy.interceptor(requestLimitData, redisKey);
     }
 
     /**
@@ -311,8 +311,8 @@ public class AccessLimitUtil {
             return false;
         }
         Objects.requireNonNull(requestLimitData.getLimitKey());
-        redisLimitStrategy.checkRequestLimit(requestLimitData);
-        return redisLimitStrategy.interceptor(requestLimitData);
+        limitStrategy.checkRequestLimit(requestLimitData);
+        return limitStrategy.interceptor(requestLimitData);
     }
 
 
