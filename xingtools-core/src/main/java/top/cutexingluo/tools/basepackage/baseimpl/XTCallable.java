@@ -42,6 +42,29 @@ public class XTCallable<T> implements Callable<T>, Supplier<T>, ComCallable<T>, 
     //---------------------static------------------------
 
     /**
+     * of Callable 构造
+     *
+     * @since 1.1.5
+     */
+    @NotNull
+    @Contract(pure = true)
+    public static <O> XTCallable<O> ofCallable(Callable<O> task) {
+        return new XTCallable<>(task);
+    }
+
+    /**
+     * of Supplier 构造
+     *
+     * @since 1.1.5
+     */
+    @NotNull
+    @Contract(pure = true)
+    public static <O> XTCallable<O> ofSupplier(Supplier<O> task) {
+        return new XTCallable<>(task != null ? task::get : null);
+    }
+
+
+    /**
      * try-catch 包围 执行方法
      */
     @NotNull
@@ -95,6 +118,8 @@ public class XTCallable<T> implements Callable<T>, Supplier<T>, ComCallable<T>, 
     /**
      * try-catch 包围 执行方法
      *
+     * <p>于 1.1.5  将打印错误去除</p>
+     *
      * @param task       任务
      * @param canRunTask 是否可以运行任务
      * @param inCatch    捕获异常
@@ -112,21 +137,42 @@ public class XTCallable<T> implements Callable<T>, Supplier<T>, ComCallable<T>, 
                 if (task != null) res = task.call();
             } catch (Exception e) {
                 if (inCatch != null) inCatch.accept(e);
-                else e.printStackTrace();
+//                else e.printStackTrace();
             }
             return res;
         };
     }
 
+    /**
+     * try-catch 包围 执行方法
+     *
+     * @deprecated 1.1.5  请使用 {@link #getTrySupplier(Callable, Consumer)}, 若使用该方法, 异常将被忽略
+     */
+    @Deprecated
     @NotNull
     @Contract(pure = true)
     public static <O> Supplier<O> getTrySupplier(Callable<O> task) {
         return getTrySupplier(task, null, null);
     }
 
+    /**
+     * try-catch 包围 执行方法
+     * <p>由于无法将task的异常手动去除，故加上inCatch</p>
+     *
+     * @since 1.1.5
+     */
+    @NotNull
+    @Contract(pure = true)
+    public static <O> Supplier<O> getTrySupplier(Callable<O> task, Consumer<Exception> inCatch) {
+        return getTrySupplier(task, null, inCatch);
+    }
+
 
     //---------------------inner------------------------
 
+    /**
+     * <p>于 1.1.5 去除直接输出错误</p>
+     */
     public Supplier<T> getSupplier() {
         return () -> {
             T res = null;
@@ -134,7 +180,7 @@ public class XTCallable<T> implements Callable<T>, Supplier<T>, ComCallable<T>, 
             try {
                 if (now != null) res = now.call();
             } catch (Exception e) {
-                e.printStackTrace(); // 直接输出
+//                e.printStackTrace(); // 直接输出
             } finally {
                 if (after != null) after.run();
             }
