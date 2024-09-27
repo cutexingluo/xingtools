@@ -1,11 +1,11 @@
 package top.cutexingluo.tools.utils.js.hook;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.function.Consumer;
 
 
 /**
@@ -27,9 +27,16 @@ import java.util.List;
  */
 @Data
 //@NoArgsConstructor
-@AllArgsConstructor
+//@AllArgsConstructor
 public class XTApply {
     private Method method;
+
+    public XTApply(Method method) {
+        this.method = method;
+    }
+
+    public static boolean printTrace = true;
+    public static Consumer<Exception> exceptionHandler = null;
 
     public XTApply(Class<?> clazz, String methodName, @NotNull Class<?>... args) throws NoSuchMethodException {
         this.method = clazz.getMethod(methodName, args);
@@ -53,7 +60,8 @@ public class XTApply {
         try {
             return (R) method.invoke(target, args.toArray());
         } catch (Exception e) {
-            e.printStackTrace();
+            if (exceptionHandler != null) exceptionHandler.accept(e);
+            else if (printTrace) e.printStackTrace();
             return null;
         }
     }

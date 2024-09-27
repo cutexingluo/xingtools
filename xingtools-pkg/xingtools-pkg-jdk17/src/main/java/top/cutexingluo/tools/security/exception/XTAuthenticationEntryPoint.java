@@ -58,7 +58,7 @@ public class XTAuthenticationEntryPoint implements AuthenticationEntryPoint {
     public <C, T> void unauthorized(HttpServletResponse httpServletResponse, String msg) throws IOException {
         IResult<C, T> error = null;
         if (returnResult == null) {
-            error = (IResult<C, T>) Result.error(Constants.CODE_401, msg);
+            error = (IResult<C, T>) Result.errorBy(Constants.CODE_401, msg);
         } else {
             error = (IResult<C, T>) returnResult;
         }

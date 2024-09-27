@@ -23,11 +23,14 @@ import java.util.concurrent.TimeUnit;
  * 1.使用前需要注入 redisTemplate , 或者 开启 redisconfig 配置 <br>
  * 2.有 redisTemplate 后，可自行注入bean, 或者 开启 redisconfig-util 配置
  * </p>
+ *
+ * @deprecated v1.1.5 已弃用, 未来将被移除
  */
 @Data
 @ConditionalOnBean(RedisTemplate.class)
 //@AutoConfigureAfter(RedisTemplate.class)
 //@Component
+@Deprecated
 @Slf4j
 public final class RedisUtil {
 

@@ -121,7 +121,7 @@ public class Result extends CommonResult<Integer, Object> implements XTStrCode {
     }
 
     public static Result put(Constants constants) {
-        return put(constants, "");
+        return put(constants, null);
     }
 
 
@@ -136,7 +136,7 @@ public class Result extends CommonResult<Integer, Object> implements XTStrCode {
      * @since 1.1.2
      */
     public static Result put(HttpStatus httpStatus) {
-        return put(httpStatus, "");
+        return put(httpStatus, null);
     }
 
 
@@ -165,12 +165,12 @@ public class Result extends CommonResult<Integer, Object> implements XTStrCode {
     }
 
     public static Result notPass() {
-        return put(Constants.CODE_500, null);
+        return put(Constants.CODE_500.intCode(), "", null);
     }
 
     //---success---
     public static Result success() {
-        return put(Constants.CODE_200, true);
+        return put(Constants.CODE_200, null);
     }
 
 
@@ -188,11 +188,14 @@ public class Result extends CommonResult<Integer, Object> implements XTStrCode {
 
     //---error---
     public static Result error() {
-        return put(Constants.CODE_500, false);
+        return put(Constants.CODE_500, null);
     }
 
-    public static Result error(String msg) {
-        return put(Constants.CODE_500.intCode(), msg, false);
+    /**
+     * <p>于v1.1.5 更新为 errorMsg , 防止冲突</p>
+     */
+    public static Result errorMsg(String msg) {
+        return put(Constants.CODE_500.intCode(), msg, null);
     }
 
     public static Result error(Object data) {
@@ -200,7 +203,7 @@ public class Result extends CommonResult<Integer, Object> implements XTStrCode {
     }
 
     public static Result error(int otherCode, String msg) {
-        return put(otherCode, msg, false);
+        return put(otherCode, msg, null);
     }
 
     /**
@@ -211,25 +214,36 @@ public class Result extends CommonResult<Integer, Object> implements XTStrCode {
     }
 
     // 常用 Result.error(错误码)
-    public static Result error(Constants constants) {
-        return put(constants, false);
+
+    /**
+     * <p>于v1.1.5 更新为 errorMsg , 防止冲突</p>
+     */
+    public static Result errorBy(Constants constants) {
+        return put(constants, null);
     }
 
-    public static Result error(Constants constants, String msg) {
+    /**
+     * <p>于v1.1.5 更新为 errorMsg , 防止冲突</p>
+     */
+    public static Result errorBy(Constants constants, String msg) {
         return error(constants.intCode(), msg);
     }
 
     /**
+     * <p>于v1.1.5 更新为 errorMsg , 防止冲突</p>
+     *
      * @since 1.1.2
      */
-    public static Result error(HttpStatus httpStatus) {
-        return put(httpStatus, false);
+    public static Result errorBy(HttpStatus httpStatus) {
+        return put(httpStatus, null);
     }
 
     /**
+     * <p>于v1.1.5 更新为 errorMsg , 防止冲突</p>
+     *
      * @since 1.1.2
      */
-    public static Result error(HttpStatus httpStatus, String msg) {
+    public static Result errorBy(HttpStatus httpStatus, String msg) {
         return error(httpStatus.getCode(), msg);
     }
 

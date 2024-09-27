@@ -9,6 +9,7 @@ import java.net.UnknownHostException;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * Iputil
@@ -33,6 +34,9 @@ public class IPUtil {
     private static final String LOCALHOST_IPV6 = "0:0:0:0:0:0:0:1";
     private static final String SEPARATOR = ",";
 
+
+    public static boolean printTrace = true;
+    public static Consumer<Exception> exceptionHandler = null;
 
     @NotNull
     public static Map<String, String> getHeader(HttpServletRequestAdapter request) {
@@ -87,7 +91,8 @@ public class IPUtil {
                 try {
                     iNet = InetAddress.getLocalHost();
                 } catch (UnknownHostException e) {
-                    e.printStackTrace();
+                    if (exceptionHandler != null) exceptionHandler.accept(e);
+                    else if (printTrace) e.printStackTrace();
                 }
                 if (iNet != null)
                     ip = iNet.getHostAddress();

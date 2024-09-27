@@ -22,7 +22,7 @@ public interface BaseJoinPointTaskHandler {
                 result = (V) getTask(joinPoint).call();
             } catch (Exception e) {
                 if (inCatch != null) inCatch.accept(e);
-                else e.printStackTrace();
+                else throw e;
             }
             return result;
         };
@@ -78,7 +78,7 @@ public interface BaseJoinPointTaskHandler {
                 result = (V) getTask(joinPoint).call();
             } catch (Exception e) {
                 if (inCatch != null) inCatch.accept(e);
-                else e.printStackTrace();
+                else throw e;
             }
             return result;
         };

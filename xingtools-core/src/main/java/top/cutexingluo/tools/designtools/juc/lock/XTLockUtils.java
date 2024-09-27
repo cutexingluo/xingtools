@@ -6,6 +6,7 @@ import top.cutexingluo.tools.basepackage.baseimpl.XTRunCallUtil;
 import java.util.concurrent.Callable;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Consumer;
 
 
 /**
@@ -20,6 +21,9 @@ import java.util.concurrent.locks.ReentrantLock;
  * @date 2022-11-22
  */
 public class XTLockUtils {
+    public static boolean printTrace = true;
+    public static Consumer<Exception> exceptionHandler = null;
+
     //----------------------------------------------------------------
     //常用锁 直接运行
     public static boolean doLock(Runnable runnable) {
@@ -46,7 +50,8 @@ public class XTLockUtils {
         try {
             runnableLock(lock, isFair, runnable, beforeThis, afterThis).run();
         } catch (Exception e) {
-            e.printStackTrace();
+            if (exceptionHandler != null) exceptionHandler.accept(e);
+            else if (printTrace) e.printStackTrace();
             return false;
         }
         return true;

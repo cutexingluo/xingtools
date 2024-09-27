@@ -90,7 +90,7 @@ public class StrResult extends CommonResult<String, Object> implements XTIntCode
     }
 
     public static StrResult put(Constants constants) {
-        return put(constants, "");
+        return put(constants, null);
     }
 
     /**
@@ -104,7 +104,7 @@ public class StrResult extends CommonResult<String, Object> implements XTIntCode
      * @since 1.1.2
      */
     public static StrResult put(HttpStatus httpStatus) {
-        return put(httpStatus, "");
+        return put(httpStatus, null);
     }
 
     public static <C> StrResult put(IResult<C, Object> resultData) {
@@ -132,12 +132,12 @@ public class StrResult extends CommonResult<String, Object> implements XTIntCode
     }
 
     public static StrResult notPass() {
-        return put(Constants.CODE_500, null);
+        return put(Constants.CODE_500.getCode(), "", null);
     }
 
     //---success---
     public static StrResult success() {
-        return put(Constants.CODE_200, true);
+        return put(Constants.CODE_200, null);
     }
 
     public static StrResult success(Object data) {
@@ -150,11 +150,14 @@ public class StrResult extends CommonResult<String, Object> implements XTIntCode
 
     //---error---
     public static StrResult error() {
-        return put(Constants.CODE_500, false);
+        return put(Constants.CODE_500, null);
     }
 
-    public static StrResult error(String msg) {
-        return put(Constants.CODE_500.getCode(), msg, false);
+    /**
+     * <p>于v1.1.5 更新为 errorMsg , 防止冲突</p>
+     */
+    public static StrResult errorMsg(String msg) {
+        return put(Constants.CODE_500.getCode(), msg, null);
     }
 
     public static StrResult error(Object data) {
@@ -162,7 +165,7 @@ public class StrResult extends CommonResult<String, Object> implements XTIntCode
     }
 
     public static StrResult error(String otherCode, String msg) {
-        return put(otherCode, msg, false);
+        return put(otherCode, msg, null);
     }
 
     /**
@@ -173,25 +176,36 @@ public class StrResult extends CommonResult<String, Object> implements XTIntCode
     }
 
     // 常用 StrResult.error(错误码)
-    public static StrResult error(Constants constants) {
-        return put(constants, false);
+
+    /**
+     * <p>于v1.1.5 更新为 errorMsg , 防止冲突</p>
+     */
+    public static StrResult errorBy(Constants constants) {
+        return put(constants, null);
     }
 
-    public static StrResult error(Constants constants, String msg) {
+    /**
+     * <p>于v1.1.5 更新为 errorMsg , 防止冲突</p>
+     */
+    public static StrResult errorBy(Constants constants, String msg) {
         return error(constants.getCode(), msg);
     }
 
     /**
+     * <p>于v1.1.5 更新为 errorMsg , 防止冲突</p>
+     *
      * @since 1.1.2
      */
-    public static StrResult error(HttpStatus httpStatus) {
-        return put(httpStatus, false);
+    public static StrResult errorBy(HttpStatus httpStatus) {
+        return put(httpStatus, null);
     }
 
     /**
+     * <p>于v1.1.5 更新为 errorMsg , 防止冲突</p>
+     *
      * @since 1.1.2
      */
-    public static StrResult error(HttpStatus httpStatus, String msg) {
+    public static StrResult errorBy(HttpStatus httpStatus, String msg) {
         return error(httpStatus.strCode(), msg);
     }
 

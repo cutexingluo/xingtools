@@ -3,6 +3,8 @@ package top.cutexingluo.tools.designtools.juc.lock;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.function.Consumer;
+
 /**
  * <p>
  * XTLock 锁扩展类 ，继承锁类
@@ -16,6 +18,10 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class XTLockConAndSup extends XTLock {
+
+    private boolean printTrace = true;
+    private Consumer<Exception> exceptionHandler = null;
+
     //即被condition的XTLock对象，SyncThread调用或者被XTLock加锁封装
     //加锁后的消费者 可执行接口 需要用同一把锁,
     public Runnable consumerLock(Runnable runnableTask) {
@@ -28,7 +34,8 @@ public class XTLockConAndSup extends XTLock {
                 runnableTask.run();
                 condition.signalAll();
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                if (exceptionHandler != null) exceptionHandler.accept(e);
+                else if (printTrace) e.printStackTrace();
             }
         };
         return XTLockUtils.runnableLock(around);
@@ -45,7 +52,8 @@ public class XTLockConAndSup extends XTLock {
                 runnableTask.run();
                 condition.signalAll();
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                if (exceptionHandler != null) exceptionHandler.accept(e);
+                else if (printTrace) e.printStackTrace();
             }
         };
         return XTLockUtils.runnableLock(around);

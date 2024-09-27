@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
@@ -42,14 +43,14 @@ public class XTAsync<T> extends CompletableFuture<T> {
     }
 
     //**********常用四大件
-    public static CompletableFuture<Void> runAsync(Runnable runnable) {
-        return CompletableFuture.runAsync(runnable);
-    }
+//    public static CompletableFuture<Void> runAsync(Runnable runnable) {
+//        return CompletableFuture.runAsync(runnable);
+//    }
 
-    @NotNull
-    public static CompletableFuture<Void> runAsync(Runnable runnable, Executor executor) {
-        return CompletableFuture.runAsync(runnable, executor);
-    }
+//    @NotNull
+//    public static CompletableFuture<Void> runAsync(Runnable runnable, Executor executor) {
+//        return CompletableFuture.runAsync(runnable, executor);
+//    }
 
     /**
      * check 版本
@@ -65,13 +66,16 @@ public class XTAsync<T> extends CompletableFuture<T> {
     //回调使用
     //whenComplete((t,u)->{}).exceptionally((e)->{}).get()
     //whenApply, whenRun, whenComplete
-    public static <T> CompletableFuture<T> supplyAsync(Supplier<T> supplier) {
-        return CompletableFuture.supplyAsync(supplier);
-    }
 
-    public static <T> CompletableFuture<T> supplyAsync(Supplier<T> supplier, Executor executor) {
-        return CompletableFuture.supplyAsync(supplier, executor);
-    }
+    // 继承父类方法
+//    public static <T> CompletableFuture<T> supplyAsync(Supplier<T> supplier) {
+//        return CompletableFuture.supplyAsync(supplier);
+//    }
+
+    // 继承父类方法
+//    public static <T> CompletableFuture<T> supplyAsync(Supplier<T> supplier, Executor executor) {
+//        return CompletableFuture.supplyAsync(supplier, executor);
+//    }
 
     /**
      * check 版本
@@ -100,6 +104,8 @@ public class XTAsync<T> extends CompletableFuture<T> {
 
     /**
      * 创建单个CompletableFuture任务
+     *
+     * <p>alias supplyAsync</p>
      *
      * @param logic           任务逻辑
      * @param exceptionHandle 异常处理
@@ -167,7 +173,7 @@ public class XTAsync<T> extends CompletableFuture<T> {
      * @param exceptionHandle 异常处理逻辑
      * @return 处理结果列表
      */
-    public static <T> List<T> callParallelFutureJoin(Collection<Supplier<T>> list, BiFunction<Throwable, Supplier<T>, T> exceptionHandle, Executor executor) {
+    public static <T> List<T> callParallelFutureJoin(Collection<? extends Supplier<T>> list, BiFunction<Throwable, Supplier<T>, T> exceptionHandle, Executor executor) {
         //规整所有任务
         List<CompletableFuture<T>> collectFuture = list.stream()
                 .map(s -> createFuture(s,
@@ -187,7 +193,7 @@ public class XTAsync<T> extends CompletableFuture<T> {
      * @param exceptionHandle 异常处理逻辑
      * @return 处理结果列表
      */
-    public static <T> List<CompletableFuture<T>> getParallelFutureJoin(Collection<Supplier<T>> list, BiFunction<Throwable, Supplier<T>, T> exceptionHandle, Executor executor) {
+    public static <T> List<CompletableFuture<T>> getParallelFutureJoin(Collection<? extends Supplier<T>> list, BiFunction<Throwable, Supplier<T>, T> exceptionHandle, Executor executor) {
         //规整所有任务
         List<CompletableFuture<T>> collectFuture = list.stream()
                 .map(s -> createFuture(s,
@@ -204,7 +210,7 @@ public class XTAsync<T> extends CompletableFuture<T> {
      * @param exceptionHandle 异常处理逻辑   第二个参数- 数据源类型，可能为 Callable, 也可能为最终 CompletableFuture
      * @return 是否全部执行成功
      */
-    public static <S, T> boolean callParallelFutureAllOf(Collection<Supplier<T>> list, BiFunction<Throwable, S, T> exceptionHandle, Executor executor) {
+    public static <S, T> boolean callParallelFutureAllOf(Collection<? extends Supplier<T>> list, BiFunction<Throwable, S, T> exceptionHandle, Executor executor) {
         //规整所有任务
         CompletableFuture<Void> future = getParallelFutureAllOf(list, exceptionHandle, executor);
         try {
@@ -223,11 +229,26 @@ public class XTAsync<T> extends CompletableFuture<T> {
      * @param exceptionHandle 异常处理逻辑   第二个参数- 数据源类型，可能为 Callable, 也可能为最终 CompletableFuture
      * @return 是否全部执行成功
      */
-    public static <S, T> CompletableFuture<Void> getParallelFutureAllOf(Collection<Supplier<T>> list, BiFunction<Throwable, S, T> exceptionHandle, Executor executor) {
+    public static <S, T> CompletableFuture<Void> getParallelFutureAllOf(Collection<? extends Supplier<T>> list, BiFunction<Throwable, S, T> exceptionHandle, Executor executor) {
         //规整所有任务
         return CompletableFuture.allOf(list.stream()
-                .map(s -> createFuture(XTCallable.getTrySupplier(s),
+                .map(s -> createFuture(s,
                         e -> exceptionHandle.apply(e, (S) s), executor)).toArray(CompletableFuture[]::new));
+    }
+
+    /**
+     * 创建并行任务
+     *
+     * @param list            数据源
+     * @param exceptionHandle 异常处理逻辑   第二个参数- 数据源类型，可能为 Callable, 也可能为最终 CompletableFuture
+     * @return 是否全部执行成功
+     */
+    public static <S, T> CompletableFuture<Void> getParallelFutureAllOfByCallable(Collection<? extends Callable<T>> list, BiFunction<Throwable, S, T> exceptionHandle, Executor executor) {
+        //规整所有任务
+        return CompletableFuture.allOf(list.stream()
+                .map(s -> supplyAsync(
+                        XTCallable.ofCallable(s).getCatchRetSupplier(e -> exceptionHandle.apply(e, (S) s)),
+                        executor)).toArray(CompletableFuture[]::new));
     }
 
     /**
@@ -238,12 +259,34 @@ public class XTAsync<T> extends CompletableFuture<T> {
      * @param exceptionHandle 异常处理逻辑
      * @return 处理结果列表
      */
-    public static <T> CompletableFuture<T> getSerialFutureJoin(Collection<Supplier<T>> list, Function<Throwable, T> exceptionHandle, Executor executor) {
+    public static <T> CompletableFuture<T> getSerialFutureJoin(Collection<? extends Supplier<T>> list, Function<Throwable, T> exceptionHandle, Executor executor) {
         CompletableFuture<T> future = CompletableFuture.completedFuture(null);
-        for (Supplier<T> supplier : list) {
-            future = future.thenComposeAsync(result -> CompletableFuture.supplyAsync(
-                    XTCallable.ofSupplier(supplier).getCatchSupplier(exceptionHandle::apply)
-                    , executor));
+        for (Supplier<T> task : list) {
+            future = future.thenComposeAsync(result -> supplyAsync(
+                    task,
+                    exceptionHandle,
+                    executor)
+            );
+        }
+        return future;
+    }
+
+    /**
+     * 创建串行任务
+     * <p>调用 get() 执行</p>
+     *
+     * @param list            数据源
+     * @param exceptionHandle 异常处理逻辑
+     * @return 处理结果列表
+     */
+    public static <T> CompletableFuture<T> getSerialFutureJoinByCallable(Collection<? extends Callable<T>> list, Function<Throwable, T> exceptionHandle, Executor executor) {
+        CompletableFuture<T> future = CompletableFuture.completedFuture(null);
+        for (Callable<T> task : list) {
+            future = future.thenComposeAsync(result -> supplyAsync(
+                    XTCallable.ofCallable(task).getCatchRetSupplier(exceptionHandle::apply),
+                    exceptionHandle,
+                    executor)
+            );
         }
         return future;
     }
@@ -257,14 +300,39 @@ public class XTAsync<T> extends CompletableFuture<T> {
      * @param exceptionHandle 异常处理逻辑
      * @return 处理结果列表
      */
-    public static FutureResult<Object> serialFutureJoin(Collection<Supplier<Object>> list, Function<Throwable, Object> exceptionHandle, Executor executor) {
+    public static FutureResult<Object> serialFutureJoin(Collection<? extends Supplier<Object>> list, Function<Throwable, Object> exceptionHandle, Executor executor) {
         CompletableFuture<Object> future = CompletableFuture.completedFuture(null);
         List<Object> res = new ArrayList<>();
-        for (Supplier<Object> supplier : list) {
+        for (Supplier<Object> task : list) {
             future = future.thenComposeAsync(result -> {
                         res.add(result);
-                        return CompletableFuture.supplyAsync(
-                                XTCallable.ofSupplier(supplier).getCatchSupplier(exceptionHandle::apply), executor);
+                        return supplyAsync(
+                                task,
+                                exceptionHandle,
+                                executor);
+                    }
+            );
+        }
+        return new FutureResult<>(future, res);
+    }
+
+    /**
+     * 创建串行任务，获得所有结果
+     * <p>调用 get() 执行</p>
+     *
+     * @param list            数据源
+     * @param exceptionHandle 异常处理逻辑
+     * @return 处理结果列表
+     */
+    public static FutureResult<Object> serialFutureJoinByCallable(Collection<? extends Callable<Object>> list, Function<Throwable, Object> exceptionHandle, Executor executor) {
+        CompletableFuture<Object> future = CompletableFuture.completedFuture(null);
+        List<Object> res = new ArrayList<>();
+        for (Callable<Object> task : list) {
+            future = future.thenComposeAsync(result -> {
+                        res.add(result);
+                        return supplyAsync(
+                                XTCallable.ofCallable(task).getCatchRetSupplier(exceptionHandle::apply),
+                                executor);
                     }
             );
         }
@@ -278,7 +346,7 @@ public class XTAsync<T> extends CompletableFuture<T> {
      * @param exceptionHandle 异常处理逻辑
      * @return 处理结果列表
      */
-    public static List<Object> callSerialFutureJoin(Collection<Supplier<Object>> list, Function<Throwable, Object> exceptionHandle, Executor executor) throws Exception {
+    public static List<Object> callSerialFutureJoin(Collection<? extends Supplier<Object>> list, Function<Throwable, Object> exceptionHandle, Executor executor) throws Exception {
         FutureResult<Object> futureResult = serialFutureJoin(list, exceptionHandle, executor);
         Object o = futureResult.getFuture().get();
         futureResult.getResultList().add(o);

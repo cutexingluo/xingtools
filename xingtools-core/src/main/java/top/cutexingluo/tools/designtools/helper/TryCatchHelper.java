@@ -1,7 +1,6 @@
 package top.cutexingluo.tools.designtools.helper;
 
-import top.cutexingluo.tools.basepackage.baseimpl.XTCallable;
-import top.cutexingluo.tools.basepackage.baseimpl.XTRunnable;
+import top.cutexingluo.tools.basepackage.baseimpl.XTAround;
 
 import java.util.concurrent.Callable;
 import java.util.function.Consumer;
@@ -20,18 +19,18 @@ import java.util.function.Supplier;
 public interface TryCatchHelper {
 
     default <O> Supplier<O> getTrySupplier(Callable<O> task, Supplier<Boolean> canRunTask, Consumer<Exception> inCatch) {
-        return XTCallable.getTrySupplier(task, canRunTask, inCatch);
+        return XTAround.getTrySupplierByCallable(task, canRunTask, inCatch);
     }
 
     default <O> Supplier<O> getTrySupplier(Supplier<O> task, Supplier<Boolean> canRunTask, Consumer<Exception> inCatch) {
-        return XTCallable.getTrySupplier(task, canRunTask, inCatch);
+        return XTAround.getTrySupplier(task, canRunTask, inCatch);
     }
 
     default <O> Callable<O> getTryCallable(Callable<O> task, Supplier<Boolean> canRunTask, Consumer<Exception> inCatch) {
-        return XTCallable.getTryCallable(task, canRunTask, inCatch);
+        return XTAround.getTryCallable(task, canRunTask, inCatch);
     }
 
     default <O> Runnable getTtyRunnable(Runnable task, Supplier<Boolean> canRunTask, Consumer<Exception> inCatch) {
-        return XTRunnable.getTryRunnable(task, canRunTask, inCatch);
+        return XTAround.getTryRunnable(task, canRunTask, inCatch);
     }
 }

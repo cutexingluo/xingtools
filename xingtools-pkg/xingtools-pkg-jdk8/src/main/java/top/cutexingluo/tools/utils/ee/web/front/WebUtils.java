@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.function.Consumer;
 
 /**
  * web 返回工具类
@@ -18,6 +19,8 @@ import java.net.URLEncoder;
  */
 public class WebUtils {
 
+    public static boolean printTrace = true;
+    public static Consumer<Exception> exceptionHandler = null;
 
     /**
      * 返回请求封装
@@ -75,7 +78,8 @@ public class WebUtils {
             response.setCharacterEncoding("utf-8");
             response.getWriter().print(string);
         } catch (IOException e) {
-            e.printStackTrace();
+            if (exceptionHandler != null) exceptionHandler.accept(e);
+            else if (printTrace) e.printStackTrace();
         }
     }
 

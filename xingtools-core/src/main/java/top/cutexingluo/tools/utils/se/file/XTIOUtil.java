@@ -27,6 +27,9 @@ import java.util.stream.Stream;
  * @date 2023/2/3 14:40
  */
 public class XTIOUtil {
+    public static boolean printTrace = true;
+    public static Consumer<Exception> exceptionHandler = null;
+
     //在不引入hu tools生成File
     public static File getFile(String path) {
         return XTFileUtil.getFile(path);
@@ -117,7 +120,7 @@ public class XTIOUtil {
         return Files.readAllLines(Paths.get(fileName), StandardCharsets.UTF_8);
     }
 
-//    @ConditionalOnJava(JavaVersion.EIGHT)
+    //    @ConditionalOnJava(JavaVersion.EIGHT)
     public static byte[] readFileLinesByReadBytes(String fileName) throws IOException {
         return Files.readAllBytes(Paths.get(fileName));
     }
@@ -132,7 +135,8 @@ public class XTIOUtil {
             Method method = Files.class.getMethod("readString", Path.class, Charset.class);
             o = (String) method.invoke(null, Paths.get(fileName), StandardCharsets.UTF_8);
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
+            if (exceptionHandler != null) exceptionHandler.accept(e);
+            else if (printTrace) e.printStackTrace();
         }
         return o;
 //        return Files.readString(Paths.get(fileName), StandardCharsets.UTF_8);
