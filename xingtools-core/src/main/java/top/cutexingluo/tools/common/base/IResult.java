@@ -1,9 +1,9 @@
 package top.cutexingluo.tools.common.base;
 
 /**
- * <p>综合接口，拥有 msg , code , data 的所有get方法</p>
  * IResult 接口
  * <p>* 返回数据接口</p>
+ * <p>综合接口，拥有 msg , code , data 的所有get方法</p>
  *
  * @author XingTian
  * @version 1.0.0

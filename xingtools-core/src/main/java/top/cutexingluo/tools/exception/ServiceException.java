@@ -2,7 +2,6 @@ package top.cutexingluo.tools.exception;
 
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
-import top.cutexingluo.tools.common.Constants;
 import top.cutexingluo.tools.common.Result;
 import top.cutexingluo.tools.common.StrResult;
 import top.cutexingluo.tools.common.base.IResultData;
@@ -52,12 +51,13 @@ public class ServiceException extends RuntimeException implements IResultData<St
     /**
      * 服务异常
      *
-     * @param constantsCode 错误常量
-     * @param msg           消息
+     * @param otherData 错误常量/错误码
+     * @param msg       消息
+     * @updateFrom v1.1.5
      */
-    public ServiceException(@NotNull Constants constantsCode, String msg) {
+    public ServiceException(@NotNull IResultData<String> otherData, String msg) {
         super(msg);
-        this.code = constantsCode.getCode();
+        this.code = otherData.getCode();
     }
 
     /**

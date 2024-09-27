@@ -3,6 +3,7 @@ package top.cutexingluo.tools.common.base;
 /**
  * IResult 数据接口
  * <p>* 返回数据接口</p>
+ * <p>提供 getCode, getMsg 方法接口</p>
  *
  * @author XingTian
  * @version 1.0.0
