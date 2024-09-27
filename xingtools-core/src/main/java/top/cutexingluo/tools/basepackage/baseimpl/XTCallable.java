@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import top.cutexingluo.tools.basepackage.base.BaseCallableSupplier;
 import top.cutexingluo.tools.basepackage.base.ComCallable;
 import top.cutexingluo.tools.basepackage.base.ComSupplier;
 import top.cutexingluo.tools.basepackage.basehandler.CallableHandler;
@@ -31,14 +32,22 @@ import java.util.stream.Collectors;
  * @date 2023/2/3 23:08
  * @updateFrom 1.0.4
  * @see XTSupplier
+ * @see BaseCallableSupplier
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
-public class XTCallable<T> extends XTAround implements Callable<T>, Supplier<T>, ComCallable<T>, ComSupplier<T>, CallableHandler, SupplierHandler {
+public class XTCallable<T> extends XTAround implements BaseCallableSupplier<T>,
+        Callable<T>, Supplier<T>, ComCallable<T>, ComSupplier<T>, CallableHandler, SupplierHandler {
+    /**
+     * 当前任务
+     */
     Callable<T> now;
+    /**
+     * 前置或后置任务
+     */
     Runnable before, after;
 
     public XTCallable(Callable<T> task) {
@@ -97,8 +106,11 @@ public class XTCallable<T> extends XTAround implements Callable<T>, Supplier<T>,
     //---------------------inner------------------------
 
     /**
+     * 组装成新 Supplier
+     * <p><b>与 XTSupplier  不同, callable 转 supplier  异常将被忽略</b></p>
      * <p>于 1.1.5 去除直接输出错误</p>
      */
+    @Override
     public Supplier<T> getSupplier() {
         return () -> {
             T res = null;
@@ -114,28 +126,12 @@ public class XTCallable<T> extends XTAround implements Callable<T>, Supplier<T>,
         };
     }
 
-    /**
-     * 重新抛出 RuntimeException
-     */
-    public Supplier<T> getSupplierRuntime() {
-        return () -> {
-            T res = null;
-            if (before != null) before.run();
-            try {
-                if (now != null) res = now.call();
-            } catch (Exception e) {
-                throw new RuntimeException(e); //重新抛出
-            } finally {
-                if (after != null) after.run();
-            }
-            return res;
-        };
-    }
 
     /**
      * 添加异常捕获
      * <p>v1.1.5 fix bug</p>
      */
+    @Override
     public Supplier<T> getCatchSupplier(Consumer<Exception> catchError) {
         return () -> {
             T res = null;
@@ -154,6 +150,7 @@ public class XTCallable<T> extends XTAround implements Callable<T>, Supplier<T>,
     /**
      * 添加异常捕获
      */
+    @Override
     public Supplier<T> getCatchRetSupplier(Function<Exception, T> catchError) {
         return () -> {
             T res = null;
@@ -171,10 +168,10 @@ public class XTCallable<T> extends XTAround implements Callable<T>, Supplier<T>,
 
 
     /**
-     * 组装
-     *
-     * @since 1.0.4
+     * 组装成新 Callable
+     * <p>XTCallable 和 XTSupplier 相同, 异常将被重新抛出</p>
      */
+    @Override
     public Callable<T> getCallable() {
         return () -> {
             T res = null;
@@ -188,68 +185,6 @@ public class XTCallable<T> extends XTAround implements Callable<T>, Supplier<T>,
             }
             return res;
         };
-    }
-
-    /**
-     * 添加异常捕获
-     */
-    public Callable<T> getCatchCallable(Consumer<Exception> catchError) {
-        return () -> getCatchSupplier(catchError).get();
-    }
-
-
-    /**
-     * 添加异常捕获
-     */
-    public Callable<T> getCatchRetCallable(Function<Exception, T> catchError) {
-        return () -> getCatchRetSupplier(catchError).get();
-    }
-
-    //try
-
-    /**
-     * try-catch 包围 执行方法
-     *
-     * @param canRunTask 是否可以运行任务
-     * @param inCatch    捕获异常
-     * @since 1.0.4
-     */
-    public Supplier<T> getTrySupplier(Supplier<Boolean> canRunTask, Consumer<Exception> inCatch) {
-        return getTrySupplierByCallable(getCallable(), canRunTask, inCatch);
-    }
-
-    /**
-     * try-catch 包围 执行方法
-     *
-     * @param canRunTask 是否可以运行任务
-     * @param inCatch    捕获异常
-     * @since 1.0.4
-     */
-    public Callable<T> getTryCallable(Supplier<Boolean> canRunTask, Consumer<Exception> inCatch) {
-        return getTryCallable(getCallable(), canRunTask, inCatch);
-    }
-
-
-    /**
-     * try-catch 包围 执行方法
-     *
-     * @param canRunTask 是否可以运行任务
-     * @param inCatch    捕获异常
-     * @since 1.1.5
-     */
-    public Supplier<T> getTryRetSupplier(Supplier<Boolean> canRunTask, Function<Exception, T> inCatch) {
-        return getTryRetSupplierByCallable(getCallable(), canRunTask, inCatch);
-    }
-
-    /**
-     * try-catch 包围 执行方法
-     *
-     * @param canRunTask 是否可以运行任务
-     * @param inCatch    捕获异常
-     * @since 1.1.5
-     */
-    public Callable<T> getTryRetCallable(Supplier<Boolean> canRunTask, Function<Exception, T> inCatch) {
-        return getTryRetCallable(getCallable(), canRunTask, inCatch);
     }
 
 
@@ -278,11 +213,19 @@ public class XTCallable<T> extends XTAround implements Callable<T>, Supplier<T>,
         return getSupplier();
     }
 
+    /**
+     * 调用 getCallable() 方法
+     * <p><b>异常将被重新抛出</b></p>
+     */
     @Override
     public T call() throws Exception {
         return getCallable().call();
     }
 
+    /**
+     * 调用 getSupplier() 方法
+     * <p><b>callable 转 supplier 异常会被忽略</b></p>
+     */
     @Override
     public T get() {
         return getSupplier().get();
