@@ -46,7 +46,7 @@ public class XTGlobalExceptionHandler {
     @ExceptionHandler(DuplicateKeyException.class)
     public <C, T> IResult<C, T> duplicateKeyException(DuplicateKeyException e) {
         log.error(TAG + "数据添加错误", e);
-        IResult<Object, Object> result = GlobalResultFactory.selectResult(globalResultFactory, Result.error(Constants.CODE_500, "数据重复"));
+        IResult<Object, Object> result = GlobalResultFactory.selectResult(globalResultFactory, Result.errorBy(Constants.CODE_500, "数据重复"));
         return (IResult<C, T>) result;
     }
 

@@ -2,131 +2,115 @@ package top.cutexingluo.tools.basepackage.baseimpl;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import top.cutexingluo.tools.basepackage.base.BaseCallableSupplier;
 import top.cutexingluo.tools.basepackage.base.ComCallable;
 import top.cutexingluo.tools.basepackage.base.ComSupplier;
 import top.cutexingluo.tools.basepackage.basehandler.CallableHandler;
 import top.cutexingluo.tools.basepackage.basehandler.SupplierHandler;
 
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 /**
  * Supplier 和 Callable 综合类
  * <p>1. 可使用静态方法组装</p>
  * <p>2. 能够兼容Callable 和 Supplier </p>
  * <p>3. 三元整合类 </p>
+ * <p>4.如果是 callable 转 supplier 会有异常忽略问题, 建议使用 {@link XTSupplier}</p>
  *
  * @author XingTian
  * @version 1.0.0
  * @date 2023/2/3 23:08
  * @updateFrom 1.0.4
+ * @see XTSupplier
+ * @see BaseCallableSupplier
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
-public class XTCallable<T> implements Callable<T>, Supplier<T>, ComCallable<T>, ComSupplier<T>, CallableHandler, SupplierHandler {
-    Callable<T> now;
-    Runnable before, after;
+public class XTCallable<T> extends XTAround implements BaseCallableSupplier<T>,
+        Callable<T>, Supplier<T>, ComCallable<T>, ComSupplier<T>, CallableHandler, SupplierHandler {
+    /**
+     * 当前任务
+     */
+    protected Callable<T> now;
+    /**
+     * 前置或后置任务
+     */
+    protected Runnable before, after;
 
     public XTCallable(Callable<T> task) {
         this.now = task;
     }
 
-
     //---------------------static------------------------
 
-    /**
-     * try-catch 包围 执行方法
-     */
-    @NotNull
-    @Contract(pure = true)
-    public static <O> Callable<O> getTryCallable(Callable<O> task, Supplier<Boolean> canRunTask, Consumer<Exception> inCatch) {
-        return () -> getTrySupplier(task, canRunTask, inCatch).get();
-    }
+    //---------------------constructor------------------------
 
     /**
-     * try-catch 包围 执行方法
-     */
-    @NotNull
-    @Contract(pure = true)
-    public static <O> Callable<O> getTryCallable(Callable<O> task) {
-        return getTryCallable(task, null, null);
-    }
-
-    /**
-     * try-catch 包围 执行方法
-     * <p>fix bug</p>
+     * of Callable 构造
      *
-     * @since 1.0.4
+     * @since 1.1.5
      */
     @NotNull
     @Contract(pure = true)
-    public static <O> Supplier<O> getTrySupplier(Supplier<O> task, Supplier<Boolean> canRunTask, Consumer<Exception> inCatch) {
-        return () -> {
-            if (canRunTask != null && !canRunTask.get()) {
-                return null;
-            }
-            O res = null;
-            try {
-                if (task != null) res = task.get();
-            } catch (Exception e) {
-                if (inCatch != null) inCatch.accept(e);
-                else throw e;
-            }
-            return res;
-        };
+    public static <O> XTCallable<O> ofCallable(Callable<O> task) {
+        return new XTCallable<>(task);
     }
 
     /**
-     * try-catch 包围 执行方法
-     */
-    @NotNull
-    @Contract(pure = true)
-    public static <O> Supplier<O> getTrySupplier(Supplier<O> task) {
-        return getTrySupplier(task, null, null);
-    }
-
-    /**
-     * try-catch 包围 执行方法
+     * of Supplier 构造
      *
-     * @param task       任务
-     * @param canRunTask 是否可以运行任务
-     * @param inCatch    捕获异常
-     * @return {@link Supplier}<{@link O}>
+     * @since 1.1.5
      */
     @NotNull
     @Contract(pure = true)
-    public static <O> Supplier<O> getTrySupplier(Callable<O> task, Supplier<Boolean> canRunTask, Consumer<Exception> inCatch) {
-        return () -> {
-            if (canRunTask != null && !canRunTask.get()) {
-                return null;
-            }
-            O res = null;
-            try {
-                if (task != null) res = task.call();
-            } catch (Exception e) {
-                if (inCatch != null) inCatch.accept(e);
-                else e.printStackTrace();
-            }
-            return res;
-        };
+    public static <O> XTCallable<O> ofSupplier(Supplier<O> task) {
+        return new XTCallable<>(task != null ? task::get : null);
     }
 
+    /**
+     * of Callable 构造
+     *
+     * @since 1.1.5
+     */
     @NotNull
     @Contract(pure = true)
-    public static <O> Supplier<O> getTrySupplier(Callable<O> task) {
-        return getTrySupplier(task, null, null);
+    public static <O> List<XTCallable<O>> ofCallableList(@NotNull List<? extends Callable<O>> taskList) {
+        return taskList.stream().map(XTCallable::ofCallable).collect(Collectors.toList());
+    }
+
+    /**
+     * of Supplier 构造
+     *
+     * @since 1.1.5
+     */
+    @NotNull
+    @Contract(pure = true)
+    public static <O> List<XTCallable<O>> ofSupplierList(@NotNull List<? extends Supplier<O>> taskList) {
+        return taskList.stream().map(XTCallable::ofSupplier).collect(Collectors.toList());
     }
 
 
     //---------------------inner------------------------
 
+    /**
+     * 组装成新 Supplier
+     * <p><b>与 XTSupplier  不同, callable 转 supplier  异常将被忽略</b></p>
+     * <p>于 1.1.5 去除直接输出错误</p>
+     */
+    @Override
     public Supplier<T> getSupplier() {
         return () -> {
             T res = null;
@@ -134,7 +118,28 @@ public class XTCallable<T> implements Callable<T>, Supplier<T>, ComCallable<T>, 
             try {
                 if (now != null) res = now.call();
             } catch (Exception e) {
-                e.printStackTrace(); // 直接输出
+//                e.printStackTrace(); // 直接输出
+            } finally {
+                if (after != null) after.run();
+            }
+            return res;
+        };
+    }
+
+
+    /**
+     * 添加异常捕获
+     * <p>v1.1.5 fix bug</p>
+     */
+    @Override
+    public Supplier<T> getCatchSupplier(Consumer<Exception> catchError) {
+        return () -> {
+            T res = null;
+            if (before != null) before.run();
+            try {
+                if (now != null) res = now.call();
+            } catch (Exception e) {
+                if (catchError != null) catchError.accept(e);
             } finally {
                 if (after != null) after.run();
             }
@@ -143,10 +148,30 @@ public class XTCallable<T> implements Callable<T>, Supplier<T>, ComCallable<T>, 
     }
 
     /**
-     * 组装
-     *
-     * @since 1.0.4
+     * 添加异常捕获
      */
+    @Override
+    public Supplier<T> getCatchRetSupplier(Function<Exception, T> catchError) {
+        return () -> {
+            T res = null;
+            if (before != null) before.run();
+            try {
+                if (now != null) res = now.call();
+            } catch (Exception e) {
+                if (catchError != null) return catchError.apply(e);
+            } finally {
+                if (after != null) after.run();
+            }
+            return res;
+        };
+    }
+
+
+    /**
+     * 组装成新 Callable
+     * <p>XTCallable 和 XTSupplier 相同, 异常将被重新抛出</p>
+     */
+    @Override
     public Callable<T> getCallable() {
         return () -> {
             T res = null;
@@ -160,45 +185,6 @@ public class XTCallable<T> implements Callable<T>, Supplier<T>, ComCallable<T>, 
             }
             return res;
         };
-    }
-
-    public Supplier<T> getCatchSupplier(Consumer<Exception> catchError) {
-        return () -> {
-            T res = null;
-            if (before != null) before.run();
-            try {
-                if (now != null) res = now.call();
-            } catch (Exception e) {
-                if (after != null) catchError.accept(e);
-            }
-            return res;
-        };
-    }
-
-    public Callable<T> getCatchCallable(Consumer<Exception> catchError) {
-        return () -> getCatchSupplier(catchError).get();
-    }
-
-    /**
-     * try-catch 包围 执行方法
-     *
-     * @param canRunTask 是否可以运行任务
-     * @param inCatch    捕获异常
-     * @since 1.0.4
-     */
-    public Supplier<T> getTrySupplier(Supplier<Boolean> canRunTask, Consumer<Exception> inCatch) {
-        return getTrySupplier(getCallable(), canRunTask, inCatch);
-    }
-
-    /**
-     * try-catch 包围 执行方法
-     *
-     * @param canRunTask 是否可以运行任务
-     * @param inCatch    捕获异常
-     * @since 1.0.4
-     */
-    public Callable<T> getTryCallable(Supplier<Boolean> canRunTask, Consumer<Exception> inCatch) {
-        return getTryCallable(getCallable(), canRunTask, inCatch);
     }
 
 
@@ -221,20 +207,47 @@ public class XTCallable<T> implements Callable<T>, Supplier<T>, ComCallable<T>, 
      */
     @Override
     public Supplier<T> getSupplier(Supplier<T> now, Runnable before, Runnable after) {
-        this.now = now == null ? null : now::get;
+        this.now = ofSupplier(now);
         this.before = before;
         this.after = after;
         return getSupplier();
     }
 
+    /**
+     * 调用 getCallable() 方法
+     * <p><b>异常将被重新抛出</b></p>
+     */
     @Override
     public T call() throws Exception {
         return getCallable().call();
     }
 
+    /**
+     * 调用 getSupplier() 方法
+     * <p><b>callable 转 supplier 异常会被忽略</b></p>
+     */
     @Override
     public T get() {
         return getSupplier().get();
+    }
+
+
+    /**
+     * 转为 RuntimeException
+     *
+     * @since 1.1.5
+     */
+    public T getRuntime() {
+        return getSupplierRuntime().get();
+    }
+
+    /**
+     * inner catch 异常处理
+     *
+     * @since 1.1.5
+     */
+    public T getInCatch(Consumer<Exception> inCatch) {
+        return getCatchSupplier(inCatch).get();
     }
 
 

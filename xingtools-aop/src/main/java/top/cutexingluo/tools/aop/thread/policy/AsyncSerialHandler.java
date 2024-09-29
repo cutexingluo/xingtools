@@ -153,7 +153,7 @@ public class AsyncSerialHandler implements ThreadAopHandler {
             if (taskList.size() >= count.get()) { //执行，这就要求 @MainThread设置的线程数必须小于等于实际调用线程数
                 // 编排
                 ExecutorService service = getExecutorService(sonThread);
-                XTAsync.FutureResult<Object> futureResult = XTAsync.serialFutureJoin(taskList, (e) -> {
+                XTAsync.FutureResult<Object> futureResult = XTAsync.serialFutureJoinByCallable(taskList, (e) -> {
                     exceptionVector.add(0, new Exception(e));
                     return e;
                 }, service);

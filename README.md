@@ -1,14 +1,14 @@
 # xingtools 工具包
 
 ## :book:相关介绍
-xingtools sdk 工具包，v1.1.4 正式版发布。( 依赖的版本不能低于 1.1.1 )
+xingtools sdk 工具包，v1.1.5 正式版发布。( 依赖的版本不能低于 1.1.1 )
 星天（xingtian）制作的 Java 工具包，是基于 Springboot 2.7.18 和 SpringBoot 3.0.5 制作的 ,  基于 Java 8 和 Java 17，它是一个整合各工具类的整合包。
 
 ### :scroll:简介
 
 是一个功能丰富且易用的 **Java工具库**，通过诸多实用工具类的使用，旨在帮助开发者快速、便捷地完成各类开发任务。 这些封装的工具涵盖了hutool包（依赖[hutool包](https://gitee.com/dromara/hutool)）, 部分 ruoyi 工具类，包含了系列字符串、数字、集合、编码、日期、文件、IO、加密、数据库JDBC、JSON、HTTP客户端等一系列操作，还包含了 ACM算法，JDK版本兼容包，各种base接口，注解AOP装配，配置自动装配，可以满足各种不同的开发需求。
 
-目前仍使用 xingtool 文档 v1.0.5 [使用文档](使用文档.md)，未来会更新。
+目前仍使用 xingtool 文档 v1.0.5 [使用文档](使用文档.md)，未来会更新，别急哦各位，大部分类名及用法没有更改，可以参考。
 
 ###   :golf:本包说明
 
@@ -53,12 +53,12 @@ Maven 依赖（JDK8版本）
 <dependency>
 	<groupId>top.cutexingluo.tools</groupId>
 	<artifactId>xingtools-spring-boot-starter</artifactId>
-	<version>1.1.4</version>
+	<version>1.1.5</version>
 </dependency>
 <dependency>
 	<groupId>top.cutexingluo.tools</groupId>
 	<artifactId>xingtools-pkg-jdk8</artifactId>
-	<version>1.1.4</version>
+	<version>1.1.5</version>
 </dependency>
 ```
 
@@ -68,12 +68,12 @@ Maven 依赖（JDK17版本）
 <dependency>
 	<groupId>top.cutexingluo.tools</groupId>
 	<artifactId>xingtools-spring-boot-starter</artifactId>
-	<version>1.1.4</version>
+	<version>1.1.5</version>
 </dependency>
 <dependency>
 	<groupId>top.cutexingluo.tools</groupId>
 	<artifactId>xingtools-pkg-jdk17</artifactId>
-	<version>1.1.4</version>
+	<version>1.1.5</version>
 </dependency>
 ```
 
@@ -82,8 +82,8 @@ Maven 依赖（JDK17版本）
 目前推荐使用的版本如下：（其他版本有一定bug，如需使用请参考更新公告的版本使用攻略）
 
 ```wiki
-极力推荐使用最新版 v1.1.4
-xingtools v1.1.3, v1.1.4
+极力推荐使用最新版 v1.1.5
+xingtools v1.1.3, v1.1.4, v1.1.5
 xingtool v1.0.1, v1.0.4, v1.0.5
 ```
 
@@ -134,11 +134,337 @@ xingtools.enabled.mybatis-plus-config=true
 
 如有bug，欢迎反馈。
 
+## :game_die:使用样例（xingtools v1.1.5 版本）
+
+由于下一节的 xingtool 有些使用样例过时或不推荐，现在更新使用样例，其他请优先阅读源码再参考文档。
+
+##### 1. 数据封装类，Controller 层
+
+```java
+// controller 示例
+@RestController
+@RequestMapping("/common")
+public class CaptchaController {
+    /**
+     * 获取验证码（放行）
+     */
+    @Operation(operationId = "getCaptchaInfo") //open-api
+    @GetMapping("/captcha") // 接口
+    public MyResult<?> getCaptchaInfo() {
+
+        HashMap<String, String> captcha = captchaService.getCaptcha();
+
+        // 新版返回方式，可使用自定义返回类，更优雅
+        return ResultUtil.selectFill(captcha,
+                MyResult.fillBy(EnumResult.GET_SUCCESS),
+                EnumResult.GET_ERROR); // 返回自定义的MyResult对象
+        // 也可以使用下面传统返回方式 (使用xingtools自带的 Result 及成功和失败策略)
+        return ResultUtil.selectResult(captcha); // 返回Result对象
+		// ResultUtil 工具类 默认策略(可以更改) 等同于下面 
+        return captcha == null || Boolean.FALSE.equals(captcha)  ? 
+            	MyResult.errorBy(EnumResult.GET_ERROR):
+                MyResult.successBy(EnumResult.GET_SUCCESS).setData(captcha);
+    }
+}
+```
+
+有人会说：我不想使用你的 Result 这个封装返回类，能不能自己定义。这是可以的，在1.0.3版本，统一了4个返回类，全部继承于CommonResult类，该类的基本属性如下：
+
+```java
+public class CommonResult<C, T> implements IResultSource<C, T> {
+    protected C code;
+    protected String msg;
+    protected T data;
+}
+```
+
+它实现 IResultSource 接口，而我们可以直接实现 IResultSource 接口或者再往上仅实现 IResult 接口就行了。基本上工具包的很多方法参数都是 IResult 接口或者 IResultSource接口(比IResult多了set方法)。我们可以直接实现该接口像这样：
+
+```java
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Accessors(chain = true)
+public class MyResult implements IResultSource<Integer, Object> {
+    protected Integer retCode; // 不想使用 code，想使用 retCode
+    protected String message; // 不想使用 msg，想使用 message
+    protected Object data;
+    
+    @Override
+    public Object getData() { // 使用原 getData 方法
+        return data;
+    }
+    @JsonIgnore // 屏蔽原方法，避免序列化
+    @Override
+    public Integer getCode() { 
+        return retCode;
+    }
+    @JsonIgnore // 屏蔽原方法，避免序列化
+    @Override
+    public String getMsg() {
+        return message;
+    }
+}
+```
+
+对于不需要json转化的字段进行@JsonIgnore忽略掉就行。
+
+同理如果不需要data字段，再往上实现 IResultData 接口 (包含code和msg) 就可以，工具包里面的很多异常或者枚举都是实现了该接口, 因为基本上都需要 code 和 msg 两种属性。
+
+如果仅需要 msg 属性，仅需实现 IR 接口 ，需要 msg 和 code 需要实现 IResultData 接口，以此类推。
+
+##### 2.工具类使用，例如锁，异步(多线程)
+
+锁提供基本的 LockHandler 类，以及下面的子类 XTLockHandler , XTExtLockHandler 等类。
+
+下面是 LockHandler 的基本使用。
+
+```java
+    @Test
+    void test11() {
+        XTLockMeta lockMeta = new XTLockMeta(XTLockType.ReentrantLock);
+        LockHandler lockHandler = new LockHandler(lockMeta);
+        lockHandler.init();
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(5);
+        executor.setMaxPoolSize(10);
+        executor.initialize();
 
 
-## :game_die:使用样例（xingtool v1.0.5 版本）
+        // Runnable 接口
+        XTAsync.runAsync(() -> { // 继承 CompleteFuture 类，扩展了一些静态方法
+            lockHandler.lock(() -> {// Callable 接口
+                for (int i = 0; i < 20; i++) {
+                    XTJUC.sleepMillis(100); // 目前仅两个线程方法，睡100ms
+                    System.out.println(Thread.currentThread().getName() + "," + i);
+                }
+                return null; // 返回值
+            }, null);
+        }, executor);
 
-以下是最新版本的使用样例，可以加快你的开发
+
+        XTAsync.runAsync(() -> {
+            lockHandler.lock(() -> {
+                for (int i = 0; i < 20; i++) {
+                    XTJUC.sleepMillis(80);
+                    System.out.println(Thread.currentThread().getName() + "," + i);
+                }
+                return null;
+            }, null);
+
+        }, executor);
+
+        XTJUC.sleepMillis(100_000);
+    }
+```
+
+
+
+##### 3.实体工具类使用，例如日志打印
+
+打印日志一般只需要 以下代码或者 lombok 的 @Slf4j 注解
+
+```java
+private static final Logger log = LoggerFactory.getLogger(XXX.class);
+```
+
+而提供的 ILogProvider 接口支持多个实现，例如log4j,log4j2,slf4j等，可以直接使用，但需要导入相应的依赖。
+
+提供的 ILogHandler 接口含义 send 方法，提供打印的动作，是为了方便适配自定义打印动作，提高灵活性。
+
+下面是直接使用方式
+
+```java
+    @Test
+    void test3() {
+        // LogHandler  使用 slf4j, info 模式打印
+        LogHandler logHandler = new LogHandler(new LogSlf4j(), LogLevel.INFO);
+        logHandler.send("hello world");
+        // LogPkg.slf4j  打印
+        ILogHandler logHandler1 = LogPkg.SLF4J_PKG.getLogHandler();
+        logHandler1.send(LogLevel.ERROR, "hello world23");
+    }
+```
+
+一般情况下会使用打印策略配合使用，支持SpEL 表达式等更加高级的使用方式。
+
+示例如下, 打印的字符串会通过配置对 ${} 包裹的字符串进行替换。
+
+```java
+@Slf4j // 提供log
+@Configuration
+public class WebLogHandlerConfig {
+	/**
+     * 访问日志打印
+     */
+    public static final String ACCESS_LOG_KEY = "当前用户 userId : ${userId}" + LogKey.COMMAS
+            + LogKey.IP_STR + LogKey.COMMAS
+            + LogKey.HOST_IP + LogKey.COMMAS
+            + LogKey.URI + LogKey.COMMAS
+            + LogKey.HTTP_METHOD;
+	@Bean
+    public WebLogConfig webLogConfig() { // config 配置
+        DefaultWebLogStrategy strategy = new DefaultWebLogStrategy(); // 默认策略(组装字符串)
+        WebLogConfig config = new WebLogConfig(strategy); // 设置策略
+        config.setLogProvider(new LogSlf4j(log)); //使用 slf4j, log
+        config.setLevelCode(LogLevel.INFO); // info 级别
+        config.setMsg(ACCESS_LOG_KEY); // 配置打印的字符串
+        return config;
+    }
+
+    @Bean
+    public WebLogHandler webLogHandler(WebLogConfig webLogConfig) { // handler 处理器
+        WebLogHandler handler = new WebLogHandler(webLogConfig).initDefaultMap().modifyAll(); // 初始化变量值，可以在这里设置全局 map 映射
+        return handler;
+    }
+}
+```
+
+然后使用 WebLogHandler 对象 (该类继承 LogHandler，提供web方面的支持)
+
+```java
+    /**
+     * 访问日志打印
+     * <p>当前用户 userId : x </p>
+     */
+    protected void accessLog(HttpServletRequest request, LoginUser loginUser, String ip) {
+        // 三位一体切面捆绑类，一般用于 aop 等切面类
+        AspectBundle aspectBundle = new AspectBundle( // web 捆绑类
+                null, // Method 类，目前不需要
+                HttpServletRequestData.of(request), // HttpServletRequest适配类,需要为其他默认 ACCESS_LOG_KEY 映射提供来源，如 LogKey.URI 等
+                null // ProceedingJoinPoint 类，切面对象，目前不需要
+        );
+        // 添加打印变量
+        HashMap<String, String> map = webLogHandler.getMsgMap().getKeyMap();
+        // 这里开始可以加锁
+        // 存 userId
+        map.put("userId", String.valueOf(loginUser.getUser().getId()));
+        // 存 ip
+        map.put("ip", ip);
+
+        webLogHandler.send(aspectBundle); // 打印
+    }
+```
+
+如果有并发问题，请自行将设置值和打印值的部分加锁。
+
+##### 4.系列注解使用，例如参数校验和异步线程
+
+###### **参数校验** （必须导入 validation 包 并且参数添上@Valid或@Validated ）
+
+```java
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class MyUserQuery {
+
+    // 1.首先如果非空字符串和 null 均会进入下一步
+    // 2.必须匹配下面指定字符串
+    @StrStatus(anyStr = { // 必须匹配的字符串
+            "1", "0"
+    }, message = "类型格式错误",notBlankIfPresent = true) 
+    private String type;
+
+    @StrStatus(anyReg = { // 正则匹配
+            RegexPool.MOBILE
+    }, message = "手机格式错误") // 验证
+    @StrJson(value = SensitiveSerializer.class, name = "PHONE") //脱敏
+    private String phone;
+
+    @NotBlank(message = "邮箱不能为空")
+    @Email(message = "邮箱格式错误") //validation包的校验
+    private String email;
+
+    @StrJson(value = SensitiveSerializer.class, name = "") // 返回值脱敏
+    private String password;
+}
+
+```
+
+###### 异步线程 
+
+1.可以使用**编程式**，例如 XTAsync, 或者你的类实现 ThreadHelper接口
+
+2.使用**声明式**，但不一定会得到预期结果
+
+一般情况下，只使用 XTAsync 静态方法类  (继承CompleteFuture类) 或者 XTCompletionService 对象 (继承ExecutorCompletionService) 即可
+
+下面是声明式异步编程，添加注解方式。
+
+TestThread 主线程类
+
+```java
+@Component
+public class TestThread {
+    @Autowired
+    private ThreadResults threadResults; // 线程结果对象
+    @Autowired
+    private TestService testService;
+
+    // value 建议和调用的子线程方法数量一致 , 默认策略 GetResultAfterLastSon 
+    @MainThread(value = 2, startTime = ThreadTimePolicy.GetResultAfterLastSon)
+    public void mainThread2() {
+        testService.sonThread1(); // 子线程1 ,需要被代理，注解才能生效
+        testService.sonThread2(); // 子线程2
+
+        List<Object> results = threadResults.getResults();
+        if (results != null) {//1. GetResultAfterLastSon 策略会在最后一个子线程阻塞等待 (所以上面的子线程数量必须一致) value数量的子线程执行完 , 所以该策略 results 始终会存在
+            XTArrayUtil.printlnList(results); // 数组
+        }
+
+        List<Future<Object>> futures = threadResults.getFutures(); //2. GetFuture 策略，会在调用 getFutures 的 get处 阻塞，否则会在当前主方法执行完阻塞。所以这时候results会为空，所以需要调用 future 的 get方法 阻塞 等待完成。如果没有调用，则会在当前方法结束时阻塞。
+        XTArrayUtil.printlnList(futures);
+
+        futures.forEach(future -> {
+            try {
+                System.out.println(future.get());
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+}
+```
+
+TestService 子线程类
+
+```java
+@Service
+public class TestService {
+    @SonThread(threadPoolName = "threadPoolExecutor") // 指定 Spring容器 里面线程池名称
+    public String sonThread1() {
+        System.out.println("进入sonThread1");
+        XTTime.sleepBySecond(3); 
+        System.out.println("sonThread1 已经睡了3秒");
+        return "hello --> sonThread1";
+    }
+    @SonThread(threadPoolName = "threadPoolExecutor")
+    public void sonThread2() { // 无返回值
+        System.out.println("进入sonThread2");
+        XTTime.sleepBySecond(1);
+        System.out.println("sonThread2 已经睡了1秒");
+    }
+
+}
+```
+
+
+
+未完待续...
+
+具体内容详见源码和使用文档。
+
+其他丰富的 工具，算法，注解， 自动配置 等均可在源码注释上看到使用说明，多查看源码。
+
+
+
+
+
+
+
+## :game_die:使用样例（xingtool v1.0.5 版本）(老版本)
+
+以下xingtool v1.0.5版本的使用样例，可以加快你的开发
 
 ##### 1. 数据封装类，Controller 层
 
@@ -386,6 +712,23 @@ public class TestService {
 具体内容详见使用文档。
 
 ##  :memo:更新公告
+
+**2024-9-29  v1.1.5**
+
+```txt
+版本更新说明
+当前版本主要是为了灵活性扩展，更改了 返回数据实体类及工具类的实现，也更改了 XTCallable 和新增 XTSupplier ，来解决令人头疼的 Supplier和Callable两个接口的统一问题。
+
+更改部分
+1.* 重构 IResult 实现类四大类，更改里面的所有 success 和 error 的默认值,  true 和 false 统一改为 null , 不带值
+2.* 重构 ResultUtil 的 大部分方法，为适应不同情况，可以自定义策略等
+3.* 更改并提取 XTCallable 使其更通用，更健壮。并更改部分方法名，并应用其他例如 XTAsync 实现更改。
+4.大部分类将升级 e.printStackTrace() 这种异常输出形式, 大部分类将引入 异常处理消费者，来控制开关，未来将系统处理异常或改为抛出
+
+新增部分
+1.新增 XTSupplier 作为 XTCallable 的补充，使其更灵活，扩展性好。从XTCallable 提出公共静态方法 XTAround , 很多方法优先使用该类
+2.新增接口 IName, IRName ,提供getName 方法, 并使Constants 和 HttpStatus 实现该接口, IResult 四大实现类支持配置msg默认英文名name
+```
 
 **2024-9-14  v1.1.4**
 

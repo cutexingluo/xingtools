@@ -10,6 +10,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import top.cutexingluo.tools.designtools.method.ClassUtil;
 
+import java.util.function.Consumer;
+
 /**
  * 普通注解锁切面
  * <p>
@@ -29,6 +31,9 @@ public class XTAopLockAop {
     @Autowired
     RedissonClient redissonClient;
 
+    public static boolean printTrace = false;
+    public static Consumer<Throwable> exceptionHandler = null;
+
     @Around("@annotation(xtAopLock)")
     public Object around(ProceedingJoinPoint joinPoint, XTAopLock xtAopLock) {
         XTAopLock lockAnno = ClassUtil.getAnnotation(xtAopLock, XTAopLock.class);
@@ -39,12 +44,14 @@ public class XTAopLockAop {
                 try {
                     return joinPoint.proceed();
                 } catch (Throwable e) {
-                    e.printStackTrace();
+                    if (exceptionHandler != null) exceptionHandler.accept(e);
+                    else if (printTrace) e.printStackTrace();
                 }
                 return null;
             });
         } catch (Exception e) {
-            e.printStackTrace();
+            if (exceptionHandler != null) exceptionHandler.accept(e);
+            else if (printTrace) e.printStackTrace();
         }
         return result;
     }

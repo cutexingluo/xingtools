@@ -47,7 +47,7 @@ public class XTGlobalExceptionHandlerExt {
     @ExceptionHandler(value = NotPermissionException.class)
     public <C, T> IResult<C, T> notPermissionException(NotPermissionException e) {
         log.error(TAG + "权限验证错误", e);
-        Result error = Result.error(Constants.CODE_401, "无权限");
+        Result error = Result.errorBy(Constants.CODE_401, "无权限");
         IResult<Object, Object> result = GlobalResultFactory.selectResult(globalResultFactory, error);
         return (IResult<C, T>) result;
     }
@@ -56,7 +56,7 @@ public class XTGlobalExceptionHandlerExt {
     @ExceptionHandler(value = SaTokenException.class)
     public <C, T> IResult<C, T> notLoginException(SaTokenException e) {
         log.error(TAG + "权限验证错误", e);
-        Result error = Result.error(Constants.CODE_401, "请登录");
+        Result error = Result.errorBy(Constants.CODE_401, "请登录");
         IResult<Object, Object> result = GlobalResultFactory.selectResult(globalResultFactory, error);
         return (IResult<C, T>) result;
     }

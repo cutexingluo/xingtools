@@ -67,4 +67,14 @@ public class PageDetailVo<T> extends PageVo<T> {
         this.pageNum = pageNum;
         this.pageSize = pageSize;
     }
+
+    /**
+     * 其他参数赋值
+     * <p>除了数据外, 其他参数的赋值</p>
+     *
+     * @since 1.1.5
+     */
+    public PageDetailVo(List<T> rows, @NotNull PageDetailVo<?> pageVo) {
+        this(rows, pageVo.getTotal(), pageVo.getPageNum(), pageVo.getPageSize());
+    }
 }
