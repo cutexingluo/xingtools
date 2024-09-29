@@ -10,8 +10,20 @@ package top.cutexingluo.tools.common.base;
  * @date 2023/7/14 20:00
  */
 public interface IResultDataSource<C> extends IResultData<C> {
+    /**
+     * 设置 code
+     *
+     * @param code code
+     * @return self
+     */
     IResultDataSource<C> setCode(C code);
 
+    /**
+     * 设置 msg
+     *
+     * @param msg msg
+     * @return self
+     */
     IResultDataSource<C> setMsg(String msg);
 
 }

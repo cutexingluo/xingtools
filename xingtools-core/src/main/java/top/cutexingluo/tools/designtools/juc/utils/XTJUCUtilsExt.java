@@ -7,6 +7,7 @@ import top.cutexingluo.tools.designtools.juc.impl.XTRunAndCallList;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
+import java.util.function.Consumer;
 
 /**
  * Thread扩展工具类 一些Thread常规方法
@@ -17,6 +18,9 @@ import java.util.concurrent.*;
  * @date 2023/4/6 22:06
  */
 public class XTJUCUtilsExt {
+
+    public static boolean printTrace = true;
+    public static Consumer<Exception> exceptionHandler = null;
 
     //不推荐使用
     public static void doRunsOnThread(List<? extends Runnable> tasks, Runnable beforeThis, Runnable afterThis) {//运行列表，后处理
@@ -71,7 +75,8 @@ public class XTJUCUtilsExt {
             try {
                 cyclicBarrier.await();
             } catch (InterruptedException | BrokenBarrierException e) {
-                e.printStackTrace();
+                if (exceptionHandler != null) exceptionHandler.accept(e);
+                else if (printTrace) e.printStackTrace();
             }
         };
         doThis(tasks, null, afterThis);
@@ -83,7 +88,8 @@ public class XTJUCUtilsExt {
             try {
                 cyclicBarrier.await();
             } catch (InterruptedException | BrokenBarrierException e) {
-                e.printStackTrace();
+                if (exceptionHandler != null) exceptionHandler.accept(e);
+                else if (printTrace) e.printStackTrace();
             }
         };
         doRunsOnThread(tasks, null, afterThis);
@@ -96,7 +102,8 @@ public class XTJUCUtilsExt {
             try {
                 semaphore.acquire();
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                if (exceptionHandler != null) exceptionHandler.accept(e);
+                else if (printTrace) e.printStackTrace();
             }
         }, semaphore::release);
     }
@@ -107,7 +114,8 @@ public class XTJUCUtilsExt {
             try {
                 semaphore.acquire();
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                if (exceptionHandler != null) exceptionHandler.accept(e);
+                else if (printTrace) e.printStackTrace();
             }
         }, semaphore::release);
     }

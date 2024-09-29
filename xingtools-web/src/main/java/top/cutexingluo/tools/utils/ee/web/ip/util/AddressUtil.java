@@ -2,16 +2,18 @@ package top.cutexingluo.tools.utils.ee.web.ip.util;
 
 import org.lionsoul.ip2region.xdb.Searcher;
 
+import java.util.function.Consumer;
+
 /**
  * ip地址工具
- *
- *
  */
 public class AddressUtil {
 
+    public static boolean printTrace = true;
+    public static Consumer<Exception> exceptionHandler = null;
+
     /**
      * 根据IP地址查询登录来源
-     *
      */
     public static String getCityInfo(String ip) {
         try {
@@ -19,7 +21,8 @@ public class AddressUtil {
             //开始查询
             return searcher.search(ip);
         } catch (Exception e) {
-            e.printStackTrace();
+            if (exceptionHandler != null) exceptionHandler.accept(e);
+            else if (printTrace) e.printStackTrace();
         }
         //默认返回空字符串
         return "";

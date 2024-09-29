@@ -159,7 +159,7 @@ public class AsyncParallelHandler implements ThreadAopHandler {
             if (taskList.size() >= count.get()) { //执行，这就要求 @MainThread设置的线程数必须小于等于实际调用线程数
                 ExecutorService service = getExecutorService(sonThread);
                 // 编排
-                CompletableFuture<Void> allOfTask = XTAsync.getParallelFutureAllOf(taskList, (e, o) -> {
+                CompletableFuture<Void> allOfTask = XTAsync.getParallelFutureAllOfByCallable(taskList, (e, o) -> {
                     exceptionVector.add(0, new Exception(e));
                     return null;
                 }, service);

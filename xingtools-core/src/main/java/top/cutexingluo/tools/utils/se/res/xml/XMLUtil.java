@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.function.Consumer;
 
 /**
  * 解析xml文件
@@ -34,6 +35,10 @@ import java.io.IOException;
  * @date 2023/9/15 14:21
  */
 public class XMLUtil {
+
+    public static boolean printTrace = true;
+    public static Consumer<Exception> exceptionHandler = null;
+
 
     /**
      * hutool方式
@@ -144,7 +149,8 @@ public class XMLUtil {
             try {
                 xmlStreamReader = xmlInputFactory.createXMLStreamReader(new FileReader(path));
             } catch (XMLStreamException | FileNotFoundException e) {
-                e.printStackTrace();
+                if (exceptionHandler != null) exceptionHandler.accept(e);
+                else if (printTrace) e.printStackTrace();
             }
             try {
                 assert xmlStreamReader != null;
@@ -154,7 +160,8 @@ public class XMLUtil {
                 }
                 xmlStreamReader.close();
             } catch (XMLStreamException e) {
-                e.printStackTrace();
+                if (exceptionHandler != null) exceptionHandler.accept(e);
+                else if (printTrace) e.printStackTrace();
             }
         }
 
@@ -170,7 +177,8 @@ public class XMLUtil {
             try {
                 xmlEventReader = xmlInputFactory.createXMLEventReader(new FileReader(path));
             } catch (XMLStreamException | FileNotFoundException e) {
-                e.printStackTrace();
+                if (exceptionHandler != null) exceptionHandler.accept(e);
+                else if (printTrace) e.printStackTrace();
             }
             try {
                 assert xmlEventReader != null;
@@ -180,7 +188,8 @@ public class XMLUtil {
                 }
                 xmlEventReader.close();
             } catch (XMLStreamException e) {
-                e.printStackTrace();
+                if (exceptionHandler != null) exceptionHandler.accept(e);
+                else if (printTrace) e.printStackTrace();
             }
         }
     }

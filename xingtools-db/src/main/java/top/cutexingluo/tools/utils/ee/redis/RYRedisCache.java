@@ -11,6 +11,7 @@ import org.springframework.data.redis.core.ValueOperations;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 /**
  * spring redis 工具类
@@ -47,6 +48,9 @@ public class RYRedisCache {
         this.redisTemplate = redisTemplate;
     }
 
+
+    public static boolean printTrace = true;
+    public static Consumer<Exception> exceptionHandler = null;
 
     /**
      * 保证泛型是 String, Object
@@ -447,7 +451,8 @@ public class RYRedisCache {
                     }
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                if (exceptionHandler != null) exceptionHandler.accept(e);
+                else if (printTrace) e.printStackTrace();
                 log.error("update failed ...");
             }
         }
