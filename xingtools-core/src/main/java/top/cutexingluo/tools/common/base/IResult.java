@@ -10,5 +10,10 @@ package top.cutexingluo.tools.common.base;
  * @date 2023/7/13 20:34
  */
 public interface IResult<C, T> extends IResultData<C> {
+    /**
+     * 获取数据
+     *
+     * @return the data
+     */
     T getData();
 }

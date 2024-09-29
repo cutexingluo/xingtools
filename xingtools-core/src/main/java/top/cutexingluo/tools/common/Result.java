@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import top.cutexingluo.tools.common.base.IRName;
 import top.cutexingluo.tools.common.base.IResult;
 import top.cutexingluo.tools.common.base.IResultData;
 import top.cutexingluo.tools.common.base.XTStrCode;
@@ -110,14 +111,35 @@ public class Result extends CommonResult<Integer, Object> implements XTStrCode {
     }
 
 
+    //------------配置区-------------------------
+
+    /**
+     * 默认的 msg 是否使用 msg
+     *
+     * <p>msg 即中文, name 即英文</p>
+     *
+     * @since 1.1.5
+     */
+    public static boolean useMsgOrName = true;
+
     //------------静态方法区-------------------------
     //------------common-----------
+
+    /**
+     * 得到 msg 或者 name
+     *
+     * @since 1.1.5
+     */
+    public static String putMsgOrName(IRName rn) {
+        return useMsgOrName ? rn.getMsg() : rn.getName();
+    }
+
     public static Result put(int otherCode, String otherMsg, Object data) {
         return new Result(otherCode, otherMsg, data);
     }
 
     public static Result put(Constants constants, Object data) {
-        return put(constants.intCode(), constants.getMsg(), data);
+        return put(constants.intCode(), putMsgOrName(constants), data);
     }
 
     public static Result put(Constants constants) {
@@ -129,7 +151,7 @@ public class Result extends CommonResult<Integer, Object> implements XTStrCode {
      * @since 1.1.2
      */
     public static Result put(HttpStatus httpStatus, Object data) {
-        return put(httpStatus.getCode(), httpStatus.getMsg(), data);
+        return put(httpStatus.getCode(), putMsgOrName(httpStatus), data);
     }
 
     /**

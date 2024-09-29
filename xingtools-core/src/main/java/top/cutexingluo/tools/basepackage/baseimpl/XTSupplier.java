@@ -45,11 +45,11 @@ public class XTSupplier<T> extends XTAround implements BaseCallableSupplier<T>,
     /**
      * 当前任务
      */
-    Supplier<T> now;
+    protected Supplier<T> now;
     /**
      * 前置或后置任务
      */
-    Runnable before, after;
+    protected Runnable before, after;
 
     public XTSupplier(Supplier<T> task) {
         this.now = task;

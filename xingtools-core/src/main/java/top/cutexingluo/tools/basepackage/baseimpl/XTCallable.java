@@ -44,11 +44,11 @@ public class XTCallable<T> extends XTAround implements BaseCallableSupplier<T>,
     /**
      * 当前任务
      */
-    Callable<T> now;
+    protected Callable<T> now;
     /**
      * 前置或后置任务
      */
-    Runnable before, after;
+    protected Runnable before, after;
 
     public XTCallable(Callable<T> task) {
         this.now = task;

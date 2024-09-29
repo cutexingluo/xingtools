@@ -19,7 +19,7 @@ import top.cutexingluo.tools.basepackage.base.ComRunnable;
 @Accessors(chain = true)
 public class XTRunnable extends XTAround implements Runnable, ComRunnable {
 
-    private Runnable now, before, after;
+    protected Runnable now, before, after;
 
     public XTRunnable(Runnable task) {
         this.now = task;

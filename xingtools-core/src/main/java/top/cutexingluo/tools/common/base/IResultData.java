@@ -10,6 +10,11 @@ package top.cutexingluo.tools.common.base;
  * @date 2023/7/13 20:36
  */
 public interface IResultData<T> extends IR {
+    /**
+     * 获取返回码/编码/代号
+     *
+     * @return the code
+     */
     T getCode();
 
 }

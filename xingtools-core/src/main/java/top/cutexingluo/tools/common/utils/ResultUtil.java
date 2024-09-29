@@ -71,7 +71,7 @@ public class ResultUtil {
 
 
     /**
-     * 初始条件判 null , 后置条件判 null 和false
+     * 初始条件判 null , 后置条件判 null 和 false
      *
      * <p>v1.1.5 版本之前的默认策略</p>
      *
@@ -94,7 +94,7 @@ public class ResultUtil {
     public static final ResultConditionGroup STRATEGY_NON_FALSE_AND_NON = new ResultConditionGroup(IS_NOT_NULL_OR_FALSE, (result) -> IS_NOT_NULL.test(result.getData()));
 
     /**
-     * 初始条件判 null 和false , 后置条件判 null 和false
+     * 初始条件判 null 和false , 后置条件判 null 和 false
      *
      * <p>v1.1.5 版本开始的默认策略</p>
      *
@@ -498,7 +498,6 @@ public class ResultUtil {
 
     /**
      * 根据结果返回对应数据
-     * <p>*推荐使用</p>
      * <p>该方法可适用于自定义IResult 实现类</p>
      *
      * @param data              数据
@@ -576,7 +575,6 @@ public class ResultUtil {
 
     /**
      * 根据结果返回对应数据
-     * <p>*推荐使用</p>
      * <p>该方法可适用于自定义IResult 实现类</p>
      *
      * @see #selectFill(Object, ResultConditionGroup, IResultData, IResultData, IResultSource, Object)
@@ -590,6 +588,170 @@ public class ResultUtil {
                                                                                                   O errorDefaultData
     ) {
         return selectFill(data, nowGroup, successResultData, errorResultData, newResult, errorDefaultData);
+    }
+
+
+    /**
+     * 根据结果返回对应数据
+     * <p>*推荐使用</p>
+     * <p>该方法可适用于自定义IResult 实现类</p>
+     *
+     * @param data               数据
+     * @param conditionGroup     条件组合(判定的条件)
+     * @param successResultData  成功返回
+     * @param errorResultData    错误返回
+     * @param newResult          最终结果, 成功数据会存入 newResult.getData() , 错误数据会填入 errorDefaultData(如果存在)
+     * @param errorDataFactory   错误数据填充工厂, 如果存在则直接填入data, 入参为解析后的数据
+     * @param successDataFactory 成功数据填充工厂, 如果存在则直接填入data, 入参为解析后的数据
+     * @since 1.1.5
+     */
+    @NotNull
+    public static <RS extends IResultSource<C, O>, RD extends IResultData<C>, C, O> RS selectFill(Object data,
+                                                                                                  @NotNull ResultConditionGroup conditionGroup,
+                                                                                                  @NotNull RD successResultData,
+                                                                                                  @NotNull RD errorResultData,
+                                                                                                  @NotNull RS newResult,
+                                                                                                  @Nullable Function<Object, O> errorDataFactory,
+                                                                                                  @Nullable Function<Object, O> successDataFactory
+    ) {
+        RS ret = chooseSelect(data,
+                conditionGroup.getCondition(),
+                (falseData) -> {
+                    // 强制填充错误返回数据
+                    newResult.setCode(errorResultData.getCode());
+                    newResult.setMsg(errorResultData.getMsg());
+                    if (errorDataFactory != null) {
+                        newResult.setData(errorDataFactory.apply(falseData)); // 填充自定义数据
+                    } else {
+                        conditionGroup.conditionFalseFillData(newResult, (O) falseData);
+                    }
+                    return newResult;
+                }, (trueData) -> {
+                    // 强制填充成功返回数据
+                    newResult.setCode(successResultData.getCode());
+                    newResult.setMsg(successResultData.getMsg());
+                    if (successDataFactory != null) {
+                        newResult.setData(errorDataFactory.apply(trueData)); // 填充自定义数据
+                    } else {
+                        conditionGroup.conditionTrueFillData(newResult, (O) trueData);
+                    }
+                    return newResult;
+                },
+                conditionGroup.getResultDataCondition()::test,
+                (falseResult) -> {
+                    if (errorDataFactory != null) {
+                        newResult.setData(errorDataFactory.apply(falseResult.getData())); // 填充自定义数据
+                    } else {
+                        conditionGroup.resultDataConditionFalseFillData(newResult, falseResult.getData());
+                    }
+                    // 填充错误返回数据
+                    if (errorResultData.getCode() != null) {
+                        newResult.setCode(errorResultData.getCode());
+                    } else {
+                        conditionGroup.resultDataConditionFalseFillCode(newResult, falseResult.getCode());
+                    }
+                    if (errorResultData.getMsg() != null) {
+                        newResult.setMsg(errorResultData.getMsg());
+                    } else {
+                        conditionGroup.resultDataConditionFalseFillMsg(newResult, falseResult.getMsg());
+                    }
+                    return newResult;
+                }, (trueResult) -> {
+                    if (successDataFactory != null) {
+                        newResult.setData(successDataFactory.apply(trueResult.getData())); // 填充自定义数据
+                    } else {
+                        conditionGroup.resultDataConditionTrueFillData(newResult, trueResult.getData());
+                    }
+                    // 填充成功返回数据
+                    if (errorResultData.getCode() != null) {
+                        newResult.setCode(successResultData.getCode());
+                    } else {
+                        conditionGroup.resultDataConditionFalseFillCode(newResult, trueResult.getCode());
+                    }
+                    if (errorResultData.getMsg() != null) {
+                        newResult.setMsg(successResultData.getMsg());
+                    } else {
+                        conditionGroup.resultDataConditionFalseFillMsg(newResult, trueResult.getMsg());
+                    }
+                    return newResult;
+                }
+        );
+        return ret;
+    }
+
+    /**
+     * 根据结果返回对应数据
+     * <p>*推荐使用</p>
+     * <p>该方法可适用于自定义IResult 实现类</p>
+     *
+     * @see #selectFill(Object, ResultConditionGroup, IResultData, IResultData, IResultSource, Function, Function)
+     * @since 1.1.4
+     */
+    @NotNull
+    public static <RS extends IResultSource<C, O>, RD extends IResultData<C>, C, O> RS selectFill(Object data,
+                                                                                                  @NotNull RD successResultData,
+                                                                                                  @NotNull RD errorResultData,
+                                                                                                  @NotNull RS newResult,
+                                                                                                  @Nullable Function<Object, O> errorDataFactory,
+                                                                                                  @Nullable Function<Object, O> successDataFactory
+    ) {
+        return selectFill(data, nowGroup, successResultData, errorResultData, newResult, errorDataFactory, successDataFactory);
+    }
+
+
+    /**
+     * 根据结果返回对应数据
+     * <p>万能适配方法</p>
+     *
+     * @param data             数据
+     * @param conditionGroup   条件组合(判定的条件)
+     * @param newSuccessResult 成功数据新结果
+     * @param newErrorResult   错误数据新结果
+     * @param successMsg       成功msg
+     * @param errorMsg         错误msg
+     * @param errorCode        错误代码
+     * @return {@link Result}
+     * @since 1.1.5
+     */
+    @NotNull
+    public static <RS extends IResultSource<C, O>, C, O> RS selectResult(Object data,
+                                                                         @NotNull ResultConditionGroup conditionGroup,
+                                                                         @NotNull RS newSuccessResult,
+                                                                         @NotNull RS newErrorResult,
+                                                                         String successMsg, String errorMsg, C errorCode) {
+        RS ret = chooseSelect(data,
+                conditionGroup.getCondition(),
+                (falseData) -> {
+                    if (errorCode != null) newErrorResult.setCode(errorCode);
+                    // 强制填充成功返回数据
+                    if (errorMsg != null) newErrorResult.setMsg(errorMsg);
+                    conditionGroup.conditionFalseFillData(newErrorResult, (O) falseData);
+                    return newErrorResult;
+                }, (trueData) -> {
+                    // 强制填充成功返回数据
+                    if (successMsg != null) newSuccessResult.setMsg(successMsg);
+                    conditionGroup.conditionTrueFillData(newSuccessResult, (O) trueData);
+                    return newSuccessResult;
+                },
+                conditionGroup.getResultDataCondition()::test,
+                (falseResult) -> {
+                    conditionGroup.resultDataConditionFalseFillData(newErrorResult, falseResult.getData());
+                    // 填充错误返回数据
+                    if (errorCode != null) newErrorResult.setCode(errorCode);
+                    else conditionGroup.resultDataConditionFalseFillCode(newErrorResult, falseResult.getCode());
+                    if (errorMsg != null) newErrorResult.setMsg(errorMsg);
+                    else conditionGroup.resultDataConditionFalseFillMsg(newErrorResult, falseResult.getMsg());
+                    return newErrorResult;
+                }, (trueResult) -> {
+                    conditionGroup.resultDataConditionTrueFillData(newSuccessResult, trueResult.getData());
+                    // 填充成功返回数据
+                    conditionGroup.resultDataConditionTrueFillCode(newSuccessResult, trueResult.getCode());
+                    if (successMsg != null) newSuccessResult.setMsg(successMsg);
+                    else conditionGroup.resultDataConditionTrueFillMsg(newSuccessResult, trueResult.getMsg());
+                    return newSuccessResult;
+                }
+        );
+        return ret;
     }
 
 
@@ -611,41 +773,9 @@ public class ResultUtil {
     public static Result selectResult(Object data,
                                       @NotNull ResultConditionGroup conditionGroup,
                                       String successMsg, String errorMsg, Integer errorCode) {
-        Result ret = chooseSelect(data,
-                conditionGroup.getCondition(),
-                (falseData) -> {
-                    Result newResult = Result.error(null);
-                    if (errorCode != null) newResult.setCode(errorCode);
-                    if (errorMsg != null) newResult.setMsg(errorMsg);
-                    conditionGroup.conditionFalseFillData(newResult, falseData);
-                    return newResult;
-                }, (trueData) -> {
-                    // 强制填充成功返回数据
-                    Result newResult = Result.success(null);
-                    if (successMsg != null) newResult.setMsg(successMsg);
-                    conditionGroup.conditionTrueFillData(newResult, trueData);
-                    return newResult;
-                },
-                conditionGroup.getResultDataCondition()::test,
-                (falseResult) -> {
-                    Result newResult = Result.error(null);
-                    conditionGroup.resultDataConditionFalseFillData(newResult, falseResult.getData());
-                    // 填充错误返回数据
-                    if (errorCode != null) newResult.setCode(errorCode);
-                    else conditionGroup.resultDataConditionFalseFillCode(newResult, falseResult.getCode());
-                    if (errorMsg != null) newResult.setMsg(errorMsg);
-                    else conditionGroup.resultDataConditionFalseFillMsg(newResult, falseResult.getMsg());
-                    return newResult;
-                }, (trueResult) -> {
-                    Result newResult = Result.success(null);
-                    conditionGroup.resultDataConditionTrueFillData(newResult, trueResult.getData());
-                    // 填充成功返回数据
-                    conditionGroup.resultDataConditionTrueFillCode(newResult, trueResult.getCode());
-                    if (successMsg != null) newResult.setMsg(successMsg);
-                    else conditionGroup.resultDataConditionTrueFillMsg(newResult, trueResult.getMsg());
-                    return newResult;
-                }
-        );
+        Result ret = selectResult(data, conditionGroup,
+                Result.success(null), Result.error(null),
+                successMsg, errorMsg, errorCode);
         return ret;
     }
 
@@ -710,41 +840,9 @@ public class ResultUtil {
     public static <C, O> MSResult<O> selectMSResult(Object data,
                                                     @NotNull ResultConditionGroup conditionGroup,
                                                     String successMsg, String errorMsg, Integer errorCode) {
-        MSResult<O> ret = chooseSelect(data,
-                conditionGroup.getCondition(),
-                (falseData) -> {
-                    MSResult<O> newResult = MSResult.error(null);
-                    if (errorCode != null) newResult.setCode(errorCode);
-                    if (errorMsg != null) newResult.setMsg(errorMsg);
-                    conditionGroup.conditionTrueFillData(newResult, (O) falseData);
-                    return newResult;
-                }, (trueData) -> {
-                    // 强制填充成功返回数据
-                    MSResult<O> newResult = MSResult.success(null);
-                    if (successMsg != null) newResult.setMsg(successMsg);
-                    conditionGroup.conditionTrueFillData(newResult, (O) trueData);
-                    return newResult;
-                },
-                conditionGroup.getResultDataCondition()::test,
-                (falseResult) -> {
-                    MSResult<O> newResult = MSResult.error(null);
-                    conditionGroup.resultDataConditionFalseFillData(newResult, falseResult.getData());
-                    // 填充错误返回数据
-                    if (errorCode != null) newResult.setCode(errorCode);
-                    else conditionGroup.resultDataConditionFalseFillCode(newResult, falseResult.getCode());
-                    if (errorMsg != null) newResult.setMsg(errorMsg);
-                    else conditionGroup.resultDataConditionFalseFillMsg(newResult, falseResult.getMsg());
-                    return newResult;
-                }, (trueResult) -> {
-                    MSResult<O> newResult = MSResult.success(null);
-                    conditionGroup.resultDataConditionTrueFillData(newResult, trueResult.getData());
-                    // 填充成功返回数据
-                    conditionGroup.resultDataConditionFalseFillCode(newResult, trueResult.getCode());
-                    if (successMsg != null) newResult.setMsg(successMsg);
-                    else conditionGroup.resultDataConditionFalseFillMsg(newResult, trueResult.getMsg());
-                    return newResult;
-                }
-        );
+        MSResult<O> ret = selectResult(data, conditionGroup,
+                MSResult.success(null), MSResult.error(null),
+                successMsg, errorMsg, errorCode);
         return ret;
     }
 

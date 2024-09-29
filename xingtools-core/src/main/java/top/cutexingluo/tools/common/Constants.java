@@ -10,6 +10,7 @@ package top.cutexingluo.tools.common;
 //}
 
 
+import top.cutexingluo.tools.common.base.IRName;
 import top.cutexingluo.tools.common.base.IResultData;
 import top.cutexingluo.tools.common.base.XTIntCode;
 
@@ -25,7 +26,7 @@ import top.cutexingluo.tools.common.base.XTIntCode;
  */
 
 
-public enum Constants implements IResultData<String>, XTIntCode {
+public enum Constants implements IResultData<String>, XTIntCode, IRName {
     /**
      * 200 成功
      */

@@ -10,8 +10,9 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 /**
- * 条件组合
- * <p>初始条件和后置条件 组合</p>
+ * 条件组合, 数据装配策略类
+ * <p>1.初始条件和后置条件 组合</p>
+ * <p>2.可以自定义装配策略</p>
  *
  * <pre>
  * 1.初始条件: 初始对象判定条件

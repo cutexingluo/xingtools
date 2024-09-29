@@ -13,6 +13,11 @@ package top.cutexingluo.tools.common.base;
 @FunctionalInterface
 public interface IR {
 
+    /**
+     * 获取信息/消息
+     *
+     * @return the msg
+     */
     String getMsg();
 
 }
