@@ -96,7 +96,7 @@ public class XTResponseUtil extends WebUtils {
      * @param rsp 返回请求
      */
     public static void unauthorized(HttpServletResponse rsp) throws IOException {
-        response(rsp, Result.error(Constants.CODE_401, "Authentication failed, Insufficient permissions"), HttpServletResponse.SC_UNAUTHORIZED);
+        response(rsp, Result.errorBy(Constants.CODE_401, "Authentication failed, Insufficient permissions"), HttpServletResponse.SC_UNAUTHORIZED);
     }
 
     /**
@@ -106,7 +106,7 @@ public class XTResponseUtil extends WebUtils {
      * @since 1.0.4
      */
     public static void forbidden(HttpServletResponse rsp) throws IOException {
-        response(rsp, Result.error(Constants.CODE_403, "Insufficient permissions, Access denied"), HttpServletResponse.SC_UNAUTHORIZED);
+        response(rsp, Result.errorBy(Constants.CODE_403, "Insufficient permissions, Access denied"), HttpServletResponse.SC_UNAUTHORIZED);
     }
 
 
@@ -118,7 +118,7 @@ public class XTResponseUtil extends WebUtils {
      * @throws IOException ioexception
      */
     public static void unauthorized(HttpServletResponse httpServletResponse, String msg) throws IOException {
-        Result error = Result.error(Constants.CODE_401, msg);
+        Result error = Result.errorBy(Constants.CODE_401, msg);
         unauthorized(httpServletResponse, error);
     }
 
@@ -130,7 +130,7 @@ public class XTResponseUtil extends WebUtils {
      * @throws IOException ioexception
      */
     public static void forbidden(HttpServletResponse httpServletResponse, String msg) throws IOException {
-        Result error = Result.error(Constants.CODE_403, msg);
+        Result error = Result.errorBy(Constants.CODE_403, msg);
         forbidden(httpServletResponse, error);
     }
 
@@ -140,7 +140,7 @@ public class XTResponseUtil extends WebUtils {
      * @param rsp 返回请求
      */
     public static void unauthorizedCN(HttpServletResponse rsp) throws IOException {
-        response(rsp, Result.error(Constants.CODE_401, "认证失败, 权限不足"), HttpServletResponse.SC_UNAUTHORIZED);
+        response(rsp, Result.errorBy(Constants.CODE_401, "认证失败, 权限不足"), HttpServletResponse.SC_UNAUTHORIZED);
     }
 
 
@@ -150,6 +150,6 @@ public class XTResponseUtil extends WebUtils {
      * @param rsp 返回请求
      */
     public static void forbiddenCN(HttpServletResponse rsp) throws IOException {
-        response(rsp, Result.error(Constants.CODE_403, "权限不足, 访问拒绝"), HttpServletResponse.SC_FORBIDDEN);
+        response(rsp, Result.errorBy(Constants.CODE_403, "权限不足, 访问拒绝"), HttpServletResponse.SC_FORBIDDEN);
     }
 }

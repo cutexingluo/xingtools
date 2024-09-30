@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.function.Consumer;
 
 /**
  * json文件工具类
@@ -14,7 +15,13 @@ import java.io.IOException;
  * @date 2023/9/15 15:22
  */
 public class JSONFileUtil {
-    /**\
+
+
+    public static boolean printTrace = true;
+    public static Consumer<Exception> exceptionHandler = null;
+
+    /**
+     * \
      * 读取json文件到对象（反射）
      */
     public static <T> T readJsonFile(File file, Class<T> clazz) {
@@ -23,7 +30,8 @@ public class JSONFileUtil {
         try {
             value = om.readValue(file, clazz);
         } catch (IOException e) {
-            e.printStackTrace();
+            if (exceptionHandler != null) exceptionHandler.accept(e);
+            else if (printTrace) e.printStackTrace();
         }
         return value;
 
@@ -40,7 +48,8 @@ public class JSONFileUtil {
             om.writeValue(file, data);
             return true;
         } catch (IOException e) {
-            e.printStackTrace();
+            if (exceptionHandler != null) exceptionHandler.accept(e);
+            else if (printTrace) e.printStackTrace();
         }
         return false;
     }

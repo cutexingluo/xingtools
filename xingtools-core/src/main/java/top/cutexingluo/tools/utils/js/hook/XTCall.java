@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.lang.reflect.Method;
+import java.util.function.Consumer;
 
 /**
  * <p>
@@ -25,6 +26,9 @@ import java.lang.reflect.Method;
 public class XTCall {
     private Method method;
 
+    public static boolean printTrace = true;
+    public static Consumer<Exception> exceptionHandler = null;
+
     public XTCall(Class<?> clazz, String methodName, Class<?>... args) throws NoSuchMethodException {
         this.method = clazz.getMethod(methodName, args);
     }
@@ -35,7 +39,8 @@ public class XTCall {
         try {
             return (R) method.invoke(target, args);
         } catch (Exception e) {
-            e.printStackTrace();
+            if (exceptionHandler != null) exceptionHandler.accept(e);
+            else if (printTrace) e.printStackTrace();
             return null;
         }
     }

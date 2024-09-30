@@ -141,7 +141,6 @@ public class HttpClientUtils {
 
     /**
      * 提交form表单
-     *
      */
     public static String postForm(String url, Map<String, String> params, Map<String, String> headers, Integer connTimeout, Integer readTimeout) throws ConnectTimeoutException,
             SocketTimeoutException, Exception {
@@ -265,7 +264,6 @@ public class HttpClientUtils {
 
     /**
      * 创建 SSL连接
-     *
      */
     private static CloseableHttpClient createSSLInsecureClient() throws GeneralSecurityException {
         try {
@@ -316,10 +314,6 @@ public class HttpClientUtils {
             map.put("page", "222");
             String str= postForm("https://localhost:443/ssl/test.shtml",map,null, 10000, 10000);*/
             System.out.println(str);
-        } catch (ConnectTimeoutException e) {
-            e.printStackTrace();
-        } catch (SocketTimeoutException e) {
-            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }

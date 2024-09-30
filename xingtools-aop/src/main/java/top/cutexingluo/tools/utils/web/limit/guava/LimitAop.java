@@ -93,7 +93,7 @@ public class LimitAop {
      */
     private <C, T> void responseFail(String msg) throws IOException {
         IResult<C, T> err = globalResultFactory == null ?
-                (IResult<C, T>) Result.error(Constants.CODE_403, msg) :
+                (IResult<C, T>) Result.errorBy(Constants.CODE_403, msg) :
                 globalResultFactory.newResult(Constants.CODE_403.intCode(), msg, null);
         HttpServletResponseDataAdapter.of(HttpContextUtil.getHttpServletResponseData())
                 .response(err, HttpStatus.FORBIDDEN.getCode());

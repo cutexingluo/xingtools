@@ -18,6 +18,8 @@ import java.util.Objects;
 /**
  * IP地址工具类
  *
+ * <p>需要导入 org.lionsoul:ip2region 包</p>
+ *
  * @author ican
  */
 @SuppressWarnings("all")

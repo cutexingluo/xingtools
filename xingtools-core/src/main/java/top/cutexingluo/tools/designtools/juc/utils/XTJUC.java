@@ -1,6 +1,7 @@
 package top.cutexingluo.tools.designtools.juc.utils;
 
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 /**
  * 休眠线程
@@ -10,6 +11,10 @@ import java.util.concurrent.TimeUnit;
  * @date 2023/4/6 20:56
  */
 public class XTJUC {
+
+    public static boolean printTrace = true;
+    public static Consumer<Exception> exceptionHandler = null;
+
     public static int getCoresNumber() {
         return Runtime.getRuntime().availableProcessors();
     }
@@ -19,7 +24,8 @@ public class XTJUC {
         try {
             Thread.sleep(millis);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            if (exceptionHandler != null) exceptionHandler.accept(e);
+            else if (printTrace) e.printStackTrace();
         }
     }
 
@@ -28,7 +34,8 @@ public class XTJUC {
         try {
             TimeUnit.SECONDS.sleep(seconds); //基于Thread
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            if (exceptionHandler != null) exceptionHandler.accept(e);
+            else if (printTrace) e.printStackTrace();
         }
     }
 }

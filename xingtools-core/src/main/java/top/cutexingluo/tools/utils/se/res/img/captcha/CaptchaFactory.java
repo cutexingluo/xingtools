@@ -48,8 +48,16 @@ public class CaptchaFactory {
      * 默认配置
      */
     public Properties defaultProperties(int width, int height) {
+        return defaultProperties(width, height, 4);
+    }
+
+    /**
+     * 默认配置
+     */
+    public Properties defaultProperties(int width, int height, int charLength) {
         String widthStr = String.valueOf(width);
         String heightStr = String.valueOf(height);
+        String charLengthStr = String.valueOf(charLength);
         // 创建配置对象
         Properties properties = new Properties();
         // 设置边框
@@ -65,7 +73,7 @@ public class CaptchaFactory {
         // 设置session.key
         properties.setProperty("kaptcha.session.key", "code");
         // 设置文本长度
-        properties.setProperty("kaptcha.textproducer.char.length", "4");
+        properties.setProperty("kaptcha.textproducer.char.length", charLengthStr);
         // 设置字体
         properties.setProperty("kaptcha.textproducer.font.names", "宋体,楷体,微软雅黑");
         return properties;
