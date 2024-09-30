@@ -1,6 +1,7 @@
 package top.cutexingluo.tools.common;
 
 import org.jetbrains.annotations.NotNull;
+import top.cutexingluo.tools.common.base.IRName;
 import top.cutexingluo.tools.common.base.IResultData;
 import top.cutexingluo.tools.common.base.XTStrCode;
 
@@ -13,7 +14,7 @@ import top.cutexingluo.tools.common.base.XTStrCode;
  * @date 2024/7/29 16:22
  * @since 1.1.2
  */
-public enum HttpStatus implements IResultData<Integer>, XTStrCode {
+public enum HttpStatus implements IResultData<Integer>, XTStrCode, IRName {
 
     /**
      * 200 成功
@@ -22,6 +23,7 @@ public enum HttpStatus implements IResultData<Integer>, XTStrCode {
     /**
      * 500 失败
      */
+    ERROR(500, "ERROR", "错误"),
     SYSTEM_ERROR(500, "SYSTEM_ERROR", "系统错误"),
     UNAUTHORIZED(401, "UNAUTHORIZED ", "权限不足"),
     BAD_REQUEST(400, "BAD_REQUEST ", "参数错误（缺少，格式不匹配）"),

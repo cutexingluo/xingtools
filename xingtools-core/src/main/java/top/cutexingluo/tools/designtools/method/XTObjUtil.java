@@ -37,12 +37,12 @@ public class XTObjUtil {
     /**
      * get
      */
-    public static final  String STR_GET = "get";
+    public static final String STR_GET = "get";
 
     /**
      * set
      */
-    public static final  String STR_SET= "set";
+    public static final String STR_SET = "set";
 
     /**
      * 匹配getter方法的正则表达式
@@ -54,7 +54,8 @@ public class XTObjUtil {
      */
     protected static final Pattern SET_PATTERN = Pattern.compile("set(\\p{javaUpperCase}\\w*)");
 
-
+    public static boolean printTrace = true;
+    public static Consumer<Exception> exceptionHandler = null;
 
 
     public static class Unsafe {
@@ -76,7 +77,8 @@ public class XTObjUtil {
                 try {
                     field.set(item, null);
                 } catch (IllegalAccessException e) {
-                    e.printStackTrace();
+                    if (exceptionHandler != null) exceptionHandler.accept(e);
+                    else if (printTrace) e.printStackTrace();
                 }
             }, properties);
         }
@@ -97,7 +99,8 @@ public class XTObjUtil {
                 field.setAccessible(true);
                 field.set(item, newValue);
             } catch (NoSuchFieldException | IllegalAccessException e) {
-                e.printStackTrace();
+                if (exceptionHandler != null) exceptionHandler.accept(e);
+                else if (printTrace) e.printStackTrace();
                 throw new ServiceException(Constants.CODE_400.getCode(), "没有该属性，或者没有该权限");
             }
             return item;
@@ -162,7 +165,8 @@ public class XTObjUtil {
                     field.setAccessible(true);
                     fieldConsumer.accept(field);
                 } catch (NoSuchFieldException e) {
-                    e.printStackTrace();
+                    if (exceptionHandler != null) exceptionHandler.accept(e);
+                    else if (printTrace) e.printStackTrace();
                 }
             }
             return item;
@@ -183,7 +187,8 @@ public class XTObjUtil {
                 field.setAccessible(true);
                 result = field.get(item);
             } catch (NoSuchFieldException | IllegalAccessException e) {
-                e.printStackTrace();
+                if (exceptionHandler != null) exceptionHandler.accept(e);
+                else if (printTrace) e.printStackTrace();
                 throw new ServiceException(Constants.CODE_400.getCode(), "没有该属性，或者没有该权限");
             }
             return result;
@@ -211,7 +216,8 @@ public class XTObjUtil {
             method.setAccessible(true);
             value = method.invoke(item);
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
+            if (exceptionHandler != null) exceptionHandler.accept(e);
+            else if (printTrace) e.printStackTrace();
             throw new ServiceException(Constants.CODE_400.getCode(), "没有该方法，或者没有该权限");
         }
         return value;
@@ -243,7 +249,8 @@ public class XTObjUtil {
             method.setAccessible(true);
             method.invoke(item, newValue);
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
+            if (exceptionHandler != null) exceptionHandler.accept(e);
+            else if (printTrace) e.printStackTrace();
             throw new ServiceException(Constants.CODE_400.getCode(), "没有该方法，或者没有该权限");
         }
         return item;
@@ -295,13 +302,15 @@ public class XTObjUtil {
     }
 
     // ruoyi
+
     /**
      * 获取对象的setter方法。
      *
      * @param obj 对象
      * @return 对象的setter方法列表
      */
-    public static @NotNull List<Method> getSetterMethods(@NotNull Object obj) {
+    public static @NotNull
+    List<Method> getSetterMethods(@NotNull Object obj) {
         // setter方法列表
         List<Method> setterMethods = new ArrayList<Method>();
 
@@ -326,7 +335,8 @@ public class XTObjUtil {
      * @param obj 对象
      * @return 对象的getter方法列表
      */
-    public static @NotNull List<Method> getGetterMethods(@NotNull Object obj) {
+    public static @NotNull
+    List<Method> getGetterMethods(@NotNull Object obj) {
         // getter方法列表
         List<Method> getterMethods = new ArrayList<Method>();
         // 获取所有方法
@@ -354,14 +364,6 @@ public class XTObjUtil {
     public static boolean isMethodPropEquals(@NotNull String m1, @NotNull String m2) {
         return m1.substring(BEAN_METHOD_PROP_INDEX).equals(m2.substring(BEAN_METHOD_PROP_INDEX));
     }
-
-
-
-
-
-
-
-
 
 
 }

@@ -30,10 +30,18 @@ import top.cutexingluo.tools.utils.ee.web.limit.submit.strategy.impl.RedisLimitS
 @Configuration(proxyBeanMethods = false)
 public class RedisLimitStrategyAuto {
 
+    /**
+     * 1.1.5  版本开始可选参数
+     *
+     * @since 1.1.5
+     */
+    @Autowired(required = false)
+    RYRedisCache redisCache;
+
     @ConditionalOnBean({RedisTemplate.class})
     @ConditionalOnMissingBean
     @Bean
-    public RedisLimitStrategy redisLimitStrategy(@Autowired(required = false) RYRedisCache redisCache, RedisTemplate<String, Object> redisTemplate) {
+    public RedisLimitStrategy redisLimitStrategy(RedisTemplate<String, Object> redisTemplate) {
         if (LogInfoAuto.enabled) log.info("RedisLimitStrategy ---> {}", "RequestLimitAspect 开启 自动注册 redis 策略，自动注册成功");
         return new RedisLimitStrategy(redisCache, redisTemplate);
     }

@@ -1,6 +1,7 @@
 package top.cutexingluo.tools.basepackage.baseimpl;
 
 import java.util.concurrent.Callable;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
@@ -58,8 +59,8 @@ public class XTRunCallUtil {
      * try-catch 包围 执行方法
      * <p>其他方法请用 XTCallable 调用 </p>
      */
-    public static <V> Supplier<V> getTrySupplier(Callable<V> task) {
-        return XTCallable.getTrySupplier(task);
+    public static <V> Supplier<V> getTrySupplier(Callable<V> task, Consumer<Exception> inCatch) {
+        return XTCallable.getTrySupplierByCallable(task, inCatch);
     }
 
 }

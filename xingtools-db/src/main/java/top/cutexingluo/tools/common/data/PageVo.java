@@ -40,4 +40,13 @@ public class PageVo<T> {
         this.total = page.getTotal();
     }
 
+    /**
+     * 新增同类型赋值
+     *
+     * @since 1.1.5
+     */
+    public PageVo(@NotNull PageVo<T> pageVo) {
+        this.rows = pageVo.getRows();
+        this.total = pageVo.getTotal();
+    }
 }

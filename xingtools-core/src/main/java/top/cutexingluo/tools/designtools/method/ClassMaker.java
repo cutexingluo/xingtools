@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -23,6 +24,16 @@ import java.util.function.Function;
 public class ClassMaker<T> {
     @NotNull
     private Class<T> clazz;
+
+    public ClassMaker(@NotNull Class<T> clazz) {
+        this.clazz = clazz;
+    }
+
+    public static boolean staticPrintTrace = true;
+    public static Consumer<Exception> staticExceptionHandler = null;
+
+    private boolean printTrace = true;
+    private Consumer<Exception> exceptionHandler = null;
 
     /**
      * 转化
@@ -132,7 +143,8 @@ public class ClassMaker<T> {
         try {
             return clazz.getConstructor().newInstance();
         } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-            e.printStackTrace();
+            if (exceptionHandler != null) exceptionHandler.accept(e);
+            else if (printTrace) e.printStackTrace();
         }
         return null;
     }
@@ -149,7 +161,8 @@ public class ClassMaker<T> {
         try {
             return clazz.getConstructor(parameterTypes);
         } catch (NoSuchMethodException e) {
-            e.printStackTrace();
+            if (exceptionHandler != null) exceptionHandler.accept(e);
+            else if (printTrace) e.printStackTrace();
         }
         return null;
     }
@@ -170,7 +183,8 @@ public class ClassMaker<T> {
         try {
             return constructor.newInstance(initargs);
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
+            if (staticExceptionHandler != null) staticExceptionHandler.accept(e);
+            else if (staticPrintTrace) e.printStackTrace();
         }
         return null;
     }

@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeoutException;
+import java.util.function.Consumer;
 
 /**
  * RabbitMQ 执行工具
@@ -25,6 +26,10 @@ import java.util.concurrent.TimeoutException;
  * @date 2023/10/17 22:32
  */
 public class RabbitMQUtil {
+
+    public static boolean printTrace = true;
+    public static Consumer<Exception> exceptionHandler = null;
+
     /**
      * 生成延时队列交换机
      * <p>需要为 RabbitMQ 安装延迟队列插件</p>
@@ -85,7 +90,8 @@ public class RabbitMQUtil {
                 try {
                     return getChannel();
                 } catch (IOException | TimeoutException e) {
-                    e.printStackTrace();
+                    if (exceptionHandler != null) exceptionHandler.accept(e);
+                    else if (printTrace) e.printStackTrace();
                 }
             }
             return this.target;

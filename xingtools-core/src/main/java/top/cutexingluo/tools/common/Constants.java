@@ -10,6 +10,7 @@ package top.cutexingluo.tools.common;
 //}
 
 
+import top.cutexingluo.tools.common.base.IRName;
 import top.cutexingluo.tools.common.base.IResultData;
 import top.cutexingluo.tools.common.base.XTIntCode;
 
@@ -25,7 +26,7 @@ import top.cutexingluo.tools.common.base.XTIntCode;
  */
 
 
-public enum Constants implements IResultData<String>, XTIntCode {
+public enum Constants implements IResultData<String>, XTIntCode, IRName {
     /**
      * 200 成功
      */
@@ -33,7 +34,8 @@ public enum Constants implements IResultData<String>, XTIntCode {
     /**
      * 500 失败
      */
-    CODE_500("500", "SYSTEM_ERROR", "系统错误"),
+    CODE_500("500", "ERROR", "错误"),
+    CODE_500_PLUS("500", "SYSTEM_ERROR", "系统错误"),
     CODE_401("401", "UNAUTHORIZED ", "权限不足"),
     CODE_400("400", "BAD_REQUEST ", "参数错误（缺少，格式不匹配）"),
     CODE_403("403", "FORBIDDEN ", "服务器拒绝请求, 访问受限 / 授权过期"),

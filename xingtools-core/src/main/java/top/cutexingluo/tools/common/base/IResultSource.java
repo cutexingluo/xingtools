@@ -11,5 +11,11 @@ package top.cutexingluo.tools.common.base;
  */
 public interface IResultSource<C, T> extends IResult<C, T>, IResultDataSource<C> {
 
+    /**
+     * 设置数据
+     *
+     * @param data data
+     * @return self
+     */
     IResultSource<C, T> setData(T data);
 }

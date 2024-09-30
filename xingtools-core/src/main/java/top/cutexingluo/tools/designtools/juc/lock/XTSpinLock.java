@@ -1,6 +1,10 @@
 package top.cutexingluo.tools.designtools.juc.lock;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 
 
 /**
@@ -9,8 +13,17 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author XingTian
  * @date 2023/10/16
  */
+@Data
+@AllArgsConstructor
 public class XTSpinLock {
     private AtomicReference<Thread> spinLock;
+
+    public XTSpinLock(AtomicReference<Thread> spinLock) {
+        this.spinLock = spinLock;
+    }
+
+    private boolean printTrace = true;
+    private Consumer<Exception> exceptionHandler = null;
 
     XTSpinLock() {
         spinLock = new AtomicReference<>();
@@ -32,7 +45,8 @@ public class XTSpinLock {
             try {
                 runnable.run();
             } catch (Exception e) {
-                e.printStackTrace();
+                if (exceptionHandler != null) exceptionHandler.accept(e);
+                else if (printTrace) e.printStackTrace();
             } finally {
                 unlock();
             }

@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import top.cutexingluo.tools.common.base.IRName;
 import top.cutexingluo.tools.common.base.IResult;
 import top.cutexingluo.tools.common.base.IResultData;
 import top.cutexingluo.tools.common.base.XTIntCode;
@@ -81,19 +82,39 @@ public class StrMSResult<T> extends CommonResult<String, T> implements XTIntCode
 //        return new StrMSResult<>((StrMSResult<T>) this);
 //    }
 
+    //------------配置区-------------------------
+
+    /**
+     * 默认的 msg 是否使用 msg
+     *
+     * <p>msg 即中文, name 即英文</p>
+     *
+     * @since 1.1.5
+     */
+    public static boolean useMsgOrName = true;
 
     //------------静态方法区-------------------------
     //------------common-----------
+
+    /**
+     * 得到 msg 或者 name
+     *
+     * @since 1.1.5
+     */
+    public static String putMsgOrName(IRName rn) {
+        return useMsgOrName ? rn.getMsg() : rn.getName();
+    }
+
     public static <T> StrMSResult<T> put(String otherCode, String otherMsg, T data) {
         return new StrMSResult<T>(otherCode, otherMsg, data);
     }
 
     public static <T> StrMSResult<T> put(Constants constants, T data) {
-        return put(constants.getCode(), constants.getMsg(), data);
+        return put(constants.getCode(), putMsgOrName(constants), data);
     }
 
     public static StrMSResult<String> put(Constants constants) {
-        return put(constants, "");
+        return put(constants, null);
     }
 
 
@@ -101,14 +122,14 @@ public class StrMSResult<T> extends CommonResult<String, T> implements XTIntCode
      * @since 1.1.2
      */
     public static <T> StrMSResult<T> put(HttpStatus httpStatus, T data) {
-        return put(httpStatus.strCode(), httpStatus.getMsg(), data);
+        return put(httpStatus.strCode(), putMsgOrName(httpStatus), data);
     }
 
     /**
      * @since 1.1.2
      */
     public static StrMSResult<String> put(HttpStatus httpStatus) {
-        return put(httpStatus, "");
+        return put(httpStatus, null);
     }
 
     public static <C, T> StrMSResult<T> put(IResult<C, T> resultData) {
@@ -136,12 +157,12 @@ public class StrMSResult<T> extends CommonResult<String, T> implements XTIntCode
     }
 
     public static <T> StrMSResult<T> notPass() {
-        return put(Constants.CODE_500, null);
+        return put(Constants.CODE_500.getCode(), "", null);
     }
 
     //---success---
     public static StrMSResult<Boolean> success() {
-        return put(Constants.CODE_200, true);
+        return put(Constants.CODE_200, null);
     }
 
     public static <T> StrMSResult<T> success(T data) {
@@ -154,11 +175,14 @@ public class StrMSResult<T> extends CommonResult<String, T> implements XTIntCode
 
     //---error---
     public static StrMSResult<Boolean> error() {
-        return put(Constants.CODE_500, false);
+        return put(Constants.CODE_500, null);
     }
 
-    public static StrMSResult<Boolean> error(String msg) {
-        return put(Constants.CODE_500.getCode(), msg, false);
+    /**
+     * <p>于v1.1.5 更新为 errorMsg , 防止冲突</p>
+     */
+    public static StrMSResult<Boolean> errorMsg(String msg) {
+        return put(Constants.CODE_500.getCode(), msg, null);
     }
 
     public static <T> StrMSResult<T> error(T data) {
@@ -166,7 +190,7 @@ public class StrMSResult<T> extends CommonResult<String, T> implements XTIntCode
     }
 
     public static StrMSResult<Boolean> error(String otherCode, String msg) {
-        return put(otherCode, msg, false);
+        return put(otherCode, msg, null);
     }
 
     /**
@@ -177,25 +201,36 @@ public class StrMSResult<T> extends CommonResult<String, T> implements XTIntCode
     }
 
     // 常用 StrMSResult.error(错误码)
-    public static StrMSResult<Boolean> error(Constants constants) {
-        return put(constants, false);
+
+    /**
+     * <p>于v1.1.5 更新为 errorMsg , 防止冲突</p>
+     */
+    public static StrMSResult<Boolean> errorBy(Constants constants) {
+        return put(constants, null);
     }
 
-    public static StrMSResult<Boolean> error(Constants constants, String msg) {
+    /**
+     * <p>于v1.1.5 更新为 errorMsg , 防止冲突</p>
+     */
+    public static StrMSResult<Boolean> errorBy(Constants constants, String msg) {
         return error(constants.getCode(), msg);
     }
 
     /**
+     * <p>于v1.1.5 更新为 errorMsg , 防止冲突</p>
+     *
      * @since 1.1.2
      */
-    public static StrMSResult<Boolean> error(HttpStatus httpStatus) {
-        return put(httpStatus, false);
+    public static StrMSResult<Boolean> errorBy(HttpStatus httpStatus) {
+        return put(httpStatus, null);
     }
 
     /**
+     * <p>于v1.1.5 更新为 errorMsg , 防止冲突</p>
+     *
      * @since 1.1.2
      */
-    public static StrMSResult<Boolean> error(HttpStatus httpStatus, String msg) {
+    public static StrMSResult<Boolean> errorBy(HttpStatus httpStatus, String msg) {
         return error(httpStatus.strCode(), msg);
     }
 

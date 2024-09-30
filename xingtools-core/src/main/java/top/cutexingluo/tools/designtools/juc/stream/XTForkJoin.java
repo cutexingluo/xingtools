@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.RecursiveTask;
+import java.util.function.Consumer;
 
 /**
  * ForkJoin 不建议使用
@@ -17,6 +18,15 @@ public class XTForkJoin extends RecursiveTask<Long> {
     private Long start;
     private Long end;
     private Long criticalValue;
+
+    public XTForkJoin(Long start, Long end, Long criticalValue) {
+        this.start = start;
+        this.end = end;
+        this.criticalValue = criticalValue;
+    }
+
+    private boolean printTrace = true;
+    private Consumer<Exception> exceptionHandler = null;
 
     public Long run(Callable<Long> callable) throws Exception {
         if (end - start < criticalValue) {
@@ -49,7 +59,8 @@ public class XTForkJoin extends RecursiveTask<Long> {
         try {
             result = doRun();
         } catch (Exception e) {
-            e.printStackTrace();
+            if (exceptionHandler != null) exceptionHandler.accept(e);
+            else if (printTrace) e.printStackTrace();
         }
         return result;
     }
