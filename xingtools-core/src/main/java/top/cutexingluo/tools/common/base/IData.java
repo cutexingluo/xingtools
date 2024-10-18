@@ -9,6 +9,7 @@ package top.cutexingluo.tools.common.base;
  * @date 2023/12/10 17:41
  * @since 1.0.3
  */
+@FunctionalInterface
 public interface IData<V> {
     /**
      * @return the data

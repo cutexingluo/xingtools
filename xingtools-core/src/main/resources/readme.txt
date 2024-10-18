@@ -6,10 +6,18 @@
 推荐使用版本
 xingtool v1.0.1, v1.0.4, v1.0.5
 xingtools v1.1.3, v1.1.4, v1.1.5
-极力推荐使用最新版 v1.1.5
+极力推荐使用最新版 v1.1.6
 
 
 更新公告
+2024-10-18 v1.1.6
+更改部分
+
+新增部分
+1.XTCallable 新增 getInCatchRet 更加健全
+2.*继承重构1.0.5 版本的 XTEncryptUtil 加密工具类，支持Md5,SHA256,DES,AES,RSA 算法
+3.新增IdNode接口 (含 getId 方法),新增DataNode作为IDataValue 默认实现类
+
 2024-9-27 ~ 2024-9-29   v1.1.5
 更改部分
 1.* 重构 IResult 实现类四大类，更改里面的所有 success 和 error 的默认值,  true 和 false 统一改为 null , 不带值
