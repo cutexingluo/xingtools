@@ -30,6 +30,23 @@ public enum EncType {
      * RSA
      */
     RSA,
+
+    /**
+     * ECC
+     */
+    ECC,
+
+    /**
+     * EC
+     */
+    EC,
+
+    /**
+     * BC
+     */
+    BC,
+
+
     ;
 
 

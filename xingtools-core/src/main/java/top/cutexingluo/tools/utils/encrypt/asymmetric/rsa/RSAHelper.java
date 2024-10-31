@@ -2,10 +2,7 @@ package top.cutexingluo.tools.utils.encrypt.asymmetric.rsa;
 
 import top.cutexingluo.tools.utils.encrypt.asymmetric.AsymmetricHelper;
 
-import java.security.KeyPair;
-import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
+import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 
 /**
@@ -25,7 +22,7 @@ public interface RSAHelper extends AsymmetricHelper {
     }
 
     @Override
-    default KeyPair newKeyPair() throws NoSuchAlgorithmException, InvalidKeySpecException {
+    default KeyPair newKeyPair() throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException {
         RSAHandler rsaHandler = getRSAHandler();
         PublicKey publicKey = rsaHandler.getPublicKeyByBase64(getPublicKey());
         PrivateKey privateKey = rsaHandler.getPrivateKeyByBase64(getPrivateKey());

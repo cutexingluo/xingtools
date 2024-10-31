@@ -4,10 +4,10 @@ import cn.hutool.crypto.Mode;
 import cn.hutool.crypto.SecureUtil;
 import cn.hutool.crypto.asymmetric.AsymmetricAlgorithm;
 import cn.hutool.crypto.asymmetric.KeyType;
-import cn.hutool.crypto.asymmetric.RSA;
 import lombok.Data;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import top.cutexingluo.tools.utils.encrypt.asymmetric.AsymmetricHandler;
 import top.cutexingluo.tools.utils.encrypt.base.EncType;
 
 import javax.crypto.BadPaddingException;
@@ -17,9 +17,6 @@ import javax.crypto.NoSuchPaddingException;
 import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
-import java.security.spec.PKCS8EncodedKeySpec;
-import java.security.spec.X509EncodedKeySpec;
-import java.util.Base64;
 
 /**
  * RSA 非对称加密算法
@@ -32,7 +29,7 @@ import java.util.Base64;
  * @date 2024/10/18 10:32
  * @since 1.1.6
  */
-public class RSAHandler {
+public class RSAHandler implements AsymmetricHandler {
 
     @Contract(value = " -> new", pure = true)
     public static @NotNull RSAHandler newInstance() {
@@ -91,94 +88,18 @@ public class RSAHandler {
         return SecureUtil.generateKeyPair(EncType.RSA.getName());
     }
 
-    /**
-     * 生成RSA密钥对
-     *
-     * @return RSA密钥对
-     */
-    public KeyPair generateKeyPairBySecurity() throws NoSuchAlgorithmException {
-        KeyPairGenerator keyPairGenerator;
-        keyPairGenerator = KeyPairGenerator.getInstance(EncType.RSA.getName());
-        keyPairGenerator.initialize(2048); // 密钥大小为2048位
-        return keyPairGenerator.generateKeyPair();
-    }
-
-
-    /**
-     * 按Base64编码密钥
-     *
-     * @param keyPair 密钥对
-     * @param keyType 密钥类型
-     */
-    public String getEncodeKeyByBase64(KeyPair keyPair, KeyType keyType) {
-        if (keyType == KeyType.PrivateKey) {
-            return Base64.getEncoder().encodeToString(keyPair.getPrivate().getEncoded());
-        }
-        return Base64.getEncoder().encodeToString(keyPair.getPublic().getEncoded());
-    }
-
-    /**
-     * 使用Base64获取解码密钥
-     *
-     * @param base64String Base64字符串
-     * @param keyType      密钥类型
-     * @return {@link T} Key
-     */
-    public <T extends Key> T getDecodeKeyByBase64(String base64String, KeyType keyType) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        if (keyType == KeyType.PublicKey) {
-            byte[] keyBytes = Base64.getDecoder().decode(base64String);
-            X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
-            KeyFactory keyFactory = null;
-            PublicKey publicKey = null;
-            try {
-                keyFactory = KeyFactory.getInstance(EncType.RSA.getName());
-                publicKey = keyFactory.generatePublic(keySpec);
-            } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-                throw e;
-            }
-            return (T) publicKey;
-        } else if (keyType == KeyType.PrivateKey) {
-            byte[] keyBytes = Base64.getDecoder().decode(base64String);
-            PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(keyBytes);
-            KeyFactory keyFactory = null;
-            PrivateKey privateKey = null;
-            try {
-                keyFactory = KeyFactory.getInstance(EncType.RSA.getName());
-                privateKey = keyFactory.generatePrivate(keySpec);
-            } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-                throw e;
-            }
-            return (T) privateKey;
-        }
-        return null;
-    }
-
-    /**
-     * 获取PrivateKey
-     */
-    public PrivateKey getPrivateKeyByBase64(String base64String) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        return getDecodeKeyByBase64(base64String, KeyType.PrivateKey);
-    }
-
-    /**
-     * 获取PublicKey
-     */
-    public PublicKey getPublicKeyByBase64(String base64String) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        return getDecodeKeyByBase64(base64String, KeyType.PublicKey);
-    }
-
 
     /**
      * 从元数据获取rsa
      */
-    public RSA getRSA(@NotNull Meta meta) {
+    public cn.hutool.crypto.asymmetric.RSA getRSA(@NotNull Meta meta) {
         // 初始化对象
         // 第一个参数为加密算法，不传默认为 RSA/ECB/PKCS1Padding
         // 第二个参数为私钥（Base64字符串）
         // 第三个参数为公钥（Base64字符串）
         PrivateKey privateKey = meta.getKeyPair().getPrivate();
         PublicKey publicKey = meta.getKeyPair().getPublic();
-        return new RSA(meta.getTransformation(), privateKey, publicKey);
+        return new cn.hutool.crypto.asymmetric.RSA(meta.getTransformation(), privateKey, publicKey);
     }
 
     /**
@@ -190,7 +111,7 @@ public class RSAHandler {
      * @return {@link String}
      */
     public String encode(String data, Meta meta, KeyType keyType) {
-        RSA rsa = getRSA(meta);
+        cn.hutool.crypto.asymmetric.RSA rsa = getRSA(meta);
         if (keyType == KeyType.PrivateKey) {
             return rsa.encryptBase64(data, KeyType.PrivateKey);
         }
@@ -206,40 +127,65 @@ public class RSAHandler {
      * @return {@link String}
      */
     public String decode(String encryptedData, Meta meta, KeyType keyType) {
-        RSA rsa = getRSA(meta);
+        cn.hutool.crypto.asymmetric.RSA rsa = getRSA(meta);
         if (keyType == KeyType.PublicKey) {
             return rsa.decryptStr(encryptedData, KeyType.PublicKey);
         }
         return rsa.decryptStr(encryptedData, KeyType.PrivateKey);
     }
 
+    //------interface------
 
     /**
-     * 使用公钥或私钥加密数据
+     * 初始化 KeyPairGenerator
      *
-     * @param data 待加密的数据
-     * @param key  公钥或者私有
-     * @return 加密后的数据
+     * @return KeyPairGenerator
      */
-    public String encodeBySecurity(@NotNull String data, Key key) throws NoSuchPaddingException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException {
-        Cipher cipher = Cipher.getInstance(EncType.RSA.getName());
-        cipher.init(Cipher.ENCRYPT_MODE, key);
-        byte[] encryptedData = cipher.doFinal(data.getBytes(StandardCharsets.UTF_8));
-        return Base64.getEncoder().encodeToString(encryptedData);
+    public KeyPairGenerator initKeyPairGenerator() throws NoSuchAlgorithmException {
+        KeyPairGenerator keyPairGenerator;
+        keyPairGenerator = KeyPairGenerator.getInstance(EncType.RSA.getName());
+        keyPairGenerator.initialize(2048); // 密钥大小为2048位
+        return keyPairGenerator;
     }
 
-    /**
-     * 使用私钥或公钥解密数据
-     *
-     * @param encryptedData 加密后的数据
-     * @param key           私钥或者公钥
-     * @return 解密后的数据
-     */
-    public String decodeBySecurity(String encryptedData, Key key) throws NoSuchPaddingException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException {
-        byte[] decodedData = Base64.getDecoder().decode(encryptedData);
-        Cipher cipher = Cipher.getInstance(EncType.RSA.getName());
+    @Override
+    public Cipher initCipher() throws NoSuchPaddingException, NoSuchAlgorithmException {
+        return Cipher.getInstance(EncType.RSA.getName());
+    }
+
+
+    @Override
+    public byte[] encodeDirect(byte[] data, Key key) throws NoSuchPaddingException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException {
+        Cipher cipher = initCipher();
+        cipher.init(Cipher.ENCRYPT_MODE, key);
+        byte[] encryptedData = cipher.doFinal(data);
+        return encryptedData;
+    }
+
+    @Override
+    public byte[] decodeDirect(byte[] encryptedData, Key key) throws NoSuchPaddingException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException {
+        Cipher cipher = initCipher();
         cipher.init(Cipher.DECRYPT_MODE, key);
-        byte[] decryptedData = cipher.doFinal(decodedData);
+        byte[] decryptedData = cipher.doFinal(encryptedData);
+        return decryptedData;
+    }
+
+    @Override
+    public String encodeBySecurity(@NotNull String data, Key key) throws NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException, NoSuchProviderException {
+        byte[] encryptedData = encodeDirect(data.getBytes(StandardCharsets.UTF_8), key);
+        return encodeToStringBase64(encryptedData);
+    }
+
+    @Override
+    public String decodeBySecurity(String encryptedData, Key key) throws NoSuchPaddingException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, NoSuchProviderException {
+        byte[] decodedData = decodeBase64(encryptedData);
+        byte[] decryptedData = decodeDirect(decodedData, key);
         return new String(decryptedData, StandardCharsets.UTF_8);
+    }
+
+    @Override
+    public <K extends Key> K getDecodeKeyByBase64(String base64String, KeyType keyType) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        KeyFactory factory = KeyFactory.getInstance(EncType.RSA.getName());
+        return getDecodeKeyByBase64(base64String, keyType, factory);
     }
 }
