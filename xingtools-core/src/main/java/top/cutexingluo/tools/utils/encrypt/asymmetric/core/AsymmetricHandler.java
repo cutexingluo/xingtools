@@ -1,10 +1,8 @@
-package top.cutexingluo.tools.utils.encrypt.asymmetric;
+package top.cutexingluo.tools.utils.encrypt.asymmetric.core;
 
 import cn.hutool.crypto.asymmetric.KeyType;
 import org.jetbrains.annotations.NotNull;
 
-import javax.crypto.Cipher;
-import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
@@ -12,7 +10,7 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 
 /**
- * 非对称加密处理器
+ * 非对称算法 公私钥处理器
  *
  * @author XingTian
  * @version 1.0.0
@@ -61,63 +59,16 @@ public interface AsymmetricHandler {
      *
      * @return RSA密钥对
      */
-    default KeyPair generateKeyPairBySecurity() throws Exception {
+    KeyPair generateKeyPairBySecurity() throws Exception;
+
+    /**
+     * 生成RSA密钥对
+     *
+     * @return RSA密钥对
+     */
+    default KeyPair generateKeyPairBySecurityWithInit() throws Exception {
         KeyPairGenerator keyPairGenerator = initKeyPairGenerator();
         return keyPairGenerator.generateKeyPair();
-    }
-
-    // Cipher
-
-    /**
-     * 初始化Cipher
-     */
-    Cipher initCipher() throws Exception;
-
-
-    /**
-     * 直接加密
-     */
-    default byte[] encodeDirect(byte[] data, Key key) throws Exception {
-        Cipher cipher = initCipher();
-        cipher.init(Cipher.ENCRYPT_MODE, key);
-        byte[] encryptedData = cipher.doFinal(data);
-        return encryptedData;
-    }
-
-    /**
-     * 直接解密
-     */
-    default byte[] decodeDirect(byte[] encryptedData, Key key) throws Exception {
-        Cipher cipher = initCipher();
-        cipher.init(Cipher.DECRYPT_MODE, key);
-        byte[] decryptedData = cipher.doFinal(encryptedData);
-        return decryptedData;
-    }
-
-    /**
-     * 使用公钥或私钥加密数据
-     *
-     * @param data 待加密的数据
-     * @param key  公钥或者私有
-     * @return 加密后的数据
-     */
-    default String encodeBySecurity(@NotNull String data, Key key) throws Exception {
-        byte[] encryptedData = encodeDirect(data.getBytes(StandardCharsets.UTF_8), key);
-        return encodeToStringBase64(encryptedData);
-    }
-
-
-    /**
-     * 使用私钥或公钥解密数据
-     *
-     * @param encryptedData 加密后的数据
-     * @param key           私钥或者公钥
-     * @return 解密后的数据
-     */
-    default String decodeBySecurity(String encryptedData, Key key) throws Exception {
-        byte[] decodedData = decodeBase64(encryptedData);
-        byte[] decryptedData = decodeDirect(decodedData, key);
-        return new String(decryptedData, StandardCharsets.UTF_8);
     }
 
 
@@ -136,6 +87,13 @@ public interface AsymmetricHandler {
             return encodeToStringBase64(keyPair.getPublic().getEncoded());
         }
     }
+
+    /**
+     * 初始化 KeyFactory
+     *
+     * @return KeyFactory
+     */
+    KeyFactory initKeyFactory() throws Exception;
 
     /**
      * 使用Base64获取解码密钥

@@ -5,18 +5,15 @@ import cn.hutool.crypto.SecureUtil;
 import cn.hutool.crypto.asymmetric.AsymmetricAlgorithm;
 import cn.hutool.crypto.asymmetric.KeyType;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
-import top.cutexingluo.tools.utils.encrypt.asymmetric.AsymmetricHandler;
+import top.cutexingluo.tools.utils.encrypt.asymmetric.core.AbstractAsymmetricCipherHandler;
 import top.cutexingluo.tools.utils.encrypt.base.EncType;
 
-import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import java.nio.charset.StandardCharsets;
 import java.security.*;
-import java.security.spec.InvalidKeySpecException;
 
 /**
  * RSA 非对称加密算法
@@ -29,7 +26,9 @@ import java.security.spec.InvalidKeySpecException;
  * @date 2024/10/18 10:32
  * @since 1.1.6
  */
-public class RSAHandler implements AsymmetricHandler {
+@EqualsAndHashCode(callSuper = true)
+@Data
+public class RSAHandler extends AbstractAsymmetricCipherHandler {
 
     @Contract(value = " -> new", pure = true)
     public static @NotNull RSAHandler newInstance() {
@@ -136,56 +135,23 @@ public class RSAHandler implements AsymmetricHandler {
 
     //------interface------
 
-    /**
-     * 初始化 KeyPairGenerator
-     *
-     * @return KeyPairGenerator
-     */
+    @Override
     public KeyPairGenerator initKeyPairGenerator() throws NoSuchAlgorithmException {
-        KeyPairGenerator keyPairGenerator;
         keyPairGenerator = KeyPairGenerator.getInstance(EncType.RSA.getName());
         keyPairGenerator.initialize(2048); // 密钥大小为2048位
         return keyPairGenerator;
     }
 
     @Override
+    public KeyFactory initKeyFactory() throws Exception {
+        this.keyFactory = KeyFactory.getInstance(EncType.RSA.getName());
+        return keyFactory;
+    }
+
+    @Override
     public Cipher initCipher() throws NoSuchPaddingException, NoSuchAlgorithmException {
-        return Cipher.getInstance(EncType.RSA.getName());
+        this.cipher = Cipher.getInstance(EncType.RSA.getName());
+        return cipher;
     }
 
-
-    @Override
-    public byte[] encodeDirect(byte[] data, Key key) throws NoSuchPaddingException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException {
-        Cipher cipher = initCipher();
-        cipher.init(Cipher.ENCRYPT_MODE, key);
-        byte[] encryptedData = cipher.doFinal(data);
-        return encryptedData;
-    }
-
-    @Override
-    public byte[] decodeDirect(byte[] encryptedData, Key key) throws NoSuchPaddingException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException {
-        Cipher cipher = initCipher();
-        cipher.init(Cipher.DECRYPT_MODE, key);
-        byte[] decryptedData = cipher.doFinal(encryptedData);
-        return decryptedData;
-    }
-
-    @Override
-    public String encodeBySecurity(@NotNull String data, Key key) throws NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException, NoSuchProviderException {
-        byte[] encryptedData = encodeDirect(data.getBytes(StandardCharsets.UTF_8), key);
-        return encodeToStringBase64(encryptedData);
-    }
-
-    @Override
-    public String decodeBySecurity(String encryptedData, Key key) throws NoSuchPaddingException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, NoSuchProviderException {
-        byte[] decodedData = decodeBase64(encryptedData);
-        byte[] decryptedData = decodeDirect(decodedData, key);
-        return new String(decryptedData, StandardCharsets.UTF_8);
-    }
-
-    @Override
-    public <K extends Key> K getDecodeKeyByBase64(String base64String, KeyType keyType) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        KeyFactory factory = KeyFactory.getInstance(EncType.RSA.getName());
-        return getDecodeKeyByBase64(base64String, keyType, factory);
-    }
 }

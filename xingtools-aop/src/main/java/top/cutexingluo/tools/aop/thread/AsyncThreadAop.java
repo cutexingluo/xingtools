@@ -91,7 +91,7 @@ public class AsyncThreadAop {
     @Around("@annotation(sonThread)")
     public Object sonIntercept(ProceedingJoinPoint joinPoint, SonThread sonThread) throws Throwable {
         sonThread = AnnotationUtils.getAnnotation(sonThread, SonThread.class);
-        boolean isArgThread = sonThread.policy() == ThreadPolicy.Step; // 最后一个是否是线程
+        boolean isArgThread = ThreadPolicy.Step.equals(sonThread.policy()); // 最后一个是否是线程
         String name = ThreadAopFactory.getMainThreadNameInSon(joinPoint, isArgThread);
         ThreadAopHandler handler = mainHandler.get(name);
         return handler.runInSonAop(joinPoint, sonThread);

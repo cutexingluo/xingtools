@@ -1,7 +1,7 @@
 package top.cutexingluo.tools.security.oauth.service;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.data.redis.core.RedisTemplate;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.code.RandomValueAuthorizationCodeServices;
@@ -19,7 +19,8 @@ import java.util.concurrent.TimeUnit;
  * @version 1.0.0
  * @date 2023/5/12 21:50
  */
-@ConditionalOnClass(RedisTemplate.class)
+@EqualsAndHashCode(callSuper = true)
+@Data
 public class RedisAuthorizationCodeServices extends RandomValueAuthorizationCodeServices {
     /**
      * redis key prefix
