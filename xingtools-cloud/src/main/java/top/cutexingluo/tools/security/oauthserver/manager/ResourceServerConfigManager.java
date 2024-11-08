@@ -1,9 +1,9 @@
-package top.cutexingluo.tools.security.oauthserver.resource;
+package top.cutexingluo.tools.security.oauthserver.manager;
 
 import org.springframework.security.oauth2.server.resource.introspection.OpaqueTokenIntrospector;
 
 /**
- * 资源服务管理器
+ * 资源服务配置管理器
  *
  * <p>通过 实现并配置 bean</p>
  *
@@ -12,7 +12,7 @@ import org.springframework.security.oauth2.server.resource.introspection.OpaqueT
  * @date 2024/11/1 18:13
  * @since 1.1.6
  */
-public interface ResourceServerManager {
+public interface ResourceServerConfigManager {
 
     /**
      * 令牌解析器
@@ -22,5 +22,8 @@ public interface ResourceServerManager {
      * 在OAuth2中，Bearer令牌通常就是不透明令牌。OpaqueTokenIntrospector的实现类可以通过向令牌服务器发送请求获取令牌的真实信息，并
      * 将其作为认证信息保存在Spring Security的SecurityContext中，以便后续的鉴权操作。
      */
-    OpaqueTokenIntrospector opaqueTokenIntrospector();
+    default OpaqueTokenIntrospector opaqueTokenIntrospector() {
+//        return new SpringOpaqueTokenIntrospector();
+        return null;
+    }
 }

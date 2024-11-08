@@ -1,4 +1,4 @@
-package top.cutexingluo.tools.security;
+package top.cutexingluo.tools.security.oauth.util;
 
 import cn.hutool.json.JSONObject;
 import cn.hutool.jwt.JWT;

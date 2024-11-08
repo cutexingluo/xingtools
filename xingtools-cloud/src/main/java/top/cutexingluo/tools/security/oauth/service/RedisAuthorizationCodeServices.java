@@ -25,7 +25,7 @@ public class RedisAuthorizationCodeServices extends RandomValueAuthorizationCode
     /**
      * redis key prefix
      */
-    String authCodePrefix = "xing:code:auth:";
+    private String authCodePrefix = "common:auth:code:";
 
     private final RedisRepository redisRepository;
     private final RedisSerializer<Object> valueSerializer;

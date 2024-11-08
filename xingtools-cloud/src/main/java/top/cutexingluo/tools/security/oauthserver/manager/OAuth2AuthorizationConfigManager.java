@@ -1,16 +1,18 @@
-package top.cutexingluo.tools.security.oauthserver.authorization;
+package top.cutexingluo.tools.security.oauthserver.manager;
 
+import org.springframework.security.oauth2.server.authorization.InMemoryOAuth2AuthorizationConsentService;
+import org.springframework.security.oauth2.server.authorization.InMemoryOAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationConsentService;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 
 /**
- * 授权管理器
+ * 授权配置管理器
  *
  * @author XingTian
  * @version 1.0.0
  * @date 2024/11/1 18:25
  */
-public interface AuthorizationManager {
+public interface OAuth2AuthorizationConfigManager {
 
 
     /**
@@ -22,7 +24,9 @@ public interface AuthorizationManager {
      *  <ol>它主要由实现OAuth2授权请求流的组件使用</ol>
      * </li>
      */
-    OAuth2AuthorizationConsentService oAuth2AuthorizationConsentService();
+    default OAuth2AuthorizationConsentService oAuth2AuthorizationConsentService() {
+        return new InMemoryOAuth2AuthorizationConsentService();
+    }
 
 
     /**
@@ -41,7 +45,9 @@ public interface AuthorizationManager {
      * </ul>
      * </li>
      */
-    OAuth2AuthorizationService oAuth2AuthorizationService();
+    default OAuth2AuthorizationService oAuth2AuthorizationService() {
+        return new InMemoryOAuth2AuthorizationService();
+    }
 
 
 }
