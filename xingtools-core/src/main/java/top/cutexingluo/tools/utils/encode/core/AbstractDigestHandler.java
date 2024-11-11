@@ -4,6 +4,7 @@ import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 
 import java.security.MessageDigest;
+import java.util.Objects;
 
 /**
  * 摘要算法处理器 抽象类
@@ -21,9 +22,14 @@ public abstract class AbstractDigestHandler implements DigestHandler {
      */
     protected MessageDigest messageDigest;
 
+    protected void checkMessageDigest() {
+        Objects.requireNonNull(messageDigest,
+                "messageDigest should not be null, please call initMessageDigest() first or set it directly");
+    }
 
     @Override
     public byte[] encodeBySecurity(byte[] data) {
+        checkMessageDigest();
         return messageDigest.digest(data);
     }
 

@@ -32,7 +32,7 @@ public class XTCryptUtil {
      * @return 加密对象
      */
     @Nullable
-    public static <T extends CryptHandler> T createHandler(@NotNull Class<T> clazz, EncMeta meta) {
+    public static <T extends CryptHandler> T createHandler(@NotNull Class<T> clazz, @Nullable EncMeta meta) {
         if (clazz.isAssignableFrom(Md5Handler.class)) {
             return (T) Md5Handler.newInstance();
         }
@@ -40,10 +40,10 @@ public class XTCryptUtil {
             return (T) SHA256Handler.newInstance();
         }
         if (clazz.isAssignableFrom(AESHandler.class)) {
-            return (T) new AESHandler(meta);
+            return (T) AESHandler.newInstance(meta);
         }
         if (clazz.isAssignableFrom(DESHandler.class)) {
-            return (T) new DESHandler(meta);
+            return (T) DESHandler.newInstance(meta);
         }
         if (clazz.isAssignableFrom(RSAHandler.class)) {
             return (T) RSAHandler.newInstance();
@@ -81,8 +81,8 @@ public class XTCryptUtil {
      */
     @NotNull
     @Contract(value = "_ -> new", pure = true)
-    public static AESHandler createAES(EncMeta meta) {
-        return new AESHandler(meta);
+    public static AESHandler createAES(@Nullable EncMeta meta) {
+        return AESHandler.newInstance(meta);
     }
 
     /**
@@ -90,8 +90,8 @@ public class XTCryptUtil {
      */
     @NotNull
     @Contract(value = "_ -> new", pure = true)
-    public static DESHandler createDES(EncMeta meta) {
-        return new DESHandler(meta);
+    public static DESHandler createDES(@Nullable EncMeta meta) {
+        return DESHandler.newInstance(meta);
     }
 
     /**

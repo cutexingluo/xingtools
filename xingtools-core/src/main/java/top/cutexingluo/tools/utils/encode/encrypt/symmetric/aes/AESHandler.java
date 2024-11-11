@@ -1,5 +1,8 @@
 package top.cutexingluo.tools.utils.encode.encrypt.symmetric.aes;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import top.cutexingluo.tools.utils.encode.base.EncType;
 import top.cutexingluo.tools.utils.encode.base.KeyType;
 import top.cutexingluo.tools.utils.encode.core.CipherKeyHandler;
@@ -29,6 +32,11 @@ import java.security.NoSuchAlgorithmException;
 
 public class AESHandler extends AbstractSymmetricCipherHandler<Key> implements CipherKeyHandler {
 
+    @NotNull
+    @Contract("_ -> new")
+    public static AESHandler newInstance(@Nullable EncMeta meta) {
+        return meta == null ? new AESHandler() : new AESHandler(meta);
+    }
 
     /**
      * 加密算法的元数据
@@ -39,7 +47,7 @@ public class AESHandler extends AbstractSymmetricCipherHandler<Key> implements C
         this.meta = new EncMeta();
     }
 
-    public AESHandler(EncMeta meta) {
+    public AESHandler(@NotNull EncMeta meta) {
         this.meta = meta;
     }
 

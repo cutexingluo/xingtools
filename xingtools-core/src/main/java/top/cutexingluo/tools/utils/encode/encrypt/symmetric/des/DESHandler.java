@@ -1,5 +1,8 @@
 package top.cutexingluo.tools.utils.encode.encrypt.symmetric.des;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import top.cutexingluo.tools.utils.encode.base.EncType;
 import top.cutexingluo.tools.utils.encode.base.KeyType;
 import top.cutexingluo.tools.utils.encode.core.CipherKeyHandler;
@@ -28,6 +31,12 @@ import java.security.NoSuchAlgorithmException;
  */
 public class DESHandler extends AbstractSymmetricCipherHandler<Key> implements CipherKeyHandler {
 
+    @NotNull
+    @Contract("_ -> new")
+    public static DESHandler newInstance(@Nullable EncMeta meta) {
+        return meta == null ? new DESHandler() : new DESHandler(meta);
+    }
+
     /**
      * 加密算法的元数据
      */
@@ -37,7 +46,7 @@ public class DESHandler extends AbstractSymmetricCipherHandler<Key> implements C
         this.meta = new EncMeta();
     }
 
-    public DESHandler(EncMeta meta) {
+    public DESHandler(@NotNull EncMeta meta) {
         this.meta = meta;
     }
 
