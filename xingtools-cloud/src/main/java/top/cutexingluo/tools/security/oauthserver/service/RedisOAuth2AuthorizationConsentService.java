@@ -9,7 +9,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationConsent;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationConsentService;
 import org.springframework.util.Assert;
-import top.cutexingluo.tools.basepackage.base.Initializable;
+import top.cutexingluo.tools.basepackage.base.ExtInitializable;
 import top.cutexingluo.tools.utils.ee.redis.RYRedisCache;
 
 import java.util.HashMap;
@@ -31,7 +31,7 @@ import java.util.function.BiFunction;
  * @since 1.1.6
  */
 @Data
-public class RedisOAuth2AuthorizationConsentService implements Initializable, OAuth2AuthorizationConsentService {
+public class RedisOAuth2AuthorizationConsentService implements ExtInitializable<RedisOAuth2AuthorizationConsentService>, OAuth2AuthorizationConsentService {
 
     @NotNull
     protected final RYRedisCache redisCache;
@@ -67,8 +67,9 @@ public class RedisOAuth2AuthorizationConsentService implements Initializable, OA
      * 初始化
      */
     @Override
-    public void init() {
+    public RedisOAuth2AuthorizationConsentService initSelf() {
         this.redisCache.setEnableTransactionSupport(true); // 开启事务支持
+        return this;
     }
 
     /**

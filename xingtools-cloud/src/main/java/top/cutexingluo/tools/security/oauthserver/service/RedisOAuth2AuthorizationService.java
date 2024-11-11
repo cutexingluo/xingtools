@@ -82,7 +82,6 @@ public class RedisOAuth2AuthorizationService implements OAuth2AuthorizationServi
     public RedisOAuth2AuthorizationService(@NotNull RYRedisCache redisCache) {
         Objects.requireNonNull(redisCache, "redisCache cannot be null");
         this.redisCache = redisCache;
-        this.redisCache.setEnableTransactionSupport(true); // 开启事务支持
     }
 
     public RedisOAuth2AuthorizationService(@NotNull RYRedisCache redisCache, String rootPrefix, String notGrantRootPrefix) {
@@ -92,7 +91,6 @@ public class RedisOAuth2AuthorizationService implements OAuth2AuthorizationServi
         this.redisCache = redisCache;
         this.rootPrefix = rootPrefix;
         this.notGrantRootPrefix = notGrantRootPrefix;
-        this.redisCache.setEnableTransactionSupport(true);  // 开启事务支持
     }
 
     /**
