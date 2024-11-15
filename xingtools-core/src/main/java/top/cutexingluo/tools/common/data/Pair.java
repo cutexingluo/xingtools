@@ -1,7 +1,7 @@
 package top.cutexingluo.tools.common.data;
 
 import org.jetbrains.annotations.NotNull;
-import top.cutexingluo.tools.utils.se.map.XTComparator;
+import top.cutexingluo.tools.utils.se.core.compare.XTComparator;
 
 import java.util.Map;
 
@@ -18,6 +18,7 @@ import java.util.Map;
  * @see Pair  Pair  - 可比较不可set 二元组
  * @see TupleEntry  TupleEntry  - 不可比较可set 二元组
  * @see TuplePair TuplePair - 可比较可set 二元组
+ * @see MapEntry MapEntry - 不可比较可setValue 二元组 (Map.Entry 基础实现类)
  * @since 1.0.3
  */
 public class Pair<K extends Comparable<K>, V extends Comparable<V>> extends Entry<K, V> implements Comparable<Pair<K, V>> {

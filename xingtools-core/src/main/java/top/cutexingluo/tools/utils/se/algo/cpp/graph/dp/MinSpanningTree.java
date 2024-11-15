@@ -5,7 +5,7 @@ import top.cutexingluo.tools.utils.se.algo.cpp.graph.GEdge;
 import top.cutexingluo.tools.utils.se.algo.cpp.graph.GPreNode;
 import top.cutexingluo.tools.utils.se.algo.cpp.graph.base.DisjointSetUnion;
 import top.cutexingluo.tools.utils.se.algo.cpp.graph.base.GraphEdgeHandler;
-import top.cutexingluo.tools.utils.se.map.XTComparator;
+import top.cutexingluo.tools.utils.se.core.compare.XTComparator;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -76,16 +76,13 @@ public class RBTree<K extends Comparable<K>, V> extends AbstractMap<K, V> implem
         return false;
     }
 
+
     /**
-     * 迭代器
+     * 节点
+     *
+     * @param <K> the type of key
+     * @param <V> the type of value
      */
-    @NotNull
-    @Override
-    public Iterator<Entry<K, V>> iterator() {
-        return new RBNodeIterator(root, size);
-    }
-
-
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
@@ -167,8 +164,13 @@ public class RBTree<K extends Comparable<K>, V> extends AbstractMap<K, V> implem
         }
     }
 
+    /**
+     * 元素数量
+     */
     protected transient int size;
-
+    /**
+     * 根节点
+     */
     protected transient RBNode<K, V> root;
 
     public RBTree() {
@@ -189,6 +191,9 @@ public class RBTree<K extends Comparable<K>, V> extends AbstractMap<K, V> implem
      */
     protected transient boolean isDesc;
 
+    /**
+     * 比较器
+     */
     protected transient Comparator<? super K> comparator;
 
     // no set
@@ -562,7 +567,10 @@ public class RBTree<K extends Comparable<K>, V> extends AbstractMap<K, V> implem
         return search(root, key);
     }
 
-    protected RBNode<K, V> minimum(RBNode<K, V> node) {
+    /**
+     * 该子树下索引最小的节点
+     */
+    public RBNode<K, V> minimum(RBNode<K, V> node) {
         if (node == null) return null;
         while (node.leftNode != null) {
             node = node.leftNode;
@@ -586,7 +594,10 @@ public class RBTree<K extends Comparable<K>, V> extends AbstractMap<K, V> implem
         else return node.key;
     }
 
-    protected RBNode<K, V> maximum(RBNode<K, V> node) {
+    /**
+     * 该子树下索引最大的节点
+     */
+    public RBNode<K, V> maximum(RBNode<K, V> node) {
         if (node == null) return null;
         while (node.rightNode != null) {
             node = node.rightNode;
@@ -1006,6 +1017,14 @@ public class RBTree<K extends Comparable<K>, V> extends AbstractMap<K, V> implem
         }
     }
 
+    /**
+     * 迭代器
+     */
+    @NotNull
+    @Override
+    public Iterator<Entry<K, V>> iterator() {
+        return new RBNodeIterator(root, size);
+    }
 
     @NotNull
     @Override
@@ -1014,7 +1033,7 @@ public class RBTree<K extends Comparable<K>, V> extends AbstractMap<K, V> implem
     }
 
 
-    final class RBNodeIterator extends BaseEntryBiNodeIterator<RBNode<K, V>, K, V> {
+    class RBNodeIterator extends BaseEntryBiNodeIterator<RBNode<K, V>, K, V> {
         public RBNodeIterator(RBNode<K, V> root, int length) {
             super(length, root);
         }
@@ -1026,20 +1045,18 @@ public class RBTree<K extends Comparable<K>, V> extends AbstractMap<K, V> implem
         }
     }
 
-    final class EntrySet extends AbstractSet<Entry<K, V>> {
+    class EntrySet extends AbstractSet<Entry<K, V>> {
 
         private RBNode<K, V> root;
-        private int size;
 
         public EntrySet(RBNode<K, V> root, int size) {
             this.root = root;
-            this.size = size;
         }
 
         @NotNull
         @Override
         public Iterator<Entry<K, V>> iterator() {
-            return new RBNodeIterator(root, size);
+            return new RBNodeIterator(root, -1);
         }
 
         @Override

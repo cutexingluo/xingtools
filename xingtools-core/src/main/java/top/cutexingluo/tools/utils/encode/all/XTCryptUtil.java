@@ -32,26 +32,22 @@ public class XTCryptUtil {
      * @return 加密对象
      */
     @Nullable
-    public static <T extends CryptHandler> T createHandler(@NotNull Class<T> clazz, @Nullable EncMeta meta) {
-        if (clazz.isAssignableFrom(Md5Handler.class)) {
+    public static <T extends CryptHandler> T createHandler(Class<T> clazz, @Nullable EncMeta meta) {
+        if (clazz == null) {
+            return null;
+        } else if (Md5Handler.class.isAssignableFrom(clazz)) {
             return (T) Md5Handler.newInstance();
-        }
-        if (clazz.isAssignableFrom(SHA256Handler.class)) {
+        } else if (SHA256Handler.class.isAssignableFrom(clazz)) {
             return (T) SHA256Handler.newInstance();
-        }
-        if (clazz.isAssignableFrom(AESHandler.class)) {
+        } else if (AESHandler.class.isAssignableFrom(clazz)) {
             return (T) AESHandler.newInstance(meta);
-        }
-        if (clazz.isAssignableFrom(DESHandler.class)) {
+        } else if (DESHandler.class.isAssignableFrom(clazz)) {
             return (T) DESHandler.newInstance(meta);
-        }
-        if (clazz.isAssignableFrom(RSAHandler.class)) {
+        } else if (RSAHandler.class.isAssignableFrom(clazz)) {
             return (T) RSAHandler.newInstance();
-        }
-        if (clazz.isAssignableFrom(DSAHandler.class)) {
+        } else if (DSAHandler.class.isAssignableFrom(clazz)) {
             return (T) DSAHandler.newInstance();
-        }
-        if (clazz.isAssignableFrom(ECCHandler.class)) {
+        } else if (ECCHandler.class.isAssignableFrom(clazz)) {
             return (T) ECCHandler.newInstance();
         }
         return null;
