@@ -3,10 +3,14 @@ package top.cutexingluo.tools.utils.se.algo.cpp.structure.tree.btree;
 import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import top.cutexingluo.tools.common.base.IData;
+import top.cutexingluo.tools.common.base.IValue;
 import top.cutexingluo.tools.common.data.MapEntry;
 import top.cutexingluo.tools.common.data.PairEntry;
+import top.cutexingluo.tools.common.data.Tuple;
 import top.cutexingluo.tools.common.data.TupleEntry;
 import top.cutexingluo.tools.common.data.node.IParent;
+import top.cutexingluo.tools.designtools.method.ClassMaker;
 import top.cutexingluo.tools.utils.se.core.compare.XTComparator;
 import top.cutexingluo.tools.utils.se.core.iterator.BaseNowIterator;
 import top.cutexingluo.tools.utils.se.core.iterator.BaseNowNodeIterator;
@@ -72,11 +76,10 @@ public class BTree<K, V> extends AbstractMap<K, V> implements NavigableMap<K, V>
         Objects.requireNonNull(valuesSupplier);
         Objects.requireNonNull(nodesSupplier);
         this.m = m;
-        this.size = 0;
         this.comparator = comparator;
         this.valuesSupplier = valuesSupplier;
         this.nodesSupplier = nodesSupplier;
-        this.root = new BNode(null);
+        init();
     }
 
     /**
@@ -101,28 +104,110 @@ public class BTree<K, V> extends AbstractMap<K, V> implements NavigableMap<K, V>
 
 
     /**
+     * 复制一个 BTree 的属性
+     *
+     * @param reversed 是否反转 comparator
+     * @return 新的 BTree
+     */
+    public BTree<K, V> copyProperties(boolean reversed) {
+        if (reversed) return new BTree<K, V>(m, comparator.reversed(), valuesSupplier, nodesSupplier);
+        return new BTree<K, V>(m, comparator, valuesSupplier, nodesSupplier);
+    }
+
+    /**
+     * 添加
+     * <p>不允许key为null</p>
+     */
+    @Override
+    public V put(K key, V value) {
+        if (key == null) return null;
+        insert(key, value);
+        return value;
+    }
+
+    /**
      * 插入一个键值对
      */
-    protected V insert(K key, V value) {
+    public V insert(K key, V value) {
+        Objects.requireNonNull(key);
         BNode temp = root.searchNode(key);
         V res = temp.insert(key, value);
         if (temp.values.size() == m) root = temp.overflow();
         return res;
     }
 
-    protected V search(K key) {
-        if (root.values.size() == 0) return null;
+    /**
+     * 插入一个键值对
+     */
+    public V insert(Entry<K, V> one) {
+        if (one != null) {
+            return insert(one.getKey(), one.getValue());
+        }
+        return null;
+    }
+
+    /**
+     * 通过迭代器暴力查找
+     */
+    @Override
+    public boolean containsValue(Object value) {
+        return super.containsValue(value);
+    }
+
+    @Override
+    public boolean containsKey(Object key) {
+        K res = ClassMaker.cast(key, obj -> (K) obj);
+        if (res != null) {
+            return search(res) != null;
+        }
+        return false;
+    }
+
+    @Override
+    public V get(Object key) {
+        K res = ClassMaker.cast(key, obj -> (K) obj);
+        if (res != null) {
+            return search(res);
+        }
+        return null;
+    }
+
+    public V search(K key) {
+        if (!root.hasValues()) return null;
         return root.search(key);
     }
 
-    protected V removeOne(K key) {
-        if (root.values.size() == 0) return null;
+    public V removeKey(K key) {
+        if (!root.hasValues()) return null;
         V res = search(key);
         if (res == null) return null;
         BNode remoNode = root.searchNode(key);
         root = remoNode.remove(key);
         return res;
     }
+
+    @Override
+    public V remove(Object key) {
+        if (key == null) {
+            return null;
+        }
+        K res = ClassMaker.cast(key, obj -> (K) obj);
+        if (res == null) {
+            return null;
+        }
+        return removeKey(res);
+    }
+
+    protected void init() {
+        size = 0;
+        root = new BNode(null);
+    }
+
+    @Override
+    public void clear() {
+        init();
+    }
+
     // minimum
 
     /**
@@ -156,6 +241,16 @@ public class BTree<K, V> extends AbstractMap<K, V> implements NavigableMap<K, V>
         BNode node = minimum(root);
         if (node == null) return null;
         return node.values.getFirst();
+    }
+
+    /**
+     * 索引最小的节点的 key
+     */
+    @Nullable
+    public K minimumKey() {
+        Entry<K, V> entry = minimumEntry();
+        if (entry == null) return null;
+        return entry.getKey();
     }
 
 
@@ -193,6 +288,17 @@ public class BTree<K, V> extends AbstractMap<K, V> implements NavigableMap<K, V>
         BNode node = maximum(root);
         if (node == null) return null;
         return node.values.getLast();
+    }
+
+
+    /**
+     * 索引最小的节点的 key
+     */
+    @Nullable
+    public K maximumKey() {
+        Entry<K, V> entry = maximumEntry();
+        if (entry == null) return null;
+        return entry.getKey();
     }
 
     // successor
@@ -502,60 +608,112 @@ public class BTree<K, V> extends AbstractMap<K, V> implements NavigableMap<K, V>
 
     @Override
     public NavigableMap<K, V> descendingMap() {
-        BTree<K, V> tree = new BTree<K, V>(m, comparator.reversed(), valuesSupplier, nodesSupplier);
+        BTree<K, V> tree = copyProperties(true);
         tree.putAll(this);
         return tree;
     }
 
     @Override
     public NavigableSet<K> navigableKeySet() {
-        return null;
+        TreeSet<K> set = new TreeSet<>(comparator);
+        set.addAll(this.keySet());
+        return set;
     }
 
     @Override
     public NavigableSet<K> descendingKeySet() {
-        return null;
+        TreeSet<K> set = new TreeSet<>(comparator.reversed());
+        set.addAll(this.keySet());
+        return set;
     }
 
     @Override
     public NavigableMap<K, V> subMap(K fromKey, boolean fromInclusive, K toKey, boolean toInclusive) {
-        return null;
+        if (fromKey == null || toKey == null) throw new IllegalArgumentException("fromKey or toKey is null");
+        BTree<K, V> tree = copyProperties(false);
+        for (Entry<K, V> entry : this) {
+            int cmpFrom = comparator.compare(entry.getKey(), fromKey);
+            int cmpTo = comparator.compare(entry.getKey(), toKey);
+            if (cmpFrom < 0) continue;
+            if (!fromInclusive && cmpFrom == 0) continue;
+            if (!toInclusive && cmpTo == 0) break;
+            if (cmpTo > 0) break;
+            tree.insert(entry);
+        }
+        return tree;
     }
 
     @Override
     public NavigableMap<K, V> headMap(K toKey, boolean inclusive) {
-        return null;
+        if (toKey == null) throw new IllegalArgumentException(" toKey is null");
+        BTree<K, V> tree = copyProperties(false);
+        for (Entry<K, V> entry : this) {
+            int cmpTo = comparator.compare(entry.getKey(), toKey);
+            if (cmpTo > 0) break;
+            tree.insert(entry);
+        }
+        return tree;
     }
 
     @Override
     public NavigableMap<K, V> tailMap(K fromKey, boolean inclusive) {
-        return null;
+        if (fromKey == null) throw new IllegalArgumentException("fromKey  is null");
+        BTree<K, V> tree = copyProperties(false);
+        for (Entry<K, V> entry : this) {
+            int cmpFrom = comparator.compare(entry.getKey(), fromKey);
+            if (cmpFrom < 0) continue;
+            tree.insert(entry);
+        }
+        return tree;
     }
 
 
     @Override
     public SortedMap<K, V> subMap(K fromKey, K toKey) {
-        return null;
+        if (fromKey == null || toKey == null) throw new IllegalArgumentException("fromKey or toKey is null");
+        BTree<K, V> tree = copyProperties(false);
+        for (Entry<K, V> entry : this) {
+            int cmpFrom = comparator.compare(entry.getKey(), fromKey);
+            int cmpTo = comparator.compare(entry.getKey(), toKey);
+            if (cmpFrom < 0) continue;
+            if (cmpTo > 0) break;
+            tree.insert(entry);
+        }
+        return tree;
     }
 
     @Override
     public SortedMap<K, V> headMap(K toKey) {
-        return null;
+        if (toKey == null) throw new IllegalArgumentException(" toKey is null");
+        BTree<K, V> tree = copyProperties(false);
+        for (Entry<K, V> entry : this) {
+            int cmpTo = comparator.compare(entry.getKey(), toKey);
+            if (cmpTo > 0) break;
+            tree.insert(entry);
+        }
+        return tree;
     }
 
     @Override
     public SortedMap<K, V> tailMap(K fromKey) {
-        return null;
+        if (fromKey == null) throw new IllegalArgumentException("fromKey  is null");
+        BTree<K, V> tree = copyProperties(false);
+        for (Entry<K, V> entry : this) {
+            int cmpFrom = comparator.compare(entry.getKey(), fromKey);
+            if (cmpFrom < 0) continue;
+            tree.insert(entry);
+        }
+        return tree;
     }
 
     @Override
     public K firstKey() {
-        return null;
+        return minimumKey();
     }
 
     @Override
     public K lastKey() {
-        return null;
+        return maximumKey();
     }
 
 
@@ -565,7 +723,7 @@ public class BTree<K, V> extends AbstractMap<K, V> implements NavigableMap<K, V>
     }
 
     @Data
-    public class BNode implements IParent<BNode> {
+    public class BNode implements IParent<BNode>, IData<List<BNode>>, IValue<List<Map.Entry<K, V>>> {
         /**
          * 父节点
          */
@@ -573,6 +731,7 @@ public class BTree<K, V> extends AbstractMap<K, V> implements NavigableMap<K, V>
         /**
          * 键值对
          */
+        @NotNull
         protected LinkedList<Map.Entry<K, V>> values;
         /**
          * 链接的节点
@@ -586,13 +745,31 @@ public class BTree<K, V> extends AbstractMap<K, V> implements NavigableMap<K, V>
         }
 
         public BNode(BNode parent,
-                     LinkedList<Entry<K, V>> values,
+                     @NotNull LinkedList<Entry<K, V>> values,
                      LinkedList<BNode> nodes) {
             this.parent = parent;
             this.values = values;
             this.nodes = nodes;
         }
 
+
+        @Override
+        public LinkedList<BNode> data() {
+            return this.nodes;
+        }
+
+        @Override
+        public LinkedList<Map.Entry<K, V>> getValue() {
+            return this.values;
+        }
+
+
+        @Override
+        public String toString() {
+            return "BNode{" +
+                    "values=" + values +
+                    '}';
+        }
 
         protected void checkNodes() {
             if (nodes != null && nodes.isEmpty()) nodes = null;
@@ -606,6 +783,14 @@ public class BTree<K, V> extends AbstractMap<K, V> implements NavigableMap<K, V>
             checkNodes();
             return nodes != null;
         }
+
+        /**
+         * 判断是否有值
+         */
+        public boolean hasValues() {
+            return !values.isEmpty();
+        }
+
 
         /**
          * 判断是否为叶子节点
@@ -982,15 +1167,50 @@ public class BTree<K, V> extends AbstractMap<K, V> implements NavigableMap<K, V>
             Entry<K, V> entry = insertAndGet(key, value);
             return entry == null ? null : entry.getValue();
         }
+
+
+        /**
+         * 插入
+         */
+        protected V insert(@NotNull Entry<K, V> one) {
+            Entry<K, V> entry = insertAndGet(one.getKey(), one.getValue());
+            return entry == null ? null : entry.getValue();
+        }
     }
 
 
+    /**
+     * 迭代器 (默认中序遍历迭代器)
+     * <p>比 key 迭代器快一点</p>
+     */
     @NotNull
     @Override
     public Iterator<Entry<K, V>> iterator() {
         return new BNodeEntryIterator(root);
     }
 
+    /**
+     * node 中序遍历 迭代器
+     */
+    @NotNull
+    public Iterator<BNode> nodeIterator() {
+        return new BNodeIterator(root);
+    }
+
+    /**
+     * entry key 大小遍历 set
+     */
+    @NotNull
+    public Iterator<Entry<K, V>> entrySortedIterator() {
+        return new BNodeSortedEntryIterator(root);
+    }
+
+
+    /**
+     * entry 中序遍历 set
+     *
+     * @see #entrySortedSet
+     */
     @NotNull
     @Override
     public Set<Entry<K, V>> entrySet() {
@@ -998,7 +1218,23 @@ public class BTree<K, V> extends AbstractMap<K, V> implements NavigableMap<K, V>
     }
 
     /**
-     * BNode 迭代器
+     * node 中序遍历 set
+     */
+    @NotNull
+    public Set<BNode> nodeSet() {
+        return new BNodeSet(root);
+    }
+
+    /**
+     * entry key 大小遍历 set
+     */
+    @NotNull
+    public Set<Entry<K, V>> entrySortedSet() {
+        return new EntrySortedSet(root);
+    }
+
+    /**
+     * BNode 迭代器 (中序遍历)
      */
     class BNodeIterator extends BaseNowNodeIterator<BNode> {
         public BNodeIterator() {
@@ -1024,7 +1260,7 @@ public class BTree<K, V> extends AbstractMap<K, V> implements NavigableMap<K, V>
     }
 
     /**
-     * MapEntry 迭代器
+     * MapEntry 迭代器 (中序遍历)
      */
     class BNodeEntryIterator extends BaseNowIterator<BNode, Entry<K, V>> {
         protected LinkedList<Entry<K, V>> values;
@@ -1062,8 +1298,12 @@ public class BTree<K, V> extends AbstractMap<K, V> implements NavigableMap<K, V>
             } else if (!linkedList.isEmpty()) {
                 BNode node = linkedList.pop();
                 currentNode = node; // 当前节点赋值
-                linkedList.addAll(0, node.nodes);
-                values.addAll(node.values);
+                if (node.hasNodes()) {
+                    linkedList.addAll(0, node.nodes);
+                }
+                if (node.hasValues()) {
+                    values.addAll(node.values);
+                }
                 return getCurrentEntry();
             }
             return null;
@@ -1075,17 +1315,20 @@ public class BTree<K, V> extends AbstractMap<K, V> implements NavigableMap<K, V>
             if (currentNode != null) {
                 currentNode.remove(currentEntry.getKey());
             } else {
-                removeOne(currentEntry.getKey());
+                removeKey(currentEntry.getKey());
             }
         }
     }
 
+    /**
+     * EntrySet (Map.Entry 迭代器) (中序遍历)
+     */
     class EntrySet extends AbstractSet<Entry<K, V>> {
 
         /**
          * 根节点
          */
-        private BNode root;
+        private final BNode root;
 
 
         public EntrySet(BNode root) {
@@ -1104,4 +1347,176 @@ public class BTree<K, V> extends AbstractMap<K, V> implements NavigableMap<K, V>
         }
     }
 
+
+    /**
+     * BNodeSet (BNode 迭代器) (中序遍历)
+     */
+    class BNodeSet extends AbstractSet<BNode> {
+
+        /**
+         * 根节点
+         */
+        private final BNode root;
+
+
+        public BNodeSet(BNode root) {
+            this.root = root;
+        }
+
+        @NotNull
+        @Override
+        public Iterator<BNode> iterator() {
+            return new BNodeIterator(root);
+        }
+
+        @Override
+        public int size() {
+            return size;
+        }
+    }
+
+
+    /**
+     * MapEntry 迭代器
+     */
+    class BNodeSortedEntryIterator extends BaseNowIterator<Tuple<BNode, Integer>, Entry<K, V>> {
+        protected LinkedList<Entry<K, V>> values;
+        protected BNode currentNode;
+        protected Entry<K, V> currentEntry;
+
+        public BNodeSortedEntryIterator() {
+            values = new LinkedList<>();
+        }
+
+        public BNodeSortedEntryIterator(LinkedList<Tuple<BNode, Integer>> linkedList) {
+            super(linkedList);
+            values = new LinkedList<>();
+        }
+
+        public BNodeSortedEntryIterator(BNode root) {
+            values = new LinkedList<>();
+            linkedList.add(new TupleEntry<>(root, 0));
+        }
+
+        @Override
+        public boolean hasNext() {
+            clearInvalid();
+            return !values.isEmpty() || !linkedList.isEmpty();
+        }
+
+        protected Entry<K, V> getCurrentEntry() {
+            Entry<K, V> entry = values.pop();
+            currentEntry = entry;
+            return entry;
+        }
+
+        /**
+         * 清除遍历完成的数据
+         */
+        protected void clearInvalid() {
+            while (!linkedList.isEmpty()) {
+                // 取出元素
+                Tuple<BNode, Integer> tuple = linkedList.getFirst();
+                BNode now = tuple.getKey();
+                int index = tuple.getValue();
+                if (now.hasNodes()) {
+                    if (index >= now.nodes.size()) { // 超出范围
+                        linkedList.pop();
+                        continue;
+                    }
+                }
+                break;
+            }
+        }
+
+        /**
+         * 获取下一个元素
+         *
+         * @return true: 跳出循环，存在下一个元素或已遍历完
+         */
+        protected boolean canNextOne() {
+            // 取出元素
+            Tuple<BNode, Integer> tuple = linkedList.getFirst();
+            BNode now = tuple.getKey();
+            int index = tuple.getValue();
+            if (now.hasNodes()) {
+                if (index >= now.nodes.size()) { // 超出范围
+                    linkedList.pop();
+                    return false; // 基本没这个情况
+                } else { // 在里面
+                    BNode child = now.nodes.get(index);
+                    linkedList.addFirst(new TupleEntry<>(child, 0));
+                    tuple.setValue(index + 1); // 更新索引
+
+                    if (index > 0 && index - 1 < now.values.size()) {
+                        Entry<K, V> entry = now.values.get(index - 1);
+                        values.addFirst(entry); // 节点值
+
+                        this.currentNode = now;
+                        return true; // 有值
+                    } else {
+                        return false;
+                    }
+                }
+            } else { // 叶子节点
+                if (now.hasValues()) {
+                    values.addAll(0, now.values);
+                }
+                linkedList.pop();
+
+                this.currentNode = now;
+                return true;
+            }
+        }
+
+
+        public Entry<K, V> next() {
+            if (!values.isEmpty()) {
+                return getCurrentEntry();
+            } else if (!linkedList.isEmpty()) {
+                // 能否取出元素
+                while (!linkedList.isEmpty() && !canNextOne()) ;
+                return getCurrentEntry();
+            }
+            return null;
+        }
+
+        @Override
+        public void remove() {
+            if (currentEntry == null) return;
+            if (currentNode != null) {
+                currentNode.remove(currentEntry.getKey());
+            } else {
+                removeKey(currentEntry.getKey());
+            }
+        }
+    }
+
+
+    /**
+     * EntrySortedSet (Map.Entry 迭代器) (key 遍历)
+     */
+    class EntrySortedSet extends AbstractSet<Entry<K, V>> {
+
+        /**
+         * 根节点
+         */
+        private final BNode root;
+
+
+        public EntrySortedSet(BNode root) {
+            this.root = root;
+        }
+
+        @NotNull
+        @Override
+        public Iterator<Entry<K, V>> iterator() {
+            return new BNodeSortedEntryIterator(root);
+        }
+
+        @Override
+        public int size() {
+            return size;
+        }
+    }
 }

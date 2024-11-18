@@ -234,6 +234,17 @@ public class RBTree<K extends Comparable<K>, V> extends AbstractMap<K, V> implem
         init();
     }
 
+    /**
+     * 复制一个 RBTree 的属性
+     *
+     * @param reversed 是否反转 comparator
+     * @return 新的 RBTree
+     */
+    public RBTree<K, V> copyProperties(boolean reversed) {
+        if (reversed) return new RBTree<K, V>(comparator.reversed());
+        return new RBTree<K, V>(comparator);
+    }
+
 
     @Override
     public Entry<K, V> lowerEntry(K key) {
@@ -319,7 +330,7 @@ public class RBTree<K extends Comparable<K>, V> extends AbstractMap<K, V> implem
 
     @Override
     public NavigableMap<K, V> descendingMap() {
-        RBTree<K, V> tree = new RBTree<K, V>(comparator.reversed());
+        RBTree<K, V> tree = copyProperties(true);
         tree.putAll(this);
         return tree;
     }
@@ -341,7 +352,7 @@ public class RBTree<K extends Comparable<K>, V> extends AbstractMap<K, V> implem
     @Override
     public NavigableMap<K, V> subMap(K fromKey, boolean fromInclusive, K toKey, boolean toInclusive) {
         if (fromKey == null || toKey == null) throw new IllegalArgumentException("fromKey or toKey is null");
-        RBTree<K, V> tree = new RBTree<K, V>(comparator);
+        RBTree<K, V> tree = copyProperties(false);
         for (Entry<K, V> entry : this) {
             int cmpFrom = comparator.compare(entry.getKey(), fromKey);
             int cmpTo = comparator.compare(entry.getKey(), toKey);
@@ -357,7 +368,7 @@ public class RBTree<K extends Comparable<K>, V> extends AbstractMap<K, V> implem
     @Override
     public NavigableMap<K, V> headMap(K toKey, boolean inclusive) {
         if (toKey == null) throw new IllegalArgumentException("toKey is null");
-        RBTree<K, V> tree = new RBTree<K, V>(comparator);
+        RBTree<K, V> tree = copyProperties(false);
         for (Entry<K, V> entry : this) {
             int cmpTo = comparator.compare(entry.getKey(), toKey);
             if (!inclusive && cmpTo == 0) break;
@@ -370,7 +381,7 @@ public class RBTree<K extends Comparable<K>, V> extends AbstractMap<K, V> implem
     @Override
     public NavigableMap<K, V> tailMap(K fromKey, boolean inclusive) {
         if (fromKey == null) throw new IllegalArgumentException("fromKey is null");
-        RBTree<K, V> tree = new RBTree<K, V>(comparator);
+        RBTree<K, V> tree = copyProperties(false);
         for (Entry<K, V> entry : this) {
             int cmpFrom = comparator.compare(entry.getKey(), fromKey);
             if (cmpFrom < 0) continue;
@@ -384,7 +395,7 @@ public class RBTree<K extends Comparable<K>, V> extends AbstractMap<K, V> implem
     @Override
     public SortedMap<K, V> subMap(K fromKey, K toKey) {
         if (fromKey == null || toKey == null) throw new IllegalArgumentException("fromKey or toKey is null");
-        RBTree<K, V> tree = new RBTree<K, V>(comparator);
+        RBTree<K, V> tree = copyProperties(false);
         for (Entry<K, V> entry : this) {
             int cmpFrom = comparator.compare(entry.getKey(), fromKey);
             int cmpTo = comparator.compare(entry.getKey(), toKey);
@@ -398,7 +409,7 @@ public class RBTree<K extends Comparable<K>, V> extends AbstractMap<K, V> implem
     @Override
     public SortedMap<K, V> headMap(K toKey) {
         if (toKey == null) throw new IllegalArgumentException(" toKey is null");
-        RBTree<K, V> tree = new RBTree<K, V>(comparator);
+        RBTree<K, V> tree = copyProperties(false);
         for (Entry<K, V> entry : this) {
             int cmpTo = comparator.compare(entry.getKey(), toKey);
             if (cmpTo > 0) break;
@@ -410,7 +421,7 @@ public class RBTree<K extends Comparable<K>, V> extends AbstractMap<K, V> implem
     @Override
     public SortedMap<K, V> tailMap(K fromKey) {
         if (fromKey == null) throw new IllegalArgumentException("fromKey  is null");
-        RBTree<K, V> tree = new RBTree<K, V>(comparator);
+        RBTree<K, V> tree = copyProperties(false);
         for (Entry<K, V> entry : this) {
             int cmpFrom = comparator.compare(entry.getKey(), fromKey);
             if (cmpFrom < 0) continue;
