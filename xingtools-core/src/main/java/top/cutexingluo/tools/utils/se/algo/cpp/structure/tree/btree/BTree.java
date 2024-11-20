@@ -22,10 +22,12 @@ import java.util.function.Supplier;
 /**
  * B 树
  * <p>B-Tree</p>
+ * <p>B 树的 map 实现类</p>
  *
  * @author XingTian
  * @version 1.0.0
  * @date 2024/11/13 10:28
+ * @since 1.1.6
  */
 public class BTree<K, V> extends AbstractMap<K, V> implements NavigableMap<K, V>, Iterable<Map.Entry<K, V>>, Serializable {
 
@@ -71,7 +73,7 @@ public class BTree<K, V> extends AbstractMap<K, V> implements NavigableMap<K, V>
                  Supplier<LinkedList<Entry<K, V>>> valuesSupplier,
                  Supplier<LinkedList<BNode>> nodesSupplier) {
         if (m <= 2) {
-            throw new IllegalArgumentException("阶数必须大于2");
+            throw new IllegalArgumentException("the order of BTree must be greater than 2");
         }
         Objects.requireNonNull(valuesSupplier);
         Objects.requireNonNull(nodesSupplier);
@@ -112,6 +114,26 @@ public class BTree<K, V> extends AbstractMap<K, V> implements NavigableMap<K, V>
     public BTree<K, V> copyProperties(boolean reversed) {
         if (reversed) return new BTree<K, V>(m, comparator.reversed(), valuesSupplier, nodesSupplier);
         return new BTree<K, V>(m, comparator, valuesSupplier, nodesSupplier);
+    }
+
+    protected void init() {
+        size = 0;
+        root = new BNode(null);
+    }
+
+    @Override
+    public void clear() {
+        init();
+    }
+
+    @Override
+    public Comparator<? super K> comparator() {
+        return comparator;
+    }
+
+    @Override
+    public int size() {
+        return this.size;
     }
 
     /**
@@ -198,15 +220,6 @@ public class BTree<K, V> extends AbstractMap<K, V> implements NavigableMap<K, V>
         return removeKey(res);
     }
 
-    protected void init() {
-        size = 0;
-        root = new BNode(null);
-    }
-
-    @Override
-    public void clear() {
-        init();
-    }
 
     // minimum
 
@@ -717,11 +730,9 @@ public class BTree<K, V> extends AbstractMap<K, V> implements NavigableMap<K, V>
     }
 
 
-    @Override
-    public Comparator<? super K> comparator() {
-        return comparator;
-    }
-
+    /**
+     * BNode 节点
+     */
     @Data
     public class BNode implements IParent<BNode>, IData<List<BNode>>, IValue<List<Map.Entry<K, V>>> {
         /**
@@ -741,7 +752,7 @@ public class BTree<K, V> extends AbstractMap<K, V> implements NavigableMap<K, V>
         public BNode(BNode parent) {
             this.parent = parent;
             this.values = valuesSupplier.get();
-            this.nodes = nodesSupplier.get();
+            this.nodes = null;
         }
 
         public BNode(BNode parent,
@@ -1130,7 +1141,7 @@ public class BTree<K, V> extends AbstractMap<K, V> implements NavigableMap<K, V>
         }
 
         /**
-         * 插入并得到
+         * 插入并得到，插入成功后的
          */
         protected Entry<K, V> insertAndGet(K key, V value) {
             Entry<K, V> res = null;
@@ -1161,10 +1172,40 @@ public class BTree<K, V> extends AbstractMap<K, V> implements NavigableMap<K, V>
         }
 
         /**
+         * 插入并得到，返回插入成功前的数据
+         */
+        protected Map.Entry<K, V> insertAndGetOld(K key, V value) {
+            Map.Entry<K, V> res = null;
+            // 插入数据
+            if (values.size() == 0 ||
+                    comparator.compare(key, values.getLast().getKey()) > 0) {
+                values.add(new MapEntry<>(key, value));
+                size++; // size + 1
+            } else if (
+                    comparator.compare(key, values.getFirst().getKey()) < 0) {
+                values.addFirst(new MapEntry<>(key, value));
+                size++; // size + 1
+            } else {
+                for (int i = 0; i < values.size(); i++) {
+                    int compare = comparator.compare(key, values.get(i).getKey());
+//                    if (compare ==0) return values.get(i).put(key, t);
+                    if (compare == 0) {
+                        return values.set(i, new MapEntry<>(key, value));
+                    }
+                    if (compare > 0) continue;
+                    values.add(i, new MapEntry<>(key, value));
+                    size++; // size + 1
+                    break;
+                }
+            }
+            return res;
+        }
+
+        /**
          * 插入
          */
         protected V insert(K key, V value) {
-            Entry<K, V> entry = insertAndGet(key, value);
+            Entry<K, V> entry = insertAndGetOld(key, value);
             return entry == null ? null : entry.getValue();
         }
 
@@ -1173,11 +1214,12 @@ public class BTree<K, V> extends AbstractMap<K, V> implements NavigableMap<K, V>
          * 插入
          */
         protected V insert(@NotNull Entry<K, V> one) {
-            Entry<K, V> entry = insertAndGet(one.getKey(), one.getValue());
+            Entry<K, V> entry = insertAndGetOld(one.getKey(), one.getValue());
             return entry == null ? null : entry.getValue();
         }
     }
 
+    // 迭代器
 
     /**
      * 迭代器 (默认中序遍历迭代器)
@@ -1206,6 +1248,8 @@ public class BTree<K, V> extends AbstractMap<K, V> implements NavigableMap<K, V>
     }
 
 
+    // set
+
     /**
      * entry 中序遍历 set
      *
@@ -1232,6 +1276,9 @@ public class BTree<K, V> extends AbstractMap<K, V> implements NavigableMap<K, V>
     public Set<Entry<K, V>> entrySortedSet() {
         return new EntrySortedSet(root);
     }
+
+
+    // 迭代器和 set 类
 
     /**
      * BNode 迭代器 (中序遍历)

@@ -31,7 +31,7 @@ public class XTComparator<T> implements Comparator<T> {
      *
      * @since 1.1.6
      */
-    public static final Function<Integer, Integer> DEFAULT_CORRECT_FUNCTION = (ret) -> ret == 0 ? ret : (ret > 0 ? 1 : -1);
+    public static final Function<Integer, Integer> DEFAULT_CORRECT_FILTER = (ret) -> ret == 0 ? ret : (ret > 0 ? 1 : -1);
 
     /**
      * 是否正序
@@ -53,23 +53,23 @@ public class XTComparator<T> implements Comparator<T> {
      * 比较器矫正函数
      * <p>由于存在 null , 值为2 ,所以提供 compare 矫正函数</p>
      */
-    private Function<Integer, Integer> correctFunction;
+    private Function<Integer, Integer> correctFilter;
 
     public XTComparator(boolean isAsc) {
         this.isAsc = isAsc;
-        this.correctFunction = DEFAULT_CORRECT_FUNCTION;
+        this.correctFilter = DEFAULT_CORRECT_FILTER;
     }
 
     public XTComparator(boolean isAsc, boolean nullOnePos) {
         this.isAsc = isAsc;
         this.nullOnePos = nullOnePos;
-        this.correctFunction = DEFAULT_CORRECT_FUNCTION;
+        this.correctFilter = DEFAULT_CORRECT_FILTER;
     }
 
     public XTComparator(boolean isAsc, boolean nullOnePos, Function<Integer, Integer> correctFunction) {
         this.isAsc = isAsc;
         this.nullOnePos = nullOnePos;
-        this.correctFunction = correctFunction;
+        this.correctFilter = correctFunction;
     }
 
     public XTComparator<T> ascOrder(boolean isAsc) {
@@ -82,8 +82,8 @@ public class XTComparator<T> implements Comparator<T> {
         return this;
     }
 
-    public Comparator<T> correctFunction(Function<Integer, Integer> correctFunction) {
-        this.correctFunction = correctFunction;
+    public Comparator<T> correctFunction(Function<Integer, Integer> correctFilter) {
+        this.correctFilter = correctFilter;
         return this;
     }
 
@@ -174,7 +174,7 @@ public class XTComparator<T> implements Comparator<T> {
             ret = o1.toString().compareTo(o2.toString());
         }
         // 最后进行矫正
-        ret = correctFunction.apply(ret);
+        ret = correctFilter.apply(ret);
         return isAsc ? ret : -ret;
     }
 
