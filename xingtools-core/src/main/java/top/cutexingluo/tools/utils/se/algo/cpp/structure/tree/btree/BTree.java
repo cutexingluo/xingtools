@@ -136,6 +136,38 @@ public class BTree<K, V> extends AbstractMap<K, V> implements NavigableMap<K, V>
         return this.size;
     }
 
+    public BNode getRoot() {
+        return root;
+    }
+
+    public void setRoot(BNode root) {
+        this.root = root;
+    }
+
+    public Comparator<? super K> getComparator() {
+        return comparator;
+    }
+
+    public void setComparator(Comparator<? super K> comparator) {
+        this.comparator = comparator;
+    }
+
+    public Supplier<LinkedList<Entry<K, V>>> getValuesSupplier() {
+        return valuesSupplier;
+    }
+
+    public void setValuesSupplier(Supplier<LinkedList<Entry<K, V>>> valuesSupplier) {
+        this.valuesSupplier = valuesSupplier;
+    }
+
+    public Supplier<LinkedList<BNode>> getNodesSupplier() {
+        return nodesSupplier;
+    }
+
+    public void setNodesSupplier(Supplier<LinkedList<BNode>> nodesSupplier) {
+        this.nodesSupplier = nodesSupplier;
+    }
+
     /**
      * 添加
      * <p>不允许key为null</p>
@@ -644,7 +676,7 @@ public class BTree<K, V> extends AbstractMap<K, V> implements NavigableMap<K, V>
     public NavigableMap<K, V> subMap(K fromKey, boolean fromInclusive, K toKey, boolean toInclusive) {
         if (fromKey == null || toKey == null) throw new IllegalArgumentException("fromKey or toKey is null");
         BTree<K, V> tree = copyProperties(false);
-        for (Entry<K, V> entry : this) {
+        for (Entry<K, V> entry : this.entrySortedSet()) {// 遍历排序 set
             int cmpFrom = comparator.compare(entry.getKey(), fromKey);
             int cmpTo = comparator.compare(entry.getKey(), toKey);
             if (cmpFrom < 0) continue;
@@ -660,7 +692,7 @@ public class BTree<K, V> extends AbstractMap<K, V> implements NavigableMap<K, V>
     public NavigableMap<K, V> headMap(K toKey, boolean inclusive) {
         if (toKey == null) throw new IllegalArgumentException(" toKey is null");
         BTree<K, V> tree = copyProperties(false);
-        for (Entry<K, V> entry : this) {
+        for (Entry<K, V> entry : this.entrySortedSet()) {// 遍历排序 set
             int cmpTo = comparator.compare(entry.getKey(), toKey);
             if (cmpTo > 0) break;
             tree.insert(entry);
@@ -672,7 +704,7 @@ public class BTree<K, V> extends AbstractMap<K, V> implements NavigableMap<K, V>
     public NavigableMap<K, V> tailMap(K fromKey, boolean inclusive) {
         if (fromKey == null) throw new IllegalArgumentException("fromKey  is null");
         BTree<K, V> tree = copyProperties(false);
-        for (Entry<K, V> entry : this) {
+        for (Entry<K, V> entry : this.entrySortedSet()) {// 遍历排序 set
             int cmpFrom = comparator.compare(entry.getKey(), fromKey);
             if (cmpFrom < 0) continue;
             tree.insert(entry);
@@ -685,7 +717,7 @@ public class BTree<K, V> extends AbstractMap<K, V> implements NavigableMap<K, V>
     public SortedMap<K, V> subMap(K fromKey, K toKey) {
         if (fromKey == null || toKey == null) throw new IllegalArgumentException("fromKey or toKey is null");
         BTree<K, V> tree = copyProperties(false);
-        for (Entry<K, V> entry : this) {
+        for (Entry<K, V> entry : this.entrySortedSet()) {// 遍历排序 set
             int cmpFrom = comparator.compare(entry.getKey(), fromKey);
             int cmpTo = comparator.compare(entry.getKey(), toKey);
             if (cmpFrom < 0) continue;
@@ -699,7 +731,7 @@ public class BTree<K, V> extends AbstractMap<K, V> implements NavigableMap<K, V>
     public SortedMap<K, V> headMap(K toKey) {
         if (toKey == null) throw new IllegalArgumentException(" toKey is null");
         BTree<K, V> tree = copyProperties(false);
-        for (Entry<K, V> entry : this) {
+        for (Entry<K, V> entry : this.entrySortedSet()) {// 遍历排序 set
             int cmpTo = comparator.compare(entry.getKey(), toKey);
             if (cmpTo > 0) break;
             tree.insert(entry);
@@ -711,7 +743,7 @@ public class BTree<K, V> extends AbstractMap<K, V> implements NavigableMap<K, V>
     public SortedMap<K, V> tailMap(K fromKey) {
         if (fromKey == null) throw new IllegalArgumentException("fromKey  is null");
         BTree<K, V> tree = copyProperties(false);
-        for (Entry<K, V> entry : this) {
+        for (Entry<K, V> entry : this.entrySortedSet()) { // 遍历排序 set
             int cmpFrom = comparator.compare(entry.getKey(), fromKey);
             if (cmpFrom < 0) continue;
             tree.insert(entry);
@@ -779,6 +811,7 @@ public class BTree<K, V> extends AbstractMap<K, V> implements NavigableMap<K, V>
         public String toString() {
             return "BNode{" +
                     "values=" + values +
+                    ", nodes=" + nodes +
                     '}';
         }
 

@@ -12,11 +12,19 @@ xingtools v1.1.3, v1.1.4, v1.1.5
 更新公告
 2024-10-18 v1.1.6
 更改部分
+1.*重构迭代器，比较器，使之更通用，更健壮
+2.提取 XTMath 的二分查找 为 XTBinarySearch, 支持多种二分查找，类似 c++ lower_bound, upper_bound
 
 新增部分
 1.XTCallable 新增 getInCatchRet 更加健全
 2.*继承重构1.0.5 版本的 XTEncryptUtil 加密工具类，支持Md5,SHA256,DES,AES,RSA 算法
 3.新增IdNode接口 (含 getId 方法),新增DataNode作为IDataValue 默认实现类
+4.新增编码/哈希/加密算法接口和多个实现类，CryptHandler 是所有算法的基类
+5.新增 ECC 加密，XTEncryptUtil 改名为 XTCryptUtil , 使综合工具更明确
+6.* 新增 BTree (B 树) 和 BPlusTree (B+ 树) 数据结构，支持插入，删除，查找，遍历等操作，使用新的迭代器速度更快
+7.新增 MapEntry 实体类兼容 Map.Entry 接口和其他实体类
+
+
 
 2024-9-27 ~ 2024-9-29   v1.1.5
 更改部分

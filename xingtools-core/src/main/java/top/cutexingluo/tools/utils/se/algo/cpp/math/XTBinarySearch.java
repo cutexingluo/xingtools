@@ -860,6 +860,9 @@ public class XTBinarySearch {
     // test example
 //    public static void main(String[] args) {
 //        Integer[] a = {1, 2, 3, 4, 5, 6, 8, 9, 10};
+//
+//        System.out.println("功能测试");
+//
 //        int index1 = lowerBound(a, 7); // 6 -> 8 的位置
 //        System.out.println(index1);
 //
@@ -884,5 +887,56 @@ public class XTBinarySearch {
 //        int index8 = upperBoundReversed(a, 8);// 5 -> 6 的位置
 //        System.out.println(index8);
 //
+//        System.out.println("左边界测试");
+//
+//        int index11 = lowerBound(a, 0); // 0 -> 1的位置
+//        System.out.println(index11);
+//
+//        int index12 = lowerBound(a, 1);// 0 -> 1 的位置
+//        System.out.println(index12);
+//
+//        int index13 = upperBound(a, 0); // 0 -> 1 的位置
+//        System.out.println(index13);
+//
+//        int index14 = upperBound(a, 1);// 1 ->2 的位置
+//        System.out.println(index14);
+//
+//        int index15 = lowerBoundReversed(a, 0); // -1
+//        System.out.println(index15);
+//
+//        int index16 = lowerBoundReversed(a, 1);// 0 -> 1 的位置
+//        System.out.println(index16);
+//
+//        int index17 = upperBoundReversed(a, 0); // -1
+//        System.out.println(index17);
+//
+//        int index18 = upperBoundReversed(a, 1);// -1
+//        System.out.println(index18);
+//
+//        System.out.println("右边界测试");
+//
+//        int index21 = lowerBound(a, 10); // 8 -> 10的位置
+//        System.out.println(index21);
+//
+//        int index22 = lowerBound(a, 11);// 9
+//        System.out.println(index22);
+//
+//        int index23 = upperBound(a, 10); // 9
+//        System.out.println(index23);
+//
+//        int index24 = upperBound(a, 11);// 9
+//        System.out.println(index24);
+//
+//        int index25 = lowerBoundReversed(a, 10); // 8 -> 10 的位置
+//        System.out.println(index25);
+//
+//        int index26 = lowerBoundReversed(a, 11);//  8-> 10 的位置
+//        System.out.println(index26);
+//
+//        int index27 = upperBoundReversed(a, 10); // 7 -> 9 的位置
+//        System.out.println(index27);
+//
+//        int index28 = upperBoundReversed(a, 11);// 8 -> 10 的位置
+//        System.out.println(index28);
 //    }
 }

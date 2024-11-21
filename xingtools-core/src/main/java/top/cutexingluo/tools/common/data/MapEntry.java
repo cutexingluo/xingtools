@@ -2,6 +2,7 @@ package top.cutexingluo.tools.common.data;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.AbstractMap;
 import java.util.Map;
 
 /**
@@ -9,6 +10,7 @@ import java.util.Map;
  *
  * <p>键值对对象，可以使用 setValue 方法</p>
  * <p>Map.Entry 基础实现类</p>
+ * <p>详见 {@link AbstractMap.SimpleEntry}</p>
  *
  * @author XingTian
  * @version 1.0.0
@@ -42,6 +44,9 @@ public class MapEntry<K, V> extends Entry<K, V> implements Map.Entry<K, V> {
         return oldValue;
     }
 
+    /**
+     * @see AbstractMap.SimpleEntry
+     */
     @Override
     public Map.Entry<K, V> toMapEntry() {
         return new Map.Entry<K, V>() {
