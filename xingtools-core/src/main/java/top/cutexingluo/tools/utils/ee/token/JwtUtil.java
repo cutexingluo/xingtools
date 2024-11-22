@@ -5,8 +5,11 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.jetbrains.annotations.NotNull;
 
 import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import java.util.Base64;
 import java.util.Date;
 import java.util.UUID;
 
@@ -105,6 +108,16 @@ public class JwtUtil {
         String token = "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJjYWM2ZDVhZi1mNjVlLTQ0MDAtYjcxMi0zYWEwOGIyOTIwYjQiLCJzdWIiOiJzZyIsImlzcyI6InNnIiwiaWF0IjoxNjM4MTA2NzEyLCJleHAiOjE2MzgxMTAzMTJ9.JVsSbkP94wuczb4QryQbAke3ysBDIL5ou8fWsbt_ebg";
         Claims claims = parseJWT(token);
         System.out.println(claims);
+    }
+
+    /**
+     * 生成秘钥 secretKey
+     */
+    @NotNull
+    public static SecretKey generalKey(String base64JwtKey, String algo) {
+        byte[] encodedKey = Base64.getDecoder().decode(base64JwtKey);
+        SecretKey key = new SecretKeySpec(encodedKey, 0, encodedKey.length, algo);
+        return key;
     }
 
 
