@@ -10,7 +10,7 @@ import top.cutexingluo.tools.anno.EnableXTCloudSecurity;
 import top.cutexingluo.tools.auto.server.XingToolsAutoConfiguration;
 import top.cutexingluo.tools.autoconfigure.server.security.controller.SecurityControllerConfig;
 import top.cutexingluo.tools.autoconfigure.server.security.property.XTSecurityProperties;
-import top.cutexingluo.tools.security.XTSignGlobal;
+import top.cutexingluo.tools.security.oauth.util.XTSignGlobal;
 import top.cutexingluo.tools.start.log.LogInfoAuto;
 import top.cutexingluo.tools.utils.spring.ImportSelectorUtil;
 
@@ -27,7 +27,7 @@ import java.util.List;
 @Slf4j
 @AutoConfigureAfter(XingToolsAutoConfiguration.class)
 @EnableConfigurationProperties(XTSecurityProperties.class)
-public class XTSecurityImportSelector implements ImportSelector{
+public class XTSecurityImportSelector implements ImportSelector {
     @Override
     public String[] selectImports(AnnotationMetadata importingClassMetadata) {
 
@@ -45,12 +45,12 @@ public class XTSecurityImportSelector implements ImportSelector{
         return classNames.toArray(new String[0]);
     }
 
-    protected void initSignKey(AnnotationMetadata importingClassMetadata){
+    protected void initSignKey(AnnotationMetadata importingClassMetadata) {
         AnnotationAttributes attributes = ImportSelectorUtil.getAnnotationAttributes(importingClassMetadata, EnableXTCloudSecurity.class);
         if (attributes == null) log.error("attributes is null");
         String signKey = attributes.getString("sign_key");
         if (signKey == null) log.error("sign_key is null");
-        else{
+        else {
             XTSignGlobal.setSign(signKey);
         }
     }

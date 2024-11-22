@@ -1,4 +1,4 @@
-package top.cutexingluo.tools.security;
+package top.cutexingluo.tools.security.oauth.util;
 
 /**
  * sign 全局配置
@@ -7,7 +7,7 @@ package top.cutexingluo.tools.security;
  * @version 1.0.0
  * @date 2024/7/16 13:43
  */
-public class XTSignGlobal{
+public class XTSignGlobal {
 
 
     public static String signKey = "sign_key";
@@ -25,6 +25,6 @@ public class XTSignGlobal{
      * 设置签
      */
     public static void setSign(String sign) {
-        signKey=sign;
+        signKey = sign;
     }
 }

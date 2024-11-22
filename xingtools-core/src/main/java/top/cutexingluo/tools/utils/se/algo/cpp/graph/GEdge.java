@@ -2,7 +2,7 @@ package top.cutexingluo.tools.utils.se.algo.cpp.graph;
 
 import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import top.cutexingluo.tools.utils.se.map.XTComparator;
+import top.cutexingluo.tools.utils.se.core.compare.XTComparator;
 
 /**
  * 图边

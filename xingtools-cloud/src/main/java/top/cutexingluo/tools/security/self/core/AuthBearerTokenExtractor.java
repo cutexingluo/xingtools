@@ -4,7 +4,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import top.cutexingluo.tools.bridge.servlet.HttpServletRequestData;
 import top.cutexingluo.tools.bridge.servlet.adapter.HttpServletRequestDataAdapter;
-import top.cutexingluo.tools.security.base.BearerTokenExtractor;
 import top.cutexingluo.tools.security.self.base.AbstractAuthTokenExtractor;
 
 /**
@@ -17,7 +16,7 @@ import top.cutexingluo.tools.security.self.base.AbstractAuthTokenExtractor;
  */
 public class AuthBearerTokenExtractor extends AbstractAuthTokenExtractor {
 
-    private final static Log logger = LogFactory.getLog(BearerTokenExtractor.class);
+    private final static Log logger = LogFactory.getLog(AuthBearerTokenExtractor.class);
 
     /**
      * bearer type
