@@ -394,6 +394,16 @@ public class RYRedisCache {
         return (List<T>) redisTemplate.opsForList().range(key, 0, -1);
     }
 
+    /**
+     * 获得缓存的list对象
+     *
+     * @param key 缓存的键值
+     * @return 缓存键值对应的数据
+     */
+    public <T> List<T> getCacheList(final String key, int start, int end) {
+        return (List<T>) redisTemplate.opsForList().range(key, start, end);
+    }
+
 
     /**
      * 缓存Set

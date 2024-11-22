@@ -47,9 +47,16 @@ public class Pair<K extends Comparable<K>, V extends Comparable<V>> extends Entr
     public int compareTo(@NotNull Pair<K, V> o) {
         int ret = XTComparator.tryCompareNull(this, o);
         if (ret == XTComparator.BOTH_NOT_NULL) { //1.0.5
-            int retKey = key.compareTo(o.key);
-            if (retKey == 0) {
-                return value.compareTo(o.value);
+            int retKey = XTComparator.tryCompareNull(key, o.key);
+            if (retKey == XTComparator.BOTH_NOT_NULL) {
+                retKey = key.compareTo(o.key);
+                if (retKey == 0) {
+                    int retValue = XTComparator.tryCompareNull(key, o.key);
+                    if (retValue == XTComparator.BOTH_NOT_NULL) {
+                        retValue = value.compareTo(o.value);
+                    }
+                    return retValue;
+                }
             }
             return retKey;
         }

@@ -11,6 +11,7 @@ import java.util.function.Function;
 /**
  * Comparator 比较器 工具
  * <p> 可以比较 null  也可比较非 Comparable 实现类</p>
+ * <p><b>注意禁止在 Comparable 实现类的 compareTo 里面调用 Comparable 相关的方法如 compare 方法, 防止循环调用</b></p>
  *
  * @author XingTian
  * @version 1.0.0
