@@ -1,5 +1,6 @@
 package top.cutexingluo.tools.common.data;
 
+import java.util.AbstractMap;
 import java.util.Map;
 
 /**
@@ -40,6 +41,9 @@ public interface Tuple<K, V> extends Map.Entry<K, V>, PairEntry<K, V> {
     V setValue(V value);
 
     /**
+     * modify the value corresponding to this main entry
+     *
+     * @see AbstractMap.SimpleEntry
      * @since 1.1.4
      */
     @Override

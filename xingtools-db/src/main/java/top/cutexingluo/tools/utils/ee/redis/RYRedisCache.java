@@ -2,16 +2,16 @@ package top.cutexingluo.tools.utils.ee.redis;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.data.redis.core.BoundSetOperations;
-import org.springframework.data.redis.core.HashOperations;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.core.*;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * spring redis 工具类
@@ -60,6 +60,13 @@ public class RYRedisCache {
     public RedisTemplate<String, Object> get() {
         Objects.requireNonNull(redisTemplate, "redisTemplate is null !");
         return (RedisTemplate<String, Object>) redisTemplate;
+    }
+
+    /**
+     * 设置事务支持
+     */
+    public void setEnableTransactionSupport(boolean enableTransactionSupport) {
+        redisTemplate.setEnableTransactionSupport(enableTransactionSupport);
     }
 
     //--------------------------common--------------------------------------
@@ -156,9 +163,10 @@ public class RYRedisCache {
      * @param timeout 超时时间
      * @return true=设置成功；false=设置失败
      */
-    public boolean expire(final String key, final long timeout) {
+    public Boolean expire(final String key, final long timeout) {
         return expire(key, timeout, TimeUnit.SECONDS);
     }
+
 
     /**
      * 设置有效时间
@@ -168,9 +176,22 @@ public class RYRedisCache {
      * @param unit    时间单位
      * @return true=设置成功；false=设置失败
      */
-    public boolean expire(final String key, final long timeout, final TimeUnit unit) {
+    public Boolean expire(final String key, final long timeout, final TimeUnit unit) {
+        return redisTemplate.expire(key, timeout, unit);
+    }
+
+    /**
+     * 设置有效时间 (返回基元类型)
+     *
+     * @param key     Redis键
+     * @param timeout 超时时间
+     * @param unit    时间单位
+     * @return true=设置成功；false=设置失败
+     */
+    public boolean expireCheck(final String key, final long timeout, final TimeUnit unit) {
         return Boolean.TRUE.equals(redisTemplate.expire(key, timeout, unit));
     }
+
 
     /**
      * 获取有效时间
@@ -273,8 +294,8 @@ public class RYRedisCache {
             Object valueObj = redisTemplate.opsForValue().get(key);
             if (clazz.isInstance(valueObj)) {
                 return (T) valueObj;
-            } else if (clazz == Long.class && valueObj instanceof Integer) {
-                Integer obj = (Integer) valueObj;
+            } else if (clazz == Long.class && valueObj instanceof Number) {
+                Number obj = (Number) valueObj;
                 return (T) Long.valueOf(obj.longValue());
             }
         }
@@ -296,26 +317,50 @@ public class RYRedisCache {
     @Nullable
     public <T> T getCacheObject(final String key, final Class<T> clazz, boolean updateLive, long timeout, TimeUnit unit) {
         if (hasKey(key)) {
-            Object valueObj = redisTemplate.opsForValue().get(key);
-            if (updateLive) {
-                redisTemplate.expire(key, timeout, unit);
-            }
-            if (clazz.isInstance(valueObj)) {
-                return (T) valueObj;
-            } else if (clazz == Long.class && valueObj instanceof Integer) {
-                Integer obj = (Integer) valueObj;
-                return (T) Long.valueOf(obj.longValue());
-            }
+            // 执行事务
+            return executeTransaction(new SessionCallback<T>() {
+                @Override
+                public <K, V> T execute(RedisOperations<K, V> operations) throws DataAccessException {
+                    Object valueObj = redisTemplate.opsForValue().get(key);
+                    if (updateLive) {
+                        redisTemplate.expire(key, timeout, unit);
+                    }
+                    if (clazz.isInstance(valueObj)) {
+                        return (T) valueObj;
+                    } else if (clazz == Long.class && valueObj instanceof Number) {
+                        Number obj = (Number) valueObj;
+                        return (T) Long.valueOf(obj.longValue());
+                    }
+                    return null;
+                }
+            });
         }
         return null;
+    }
+
+    /**
+     * 删除单个对象
+     */
+    public Boolean deleteObject(final String key) {
+        return redisTemplate.delete(key);
     }
 
 
     /**
      * 删除单个对象
      */
-    public boolean deleteObject(final String key) {
+    public boolean deleteObjectCheck(final String key) {
         return Boolean.TRUE.equals(redisTemplate.delete(key));
+    }
+
+
+    /**
+     * 删除集合对象
+     *
+     * @param collection 多个对象
+     */
+    public Long deleteObject(final Collection collection) {
+        return redisTemplate.delete(collection);
     }
 
     /**
@@ -323,7 +368,7 @@ public class RYRedisCache {
      *
      * @param collection 多个对象
      */
-    public boolean deleteObject(final Collection collection) {
+    public boolean deleteObjectCheck(final Collection collection) {
         Long delete = redisTemplate.delete(collection);
         return delete != null && delete > 0;
     }
@@ -335,9 +380,8 @@ public class RYRedisCache {
      * @param dataList 待缓存的List数据
      * @return 缓存的对象
      */
-    public <T> long setCacheList(final String key, final List<T> dataList) {
-        Long count = redisTemplate.opsForList().rightPushAll(key, dataList);
-        return count == null ? 0 : count;
+    public <T> Long setCacheList(final String key, final List<T> dataList) {
+        return redisTemplate.opsForList().rightPushAll(key, dataList);
     }
 
     /**
@@ -349,6 +393,17 @@ public class RYRedisCache {
     public <T> List<T> getCacheList(final String key) {
         return (List<T>) redisTemplate.opsForList().range(key, 0, -1);
     }
+
+    /**
+     * 获得缓存的list对象
+     *
+     * @param key 缓存的键值
+     * @return 缓存键值对应的数据
+     */
+    public <T> List<T> getCacheList(final String key, int start, int end) {
+        return (List<T>) redisTemplate.opsForList().range(key, start, end);
+    }
+
 
     /**
      * 缓存Set
@@ -487,6 +542,7 @@ public class RYRedisCache {
         return (List<T>) redisTemplate.opsForHash().multiGet(key, hKeys);
     }
 
+
     /**
      * 删除Hash中的某条数据
      *
@@ -494,7 +550,18 @@ public class RYRedisCache {
      * @param hKey Hash键
      * @return 是否成功
      */
-    public boolean deleteCacheMapValue(final String key, final String hKey) {
+    public Long deleteCacheMapValue(final String key, final String hKey) {
+        return redisTemplate.opsForHash().delete(key, hKey);
+    }
+
+    /**
+     * 删除Hash中的某条数据
+     *
+     * @param key  Redis键
+     * @param hKey Hash键
+     * @return 是否成功
+     */
+    public boolean deleteCacheMapValueCheck(final String key, final String hKey) {
         return redisTemplate.opsForHash().delete(key, hKey) > 0;
     }
 
@@ -504,9 +571,73 @@ public class RYRedisCache {
      * @param pattern 字符串前缀
      * @return 对象列表
      */
-    public Collection<String> keys(final String pattern) {
+    public Set<String> keys(final String pattern) {
         return redisTemplate.keys(pattern);
     }
 
 
+    /**
+     * 批量获得缓存的对象
+     *
+     * @param keys 缓存的键值
+     * @return 缓存键值对应的数据
+     */
+    public <T> List<T> getMultiCacheObject(final Collection<String> keys) {
+        return (List<T>) redisTemplate.opsForValue().multiGet(keys);
+    }
+
+
+    /**
+     * 调用自身执行
+     */
+    public <T> T execute(SessionCallback<T> sessionCallback) {
+        return redisTemplate.execute(sessionCallback);
+    }
+
+    /**
+     * 执行事务
+     *
+     * @param transactionTask                 事务任务
+     * @param exceptionHandler                异常处理器, 可自定义回滚
+     * @param hasExceptionHandlerAutoRollback 异常处理器存在时, 是否自动回滚
+     * @param execConsumer                    执行结果处理器
+     */
+    public <T> T executeTransaction(SessionCallback<T> transactionTask, Function<Exception, T> exceptionHandler, boolean hasExceptionHandlerAutoRollback, Consumer<List<Object>> execConsumer) {
+        if (transactionTask == null) return null;
+        SessionCallback<T> sessionCallback = new SessionCallback<T>() {
+            @Override
+            public <K, V> T execute(@NotNull RedisOperations<K, V> operations) throws DataAccessException {
+                operations.multi(); // 开启事务
+                try {
+                    T ret = transactionTask.execute(operations);
+                    List<Object> exec = operations.exec(); // 提交事务
+                    if (execConsumer != null) execConsumer.accept(exec);
+                    return ret;
+                } catch (Exception e) {
+                    if (exceptionHandler == null) {
+                        operations.discard(); // 直接回滚
+                        throw e;
+                    } else {
+                        if (hasExceptionHandlerAutoRollback) operations.discard(); // 回滚
+                        return exceptionHandler.apply(e);
+                    }
+                }
+            }
+        };
+        return redisTemplate.execute(sessionCallback);
+    }
+
+    /**
+     * 执行事务
+     */
+    public <T> T executeTransaction(SessionCallback<T> transactionTask, Function<Exception, T> exceptionHandler, boolean exceptionHandlerAutoRollback) {
+        return executeTransaction(transactionTask, exceptionHandler, exceptionHandlerAutoRollback, null);
+    }
+
+    /**
+     * 执行事务
+     */
+    public <T> T executeTransaction(SessionCallback<T> transactionTask) {
+        return executeTransaction(transactionTask, null, true, null);
+    }
 }

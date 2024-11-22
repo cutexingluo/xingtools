@@ -2,6 +2,7 @@ package top.cutexingluo.tools.common.data;
 
 import top.cutexingluo.tools.common.base.IValue;
 
+import java.util.AbstractMap;
 import java.util.Map;
 
 /**
@@ -26,7 +27,10 @@ public interface PairEntry<K, V> extends IValue<V> {
     V getValue();
 
     /**
+     * base entry
+     *
      * @return the map entry
+     * @see AbstractMap.SimpleImmutableEntry
      * @since 1.1.4
      */
     default Map.Entry<K, V> toMapEntry() {

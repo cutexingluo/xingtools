@@ -1,12 +1,12 @@
 # xingtools 工具包
 
 ## :book:相关介绍
-xingtools sdk 工具包，v1.1.5 正式版发布。( 依赖的版本不能低于 1.1.1 )
+xingtools sdk 工具包，v1.1.6 正式版发布。( 依赖的版本不能低于 1.1.1 )
 星天（xingtian）制作的 Java 工具包，是基于 Springboot 2.7.18 和 SpringBoot 3.0.5 制作的 ,  基于 Java 8 和 Java 17，它是一个整合各工具类的整合包。
 
 ### :scroll:简介
 
-是一个功能丰富且易用的 **Java工具库**，通过诸多实用工具类的使用，旨在帮助开发者快速、便捷地完成各类开发任务。 这些封装的工具涵盖了hutool包（依赖[hutool包](https://gitee.com/dromara/hutool)）, 部分 ruoyi 工具类，包含了系列字符串、数字、集合、编码、日期、文件、IO、加密、数据库JDBC、JSON、HTTP客户端等一系列操作，还包含了 ACM算法，JDK版本兼容包，各种base接口，注解AOP装配，配置自动装配，可以满足各种不同的开发需求。
+是一个功能丰富且易用的 **Java工具库**，通过诸多实用工具类的使用，旨在帮助开发者快速、便捷地完成各类开发任务。 这些封装的工具涵盖了hutool包（依赖[hutool包](https://gitee.com/dromara/hutool)）, 部分 ruoyi 工具类，包含了系列字符串、数字、集合、编码、日期、文件、IO、加密、数据库JDBC、JSON、HTTP客户端等一系列基础操作，还包含了 ACM算法，JDK版本兼容包，各种base接口，注解AOP装配，配置自动装配，Spring 扩展，Security扩展，OAuth2扩展，Cloud扩展，可以满足各种不同的开发需求。
 
 目前仍使用 xingtool 文档 v1.0.5 [使用文档](使用文档.md)，未来会更新，别急哦各位，大部分类名及用法没有更改，可以参考。
 
@@ -53,12 +53,12 @@ Maven 依赖（JDK8版本）
 <dependency>
 	<groupId>top.cutexingluo.tools</groupId>
 	<artifactId>xingtools-spring-boot-starter</artifactId>
-	<version>1.1.5</version>
+	<version>1.1.6</version>
 </dependency>
 <dependency>
 	<groupId>top.cutexingluo.tools</groupId>
 	<artifactId>xingtools-pkg-jdk8</artifactId>
-	<version>1.1.5</version>
+	<version>1.1.6</version>
 </dependency>
 ```
 
@@ -68,12 +68,12 @@ Maven 依赖（JDK17版本）
 <dependency>
 	<groupId>top.cutexingluo.tools</groupId>
 	<artifactId>xingtools-spring-boot-starter</artifactId>
-	<version>1.1.5</version>
+	<version>1.1.6</version>
 </dependency>
 <dependency>
 	<groupId>top.cutexingluo.tools</groupId>
 	<artifactId>xingtools-pkg-jdk17</artifactId>
-	<version>1.1.5</version>
+	<version>1.1.6</version>
 </dependency>
 ```
 
@@ -82,8 +82,8 @@ Maven 依赖（JDK17版本）
 目前推荐使用的版本如下：（其他版本有一定bug，如需使用请参考更新公告的版本使用攻略）
 
 ```wiki
-极力推荐使用最新版 v1.1.5
-xingtools v1.1.3, v1.1.4, v1.1.5
+极力推荐使用最新版 v1.1.6
+xingtools v1.1.3, v1.1.4, v1.1.5, v1.1.6
 xingtool v1.0.1, v1.0.4, v1.0.5
 ```
 
@@ -153,8 +153,12 @@ public class CaptchaController {
     public MyResult<?> getCaptchaInfo() {
 
         HashMap<String, String> captcha = captchaService.getCaptcha();
-
         // 新版返回方式，可使用自定义返回类，更优雅
+        return ResultUtil.selectFill(captcha,
+                EnumResult.GET_SUCCESS,
+                EnumResult.GET_ERROR,
+                new MyResult<>());
+        // 新版返回方式2
         return ResultUtil.selectFill(captcha,
                 MyResult.fillBy(EnumResult.GET_SUCCESS),
                 EnumResult.GET_ERROR); // 返回自定义的MyResult对象
@@ -225,6 +229,7 @@ public class MyResult implements IResultSource<Integer, Object> {
         XTLockMeta lockMeta = new XTLockMeta(XTLockType.ReentrantLock);
         LockHandler lockHandler = new LockHandler(lockMeta);
         lockHandler.init();
+        // Spring 的线程池
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(5);
         executor.setMaxPoolSize(10);
@@ -312,8 +317,7 @@ public class WebLogHandlerConfig {
         return config;
     }
 
-    @Bean
-    public WebLogHandler webLogHandler(WebLogConfig webLogConfig) { // handler 处理器
+    public WebLogHandler newWebLogHandler(WebLogConfig webLogConfig) { // handler 处理器
         WebLogHandler handler = new WebLogHandler(webLogConfig).initDefaultMap().modifyAll(); // 初始化变量值，可以在这里设置全局 map 映射
         return handler;
     }
@@ -335,7 +339,7 @@ public class WebLogHandlerConfig {
                 null // ProceedingJoinPoint 类，切面对象，目前不需要
         );
         // 添加打印变量
-        HashMap<String, String> map = webLogHandler.getMsgMap().getKeyMap();
+        HashMap<String, String> map = newWebLogHandler(webLogConfig).getMsgMap().getKeyMap();
         // 这里开始可以加锁
         // 存 userId
         map.put("userId", String.valueOf(loginUser.getUser().getId()));
@@ -377,13 +381,54 @@ public class MyUserQuery {
 
     @StrJson(value = SensitiveSerializer.class, name = "") // 返回值脱敏
     private String password;
+    
+    /**
+     * 逻辑删除（1删除）
+     */
+    @ShortStatus(
+            matchNum = {
+                    EnumDelFlag.NOT_DELETED_CODE,
+                    EnumDelFlag.IS_DELETED_CODE
+            },
+            message = "删除状态格式错误"
+    )
+    private Short delFlag;
 }
 
 ```
 
 ###### 异步线程 
 
-1.可以使用**编程式**，例如 XTAsync, 或者你的类实现 ThreadHelper接口
+1.可以使用**编程式**，例如 XTAsync, 或者你的类实现 ThreadHelper 接口或者  ThreadExecutorHelper 接口
+
+下面示例作为 异步配置，同时兼容ThreadPoolTaskExecutor, AsyncConfigurer(支持@Async 注解)和 ThreadHelper (CompletableFuture 编程式操作)
+
+```java
+@EnableAsync
+@Configuration
+public class AsyncConfig implements AsyncConfigurer, ThreadHelper {
+
+    @Autowired
+    ThreadPoolTaskExecutor taskExecutor;
+
+    @Override
+    public Executor getAsyncExecutor() {
+        return taskExecutor;
+    }
+
+    @Override
+    public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
+        return null;
+    }
+
+    @Override
+    public Executor executor() {
+        return taskExecutor;
+    }
+}
+```
+
+注入该对象即可使用ThreadHelper里面的方法
 
 2.使用**声明式**，但不一定会得到预期结果
 
@@ -712,6 +757,27 @@ public class TestService {
 具体内容详见使用文档。
 
 ##  :memo:更新公告
+
+**2024-11-22  v1.1.6**
+
+```txt
+版本更新说明
+当前版本新增和修改了很多东西。比如对 Map.Entry 及各种 Node 节点类的支持，并新增 B树 和 B+ 树作为数据结构，增强了工具包的可用性。本次也对编码哈希加密等算法进行了重构，开始了面向接口使用，更加方便管理多种算法。相应的迭代器，比较器都进行了增强。二分查找也单独提取出来。重要的是现在能够同时支持 spring-cloud-starter-security, spring-cloud-starter-oauth2, spring-security-oauth2-authorization-server 三种框架的组合和兼容。
+
+更改部分
+1.*重构迭代器，比较器，使之更通用，更健壮
+2.提取 XTMath 的二分查找 为 XTBinarySearch, 支持多种二分查找，类似 c++ lower_bound, upper_bound
+
+新增部分
+1.XTCallable 新增 getInCatchRet 更加健全
+2.*继承重构1.0.5 版本的 XTEncryptUtil 加密工具类，支持Md5,SHA256,DES,AES,RSA 算法
+3.新增IdNode接口 (含 getId 方法),新增DataNode作为IDataValue 默认实现类
+4.新增编码/哈希/加密算法接口和多个实现类，CryptHandler 是所有算法的基类
+5.新增 ECC 加密，XTEncryptUtil 改名为 XTCryptUtil , 使综合工具更明确
+6.* 新增 BTree (B 树) 和 BPlusTree (B+ 树) 数据结构，支持插入，删除，查找，遍历等操作，使用新的迭代器速度更快
+7.新增 MapEntry 实体类兼容 Map.Entry 接口和其他实体类
+8.*新增对 spring-security-oauth2-authorization-server 的 OAuth2 的管理接口，以及各种实现类，后续也会持续跟进更新
+```
 
 **2024-9-29  v1.1.5**
 

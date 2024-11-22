@@ -1,7 +1,10 @@
 package top.cutexingluo.tools.utils.se.algo.cpp.math;
 
 import java.math.BigInteger;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * 数学工具类
@@ -11,7 +14,7 @@ import java.util.*;
  * @date 2023/10/24 13:26
  * @since 1.0.3
  */
-public class XTMath {
+public class XTMath extends XTBinarySearch {
     //公式 9223372036854775783L
     //等差数列:an=a1+(n-1)*d; 前n项和:Sn=a1*n+n*(n-1)*d/2=(a1+an)*n/2
     //等比数列:an=a1*q^(n-1); 前n项和:q!=1 -> Sn=a1*(q^n-1)/(q-1)=(an*q-a1)/(q-1); q=1 -> Sn=n*a1
@@ -73,178 +76,6 @@ public class XTMath {
         return value < -Float.MAX_VALUE + eps ? -Float.MAX_VALUE : value - eps;
     }
 
-
-    /**
-     * 二分查找
-     */
-    public static <T extends Number> int binarySearch(T[] a, int fromIndex, int toIndex, T key) {
-        return Arrays.binarySearch(a, fromIndex, toIndex, key);
-    }
-
-    /**
-     * 二分查找
-     */
-    public static <T extends Number> int binarySearch(T[] a, T key) {
-        return Arrays.binarySearch(a, key);
-    }
-
-
-    /**
-     * 找到大于或等于目标的数据的位置
-     * <p>类似 c++ std::lower_bound</p>
-     *
-     * @param arr 数据集
-     * @param tar 目标数据
-     * @return index 下标
-     */
-    public static int lowerBound(int[] arr, int tar) {
-        return lowerBound(arr, 0, arr.length, tar);
-    }
-
-    /**
-     * 找到大于或等于目标的数据的位置
-     * <p>类似 c++ std::lower_bound</p>
-     *
-     * @param arr   数据集
-     * @param start 开始 ,inclusive
-     * @param end   结束, exclusive
-     * @param tar   目标数据
-     * @return index 下标
-     */
-    public static int lowerBound(int[] arr, int start, int end, int tar) {
-        int l = start, r = end;
-        while (l < r) {
-            int mid = l + (r - l >> 1);
-            if (arr[mid] >= tar) r = mid;
-            else l = mid + 1;
-        }
-        return l;
-    }
-
-    /**
-     * 找到大于或等于目标的数据的位置
-     * <p>类似 c++ std::lower_bound</p>
-     *
-     * @param arr 数据集
-     * @param tar 目标数据
-     * @return index 下标
-     */
-    public static <T extends Comparable<T>> int lowerBound(T[] arr, T tar) {
-        return lowerBound(arr, 0, arr.length, tar);
-    }
-
-    /**
-     * 找到大于或等于目标的数据的位置
-     * <p>类似 c++ std::lower_bound</p>
-     *
-     * @param arr   数据集
-     * @param start 开始 ,inclusive
-     * @param end   结束, exclusive
-     * @param tar   目标数据
-     * @return index 下标
-     */
-    public static <T extends Comparable<T>> int lowerBound(T[] arr, int start, int end, T tar) {
-        return lowerBound(arr, start, end, tar, T::compareTo);
-    }
-
-    /**
-     * 找到大于或等于目标的数据的位置
-     * <p>类似 c++ std::lower_bound</p>
-     *
-     * @param arr   数据集
-     * @param start 开始 ,inclusive
-     * @param end   结束, exclusive
-     * @param tar   目标数据
-     * @return index 下标
-     */
-    public static <T extends Comparable<T>> int lowerBound(T[] arr, int start, int end, T tar, Comparator<T> c) {
-        int l = start, r = end;
-        while (l < r) {
-            int mid = l + (r - l >> 1);
-            if (c.compare(arr[mid], tar) >= 0) r = mid;
-            else l = mid + 1;
-        }
-        return l;
-    }
-
-
-    /**
-     * 找到大于目标的数据的位置
-     * <p>类似 c++ std::upper_bound</p>
-     *
-     * @param arr 数据集
-     * @param tar 目标数据
-     * @return index 下标
-     */
-    public static int upperBound(int[] arr, int tar) {
-        return upperBound(arr, 0, arr.length, tar);
-    }
-
-    /**
-     * 找到大于目标的数据的位置
-     * <p>类似 c++ std::upper_bound</p>
-     *
-     * @param arr   数据集
-     * @param start 开始 ,inclusive
-     * @param end   结束, exclusive
-     * @param tar   目标数据
-     * @return index 下标
-     */
-    public static int upperBound(int[] arr, int start, int end, int tar) {
-        int l = start, r = end;
-        while (l < r) {
-            int mid = l + (r - l >> 1);
-            if (arr[mid] > tar) r = mid;
-            else l = mid + 1;
-        }
-        return l;
-    }
-
-    /**
-     * 找到大于目标的数据的位置
-     * <p>类似 c++ std::upper_bound</p>
-     *
-     * @param arr 数据集
-     * @param tar 目标数据
-     * @return index 下标
-     */
-    public static <T extends Comparable<T>> int upperBound(T[] arr, T tar) {
-        return upperBound(arr, 0, arr.length, tar);
-    }
-
-    /**
-     * 找到大于目标的数据的位置
-     * <p>类似 c++ std::upper_bound</p>
-     *
-     * @param arr   数据集
-     * @param start 开始 ,inclusive
-     * @param end   结束, exclusive
-     * @param tar   目标数据
-     * @return index 下标
-     */
-    public static <T extends Comparable<T>> int upperBound(T[] arr, int start, int end, T tar) {
-        return upperBound(arr, start, end, tar, T::compareTo);
-    }
-
-    /**
-     * 找到大于目标的数据的位置
-     * <p>类似 c++ std::upper_bound</p>
-     *
-     * @param arr   数据集
-     * @param start 开始 ,inclusive
-     * @param end   结束, exclusive
-     * @param tar   目标数据
-     * @return index 下标
-     */
-    public static <T> int upperBound(T[] arr, int start, int end, T tar, Comparator<T> c) {
-        int l = start, r = end;
-        while (l < r) {
-            int mid = l + (r - l >> 1);
-            if (c.compare(arr[mid], tar) > 0) r = mid;
-            else l = mid + 1;
-        }
-        return l;
-    }
 
     //寻找满足>tar的最小值或<=tar的最大值的参数
 

@@ -16,6 +16,7 @@ import java.util.Map;
  * @author XingTian
  * @version 1.0.0
  * @date 2024/9/3 14:43
+ * @since 1.1.4
  */
 @Data
 public class NodeStateMachine<O, Node extends BaseStatusNode<?, ?>> {
