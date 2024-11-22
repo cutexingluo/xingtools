@@ -250,6 +250,15 @@ public class XTCallable<T> extends XTAround implements BaseCallableSupplier<T>,
         return getCatchSupplier(inCatch).get();
     }
 
+    /**
+     * inner catch 异常处理函数
+     *
+     * @since 1.1.6
+     */
+    public T getInCatchRet(Function<Exception, T> inCatch) {
+        return getCatchRetSupplier(inCatch).get();
+    }
+
 
     @Override
     public <O> Callable<O> decorate(Callable<O> task) {

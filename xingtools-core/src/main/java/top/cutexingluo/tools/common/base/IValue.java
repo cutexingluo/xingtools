@@ -9,6 +9,7 @@ package top.cutexingluo.tools.common.base;
  * @date 2024/9/6 11:35
  * @since 1.1.4
  */
+@FunctionalInterface
 public interface IValue<V> {
 
     /**

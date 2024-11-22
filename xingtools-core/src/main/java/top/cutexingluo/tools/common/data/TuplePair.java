@@ -16,6 +16,7 @@ import java.util.Map;
  * @see Pair  Pair  - 可比较不可set 二元组
  * @see TupleEntry  TupleEntry  - 不可比较可set 二元组
  * @see TuplePair TuplePair - 可比较可set 二元组
+ * @see MapEntry MapEntry - 不可比较可setValue 二元组 (Map.Entry 基础实现类)
  * @since 1.1.4
  */
 public class TuplePair<K extends Comparable<K>, V extends Comparable<V>> extends Pair<K, V> implements Tuple<K, V> {

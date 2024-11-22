@@ -1,7 +1,7 @@
 package top.cutexingluo.tools.common.data;
 
 import org.jetbrains.annotations.NotNull;
-import top.cutexingluo.tools.utils.se.map.XTComparator;
+import top.cutexingluo.tools.utils.se.core.compare.XTComparator;
 
 import java.util.Map;
 
@@ -18,6 +18,7 @@ import java.util.Map;
  * @see Pair  Pair  - 可比较不可set 二元组
  * @see TupleEntry  TupleEntry  - 不可比较可set 二元组
  * @see TuplePair TuplePair - 可比较可set 二元组
+ * @see MapEntry MapEntry - 不可比较可setValue 二元组 (Map.Entry 基础实现类)
  * @since 1.0.3
  */
 public class Pair<K extends Comparable<K>, V extends Comparable<V>> extends Entry<K, V> implements Comparable<Pair<K, V>> {
@@ -46,9 +47,16 @@ public class Pair<K extends Comparable<K>, V extends Comparable<V>> extends Entr
     public int compareTo(@NotNull Pair<K, V> o) {
         int ret = XTComparator.tryCompareNull(this, o);
         if (ret == XTComparator.BOTH_NOT_NULL) { //1.0.5
-            int retKey = key.compareTo(o.key);
-            if (retKey == 0) {
-                return value.compareTo(o.value);
+            int retKey = XTComparator.tryCompareNull(key, o.key);
+            if (retKey == XTComparator.BOTH_NOT_NULL) {
+                retKey = key.compareTo(o.key);
+                if (retKey == 0) {
+                    int retValue = XTComparator.tryCompareNull(key, o.key);
+                    if (retValue == XTComparator.BOTH_NOT_NULL) {
+                        retValue = value.compareTo(o.value);
+                    }
+                    return retValue;
+                }
             }
             return retKey;
         }
