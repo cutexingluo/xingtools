@@ -23,6 +23,7 @@ xingtools v1.1.3, v1.1.4, v1.1.5
 5.新增 ECC 加密，XTEncryptUtil 改名为 XTCryptUtil , 使综合工具更明确
 6.* 新增 BTree (B 树) 和 BPlusTree (B+ 树) 数据结构，支持插入，删除，查找，遍历等操作，使用新的迭代器速度更快
 7.新增 MapEntry 实体类兼容 Map.Entry 接口和其他实体类
+8.*新增对 spring-security-oauth2-authorization-server 的 OAuth2 的管理接口，以及各种实现类，后续也会持续跟进更新
 
 
 

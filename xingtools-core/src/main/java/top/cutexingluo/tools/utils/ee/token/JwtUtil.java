@@ -104,7 +104,7 @@ public class JwtUtil {
         return builder.compact();
     }
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         String token = "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJjYWM2ZDVhZi1mNjVlLTQ0MDAtYjcxMi0zYWEwOGIyOTIwYjQiLCJzdWIiOiJzZyIsImlzcyI6InNnIiwiaWF0IjoxNjM4MTA2NzEyLCJleHAiOjE2MzgxMTAzMTJ9.JVsSbkP94wuczb4QryQbAke3ysBDIL5ou8fWsbt_ebg";
         Claims claims = parseJWT(token);
         System.out.println(claims);
@@ -124,7 +124,7 @@ public class JwtUtil {
     /**
      * 解析
      */
-    public static Claims parseJWT(String jwt) throws Exception {
+    public static Claims parseJWT(String jwt) {
         SecretKey secretKey = SECRET_KEY;
         return Jwts.parser()
                 .setSigningKey(secretKey)
