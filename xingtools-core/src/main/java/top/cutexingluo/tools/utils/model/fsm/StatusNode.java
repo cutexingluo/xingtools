@@ -12,6 +12,7 @@ import java.util.Set;
  * @author XingTian
  * @version 1.0.0
  * @date 2024/9/3 14:44
+ * @since 1.1.4
  */
 @Data
 public class StatusNode<T, S> implements BaseStatusNode<T, S>, Tuple<T, Set<S>> {

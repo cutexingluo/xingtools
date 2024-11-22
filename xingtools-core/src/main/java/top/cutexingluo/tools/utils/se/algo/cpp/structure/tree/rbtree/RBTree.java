@@ -76,16 +76,13 @@ public class RBTree<K extends Comparable<K>, V> extends AbstractMap<K, V> implem
         return false;
     }
 
+
     /**
-     * 迭代器
+     * 节点
+     *
+     * @param <K> the type of key
+     * @param <V> the type of value
      */
-    @NotNull
-    @Override
-    public Iterator<Entry<K, V>> iterator() {
-        return new RBNodeIterator(root, size);
-    }
-
-
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
@@ -167,8 +164,13 @@ public class RBTree<K extends Comparable<K>, V> extends AbstractMap<K, V> implem
         }
     }
 
+    /**
+     * 元素数量
+     */
     protected transient int size;
-
+    /**
+     * 根节点
+     */
     protected transient RBNode<K, V> root;
 
     public RBTree() {
@@ -189,6 +191,9 @@ public class RBTree<K extends Comparable<K>, V> extends AbstractMap<K, V> implem
      */
     protected transient boolean isDesc;
 
+    /**
+     * 比较器
+     */
     protected transient Comparator<? super K> comparator;
 
     // no set
@@ -227,6 +232,17 @@ public class RBTree<K extends Comparable<K>, V> extends AbstractMap<K, V> implem
     @Override
     public void clear() {
         init();
+    }
+
+    /**
+     * 复制一个 RBTree 的属性
+     *
+     * @param reversed 是否反转 comparator
+     * @return 新的 RBTree
+     */
+    public RBTree<K, V> copyProperties(boolean reversed) {
+        if (reversed) return new RBTree<K, V>(comparator.reversed());
+        return new RBTree<K, V>(comparator);
     }
 
 
@@ -314,7 +330,7 @@ public class RBTree<K extends Comparable<K>, V> extends AbstractMap<K, V> implem
 
     @Override
     public NavigableMap<K, V> descendingMap() {
-        RBTree<K, V> tree = new RBTree<K, V>(comparator.reversed());
+        RBTree<K, V> tree = copyProperties(true);
         tree.putAll(this);
         return tree;
     }
@@ -336,7 +352,7 @@ public class RBTree<K extends Comparable<K>, V> extends AbstractMap<K, V> implem
     @Override
     public NavigableMap<K, V> subMap(K fromKey, boolean fromInclusive, K toKey, boolean toInclusive) {
         if (fromKey == null || toKey == null) throw new IllegalArgumentException("fromKey or toKey is null");
-        RBTree<K, V> tree = new RBTree<K, V>(comparator);
+        RBTree<K, V> tree = copyProperties(false);
         for (Entry<K, V> entry : this) {
             int cmpFrom = comparator.compare(entry.getKey(), fromKey);
             int cmpTo = comparator.compare(entry.getKey(), toKey);
@@ -352,7 +368,7 @@ public class RBTree<K extends Comparable<K>, V> extends AbstractMap<K, V> implem
     @Override
     public NavigableMap<K, V> headMap(K toKey, boolean inclusive) {
         if (toKey == null) throw new IllegalArgumentException("toKey is null");
-        RBTree<K, V> tree = new RBTree<K, V>(comparator);
+        RBTree<K, V> tree = copyProperties(false);
         for (Entry<K, V> entry : this) {
             int cmpTo = comparator.compare(entry.getKey(), toKey);
             if (!inclusive && cmpTo == 0) break;
@@ -365,7 +381,7 @@ public class RBTree<K extends Comparable<K>, V> extends AbstractMap<K, V> implem
     @Override
     public NavigableMap<K, V> tailMap(K fromKey, boolean inclusive) {
         if (fromKey == null) throw new IllegalArgumentException("fromKey is null");
-        RBTree<K, V> tree = new RBTree<K, V>(comparator);
+        RBTree<K, V> tree = copyProperties(false);
         for (Entry<K, V> entry : this) {
             int cmpFrom = comparator.compare(entry.getKey(), fromKey);
             if (cmpFrom < 0) continue;
@@ -379,7 +395,7 @@ public class RBTree<K extends Comparable<K>, V> extends AbstractMap<K, V> implem
     @Override
     public SortedMap<K, V> subMap(K fromKey, K toKey) {
         if (fromKey == null || toKey == null) throw new IllegalArgumentException("fromKey or toKey is null");
-        RBTree<K, V> tree = new RBTree<K, V>(comparator);
+        RBTree<K, V> tree = copyProperties(false);
         for (Entry<K, V> entry : this) {
             int cmpFrom = comparator.compare(entry.getKey(), fromKey);
             int cmpTo = comparator.compare(entry.getKey(), toKey);
@@ -393,7 +409,7 @@ public class RBTree<K extends Comparable<K>, V> extends AbstractMap<K, V> implem
     @Override
     public SortedMap<K, V> headMap(K toKey) {
         if (toKey == null) throw new IllegalArgumentException(" toKey is null");
-        RBTree<K, V> tree = new RBTree<K, V>(comparator);
+        RBTree<K, V> tree = copyProperties(false);
         for (Entry<K, V> entry : this) {
             int cmpTo = comparator.compare(entry.getKey(), toKey);
             if (cmpTo > 0) break;
@@ -405,7 +421,7 @@ public class RBTree<K extends Comparable<K>, V> extends AbstractMap<K, V> implem
     @Override
     public SortedMap<K, V> tailMap(K fromKey) {
         if (fromKey == null) throw new IllegalArgumentException("fromKey  is null");
-        RBTree<K, V> tree = new RBTree<K, V>(comparator);
+        RBTree<K, V> tree = copyProperties(false);
         for (Entry<K, V> entry : this) {
             int cmpFrom = comparator.compare(entry.getKey(), fromKey);
             if (cmpFrom < 0) continue;
@@ -562,7 +578,10 @@ public class RBTree<K extends Comparable<K>, V> extends AbstractMap<K, V> implem
         return search(root, key);
     }
 
-    protected RBNode<K, V> minimum(RBNode<K, V> node) {
+    /**
+     * 该子树下索引最小的节点
+     */
+    public RBNode<K, V> minimum(RBNode<K, V> node) {
         if (node == null) return null;
         while (node.leftNode != null) {
             node = node.leftNode;
@@ -586,7 +605,10 @@ public class RBTree<K extends Comparable<K>, V> extends AbstractMap<K, V> implem
         else return node.key;
     }
 
-    protected RBNode<K, V> maximum(RBNode<K, V> node) {
+    /**
+     * 该子树下索引最大的节点
+     */
+    public RBNode<K, V> maximum(RBNode<K, V> node) {
         if (node == null) return null;
         while (node.rightNode != null) {
             node = node.rightNode;
@@ -1006,6 +1028,14 @@ public class RBTree<K extends Comparable<K>, V> extends AbstractMap<K, V> implem
         }
     }
 
+    /**
+     * 迭代器
+     */
+    @NotNull
+    @Override
+    public Iterator<Entry<K, V>> iterator() {
+        return new RBNodeIterator(root, size);
+    }
 
     @NotNull
     @Override
@@ -1014,7 +1044,7 @@ public class RBTree<K extends Comparable<K>, V> extends AbstractMap<K, V> implem
     }
 
 
-    final class RBNodeIterator extends BaseEntryBiNodeIterator<RBNode<K, V>, K, V> {
+    class RBNodeIterator extends BaseEntryBiNodeIterator<RBNode<K, V>, K, V> {
         public RBNodeIterator(RBNode<K, V> root, int length) {
             super(length, root);
         }
@@ -1026,20 +1056,18 @@ public class RBTree<K extends Comparable<K>, V> extends AbstractMap<K, V> implem
         }
     }
 
-    final class EntrySet extends AbstractSet<Entry<K, V>> {
+    class EntrySet extends AbstractSet<Entry<K, V>> {
 
         private RBNode<K, V> root;
-        private int size;
 
         public EntrySet(RBNode<K, V> root, int size) {
             this.root = root;
-            this.size = size;
         }
 
         @NotNull
         @Override
         public Iterator<Entry<K, V>> iterator() {
-            return new RBNodeIterator(root, size);
+            return new RBNodeIterator(root, -1);
         }
 
         @Override

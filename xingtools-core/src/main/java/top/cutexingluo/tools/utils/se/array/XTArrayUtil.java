@@ -133,6 +133,37 @@ public class XTArrayUtil {
         return newArray;
     }
 
+
+    /**
+     * 二分查找
+     */
+    public static <T> int binarySearch(T[] a, int fromIndex, int toIndex, T key) {
+        return Arrays.binarySearch(a, fromIndex, toIndex, key);
+    }
+
+    /**
+     * 二分查找
+     */
+    public static <T> int binarySearch(T[] a, T key) {
+        return Arrays.binarySearch(a, key);
+    }
+
+    /**
+     * 二分查找
+     */
+    public static <T> int binarySearch(T[] a, int fromIndex, int toIndex, T key, Comparator<T> comparator) {
+        return Arrays.binarySearch(a, fromIndex, toIndex, key, comparator);
+    }
+
+
+    /**
+     * 二分查找
+     */
+    public static <T> int binarySearch(T[] a, T key, Comparator<T> comparator) {
+        return Arrays.binarySearch(a, key, comparator);
+    }
+
+
     /**
      * 逐行输出数据
      */

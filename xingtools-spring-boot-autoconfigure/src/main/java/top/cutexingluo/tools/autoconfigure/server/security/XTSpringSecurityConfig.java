@@ -10,7 +10,7 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import top.cutexingluo.tools.auto.server.XingToolsAutoConfiguration;
-import top.cutexingluo.tools.security.XTSignGlobal;
+import top.cutexingluo.tools.security.oauth.util.XTSignGlobal;
 
 /**
  * 自动配置
