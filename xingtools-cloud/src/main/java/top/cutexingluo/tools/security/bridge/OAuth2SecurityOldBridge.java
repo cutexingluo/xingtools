@@ -1,8 +1,6 @@
 package top.cutexingluo.tools.security.bridge;
 
 import org.jetbrains.annotations.NotNull;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnJava;
-import org.springframework.boot.system.JavaVersion;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import top.cutexingluo.tools.bridge.servlet.HttpServletRequestData;
@@ -61,7 +59,7 @@ public class OAuth2SecurityOldBridge {
      *
      * <p>仅支持 jdk8 </p>
      */
-    @ConditionalOnJava(value = JavaVersion.EIGHT)
+//    @ConditionalOnJava(value = JavaVersion.EIGHT)
     @NotNull
     public static TokenExtractor toTokenExtractor(@NotNull AuthTokenExtractor authTokenExtractor) {
         return (request) -> authTokenExtractor.extract(new HttpServletRequestData(request));
@@ -72,7 +70,7 @@ public class OAuth2SecurityOldBridge {
      *
      * <p>仅支持 jdk8 </p>
      */
-    @ConditionalOnJava(value = JavaVersion.EIGHT)
+//    @ConditionalOnJava(value = JavaVersion.EIGHT)
     @NotNull
     public static AuthTokenExtractor toAuthTokenExtractor(@NotNull TokenExtractor tokenExtractor) {
         return (request) -> tokenExtractor.extract(request.getRequest());

@@ -4,7 +4,7 @@ import lombok.Data;
 import top.cutexingluo.tools.common.data.Tuple;
 import top.cutexingluo.tools.utils.model.fsm.base.BaseStatusNode;
 
-import java.util.Set;
+import java.util.Collection;
 
 /**
  * 状态节点
@@ -15,16 +15,16 @@ import java.util.Set;
  * @since 1.1.4
  */
 @Data
-public class StatusNode<T, S> implements BaseStatusNode<T, S>, Tuple<T, Set<S>> {
+public class StatusNode<T, S> implements BaseStatusNode<T, S>, Tuple<T, Collection<S>> {
 
     protected T node;
 
-    protected Set<S> nextNodes;
+    protected Collection<S> nextNodes;
 
     public StatusNode() {
     }
 
-    public StatusNode(T node, Set<S> nextNodes) {
+    public StatusNode(T node, Collection<S> nextNodes) {
         this.node = node;
         this.nextNodes = nextNodes;
     }
@@ -35,7 +35,7 @@ public class StatusNode<T, S> implements BaseStatusNode<T, S>, Tuple<T, Set<S>> 
     }
 
     @Override
-    public Set<S> getValue() {
+    public Collection<S> getValue() {
         return nextNodes;
     }
 
@@ -48,14 +48,14 @@ public class StatusNode<T, S> implements BaseStatusNode<T, S>, Tuple<T, Set<S>> 
     }
 
     @Override
-    public Set<S> setValue(Set<S> value) {
-        final Set<S> oldValue = nextNodes;
+    public Collection<S> setValue(Collection<S> value) {
+        final Collection<S> oldValue = nextNodes;
         nextNodes = value;
         return oldValue;
     }
 
     @Override
-    public Set<S> getChildren() {
+    public Collection<S> getChildren() {
         return nextNodes;
     }
 
