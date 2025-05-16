@@ -15,6 +15,9 @@ xingtools v1.1.3, v1.1.4, v1.1.5, v1.1.6
 1.移除 JavaVersion.EIGHT 防止报错
 2.状态节点 StatusNode 面向接口 Collection
 
+新增部分
+1.新增 EmptyChecker 等系列接口
+
 2024-10-18 v1.1.6
 更改部分
 1.*重构迭代器，比较器，使之更通用，更健壮

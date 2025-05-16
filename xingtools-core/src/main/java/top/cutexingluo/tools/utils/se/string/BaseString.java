@@ -1,6 +1,7 @@
 package top.cutexingluo.tools.utils.se.string;
 
 import org.jetbrains.annotations.NotNull;
+import top.cutexingluo.tools.basepackage.checker.EmptyStateChecker;
 
 import java.util.function.Function;
 
@@ -12,7 +13,7 @@ import java.util.function.Function;
  * @date 2023/10/20 20:14
  * @since 1.0.2
  */
-public interface BaseString {
+public interface BaseString extends EmptyStateChecker {
     String getString();
 
     boolean isEmpty();
