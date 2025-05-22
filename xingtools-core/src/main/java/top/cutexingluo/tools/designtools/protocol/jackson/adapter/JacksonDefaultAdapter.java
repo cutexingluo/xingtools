@@ -3,7 +3,6 @@ package top.cutexingluo.tools.designtools.protocol.jackson.adapter;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -37,14 +36,14 @@ public class JacksonDefaultAdapter extends JacksonAdapter {
     @Override
     public JacksonDefaultAdapter initSelf() {
         Objects.requireNonNull(mapper);
-        this.initConfigure().initModule();
+        this.initConfigure().initDeserializers().initSerializers().initModule();
         return this;
     }
 
     @Override
     public JacksonDefaultAdapter initModule() {
         // 时间转化
-        mapper.registerModule(new JavaTimeModule());
+//        mapper.registerModule(new JavaTimeModule());
         return this;
     }
 

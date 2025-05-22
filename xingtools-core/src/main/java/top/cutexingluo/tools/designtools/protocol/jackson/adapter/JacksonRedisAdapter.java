@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -40,14 +39,14 @@ public class JacksonRedisAdapter extends JacksonAdapter {
     @Override
     public JacksonRedisAdapter initSelf() {
         Objects.requireNonNull(mapper);
-        this.initConfigure().initModule();
+        this.initConfigure().initDeserializers().initSerializers().initModule();
         return this;
     }
 
     @Override
     public JacksonRedisAdapter initModule() {
         // 时间转化
-        mapper.registerModule(new JavaTimeModule());
+//        mapper.registerModule(new JavaTimeModule());
         return this;
     }
 
