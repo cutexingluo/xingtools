@@ -12,6 +12,8 @@
         please don't use it for project, please use xingtools-spring-boot-starter for your own project.
     </description>
 
+    <!--    修改版本同时需要修改 core  XingTools 类的 VERSION 常量-->
+
     <modules>
         <module>xingtools-core</module>
         <module>xingtools-web</module>
