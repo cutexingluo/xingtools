@@ -125,7 +125,7 @@ public class JacksonSerializer implements Serializer, StringSerializer, IData<Ob
      *
      * @since 1.1.4
      */
-    public JacksonSerializer initToFactJson() {
+    public JacksonSerializer initToFastJson() {
         registerAdapter(new JacksonToFastJsonAdapter());
         return this;
     }
