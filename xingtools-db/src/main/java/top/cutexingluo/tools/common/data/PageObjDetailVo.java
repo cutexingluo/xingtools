@@ -7,23 +7,21 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-
 /**
  * Page 扩展封装
  *
- * <p>根据需求, 新增PageDetailVo , 并且兼容mp Page 对象</p>
+ * <p>根据需求, 扩展PageDetailVo , 并且兼容mp Page 对象 和 任意对象</p>
  *
  * @author XingTian
  * @version 1.0.0
- * @date 2024/3/4 18:08
- * @since 1.0.4
+ * @date 2025/5/23 14:44
+ * @since 1.1.7
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PageDetailVo<T> extends PageVo<T> implements IPageDetail {
+public class PageObjDetailVo<T> extends PageObjVo<T> implements IPageDetail {
 
     /**
      * 当前页 , 第几页 - current
@@ -35,33 +33,30 @@ public class PageDetailVo<T> extends PageVo<T> implements IPageDetail {
      */
     protected long pageSize = 10;
 
-    public PageDetailVo(List<T> rows, long total) {
-        super(rows, total);
-    }
 
     /**
      * 使用 page 其他参数填充
      */
-    public PageDetailVo(List<T> rows, @NotNull IPage<?> page) {
+    public PageObjDetailVo(T rows, @NotNull IPage<?> page) {
         this(rows, page.getTotal(), page.getCurrent(), page.getSize());
     }
 
     /**
      * 推荐
      */
-    public PageDetailVo(@NotNull IPage<T> page) {
+    public PageObjDetailVo(@NotNull IPage<T> page) {
         super(page);
         this.pageNum = page.getCurrent();
         this.pageSize = page.getSize();
     }
 
-    public PageDetailVo(@NotNull IPage<T> page, long pageNum, long pageSize) {
+    public PageObjDetailVo(@NotNull IPage<T> page, long pageNum, long pageSize) {
         super(page);
         this.pageNum = pageNum;
         this.pageSize = pageSize;
     }
 
-    public PageDetailVo(List<T> rows, long total, long pageNum, long pageSize) {
+    public PageObjDetailVo(T rows, long total, long pageNum, long pageSize) {
         this.rows = rows;
         this.total = total;
         this.pageNum = pageNum;
@@ -74,7 +69,8 @@ public class PageDetailVo<T> extends PageVo<T> implements IPageDetail {
      *
      * @since 1.1.5
      */
-    public PageDetailVo(List<T> rows, @NotNull IPageDetail pageDetail) {
+    public PageObjDetailVo(T rows, @NotNull IPageDetail pageDetail) {
         this(rows, pageDetail.getTotal(), pageDetail.getPageNum(), pageDetail.getPageSize());
     }
+
 }

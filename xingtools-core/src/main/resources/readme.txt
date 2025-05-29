@@ -17,6 +17,7 @@ xingtools v1.1.3, v1.1.4, v1.1.5, v1.1.6
 
 新增部分
 1.新增 EmptyChecker 等系列接口
+2.新增 IPageDetail 接口，及其系列实现接口
 
 2024-10-18 v1.1.6
 更改部分
