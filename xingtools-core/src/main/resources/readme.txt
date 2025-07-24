@@ -15,6 +15,7 @@ xingtools v1.1.3, v1.1.4, v1.1.5, v1.1.6
 1.移除 JavaVersion.EIGHT 防止报错
 2.状态节点 StatusNode 面向接口 Collection
 3.XTDateUtil 更新
+4.JacksonSerializer bug 修正
 
 新增部分
 1.新增 EmptyChecker 等系列接口
