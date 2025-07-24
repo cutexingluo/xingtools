@@ -1,5 +1,7 @@
 package top.cutexingluo.tools.common.data;
 
+import top.cutexingluo.tools.common.base.IValueSource;
+
 import java.util.AbstractMap;
 import java.util.Map;
 
@@ -14,7 +16,7 @@ import java.util.Map;
  * @date 2024/7/23 17:50
  * @since 1.1.2
  */
-public interface Tuple<K, V> extends Map.Entry<K, V>, PairEntry<K, V> {
+public interface Tuple<K, V> extends Map.Entry<K, V>, PairEntry<K, V>, IValueSource<V> {
 
 
     /**

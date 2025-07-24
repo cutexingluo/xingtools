@@ -14,10 +14,13 @@ xingtools v1.1.3, v1.1.4, v1.1.5, v1.1.6
 更改部分
 1.移除 JavaVersion.EIGHT 防止报错
 2.状态节点 StatusNode 面向接口 Collection
+3.XTDateUtil 更新
 
 新增部分
 1.新增 EmptyChecker 等系列接口
 2.新增 IPageDetail 接口，及其系列实现接口
+3.新增链式调用接口 TaskChain, TaskNode 及实现类
+4.新增IValueSource 接口, 拥有setValue方法
 
 2024-10-18 v1.1.6
 更改部分
