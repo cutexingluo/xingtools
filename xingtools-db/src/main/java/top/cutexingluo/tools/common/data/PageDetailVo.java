@@ -77,4 +77,15 @@ public class PageDetailVo<T> extends PageVo<T> implements IPageDetail {
     public PageDetailVo(List<T> rows, @NotNull IPageDetail pageDetail) {
         this(rows, pageDetail.getTotal(), pageDetail.getPageNum(), pageDetail.getPageSize());
     }
+
+
+    @Override
+    public String toString() {
+        return "PageDetailVo{" +
+                "pageNum=" + pageNum +
+                ", pageSize=" + pageSize +
+                ", rows=" + rows +
+                ", total=" + total +
+                '}';
+    }
 }
