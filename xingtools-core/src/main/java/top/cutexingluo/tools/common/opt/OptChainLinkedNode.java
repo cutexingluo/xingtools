@@ -70,41 +70,96 @@ public class OptChainLinkedNode<T, R> implements IOptRunner<T, R> {
 
     @Override
     public OptChainLinkedNode<T, R> with(IOptRunner<R, R> runner) {
-        return OptChainLinkedNode.from(condition, IOptRunner.super.with(runner));
+        return OptChainLinkedNode.from(this.condition, IOptRunner.super.with(runner));
+    }
+
+    @Override
+    public OptChainLinkedNode<T, R> with(boolean condition, IOptRunner<R, R> runner) {
+        return OptChainLinkedNode.from(this.condition, IOptRunner.super.with(condition, runner));
+    }
+
+    @Override
+    public OptChainLinkedNode<T, R> with(boolean condition, Predicate<PairEntry<Boolean, R>> openPredicate, IOptRunner<R, R> runner) {
+        return OptChainLinkedNode.from(this.condition, IOptRunner.super.with(condition, openPredicate, runner));
     }
 
     @Override
     public OptChainLinkedNode<T, R> withTask(Function<R, R> runner) {
-        return OptChainLinkedNode.from(condition, IOptRunner.super.withTask(runner));
+        return OptChainLinkedNode.from(this.condition, IOptRunner.super.withTask(runner));
     }
 
     @Override
-    public OptChainLinkedNode<T, R> check(Predicate<PairEntry<Boolean, R>> predicate) {
-        return OptChainLinkedNode.from(condition, IOptRunner.super.check(predicate));
+    public OptChainLinkedNode<T, R> withTask(boolean condition, Function<R, R> runner) {
+        return OptChainLinkedNode.from(this.condition, IOptRunner.super.withTask(condition, runner));
+    }
+
+    @Override
+    public OptChainLinkedNode<T, R> withTask(boolean condition, Predicate<PairEntry<Boolean, R>> openPredicate, Function<R, R> runner) {
+        return OptChainLinkedNode.from(this.condition, IOptRunner.super.withTask(condition, openPredicate, runner));
     }
 
     @Override
     public <S> OptChainLinkedNode<T, S> then(IOptRunner<R, S> runner) {
-        return OptChainLinkedNode.from(condition, IOptRunner.super.then(runner));
+        return OptChainLinkedNode.from(this.condition, IOptRunner.super.then(runner));
+    }
+
+    @Override
+    public <S> OptChainLinkedNode<T, S> then(boolean condition, IOptRunner<R, S> runner) {
+        return OptChainLinkedNode.from(this.condition, IOptRunner.super.then(condition, runner));
+    }
+
+    @Override
+    public <S> OptChainLinkedNode<T, S> then(boolean condition, Predicate<PairEntry<Boolean, R>> openPredicate, IOptRunner<R, S> runner) {
+        return OptChainLinkedNode.from(this.condition, IOptRunner.super.then(condition, openPredicate, runner));
     }
 
     @Override
     public <S> OptChainLinkedNode<T, S> thenTask(Function<R, S> runner) {
-        return OptChainLinkedNode.from(condition, IOptRunner.super.thenTask(runner));
+        return OptChainLinkedNode.from(this.condition, IOptRunner.super.thenTask(runner));
+    }
+
+    @Override
+    public <S> OptChainLinkedNode<T, S> thenTask(boolean condition, Function<R, S> runner) {
+        return OptChainLinkedNode.from(this.condition, IOptRunner.super.thenTask(condition, runner));
+    }
+
+    @Override
+    public <S> OptChainLinkedNode<T, S> thenTask(boolean condition, Predicate<PairEntry<Boolean, R>> openPredicate, Function<R, S> runner) {
+        return OptChainLinkedNode.from(this.condition, IOptRunner.super.thenTask(condition, openPredicate, runner));
+    }
+
+    @Override
+    public OptChainLinkedNode<T, R> check(Predicate<PairEntry<Boolean, R>> predicate) {
+        return OptChainLinkedNode.from(this.condition, IOptRunner.super.check(predicate));
     }
 
     @Override
     public OptChainLinkedNode<T, R> peek(Consumer<R> consumer) {
-        return OptChainLinkedNode.from(condition, IOptRunner.super.peek(consumer));
+        return OptChainLinkedNode.from(this.condition, IOptRunner.super.peek(consumer));
+    }
+
+    @Override
+    public OptChainLinkedNode<T, R> peek(boolean condition, Predicate<PairEntry<Boolean, R>> nullableOpenPredicate, Consumer<R> consumer) {
+        return OptChainLinkedNode.from(this.condition, IOptRunner.super.peek(condition, nullableOpenPredicate, consumer));
     }
 
     @Override
     public OptChainLinkedNode<T, R> passPeek(Consumer<R> passConsumer) {
-        return OptChainLinkedNode.from(condition, IOptRunner.super.passPeek(passConsumer));
+        return OptChainLinkedNode.from(this.condition, IOptRunner.super.passPeek(passConsumer));
+    }
+
+    @Override
+    public OptChainLinkedNode<T, R> passPeek(boolean condition, Consumer<R> passConsumer) {
+        return OptChainLinkedNode.from(this.condition, IOptRunner.super.passPeek(condition, passConsumer));
     }
 
     @Override
     public OptChainLinkedNode<T, R> orPeek(Consumer<R> orConsumer) {
-        return OptChainLinkedNode.from(condition, IOptRunner.super.orPeek(orConsumer));
+        return OptChainLinkedNode.from(this.condition, IOptRunner.super.orPeek(orConsumer));
+    }
+
+    @Override
+    public OptChainLinkedNode<T, R> orPeek(boolean condition, Consumer<R> orConsumer) {
+        return OptChainLinkedNode.from(this.condition, IOptRunner.super.orPeek(condition, orConsumer));
     }
 }
