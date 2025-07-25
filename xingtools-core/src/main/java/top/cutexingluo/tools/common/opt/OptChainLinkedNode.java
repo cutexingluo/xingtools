@@ -5,6 +5,7 @@ import lombok.Data;
 import top.cutexingluo.tools.common.data.Entry;
 import top.cutexingluo.tools.common.data.PairEntry;
 
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -29,6 +30,14 @@ public class OptChainLinkedNode<T, R> implements IOptRunner<T, R> {
      */
     private Function<T, R> task;
 
+    public OptChainLinkedNode() {
+        this(true, null);
+    }
+
+    public OptChainLinkedNode(boolean condition) {
+        this(condition, null);
+    }
+
     public OptChainLinkedNode(Function<T, R> task) {
         this(true, task);
     }
@@ -39,11 +48,11 @@ public class OptChainLinkedNode<T, R> implements IOptRunner<T, R> {
     }
 
     public static <T, R> OptChainLinkedNode<T, R> from(IOptRunner<T, R> other) {
-        return new OptChainLinkedNode<>(other != null ? t -> other.execute(t).getValue() : null);
+        return new OptChainLinkedNode<>(other != null ? other::runTask : null);
     }
 
     public static <T, R> OptChainLinkedNode<T, R> from(boolean condition, IOptRunner<T, R> other) {
-        return new OptChainLinkedNode<>(condition, other != null ? t -> other.execute(t).getValue() : null);
+        return new OptChainLinkedNode<>(condition, other != null ? other::runTask : null);
     }
 
     @Override
@@ -65,7 +74,37 @@ public class OptChainLinkedNode<T, R> implements IOptRunner<T, R> {
     }
 
     @Override
+    public OptChainLinkedNode<T, R> withTask(Function<R, R> runner) {
+        return OptChainLinkedNode.from(condition, IOptRunner.super.withTask(runner));
+    }
+
+    @Override
     public OptChainLinkedNode<T, R> check(Predicate<PairEntry<Boolean, R>> predicate) {
         return OptChainLinkedNode.from(condition, IOptRunner.super.check(predicate));
+    }
+
+    @Override
+    public <S> OptChainLinkedNode<T, S> then(IOptRunner<R, S> runner) {
+        return OptChainLinkedNode.from(condition, IOptRunner.super.then(runner));
+    }
+
+    @Override
+    public <S> OptChainLinkedNode<T, S> thenTask(Function<R, S> runner) {
+        return OptChainLinkedNode.from(condition, IOptRunner.super.thenTask(runner));
+    }
+
+    @Override
+    public OptChainLinkedNode<T, R> peek(Consumer<R> consumer) {
+        return OptChainLinkedNode.from(condition, IOptRunner.super.peek(consumer));
+    }
+
+    @Override
+    public OptChainLinkedNode<T, R> passPeek(Consumer<R> passConsumer) {
+        return OptChainLinkedNode.from(condition, IOptRunner.super.passPeek(passConsumer));
+    }
+
+    @Override
+    public OptChainLinkedNode<T, R> orPeek(Consumer<R> orConsumer) {
+        return OptChainLinkedNode.from(condition, IOptRunner.super.orPeek(orConsumer));
     }
 }
