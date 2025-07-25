@@ -11,6 +11,7 @@ import top.cutexingluo.tools.basepackage.chain.core.StreamChain;
  * @author XingTian
  * @version 1.0.0
  * @date 2024/9/6 17:32
+ * @since 1.1.4
  */
 public class ObjectStreamChain extends StreamChain<Object> {
     public ObjectStreamChain(Object source) {

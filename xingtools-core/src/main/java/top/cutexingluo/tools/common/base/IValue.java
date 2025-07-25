@@ -13,6 +13,9 @@ package top.cutexingluo.tools.common.base;
 public interface IValue<V> {
 
     /**
+     * get the value
+     * <p>得到数据</p>
+     *
      * @return the value
      */
     V getValue();

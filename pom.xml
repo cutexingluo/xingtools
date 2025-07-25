@@ -6,11 +6,13 @@
 
     <groupId>top.cutexingluo.tools</groupId>
     <artifactId>xingtools-parent</artifactId>
-    <version>1.1.6</version>
+    <version>1.1.7</version>
     <name>xingtools</name>
     <description>xingtools 是一个Java工具 sdk 库，通过提供许多方法，降低相关API的学习成本，提高工作效率。
         please don't use it for project, please use xingtools-spring-boot-starter for your own project.
     </description>
+
+    <!--    修改版本同时需要修改 core  XingTools 类的 VERSION 常量-->
 
     <modules>
         <module>xingtools-core</module>
@@ -177,7 +179,7 @@
     <developers>
         <developer>
             <name>XingTian</name>
-            <email>2516633174@qq.com</email>
+            <email>cutexingluo@qq.com</email>
             <url>${projectUrl}</url>
             <timezone>+8</timezone>
         </developer>
