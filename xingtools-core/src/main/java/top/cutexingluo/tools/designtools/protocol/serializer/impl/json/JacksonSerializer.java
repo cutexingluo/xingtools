@@ -125,7 +125,7 @@ public class JacksonSerializer implements Serializer, StringSerializer, IData<Ob
      *
      * @since 1.1.4
      */
-    public JacksonSerializer initToFactJson() {
+    public JacksonSerializer initToFastJson() {
         registerAdapter(new JacksonToFastJsonAdapter());
         return this;
     }
@@ -165,11 +165,19 @@ public class JacksonSerializer implements Serializer, StringSerializer, IData<Ob
      * 注册 时间类型序列化
      */
     public JacksonSerializer registerJavaTimeModule() {
-        // 解决jackson无法反序列化LocalDateTime的问题
-        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        objectMapper.registerModule(new JavaTimeModule());
+        registerJavaTimeModule(new JavaTimeModule());
         return this;
     }
 
+    /**
+     * 注册 时间类型序列化
+     *
+     * @param module 自定义模块
+     */
+    public JacksonSerializer registerJavaTimeModule(JavaTimeModule module) {
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        objectMapper.registerModule(module);
+        return this;
+    }
 
 }

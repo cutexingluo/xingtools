@@ -3,6 +3,7 @@ package top.cutexingluo.tools.common.data;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 
@@ -17,10 +18,11 @@ import java.util.List;
  * @version 1.0.0
  * @date 2023/4/26 20:55
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PageVo<T> {
+public class PageVo<T> extends PageObjVo<List<T>> {
     protected List<T> rows;
     protected long total = 0; // 兼容Page
 
