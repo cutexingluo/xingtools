@@ -1327,7 +1327,7 @@ public class BPlusTree<K, V> extends AbstractMap<K, V> implements NavigableMap<K
     /**
      * MapEntry 迭代器 (顺序遍历)
      */
-    class BNodeEntryIterator implements Iterator<Entry<K, V>> {
+    public class BNodeEntryIterator implements Iterator<Entry<K, V>> {
         protected BNode currentNode;
         protected int currentValuesIndex;
         protected boolean isAsc;
@@ -1342,6 +1342,16 @@ public class BPlusTree<K, V> extends AbstractMap<K, V> implements NavigableMap<K
                 currentNode = root.getMaxNode();
                 currentValuesIndex = currentNode.values.size() - 1;
             }
+        }
+
+        /**
+         * 设置迭代顺序
+         *
+         * @since 1.1.7
+         */
+        public BNodeEntryIterator isAsc(boolean isAsc) {
+            this.isAsc = isAsc;
+            return this;
         }
 
         protected boolean checkBound() {

@@ -63,8 +63,18 @@ public class XTDateUtil {
         return Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDateTime();
     }
 
+    /**
+     * fix v1.1.7
+     */
     public static LocalDateTime toLocalDateTime(LocalDate localDate) {
-        return localDate.atTime(LocalTime.from(localDate));
+        return localDate.atStartOfDay();
+    }
+
+    /**
+     * @since 1.1.7
+     */
+    public static LocalDateTime toLocalDateTime(LocalDate localDate, LocalTime time) {
+        return localDate.atTime(time);
     }
 
     // to Instant

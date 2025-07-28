@@ -1,5 +1,7 @@
 package top.cutexingluo.tools.basepackage.chain.base;
 
+import top.cutexingluo.tools.basepackage.checker.ValueChecker;
+
 /**
  * 链基础方法
  *
@@ -8,7 +10,7 @@ package top.cutexingluo.tools.basepackage.chain.base;
  * @date 2024/9/10 15:50
  * @since 1.1.4
  */
-public interface ChainProcessor {
+public interface ChainProcessor extends ValueChecker {
 
 
     /**

@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -50,14 +49,14 @@ public class JacksonToFastJsonAdapter extends JacksonAdapter {
     @Override
     public JacksonToFastJsonAdapter initSelf() {
         Objects.requireNonNull(mapper);
-        this.initConfigure().initDeserializers().initModule();
+        this.initConfigure().initDeserializers().initSerializers().initModule();
         return this;
     }
 
     @Override
     public JacksonToFastJsonAdapter initModule() {
         // 时间转化
-        mapper.registerModule(new JavaTimeModule());
+//        mapper.registerModule(new JavaTimeModule());
         return this;
     }
 

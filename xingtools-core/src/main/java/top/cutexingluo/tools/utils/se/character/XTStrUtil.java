@@ -140,11 +140,33 @@ public class XTStrUtil {
     /**
      * 获取括号内容
      *
+     * fix v1.1.7
+     *
      * @param str str
      * @return {@link String} 括号内容
      */
     public static String getBracketsContent(String str) {
-        return str.substring(str.indexOf("(") + 1, str.indexOf(")"));
+        return getBracketsContent(str, "(", ")");
+    }
+
+    /**
+     * 获取括号内容
+     *
+     * fix v1.1.7
+     *
+     * @param str str
+     * @return {@link String} 括号内容
+     */
+    public static String getBracketsContent(String str, String begin, String end) {
+        int startIdx = str.indexOf(begin);
+        if (startIdx == -1) {
+            return "";
+        }
+        int endIdx = str.indexOf(end, startIdx + 1);
+        if (endIdx == -1) {
+            return "";
+        }
+        return str.substring(startIdx + 1, endIdx);
     }
 
 

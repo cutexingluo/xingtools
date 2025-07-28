@@ -246,7 +246,7 @@ public class StreamChain<T> extends AbstractBuilder<T> implements StreamChainPro
 
     @SuppressWarnings("unchecked")
     @Override
-    public <R, X extends Throwable> StreamChainProcessor<R> castThrow(@NotNull Class<R> clazz, Supplier<? extends X> exceptionSupplier) throws X {
+    public <R, X extends Throwable> StreamChain<R> castThrow(@NotNull Class<R> clazz, Supplier<? extends X> exceptionSupplier) throws X {
         if (clazz.isInstance(target)) {
             return of((R) target);
         }

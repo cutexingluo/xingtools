@@ -18,6 +18,7 @@ import java.util.stream.Stream;
  * @version 1.0.0
  * @date 2024/9/6 10:40
  * @see java.util.stream.Stream
+ * @see java.util.Optional
  * @since 1.1.4
  */
 public interface StreamChainProcessor<T> extends IDataValue<T>, ChainProcessor {

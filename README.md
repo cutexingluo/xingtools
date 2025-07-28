@@ -1,12 +1,12 @@
 # xingtools 工具包
 
 ## :book:相关介绍
-xingtools sdk 工具包，v1.1.6 正式版发布。( 依赖的版本不能低于 1.1.1 )
+xingtools sdk 工具包，v1.1.7 正式版发布。( 依赖的版本不能低于 1.1.1 )
 星天（xingtian）制作的 Java 工具包，是基于 Springboot 2.7.18 和 SpringBoot 3.0.5 制作的 ,  基于 Java 8 和 Java 17，它是一个整合各工具类的整合包。
 
 ### :scroll:简介
 
-是一个功能丰富且易用的 **Java工具库**，通过诸多实用工具类的使用，旨在帮助开发者快速、便捷地完成各类开发任务。 这些封装的工具涵盖了hutool包（依赖[hutool包](https://gitee.com/dromara/hutool)）, 部分 ruoyi 工具类，包含了系列字符串、数字、集合、编码、日期、文件、IO、加密、数据库JDBC、JSON、HTTP客户端等一系列基础操作，还包含了 ACM算法，JDK版本兼容包，各种base接口，注解AOP装配，配置自动装配，Spring 扩展，Security扩展，OAuth2扩展，Cloud扩展，可以满足各种不同的开发需求。
+是一个功能丰富且易用的 **Java工具库**，通过诸多实用工具类的使用，旨在帮助开发者快速、便捷地完成各类开发任务。 这些封装的工具涵盖了hutool包（依赖[hutool包](https://gitee.com/dromara/hutool)）, 部分 ruoyi 工具类，包含了系列字符串、数字、集合、编码、日期、文件、IO、加密、数据库JDBC、JSON、HTTP客户端等一系列基础操作，还包含了 ACM算法，JDK版本兼容包，各种base接口，快速开发工具类（链式调用、逻辑建造）、注解AOP装配，配置自动装配，Spring 扩展，Security扩展，OAuth2扩展，Cloud扩展，可以满足各种不同的开发需求。
 
 目前仍使用 xingtool 文档 v1.0.5 [使用文档](使用文档.md)，未来会更新，别急哦各位，大部分类名及用法没有更改，可以参考。
 
@@ -53,12 +53,12 @@ Maven 依赖（JDK8版本）
 <dependency>
 	<groupId>top.cutexingluo.tools</groupId>
 	<artifactId>xingtools-spring-boot-starter</artifactId>
-	<version>1.1.6</version>
+	<version>1.1.7</version>
 </dependency>
 <dependency>
 	<groupId>top.cutexingluo.tools</groupId>
 	<artifactId>xingtools-pkg-jdk8</artifactId>
-	<version>1.1.6</version>
+	<version>1.1.7</version>
 </dependency>
 ```
 
@@ -68,12 +68,12 @@ Maven 依赖（JDK17版本）
 <dependency>
 	<groupId>top.cutexingluo.tools</groupId>
 	<artifactId>xingtools-spring-boot-starter</artifactId>
-	<version>1.1.6</version>
+	<version>1.1.7</version>
 </dependency>
 <dependency>
 	<groupId>top.cutexingluo.tools</groupId>
 	<artifactId>xingtools-pkg-jdk17</artifactId>
-	<version>1.1.6</version>
+	<version>1.1.7</version>
 </dependency>
 ```
 
@@ -82,8 +82,8 @@ Maven 依赖（JDK17版本）
 目前推荐使用的版本如下：（其他版本有一定bug，如需使用请参考更新公告的版本使用攻略）
 
 ```wiki
-极力推荐使用最新版 v1.1.6
-xingtools v1.1.3, v1.1.4, v1.1.5, v1.1.6
+极力推荐使用最新版 v1.1.7
+xingtools v1.1.3, v1.1.4, v1.1.5, v1.1.6, v1.1.7
 xingtool v1.0.1, v1.0.4, v1.0.5
 ```
 
@@ -134,11 +134,13 @@ xingtools.enabled.mybatis-plus-config=true
 
 如有bug，欢迎反馈。
 
-## :game_die:使用样例（xingtools v1.1.5 版本）
+## :game_die:使用样例（xingtools v1.1.7 版本）
+
+本只做样例阐述，下面示例只是皮毛，更多更丰富的工具还在内部。
 
 由于下一节的 xingtool 有些使用样例过时或不推荐，现在更新使用样例，其他请优先阅读源码再参考文档。
 
-##### 1. 数据封装类，Controller 层
+### 1. 数据封装类，Controller 层
 
 ```java
 // controller 示例
@@ -153,17 +155,21 @@ public class CaptchaController {
     public MyResult<?> getCaptchaInfo() {
 
         HashMap<String, String> captcha = captchaService.getCaptcha();
+        
         // 新版返回方式，可使用自定义返回类，更优雅
         return ResultUtil.selectFill(captcha,
                 EnumResult.GET_SUCCESS,
                 EnumResult.GET_ERROR,
                 new MyResult<>());
+        
         // 新版返回方式2
         return ResultUtil.selectFill(captcha,
                 MyResult.fillBy(EnumResult.GET_SUCCESS),
                 EnumResult.GET_ERROR); // 返回自定义的MyResult对象
+        
         // 也可以使用下面传统返回方式 (使用xingtools自带的 Result 及成功和失败策略)
         return ResultUtil.selectResult(captcha); // 返回Result对象
+        
 		// ResultUtil 工具类 默认策略(可以更改) 等同于下面 
         return captcha == null || Boolean.FALSE.equals(captcha)  ? 
             	MyResult.errorBy(EnumResult.GET_ERROR):
@@ -217,7 +223,7 @@ public class MyResult implements IResultSource<Integer, Object> {
 
 如果仅需要 msg 属性，仅需实现 IR 接口 ，需要 msg 和 code 需要实现 IResultData 接口，以此类推。
 
-##### 2.工具类使用，例如锁，异步(多线程)
+### 2.工具类使用，例如锁，异步(多线程)
 
 锁提供基本的 LockHandler 类，以及下面的子类 XTLockHandler , XTExtLockHandler 等类。
 
@@ -265,7 +271,7 @@ public class MyResult implements IResultSource<Integer, Object> {
 
 
 
-##### 3.实体工具类使用，例如日志打印
+### 3.实体工具类使用，例如日志打印
 
 打印日志一般只需要 以下代码或者 lombok 的 @Slf4j 注解
 
@@ -352,9 +358,9 @@ public class WebLogHandlerConfig {
 
 如果有并发问题，请自行将设置值和打印值的部分加锁。
 
-##### 4.系列注解使用，例如参数校验和异步线程
+### 4.系列注解使用，例如参数校验和异步线程
 
-###### **参数校验** （必须导入 validation 包 并且参数添上@Valid或@Validated ）
+#### **参数校验** （必须导入 validation 包 并且参数添上@Valid或@Validated ）
 
 ```java
 @Data
@@ -397,7 +403,7 @@ public class MyUserQuery {
 
 ```
 
-###### 异步线程 
+#### 异步线程 
 
 1.可以使用**编程式**，例如 XTAsync, 或者你的类实现 ThreadHelper 接口或者  ThreadExecutorHelper 接口
 
@@ -493,6 +499,230 @@ public class TestService {
 }
 ```
 
+### 5.快速建造工具
+
+#### 1.HashMap扩展
+
+为 HashMap 添加值
+
+```java
+void test() {
+    HashMap<String, Integer> hashMap = new HashMap<>();
+
+    // 为 map 添加 key,value 对
+    int i = XTHashMap.putMapEntriesFromDValues(
+        hashMap,
+        "hello", 1,
+        "world", 2
+    );
+
+
+    System.out.println(hashMap); // {world=2, hello=1}
+
+	// 为 map 的 list value 补充值, check 代表不存在就 new 一个ArrayList填充进去
+    HashMap<String, List<String>> hashMap1 = new HashMap<>();
+    XTMapUtil.checkAddAll(hashMap1, "hello", ArrayList::new,
+                          Arrays.asList("hello", "world"));
+    XTMapUtil.checkAddAll(hashMap1, "hello", ArrayList::new,
+                          Arrays.asList("hello1", "world1"));
+
+
+    System.out.println(hashMap1); // {hello=[hello, world, hello1, world1]}
+}
+```
+
+#### 2.Optional 功能扩展类 StreamChain
+
+StreamChain 包含 Optional 几乎所有方法，还对其进行了扩展
+
+```java
+void test() {
+    StreamChain<Integer> chain = StreamChain.ofNullable(null)
+        .directMap(v -> v == null ? 2 : (int) v + 1);
+    System.out.println(chain); // StreamChain[2]
+
+    StreamChain<Integer> streamChain = new ObjectStreamChain(1)
+        .cast(Integer.class)
+        .flatMap(StreamChain::ofNullable)
+        .map(v -> v + 1);
+    System.out.println(streamChain); // StreamChain[2]
+
+    ObjectStreamChain objectStreamChain = new ObjectStreamChain(2);
+    System.out.println(objectStreamChain);// StreamChain[2]
+
+    System.out.println(objectStreamChain.equals(streamChain)); // true
+
+    StreamChain<Integer> opt = StreamChain.ofNullable(1);
+    List<Integer> collect = opt.stream().collect(Collectors.toList());
+    Integer integer = opt
+        .flatMap(StreamChain::of)
+        .get();
+    System.out.println(integer); // 1
+    System.out.println(opt); // StreamChain[1]
+    System.out.println(collect); // [1]
+
+}
+```
+
+#### 3.高级建造类 BuilderMapChain
+
+生成一个建造树，如果当前层的值不存在，便可以从其他兄弟节点获取或生成，或者从父节点生成，直到得到值，返回。
+
+```java
+void test15() {
+    BuilderMapChain chain = new BuilderMapChain(3, null,  () -> {
+        // 第1层
+        return "第1层,";
+    }).withGetter(null, o -> {
+        // 第2层
+        String str = (String) o;
+        str += "第2层,";
+        return str;
+    }).withListGetter(null, Arrays.asList( // 第3层
+        (o) -> { // 从上1层获取数据
+            String str = (String) o;
+            str += "第3层-1,";
+            return str;
+        },
+        (o) -> { // 从上2层获取数据
+            String str = (String) o;
+            str += "第3层-2,";
+            return str;
+        }
+    ));
+    
+    // 下面三块是独立的，不在同一个方法内，因为创建便会填充数据（一次性对象）。
+    
+    Entry<Integer, String> entry = chain.createFrontDfs(3); // 前驱dfs创建3层
+    System.out.println(entry); // Entry [key=3, value=第1层,第2层,第3层-1,]
+    String s = chain.getValue(3); // 获取第3层数据
+    System.out.println(s); // 第1层,第2层,第3层-1,
+
+    Entry<Integer, String> entry2 = chain.createBackBfs(2); // 后驱bfs创建2层
+    System.out.println(entry2); // Entry [key=1, value=第1层,第2层,]
+    String s2 = chain.getValue(2); // 获取第2层数据
+    System.out.println(s2); // 第1层,第2层,
+    
+    Entry<Integer, String> entry3 = chain.createBackDfs(3); // 后驱dfs创建3层
+    System.out.println(entry3); // Entry [key=2, value=第1层,第3层-2,]
+    String s3 = chain.getValue(3); //获取第3层数据
+    System.out.println(s3); // 第1层,第3层-2,
+}
+```
+
+第3层数据不为null，则返回数据。
+
+第3层数据为null，便从第3层 front（List 从前往后，前驱），back（List 从后往前，后驱）获取生成方法（用于生成该层数据，填充到该层），dfs （依次获取上层数据，直至能填充目标层数据）, bfs （先把该层List遍历完成，还没有填充数据才从上层获取）
+
+**那么有什么用呢？**
+
+示例如下：
+
+```java
+void test{
+    ...
+    ApplicationContext applicationContext = SpringUtils.getApplicationContext(); // Spring 上下文
+    // 创建3层建造树
+    BuilderMapChain chain = new BuilderMapChain(3, applicationContext) 
+        .with(redisTemplate, o -> { // redisTemplate 数据
+            ApplicationContext ac = (ApplicationContext) o;
+            return ac.getBean(RedisTemplate.class); // redisTemplate 数据不存在则从容器获取
+        }).withList(redisCache, Arrays.asList(
+        o -> {
+            RedisTemplate<String, Object> rt = (RedisTemplate<String, Object>) o;
+            return new RYRedisCache(rt); // 填充进 RYRedisCache
+        },
+        o -> {
+            ApplicationContext ac = (ApplicationContext) o;
+            return ac.getBean(RYRedisCache.class); // RYRedisCache 数据不存在则从容器获取
+        }
+    ));
+    
+    // 得到生成的值
+    RYRedisCache redisCache = chain.createFrontDfs(3).getValue(3);
+}
+```
+
+里面有许许多多快速开发的工具，还请多多研究。
+
+### 6.系列算法
+
+算法都放在  top.cutexingluo.tools.utils.se.algo.cpp 包下，顾名思义，工具/SE/算法/C++，
+
+例如二分查找
+
+```java
+int index = XTBinarySearch.lowerBound(new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, 5);
+// c++ std::lower_bound 找到大于或等于目标的数据的位置, index = 4
+```
+
+例如字符串算法，在字符串里面查找子串，原生java是一个个匹配，遇到多重复字符速度变慢。
+
+这里有KMP算法
+
+```java
+int index = XTStringAlgo.find("abcabcabc...abcdabcabcabc", "abcd");// 查找重复字符串
+```
+
+例如数据结构，简易线段树，线段树，动态线段树，平衡二叉树，树状数组，字典树，Splay树，Treap树，B 树，B+ 树的基础实现，可供参考
+
+```java
+BTree<String, String> tree = new BTree<>(3); // B树
+BPlusTree<String, String> tree = new BPlusTree<>(3); // B+树
+tree.put("1", "1");
+tree.put("4", "4");
+tree.put("2", "2");
+// 实现 NavigableMap 接口，兼容基本操作
+```
+
+例如数学
+
+```java
+Point a = new Point(1.0,1.0);
+Point b = new Point(1.0,2.0);
+double dis = a.distance(b); // 两点距离
+Point middle = a.middle(b); // 两点中点
+```
+
+例如图论，Dijkstra 最短路，最小生成树，网络流等
+
+例如状态机（类似 map）
+
+```java
+NodeStateMachine<Integer, StatusNode<EnumPay, EnumPay>> stateMachine = new NodeStateMachine<>();
+stateMachine.put(EnumPay.ALIPAY.getCode(),
+        new StatusNode<>(EnumPay.ALIPAY,
+                Arrays.asList(
+                        EnumPay.ALIPAY,
+                        EnumPay.WECHAT,
+                        EnumPay.UNIONPAY
+                )
+        ));
+stateMachine.put(EnumPay.WECHAT.getCode(),
+        new StatusNode<>(EnumPay.WECHAT,
+                Arrays.asList(
+                        EnumPay.WECHAT,
+                        EnumPay.UNIONPAY
+                )
+        ));
+boolean accept = stateMachine.canAcceptNode(EnumPay.ALIPAY.getCode(), EnumPay.ALIPAY.getCode());
+System.out.println(accept); // true
+
+boolean accept1 = stateMachine.canAcceptNode(EnumPay.ALIPAY.getCode(), EnumPay.WECHAT.getCode());
+System.out.println(accept1); // true
+
+boolean accept2 = stateMachine.canAcceptNode(EnumPay.ALIPAY.getCode(), EnumPay.UNIONPAY.getCode());
+System.out.println(accept2); // false
+
+boolean accept3 = stateMachine.canAcceptNode(EnumPay.ALIPAY.getCode(), EnumPay.CASH.getCode());
+System.out.println(accept3); // false
+
+StatusNode<EnumPay, EnumPay> node = stateMachine.get(EnumPay.ALIPAY.getCode());
+System.out.println(node); // StatusNode(node=ALIPAY, nextNodes=[ALIPAY, WECHAT, UNIONPAY])
+boolean contains = node.getChildren().contains(EnumPay.ALIPAY);
+System.out.println(contains); // true
+```
+
 
 
 未完待续...
@@ -500,8 +730,6 @@ public class TestService {
 具体内容详见源码和使用文档。
 
 其他丰富的 工具，算法，注解， 自动配置 等均可在源码注释上看到使用说明，多查看源码。
-
-
 
 
 

@@ -1316,7 +1316,7 @@ public class BTree<K, V> extends AbstractMap<K, V> implements NavigableMap<K, V>
     /**
      * BNode 迭代器 (中序遍历)
      */
-    class BNodeIterator extends BaseNowNodeIterator<BNode> {
+    public class BNodeIterator extends BaseNowNodeIterator<BNode> {
         public BNodeIterator() {
         }
 
@@ -1342,7 +1342,7 @@ public class BTree<K, V> extends AbstractMap<K, V> implements NavigableMap<K, V>
     /**
      * MapEntry 迭代器 (中序遍历)
      */
-    class BNodeEntryIterator extends BaseNowIterator<BNode, Entry<K, V>> {
+    public class BNodeEntryIterator extends BaseNowIterator<BNode, Entry<K, V>> {
         protected LinkedList<Entry<K, V>> values;
         protected BNode currentNode;
         protected Entry<K, V> currentEntry;
@@ -1459,7 +1459,7 @@ public class BTree<K, V> extends AbstractMap<K, V> implements NavigableMap<K, V>
     /**
      * MapEntry 迭代器
      */
-    class BNodeSortedEntryIterator extends BaseNowIterator<Tuple<BNode, Integer>, Entry<K, V>> {
+    public class BNodeSortedEntryIterator extends BaseNowIterator<Tuple<BNode, Integer>, Entry<K, V>> {
         protected LinkedList<Entry<K, V>> values;
         protected BNode currentNode;
         protected Entry<K, V> currentEntry;
