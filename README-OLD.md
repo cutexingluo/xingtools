@@ -1,23 +1,45 @@
-# XingTools **工具包**
+# xingtools 工具包
 
 ## :book:相关介绍
-
-**XingTools 是一个基于 Hutool 的多模块的 Java 工具包**，提供了一系列开箱即用的工具类和组件，涵盖 核心工具、加密、验证、日志、线程池、数据结构算法、AOP、Security、微服务等多个领域。
-
-[旧版README](./README-OLD.md)
+xingtools sdk 工具包，v1.1.7 正式版发布。( 依赖的版本不能低于 1.1.1 )
+星天（xingtian）制作的 Java 工具包，是基于 Springboot 2.7.18 和 SpringBoot 3.0.5 制作的 ,  基于 Java 8 和 Java 17，它是一个整合各工具类的整合包。
 
 ### :scroll:简介
 
-是一个功能丰富且易用的 **Java工具库**，通过诸多实用工具类的使用，旨在帮助开发者快速、便捷地完成各类开发任务。
+是一个功能丰富且易用的 **Java工具库**，通过诸多实用工具类的使用，旨在帮助开发者快速、便捷地完成各类开发任务。 这些封装的工具涵盖了hutool包（依赖[hutool包](https://gitee.com/dromara/hutool)）, 部分 ruoyi 工具类，包含了系列字符串、数字、集合、编码、日期、文件、IO、加密、数据库JDBC、JSON、HTTP客户端等一系列基础操作，还包含了 ACM算法，JDK版本兼容包，各种base接口，快速开发工具类（链式调用、逻辑建造）、注解AOP装配，配置自动装配，Spring 扩展，Security扩展，OAuth2扩展，Cloud扩展，可以满足各种不同的开发需求。
 
-这些封装的工具涵盖了hutool包（依赖[hutool包](https://gitee.com/dromara/hutool)）, 部分 ruoyi 工具类，包含了系列字符串、数字、集合、编码、日期、文件、IO、加密、数据库JDBC、JSON、HTTP客户端等一系列基础操作，还包含了 ACM算法，JDK版本兼容包，各种base接口，快速开发工具类（链式调用、逻辑建造）、注解AOP装配，配置自动装配，Spring 扩展，Security扩展，OAuth2扩展，Cloud扩展，可以满足各种不同的开发需求。
+目前仍使用 xingtool 文档 v1.0.5 [使用文档](使用文档.md)，未来会更新，别急哦各位，大部分类名及用法没有更改，可以参考。
 
 ###   :golf:本包说明
 
-本工具库遵从**面向接口**，所以接口可能分得特别细。
+该依赖为 xingtools sdk 工具包 分组版本。 它是一个整合各工具类的整合starter。具体详情详见 [xingtool-spring-boot-starter](https://gitee.com/SangonomiyaKokomi/xingtool)  这个原sdk。 该分组工具包为升级版，将核心拆分应对不同使用情况，大大提高灵活性，未来原sdk可能会依赖该升级版的sdk。如果你是jdk任何版本（ jdk8, jdk17 ）都可以进行使用。唯一缺点就是可能会需要多个（两个及以上，因为需要导入pkg的jdk版本包）的依赖。
 
-该依赖为 xingtools sdk 工具包 分组版本。 它是一个整合各工具类的整合starter。具体详情详见 xingtool (不加s) [xingtool-spring-boot-starter](https://gitee.com/SangonomiyaKokomi/xingtool)  这个原sdk。 该分组工具包为升级版，将核心拆分应对不同使用情况，大大提高灵活性，未来原sdk可能会依赖该升级版的sdk。
-星天（xingtian）制作，基于 Java 8 和 Java 17，基于 SpringBoot 2.7.18 和 SpringBoot 3.0.5  ,  是一个整合各工具类的整合包。
+## :wrench:包含组件
+
+| 模块                                | 介绍                                                         |
+| ----------------------------------- | ------------------------------------------------------------ |
+| xingtools-core                      | 核心，包括各种接口，实体类和工具类                           |
+| xingtools-pkg-jdk8                  | 依赖core包，jdk 分类包，对不同的jdk版本提供兼容性            |
+| xingtools-pkg-jdk17                 | 依赖core包，jdk 分类包，对不同的jdk版本提供兼容性            |
+| xingtools-web                       | 依赖core和pkg包，提供一些 http 工具                          |
+| xingtools-extra                     | 依赖core，附加，也就是基于 SpringBoot 的一些工具或实体类     |
+| xingtools-db                        | 依赖core，数据库操作，包含mybatis-plus等操作                 |
+| xingtools-mvc                       | 依赖web，extra，db三包，基于 SpringBoot-Web的一些集成工具或实体类 |
+| xingtools-log                       | 依赖mvc，包含日志扩展操作的封装                              |
+| xingtools-cloud                     | 依赖mvc，基于SpringCloud，包括各种 cloud，security，oauth 的工具 |
+| xingtools-aop                       | 依赖mvc，log，cloud三包，提供前面依赖的aop注解和切面类       |
+| xingtools-unified                   | 依赖aop，整合包，整合所有依赖并依赖 hutool-all               |
+| xingtools-spring-boot               | 整合版本，排除pkg-jdk依赖，在这之后需要配合pkg-jdk依赖使用   |
+| xingtools-spring-boot-autoconfigure | 整合版本的自动装配，含各种自动装配配置，开关，注解，类等     |
+| xingtools-spring-boot-starter       | 最终依赖包                                                   |
+
+当前版本组件之间的依赖关系如下：（v1.1.2 开始组件依赖更新，后续沿用该依赖关系）
+
+![image-20240808174556862](./assets/image-20240808174556862.png)
+
+​																**组件依赖关系图**
+
+目前使 pkg包 仅依赖 core 包，可以按需导入从前面开始的依赖。
 
 ## :bookmark:依赖使用
 
@@ -75,137 +97,90 @@ xingtool v1.0.1, v1.0.4, v1.0.5
 </dependency>
 ```
 
-## :wrench:包含组件
+### :apple:使用方式
 
-| 模块                                | 介绍                                                         |
-| ----------------------------------- | ------------------------------------------------------------ |
-| xingtools-core                      | 核心，包括各种接口，实体类和工具类                           |
-| xingtools-pkg-jdk8                  | 依赖core包，jdk 分类包，对不同的jdk版本提供兼容性            |
-| xingtools-pkg-jdk17                 | 依赖core包，jdk 分类包，对不同的jdk版本提供兼容性            |
-| xingtools-web                       | 依赖core和pkg包，提供一些 http 工具                          |
-| xingtools-extra                     | 依赖core，附加，也就是基于 SpringBoot 的一些工具或实体类     |
-| xingtools-db                        | 依赖core，数据库操作，包含mybatis-plus等操作                 |
-| xingtools-mvc                       | 依赖web，extra，db三包，基于 SpringBoot-Web的一些集成工具或实体类 |
-| xingtools-log                       | 依赖mvc，包含日志扩展操作的封装                              |
-| xingtools-cloud                     | 依赖mvc，基于SpringCloud，包括各种 cloud，security，oauth 的工具 |
-| xingtools-aop                       | 依赖mvc，log，cloud三包，提供前面依赖的aop注解和切面类       |
-| xingtools-unified                   | 依赖aop，整合包，整合所有依赖并依赖 hutool-all               |
-| xingtools-spring-boot               | 整合版本，排除pkg-jdk依赖，在这之后需要配合pkg-jdk依赖使用   |
-| xingtools-spring-boot-autoconfigure | 整合版本的自动装配，含各种自动装配配置，开关，注解，类等     |
-| xingtools-spring-boot-starter       | 最终依赖包                                                   |
+#### :lemon:使用讲解
 
-当前版本组件之间的依赖关系如下：（v1.1.2 开始组件依赖更新，后续沿用该依赖关系）
+1). 可以通过Util.静态类的方式调出静态方法，一般由XT开头的类，例如XTObjUtil等，以便直接调出类名、方法，根据类名意思了解该功能，好处是暂时不用查文档，并且和hutool互补，能够加快开发效率。
+2). 可以通过new的方式获得非单例对象，也是常用的方式。
+3). 在启动类上加上@EnableXingToolsServer，开启自动注入，比如默认开启的两个注解aop(例如@Printlog注解，以及其他现版本默认未开启的各种日志异常拦截aop等),其他的配置或者aop需要在配置文件中开启，以xingtools开头即可点出，例如
 
-![image-20240808174556862](./assets/image-20240808174556862.png)
-
-​																**组件依赖关系图**
-
-目前使 pkg包 仅依赖 core 包，可以按需导入从前面开始的依赖。
-
-## :apple:使用方式
-
-### :lemon:使用讲解
-
-根据类名意思了解该功能，好处是暂时不用查文档，并且和hutool互补，能够加快开发效率.
-
-1. 可以通过`Util.`静态类的方式调出静态方法，一般由`XT`开头的类，例如`XTObjUtil`, `XTStrUtil` 等，以便直接调出类名、方法。
-2. 通过 new 一个工具操作类 `Handler`等
-3. 通过 of 等方式使用，例如 `new StreamChain()` 或 `StreamChain.of()`
-4. 使用 `@EnableXingToolsServer` `@EnableXingToolsCloudServer` 注解开启自动配置，然后配置文件例如 `xingtools.enabled.`
-
-## 🧰部分代表功能
-
-### ⚙️ 工具类
-
-#### 1.数据封装接口 （`IResultData`, `IResult`）
-
-`IR`, `IResultData`, `IResult` 分别追加提供 getMsg, getCode, getData 方法
-
-`IResultDataSource`, `IResultSource` 继续追加 setMsg, setCode, setData 方法
-
-例如`IResultData`接口如下
-
-```java
-public interface IResultData<T> extends IR {
-    T getCode();
-}
+```properties
+# 开启 redis
+xingtools.enabled.redisconfig=true
+# 开启 redis 的多个工具类，需 @Autowired 注入使用
+xingtools.enabled.redisconfig-util=true
+# 使用jackson2序列化(默认，可以不用配置)
+xingtools.enabled.redisconfig-setting=jackson
+# 默认全局异常拦截
+xingtools.enabled.global-exception=true
+# mybatis-plus 分页插件 这个还是推荐自己注册Bean
+xingtools.enabled.mybatis-plus-config=true
 ```
+> 注意这些只是进行了简单的配置，也就是大多数人的需求，也暂时不用每次自行创建配置类等。
 
-可以根据面向接口实现方法，来满足异常常量、返回类、异常的统一。
+> 所有aop和配置都可以通过配置类或者自行bean导入，导入启动后，会有日志说明配置启动成功，也可以用xingtools.enabled.log-info=false把自动导入的日志关闭。**由于减少侵入和大小占用，有些相应的配置解释会提供工件名，请自行配置相关依赖。**
 
-```java
-// 异常常量
-@Getter
-public enum EnumResult implements IResultData<Integer> {
-    // 成功
-    SUCCESS(200, "操作成功");
-    private final int code;//状态码
-    private final String msg;//状态码对应的信息
-}
-// 异常
-@Getter
-public class ServerException extends RuntimeException implements IResultData<Integer>{
-    private int code;
-    @Override
-    public String getMsg() {
-        return super.getMessage();
-    }
-}
-// 返回类
-@Data
-@Accessors(chain = true)
-public class MyResult<T> implements IResultSource<Integer, T> {
-    private Integer code;
-    private String msg;
-    private T data;
-    
-    // 面向接口
-    public static <T> MyResult<T> successBy(IResultData<Integer> origin) {
-        MyResult<T> result = new MyResult<>();
-        result.setCode(origin.getCode());
-        result.setMsg(origin.getMsg());
-        return result;
-    }
-}
-```
+- 4).也就是SpringSecurity,SpringCould的相关配置,可以通过配置@EnableXTCloudSecurity，@EnableXingToolsCloudServer，开启相关Security和Could的简化配置，精简你的项目。
 
-然后可以通过 ResultUtil 工具类进行封装返回值。
+综上不管是简单作为工具包，或者简化你的SpringBoot,SpringCloud等项目，该Starter放到你的依赖里也是一种不错的选择。
+
+#### :pear:使用说明
+
+1.  静态工具类，new对象
+2.  @EnableXingToolsServer等注解启动装配，使用配置文件快捷开启对应配置
+
+
+
+如有bug，欢迎反馈。
+
+## :game_die:使用样例（xingtools v1.1.7 版本）
+
+本只做样例阐述，下面示例只是皮毛，更多更丰富的工具还在内部。
+
+由于下一节的 xingtool 有些使用样例过时或不推荐，现在更新使用样例，其他请优先阅读源码再参考文档。
+
+### 1. 数据封装类，Controller 层
 
 ```java
 // controller 示例
 @RestController
 @RequestMapping("/common")
 public class CaptchaController {
-    ...
-    @GetMapping("/captcha") 
+    /**
+     * 获取验证码（放行）
+     */
+    @Operation(operationId = "getCaptchaInfo") //open-api
+    @GetMapping("/captcha") // 接口
     public MyResult<?> getCaptchaInfo() {
-        XX xx = testService.getXX();
+
+        HashMap<String, String> captcha = captchaService.getCaptcha();
         
-        // ResultUtil 工具类
-        return ResultUtil.selectFill(xx,
-                EnumResult.SUCCESS, 
-                EnumResult.ERROR,
+        // 新版返回方式，可使用自定义返回类，更优雅
+        return ResultUtil.selectFill(captcha,
+                EnumResult.GET_SUCCESS,
+                EnumResult.GET_ERROR,
                 new MyResult<>());
         
-		//  默认策略(可以更改) 等同于下面 
+        // 新版返回方式2
+        return ResultUtil.selectFill(captcha,
+                MyResult.fillBy(EnumResult.GET_SUCCESS),
+                EnumResult.GET_ERROR); // 返回自定义的MyResult对象
         
-        return captcha == null || Boolean.FALSE.equals(xx)  ? 
-            	MyResult.errorBy(EnumResult.ERROR):
-                MyResult.successBy(EnumResult.SUCCESS).setData(xx);
+        // 也可以使用下面传统返回方式 (使用xingtools自带的 Result 及成功和失败策略)
+        return ResultUtil.selectResult(captcha); // 返回Result对象
+        
+		// ResultUtil 工具类 默认策略(可以更改) 等同于下面 
+        return captcha == null || Boolean.FALSE.equals(captcha)  ? 
+            	MyResult.errorBy(EnumResult.GET_ERROR):
+                MyResult.successBy(EnumResult.GET_SUCCESS).setData(captcha);
     }
 }
 ```
 
-在`1.0.3`版本提供了几个基础实现类
-
-`CommonResult` （通用返回类）
-
-`MSResult<T>` (或 `R`), `Result`, `StrMSResult<T>`, `StrResult`  (code 为 `Integer`或 `String` , data 为 泛型 T或`Object` 的 四个组合)
-
-`CommonResult` 类的基本属性如下：
+有人会说：我不想使用你的 Result 这个封装返回类，能不能自己定义。这是可以的，在1.0.3版本，统一了4个返回类，全部继承于CommonResult类，该类的基本属性如下：
 
 ```java
-@Data
 public class CommonResult<C, T> implements IResultSource<C, T> {
     protected C code;
     protected String msg;
@@ -213,9 +188,42 @@ public class CommonResult<C, T> implements IResultSource<C, T> {
 }
 ```
 
-**贯彻面向接口！**
+它实现 IResultSource 接口，而我们可以直接实现 IResultSource 接口或者再往上仅实现 IResult 接口就行了。基本上工具包的很多方法参数都是 IResult 接口或者 IResultSource接口(比IResult多了set方法)。我们可以直接实现该接口像这样：
 
-#### 2.锁、异步(多线程)
+```java
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Accessors(chain = true)
+public class MyResult implements IResultSource<Integer, Object> {
+    protected Integer retCode; // 不想使用 code，想使用 retCode
+    protected String message; // 不想使用 msg，想使用 message
+    protected Object data;
+    
+    @Override
+    public Object getData() { // 使用原 getData 方法
+        return data;
+    }
+    @JsonIgnore // 屏蔽原方法，避免序列化
+    @Override
+    public Integer getCode() { 
+        return retCode;
+    }
+    @JsonIgnore // 屏蔽原方法，避免序列化
+    @Override
+    public String getMsg() {
+        return message;
+    }
+}
+```
+
+对于不需要json转化的字段进行@JsonIgnore忽略掉就行。
+
+同理如果不需要data字段，再往上实现 IResultData 接口 (包含code和msg) 就可以，工具包里面的很多异常或者枚举都是实现了该接口, 因为基本上都需要 code 和 msg 两种属性。
+
+如果仅需要 msg 属性，仅需实现 IR 接口 ，需要 msg 和 code 需要实现 IResultData 接口，以此类推。
+
+### 2.工具类使用，例如锁，异步(多线程)
 
 锁提供基本的 LockHandler 类，以及下面的子类 XTLockHandler , XTExtLockHandler 等类。
 
@@ -223,8 +231,8 @@ public class CommonResult<C, T> implements IResultSource<C, T> {
 
 ```java
     @Test
-    void test() {
-        XTLockMeta lockMeta = new XTLockMeta(XTLockType.ReentrantLock); // 可重入锁
+    void test11() {
+        XTLockMeta lockMeta = new XTLockMeta(XTLockType.ReentrantLock);
         LockHandler lockHandler = new LockHandler(lockMeta);
         lockHandler.init();
         // Spring 的线程池
@@ -261,53 +269,239 @@ public class CommonResult<C, T> implements IResultSource<C, T> {
     }
 ```
 
-#### 3.各种工具类
 
-比如 `XTStrUtil` , `XTCollUtil` , `XTMapUtil` 等等扩展类，均是继承 hutool 包的对应工具类，可以直接使用目标类或扩展类。
 
-各种需求示例
+### 3.实体工具类使用，例如日志打印
+
+打印日志一般只需要 以下代码或者 lombok 的 @Slf4j 注解
 
 ```java
-// 替换 ${} 括号里的内容
-XTPickUtil.putValueFromBraces("你们好！ ${}, 你好！","XXX");
-
-// 根据 value 删除 Map 的值
-HashMap<Integer,String> map = new HashMap<>();
-XTMapUtil.deleteByValueWithStream(map, "hello world");
-
-// 为 value 的 collection 添加数据
-HashMap<Integer,List<String>> map = new HashMap<>();
-XTMapUtil.checkAddAll(hashMap1, "hello", ArrayList::new,
-                          Arrays.asList("hello", "world"));
-
-// 组合路径 xx/aa
-XTPathUtil.combinePath("xx", "aa", XTPathUtil.UNIX_SEPARATOR);
-XTPathUtil.combinePath("xx/", "/aa", XTPathUtil.UNIX_SEPARATOR);
-
-// json 序列化
-// Jackson 模拟 FastJson
-JacksonSerializer serializer = new JacksonSerializer().initToFastJson();
-String s = serializer.stringify(new XX());
-
-// 仿 JS Apply, Call, Bind
-new XTApply(PrintClass.class, "print", String.class).apply(target,"hello world");
-new XTCall(PrintClass.class, "print", String.class).call(target,"hello world");
-new XTBind("print", String.class).bind(target,"hello world");
-
-// 扩展比较器 XTComparable, XTComparator, 可以比较 null
-XTComparator c = new XTComparator(true); // 正序比较, 如果是在 sort 里面 , true -> null 值排最后, false -> null 排前面
-c.tryCompareNull(null , 1);
-
-// 反射工具 ClassMaker
-ClassMaker<XX> cm = new ClassMaker(XX.class);
-XX xx = cm.newInstanceNoExc(); // 静默实例化
-
-// 未完待续
+private static final Logger log = LoggerFactory.getLogger(XXX.class);
 ```
 
-#### 4.高级建造工具（`BuilderMapChain`, `StreamChain`）
+而提供的 ILogProvider 接口支持多个实现，例如log4j,log4j2,slf4j等，可以直接使用，但需要导入相应的依赖。
 
-##### 1.HashMap扩展
+提供的 ILogHandler 接口含义 send 方法，提供打印的动作，是为了方便适配自定义打印动作，提高灵活性。
+
+下面是直接使用方式
+
+```java
+    @Test
+    void test3() {
+        // LogHandler  使用 slf4j, info 模式打印
+        LogHandler logHandler = new LogHandler(new LogSlf4j(), LogLevel.INFO);
+        logHandler.send("hello world");
+        // LogPkg.slf4j  打印
+        ILogHandler logHandler1 = LogPkg.SLF4J_PKG.getLogHandler();
+        logHandler1.send(LogLevel.ERROR, "hello world23");
+    }
+```
+
+一般情况下会使用打印策略配合使用，支持SpEL 表达式等更加高级的使用方式。
+
+示例如下, 打印的字符串会通过配置对 ${} 包裹的字符串进行替换。
+
+```java
+@Slf4j // 提供log
+@Configuration
+public class WebLogHandlerConfig {
+	/**
+     * 访问日志打印
+     */
+    public static final String ACCESS_LOG_KEY = "当前用户 userId : ${userId}" + LogKey.COMMAS
+            + LogKey.IP_STR + LogKey.COMMAS
+            + LogKey.HOST_IP + LogKey.COMMAS
+            + LogKey.URI + LogKey.COMMAS
+            + LogKey.HTTP_METHOD;
+	@Bean
+    public WebLogConfig webLogConfig() { // config 配置
+        DefaultWebLogStrategy strategy = new DefaultWebLogStrategy(); // 默认策略(组装字符串)
+        WebLogConfig config = new WebLogConfig(strategy); // 设置策略
+        config.setLogProvider(new LogSlf4j(log)); //使用 slf4j, log
+        config.setLevelCode(LogLevel.INFO); // info 级别
+        config.setMsg(ACCESS_LOG_KEY); // 配置打印的字符串
+        return config;
+    }
+
+    public WebLogHandler newWebLogHandler(WebLogConfig webLogConfig) { // handler 处理器
+        WebLogHandler handler = new WebLogHandler(webLogConfig).initDefaultMap().modifyAll(); // 初始化变量值，可以在这里设置全局 map 映射
+        return handler;
+    }
+}
+```
+
+然后使用 WebLogHandler 对象 (该类继承 LogHandler，提供web方面的支持)
+
+```java
+    /**
+     * 访问日志打印
+     * <p>当前用户 userId : x </p>
+     */
+    protected void accessLog(HttpServletRequest request, LoginUser loginUser, String ip) {
+        // 三位一体切面捆绑类，一般用于 aop 等切面类
+        AspectBundle aspectBundle = new AspectBundle( // web 捆绑类
+                null, // Method 类，目前不需要
+                HttpServletRequestData.of(request), // HttpServletRequest适配类,需要为其他默认 ACCESS_LOG_KEY 映射提供来源，如 LogKey.URI 等
+                null // ProceedingJoinPoint 类，切面对象，目前不需要
+        );
+        // 添加打印变量
+        HashMap<String, String> map = newWebLogHandler(webLogConfig).getMsgMap().getKeyMap();
+        // 这里开始可以加锁
+        // 存 userId
+        map.put("userId", String.valueOf(loginUser.getUser().getId()));
+        // 存 ip
+        map.put("ip", ip);
+
+        webLogHandler.send(aspectBundle); // 打印
+    }
+```
+
+如果有并发问题，请自行将设置值和打印值的部分加锁。
+
+### 4.系列注解使用，例如参数校验和异步线程
+
+#### ***参数校验** （必须导入 validation 包 并且参数添上@Valid或@Validated ）
+
+```java
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class MyUserQuery {
+
+    // 1.首先如果非空字符串和 null 均会进入下一步
+    // 2.必须匹配下面指定字符串
+    @StrStatus(anyStr = { // 必须匹配的字符串
+            "1", "0"
+    }, message = "类型格式错误",notBlankIfPresent = true) 
+    private String type;
+
+    @StrStatus(anyReg = { // 正则匹配
+            RegexPool.MOBILE
+    }, message = "手机格式错误") // 验证
+    @StrJson(value = SensitiveSerializer.class, name = "PHONE") //脱敏
+    private String phone;
+
+    @NotBlank(message = "邮箱不能为空")
+    @Email(message = "邮箱格式错误") //validation包的校验
+    private String email;
+
+    @StrJson(value = SensitiveSerializer.class, name = "") // 返回值脱敏
+    private String password;
+    
+    /**
+     * 逻辑删除（1删除）
+     */
+    @ShortStatus(
+            matchNum = {
+                    EnumDelFlag.NOT_DELETED_CODE,
+                    EnumDelFlag.IS_DELETED_CODE
+            },
+            message = "删除状态格式错误"
+    )
+    private Short delFlag;
+}
+
+```
+
+#### 异步线程 
+
+1.可以使用**编程式**，例如 XTAsync, 或者你的类实现 ThreadHelper 接口或者  ThreadExecutorHelper 接口
+
+下面示例作为 异步配置，同时兼容ThreadPoolTaskExecutor, AsyncConfigurer(支持@Async 注解)和 ThreadHelper (CompletableFuture 编程式操作)
+
+```java
+@EnableAsync
+@Configuration
+public class AsyncConfig implements AsyncConfigurer, ThreadHelper {
+
+    @Autowired
+    ThreadPoolTaskExecutor taskExecutor;
+
+    @Override
+    public Executor getAsyncExecutor() {
+        return taskExecutor;
+    }
+
+    @Override
+    public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
+        return null;
+    }
+
+    @Override
+    public Executor executor() {
+        return taskExecutor;
+    }
+}
+```
+
+注入该对象即可使用ThreadHelper里面的方法
+
+2.使用**声明式**，但不一定会得到预期结果
+
+一般情况下，只使用 XTAsync 静态方法类  (继承CompleteFuture类) 或者 XTCompletionService 对象 (继承ExecutorCompletionService) 即可
+
+下面是声明式异步编程，添加注解方式。
+
+TestThread 主线程类
+
+```java
+@Component
+public class TestThread {
+    @Autowired
+    private ThreadResults threadResults; // 线程结果对象
+    @Autowired
+    private TestService testService;
+
+    // value 建议和调用的子线程方法数量一致 , 默认策略 GetResultAfterLastSon 
+    @MainThread(value = 2, startTime = ThreadTimePolicy.GetResultAfterLastSon)
+    public void mainThread2() {
+        testService.sonThread1(); // 子线程1 ,需要被代理，注解才能生效
+        testService.sonThread2(); // 子线程2
+
+        List<Object> results = threadResults.getResults();
+        if (results != null) {//1. GetResultAfterLastSon 策略会在最后一个子线程阻塞等待 (所以上面的子线程数量必须一致) value数量的子线程执行完 , 所以该策略 results 始终会存在
+            XTArrayUtil.printlnList(results); // 数组
+        }
+
+        List<Future<Object>> futures = threadResults.getFutures(); //2. GetFuture 策略，会在调用 getFutures 的 get处 阻塞，否则会在当前主方法执行完阻塞。所以这时候results会为空，所以需要调用 future 的 get方法 阻塞 等待完成。如果没有调用，则会在当前方法结束时阻塞。
+        XTArrayUtil.printlnList(futures);
+
+        futures.forEach(future -> {
+            try {
+                System.out.println(future.get());
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+}
+```
+
+TestService 子线程类
+
+```java
+@Service
+public class TestService {
+    @SonThread(threadPoolName = "threadPoolExecutor") // 指定 Spring容器 里面线程池名称
+    public String sonThread1() {
+        System.out.println("进入sonThread1");
+        XTTime.sleepBySecond(3); 
+        System.out.println("sonThread1 已经睡了3秒");
+        return "hello --> sonThread1";
+    }
+    @SonThread(threadPoolName = "threadPoolExecutor")
+    public void sonThread2() { // 无返回值
+        System.out.println("进入sonThread2");
+        XTTime.sleepBySecond(1);
+        System.out.println("sonThread2 已经睡了1秒");
+    }
+
+}
+```
+
+### 5.快速建造工具
+
+#### 1.HashMap扩展
 
 为 HashMap 添加值
 
@@ -337,7 +531,7 @@ void test() {
 }
 ```
 
-##### 2.Optional 功能扩展类 StreamChain
+#### 2.Optional 功能扩展类 StreamChain
 
 StreamChain 包含 Optional 几乎所有方法，还对其进行了扩展
 
@@ -370,12 +564,12 @@ void test() {
 }
 ```
 
-##### 3.高级建造类 BuilderMapChain
+#### 3.高级建造类 BuilderMapChain
 
 生成一个建造树，如果当前层的值不存在，便可以从其他兄弟节点获取或生成，或者从父节点生成，直到得到值，返回。
 
 ```java
-void test() {
+void test15() {
     BuilderMapChain chain = new BuilderMapChain(3, null,  () -> {
         // 第1层
         return "第1层,";
@@ -418,15 +612,7 @@ void test() {
 
 第3层数据不为null，则返回数据。
 
-第3层数据为null，便从第3层
-
->front（List 从前往后，前驱）
->
->back（List 从后往前，后驱）获取生成方法（用于生成该层数据，填充到该层）
->
->dfs （依次获取上层数据，直至能填充目标层数据）
->
->bfs （先把该层List遍历完成，还没有填充数据才从上层获取）
+第3层数据为null，便从第3层 front（List 从前往后，前驱），back（List 从后往前，后驱）获取生成方法（用于生成该层数据，填充到该层），dfs （依次获取上层数据，直至能填充目标层数据）, bfs （先把该层List遍历完成，还没有填充数据才从上层获取）
 
 **那么有什么用呢？**
 
@@ -459,7 +645,7 @@ void test{
 
 里面有许许多多快速开发的工具，还请多多研究。
 
-#### 5.*系列算法
+### 6.*系列算法
 
 算法都放在  top.cutexingluo.tools.utils.se.algo.cpp 包下，顾名思义，工具/SE/算法/C++，
 
@@ -537,26 +723,180 @@ boolean contains = node.getChildren().contains(EnumPay.ALIPAY);
 System.out.println(contains); // true
 ```
 
-### 🔧 注解
 
-#### 1.***参数校验** （@XxxStatus）
 
-必须导入 validation 包 并且参数/类上 `@Valid`或`@Validated`
+未完待续...
 
-不同类型参数校验注解如：
+具体内容详见源码和使用文档。
 
-`@IntStatus` (Integer), `@StrStatus` (String)
+其他丰富的 工具，算法，注解， 自动配置 等均可在源码注释上看到使用说明，多查看源码。
 
-`@ShortStatus` (Short), `@DoubleStatus` (Double) ...
+
+
+
+
+## :game_die:使用样例（xingtool v1.0.5 版本）(老版本)
+
+以下xingtool v1.0.5版本的使用样例，可以加快你的开发
+
+##### 1. 数据封装类，Controller 层
+
+```java
+@RestController
+@RequestMapping("/admin")
+public class AdminController {
+    
+    @RequestLimit // 限流注解
+    @WebLog(match = "ip:uri:method+s+tab+ip", levelStr = "info", referer = "log1") // 打印日志注解
+    @GetMapping("/user/getAll")
+    public Result getAll() { // Result 对象 推荐使用
+        //ResultUtil.selectResult 动态解析返回值 (false和null得到获取失败) 也可以直接使用 Result.success()
+        return ResultUtil.selectResult(adminService.getAll(),"获取成功","获取失败"); 
+    }
+    
+    // 这个注解是打印日志，其中一个策略是可以使用spEL表达式执行任意方法
+    @WebLog(spEL = " @testService.hello ( #msgMap, #bundle ,'hello world') ") 
+    @GetMapping("/user/getOne")
+    public R<UserInfo> getOne() { // R对象 alias MSResult 支持泛型
+        //ResultUtil.selectResult 动态解析返回值 (false和null得到获取失败) 也可以直接使用 Result.success()
+        return ResultUtil.selectR(adminService.getOne(),"获取成功","获取失败"); 
+    }
+}
+```
+
+有人会说：我不想使用你的 Result 这个封装返回类，能不能自己定义。这是可以的，在1.0.3版本，统一了4个返回类，全部继承于CommonResult类，该类的基本属性如下：
+
+```java
+public class CommonResult<C, T> implements IResultSource<C, T> {
+    protected C code;
+    protected String msg;
+    protected T data;
+}
+```
+
+它实现 IResultSource 接口，而我们可以直接实现IResultSource或者再往上仅实现 IResult 接口就行了。基本上工具包的很多方法参数都是IResult 接口。我们可以直接实现该接口像这样：
 
 ```java
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class MyResult implements IResult<String,Object> {
+    protected String retCode; // 不想使用 code，想使用 retCode
+    protected String message; // 不想使用 msg，想使用 message
+    protected Object data;
+    
+    @Override
+    public Object getData() {
+        return data;
+    }
+    @JsonIgnore
+    @Override
+    public String getCode() {
+        return retCode;
+    }
+    @JsonIgnore
+    @Override
+    public String getMsg() {
+        return message;
+    }
+}
+```
+
+对于不需要json转化的字段进行@JsonIgnore忽略掉就行。
+
+同理如果不需要data字段，再往上实现 IResultData 接口(包含code和msg) 就可以，工具包里面的很多异常或者枚举都是实现了该接口。
+
+
+
+##### 2.工具类使用，拦截器 以 OAuth2 为例（springboot2.x版本）
+
+```java
+@Component
+public class MyTokenFilter extends OncePerRequestFilter {
+
+
+    @Autowired
+    private TokenStore tokenStore;
+
+    // jwt解析类
+    @Autowired
+    private MyUserAuthenticationConverter myUserAuthenticationConverter;
+
+    RYRedisCache redisCache;
+
+    // 构造注入
+    @Autowired
+    public MyTokenFilter(RYRedisCache redisCache, ApplicationContext applicationContext) {
+        this.redisCache = redisCache;
+        AccessLimitUtil.setRedisCache(redisCache);
+        AccessLimitUtil.setApplicationContext(applicationContext);
+    }
+
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
+        try {
+            // AccessLimitUtil 工具类 ， 可以利用 Redis 进行限流
+            // limitFilter 解析方法上的注解
+            boolean check1 = AccessLimitUtil.limitFilter(request, response, filterChain);
+            if (!check1) return;
+            // limitFilter IP 拦截
+            boolean check2 = AccessLimitUtil.limitIP(request, response, 1, 20,
+                    "访问过于频繁，请稍后访问");
+            if (!check2) return;
+        } catch (Exception e) {
+            XTResponseUtil.forbidden(response, e.getMessage()); // 返回 403
+            return;
+        }
+
+        Authentication authentication;
+        try {
+            // XTAuthenticationUtil 执行链操作，对token进行解析
+            authentication = new XTAuthenticationUtil 
+                    .AuthenticationBuilder(request, XTAuthenticationUtil.USE_HEADERS | XTAuthenticationUtil.USE_COOKIES) // headers 和 cookies 都要解析
+                    .setTokenExtractor(tokenExtractor)
+                    .setTokenStore(tokenStore)
+                    .setAccessTokenConsumer(accessToken -> {
+                        //XTAccessTokenUtil 对Oauth2 包的 AccessToken类进行解析
+                        if (XTAccessTokenUtil.isExpired(accessToken)) { 
+                            throw new AuthenticationServiceException("Token String 已经过期！");
+                        }
+}).setAccessTokenAdditionalConverter(myUserAuthenticationConverter::extractAuthentication)
+                    .repairCreate("").build(); // 对 Authorization 头 进行解析
+        } catch (AuthenticationServiceException e) {
+            XTResponseUtil.unauthorized(response, e.getMessage());// 401 返回
+            return;
+        }
+        if (authentication != null) { // 解析到token，设置上下文
+            SecurityContext context = SecurityContextHolder.getContext();
+            context.setAuthentication(authentication);
+        }
+        // 如果没有解析到，authentication会为空，然后交给资源服务判定
+
+        filterChain.doFilter(request, response); 
+    }
+}
+
+```
+
+
+
+##### 3.系列注解使用，例如参数校验和异步线程
+
+###### **参数校验** （必须导入 validation 包 并且参数添上@Valid或@Validated ）
+
+```java
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class MyUserQuery {
 
-    @StrStatus(notBlankIfPresent = true, // 1.首先如果非空字符串和 null 均会进入下一步
-               anyStr = { // 2.必须匹配的字符串
-            "1", "0" 
-    }, message = "类型格式错误") 
+    // 1.首先如果非空字符串和 null 均会进入下一步
+    // 2.必须匹配下面指定字符串
+    @StrStatus(anyStr = { // 必须匹配的字符串
+            "1", "0"
+    }, message = "类型格式错误",notBlankIfPresent = true) 
     private String type;
 
     @StrStatus(anyReg = { // 正则匹配
@@ -571,64 +911,17 @@ public class MyUserQuery {
 
     @StrJson(value = SensitiveSerializer.class, name = "") // 返回值脱敏
     private String password;
-    
-    @ShortStatus(
-            matchNum = { // 必须匹配数字
-                    EnumDelFlag.NOT_DELETED_CODE,
-                    EnumDelFlag.IS_DELETED_CODE
-            },
-            message = "删除状态格式错误"
-    )
-    // @NotNull 
-    // 可以添加 @NotNull注解 (注意是 validation 包的) 或者 @ShortStatus注解里面 notNull=true
-    private Short delFlag;
 }
+
 ```
 
-如上所示，各种校验注解相互配合，加快代码的开发。
+###### 异步线程 
 
-#### 2.异步线程 
-
-1.可以使用**编程式**，例如 XTAsync, 或者你的类实现 ThreadHelper 接口或者  ThreadExecutorHelper 接口
-
-下面示例作为 异步配置，同时兼容ThreadPoolTaskExecutor, AsyncConfigurer(支持@Async 注解)和 ThreadHelper (CompletableFuture 编程式操作)
-
-```java
-@EnableAsync
-@Configuration
-public class AsyncConfig implements AsyncConfigurer, ThreadHelper {
-
-    @Autowired
-    ThreadPoolTaskExecutor taskExecutor;
-
-    @Override
-    public Executor getAsyncExecutor() {
-        return taskExecutor;
-    }
-
-    @Override
-    public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
-        return null;
-    }
-
-    @Override
-    public Executor executor() {
-        return taskExecutor;
-    }
-}
-```
-
-注入该对象即可使用ThreadHelper里面的方法
-
-
+1.可以使用**编程式**，例如 XTAsync, 或者你的类实现 ThreadHelper接口
 
 2.使用**声明式**，但不一定会得到预期结果
 
-一般情况下，只使用 XTAsync 静态方法类  (继承`CompleteFuture`类) 或者 `XTCompletionService` 对象 (继承`ExecutorCompletionService`) 即可
-
-下面是声明式异步编程，添加注解方式，需要配置`xingtools.enabled.async-thread-aop-anno=true`。
-
-主线程类
+TestThread 主线程类
 
 ```java
 @Component
@@ -645,11 +938,11 @@ public class TestThread {
         testService.sonThread2(); // 子线程2
 
         List<Object> results = threadResults.getResults();
-        if (results != null) {//1. GetResultAfterLastSon 策略会在最后一个子线程阻塞等待 (所以上面的子线程数量必须一致) value数量的子线程执行完 , 所以该策略 results 始终会存在
+        if (results != null) {// GetResultAfterLastSon 策略会阻塞等待 value数量的子线程执行完 , 所以该策略 results 始终会存在
             XTArrayUtil.printlnList(results); // 数组
         }
 
-        List<Future<Object>> futures = threadResults.getFutures(); //2. GetFuture 策略，会在调用 getFutures 的 get处 阻塞，否则会在当前主方法执行完阻塞。所以这时候results会为空，所以需要调用 future 的 get方法 阻塞 等待完成。如果没有调用，则会在当前方法结束时阻塞。
+        List<Future<Object>> futures = threadResults.getFutures(); // GetFuture 策略会阻塞在当前主方法执行完，所以这时候results会为空，所以需要调用 future 的 get方法 阻塞 等待完成。如果没有调用，则会在当前方法结束时阻塞。
         XTArrayUtil.printlnList(futures);
 
         futures.forEach(future -> {
@@ -663,7 +956,7 @@ public class TestThread {
 }
 ```
 
-子线程类
+TestService 子线程类
 
 ```java
 @Service
@@ -681,8 +974,15 @@ public class TestService {
         XTTime.sleepBySecond(1);
         System.out.println("sonThread2 已经睡了1秒");
     }
+
 }
 ```
+
+
+
+未完待续...
+
+具体内容详见使用文档。
 
 ##  :memo:更新公告
 
@@ -909,7 +1209,6 @@ bug修复
 10.XTCallOtherUtil 更名为 XTCodeInteropUtil，关于生成其他语言代码的工具类
 11.添加RabbitMQ系列初始工具类, 以及用法Test类, 可以不使用，没有太多优化的地方。
 ```
-
 **2023-9-26 v1.0.1**
 正式版发布，中央仓库 ,  依赖最低版本不能低于 v1.0.1
 
@@ -930,4 +1229,4 @@ bug修复
 
 在 properties/yml 配置文件输入 xingtools 即可查看相关自动配置。
 
-在最新版本中，使用 @EnableXingToolsServer 开启自动配置后，。
+在最新版本中，使用 @EnableXingToolsServer 开启自动配置后，仅开启 配置开启日志和SpringUtils 注册，其他均默认关闭。
