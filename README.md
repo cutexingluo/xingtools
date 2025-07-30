@@ -2,7 +2,7 @@
 
 ## :book:相关介绍
 
-**XingTools 是一个基于 Hutool 的多模块的 Java 工具包**，提供了一系列开箱即用的工具类和组件，涵盖 核心工具、AOP、微服务、加密、验证、日志、线程池、数据结构算法等多个领域。
+**XingTools 是一个基于 Hutool 的多模块的 Java 工具包**，提供了一系列开箱即用的工具类和组件，涵盖 核心工具、加密、验证、日志、线程池、数据结构算法、AOP、Security、微服务等多个领域。
 
 [旧版README](./README-OLD.md)
 
@@ -13,6 +13,8 @@
 这些封装的工具涵盖了hutool包（依赖[hutool包](https://gitee.com/dromara/hutool)）, 部分 ruoyi 工具类，包含了系列字符串、数字、集合、编码、日期、文件、IO、加密、数据库JDBC、JSON、HTTP客户端等一系列基础操作，还包含了 ACM算法，JDK版本兼容包，各种base接口，快速开发工具类（链式调用、逻辑建造）、注解AOP装配，配置自动装配，Spring 扩展，Security扩展，OAuth2扩展，Cloud扩展，可以满足各种不同的开发需求。
 
 ###   :golf:本包说明
+
+本工具库遵从**面向接口**，所以接口可能分得特别细。
 
 该依赖为 xingtools sdk 工具包 分组版本。 它是一个整合各工具类的整合starter。具体详情详见 xingtool (不加s) [xingtool-spring-boot-starter](https://gitee.com/SangonomiyaKokomi/xingtool)  这个原sdk。 该分组工具包为升级版，将核心拆分应对不同使用情况，大大提高灵活性，未来原sdk可能会依赖该升级版的sdk。
 星天（xingtian）制作，基于 Java 8 和 Java 17，基于 SpringBoot 2.7.18 和 SpringBoot 3.0.5  ,  是一个整合各工具类的整合包。
@@ -72,6 +74,33 @@ xingtool v1.0.1, v1.0.4, v1.0.5
 	<version>1.0.5</version>
 </dependency>
 ```
+
+## :wrench:包含组件
+
+| 模块                                | 介绍                                                         |
+| ----------------------------------- | ------------------------------------------------------------ |
+| xingtools-core                      | 核心，包括各种接口，实体类和工具类                           |
+| xingtools-pkg-jdk8                  | 依赖core包，jdk 分类包，对不同的jdk版本提供兼容性            |
+| xingtools-pkg-jdk17                 | 依赖core包，jdk 分类包，对不同的jdk版本提供兼容性            |
+| xingtools-web                       | 依赖core和pkg包，提供一些 http 工具                          |
+| xingtools-extra                     | 依赖core，附加，也就是基于 SpringBoot 的一些工具或实体类     |
+| xingtools-db                        | 依赖core，数据库操作，包含mybatis-plus等操作                 |
+| xingtools-mvc                       | 依赖web，extra，db三包，基于 SpringBoot-Web的一些集成工具或实体类 |
+| xingtools-log                       | 依赖mvc，包含日志扩展操作的封装                              |
+| xingtools-cloud                     | 依赖mvc，基于SpringCloud，包括各种 cloud，security，oauth 的工具 |
+| xingtools-aop                       | 依赖mvc，log，cloud三包，提供前面依赖的aop注解和切面类       |
+| xingtools-unified                   | 依赖aop，整合包，整合所有依赖并依赖 hutool-all               |
+| xingtools-spring-boot               | 整合版本，排除pkg-jdk依赖，在这之后需要配合pkg-jdk依赖使用   |
+| xingtools-spring-boot-autoconfigure | 整合版本的自动装配，含各种自动装配配置，开关，注解，类等     |
+| xingtools-spring-boot-starter       | 最终依赖包                                                   |
+
+当前版本组件之间的依赖关系如下：（v1.1.2 开始组件依赖更新，后续沿用该依赖关系）
+
+![image-20240808174556862](./assets/image-20240808174556862.png)
+
+​																**组件依赖关系图**
+
+目前使 pkg包 仅依赖 core 包，可以按需导入从前面开始的依赖。
 
 ## :apple:使用方式
 
@@ -159,6 +188,7 @@ public class CaptchaController {
                 new MyResult<>());
         
 		//  默认策略(可以更改) 等同于下面 
+        
         return captcha == null || Boolean.FALSE.equals(xx)  ? 
             	MyResult.errorBy(EnumResult.ERROR):
                 MyResult.successBy(EnumResult.SUCCESS).setData(xx);
@@ -170,7 +200,7 @@ public class CaptchaController {
 
 `CommonResult` （通用返回类）
 
-`MSResult<T>` (或 `R`), `Result`, `StrMSResult<T>`, `StrResult`  (code 为Integer 或 String , data 为泛型T或Object 的四个组合)
+`MSResult<T>` (或 `R`), `Result`, `StrMSResult<T>`, `StrResult`  (code 为 `Integer`或 `String` , data 为 泛型 T或`Object` 的 四个组合)
 
 `CommonResult` 类的基本属性如下：
 
@@ -345,7 +375,7 @@ void test() {
 生成一个建造树，如果当前层的值不存在，便可以从其他兄弟节点获取或生成，或者从父节点生成，直到得到值，返回。
 
 ```java
-void test15() {
+void test() {
     BuilderMapChain chain = new BuilderMapChain(3, null,  () -> {
         // 第1层
         return "第1层,";
