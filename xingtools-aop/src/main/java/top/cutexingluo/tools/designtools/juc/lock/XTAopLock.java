@@ -1,7 +1,7 @@
 package top.cutexingluo.tools.designtools.juc.lock;
 
 import org.springframework.core.annotation.AliasFor;
-import top.cutexingluo.tools.designtools.juc.lock.extra.XTLockType;
+import top.cutexingluo.core.designtools.juc.lock.extra.XTLockType;
 
 import java.lang.annotation.*;
 

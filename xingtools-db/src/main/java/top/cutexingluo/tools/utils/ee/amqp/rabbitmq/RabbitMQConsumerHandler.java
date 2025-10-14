@@ -4,7 +4,7 @@ import com.rabbitmq.client.Channel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.amqp.core.Message;
-import top.cutexingluo.tools.basepackage.basehandler.CallableTryHandler;
+import top.cutexingluo.core.basepackage.basehandler.CallableTryHandler;
 
 import java.util.concurrent.Callable;
 import java.util.function.Consumer;
@@ -53,7 +53,7 @@ public class RabbitMQConsumerHandler implements CallableTryHandler {
         this.deliveryTag = deliveryTag;
         this.autoCheckAck = autoCheckAck;
     }
-    
+
     /**
      * 对 task 进行操作
      *

@@ -7,8 +7,8 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionOperations;
 import org.springframework.transaction.support.TransactionTemplate;
-import top.cutexingluo.tools.basepackage.base.Refreshable;
-import top.cutexingluo.tools.basepackage.basehandler.SupplierHandler;
+import top.cutexingluo.core.basepackage.basehandler.SupplierHandler;
+import top.cutexingluo.core.basepackage.struct.Refreshable;
 
 import java.util.Objects;
 import java.util.function.BiConsumer;

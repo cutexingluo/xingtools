@@ -1,16 +1,17 @@
 package top.cutexingluo.tools.utils.ee.amqp.rabbitmq;
 
-import top.cutexingluo.tools.common.base.XTStrCode;
+
+import top.cutexingluo.core.common.base.StrCode;
 
 /**
  * RabbitMQ 键值
  *
- *@author XingTian
+ * @author XingTian
  * @version 1.0.0
  * @date 2023/10/18 17:25
  * @since 1.0.2
  */
-public enum RabbitMQArgsKey  implements XTStrCode {
+public enum RabbitMQArgsKey implements StrCode {
 
 
     /**

@@ -3,7 +3,8 @@ package top.cutexingluo.tools.utils.se.file;
 import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.web.multipart.MultipartFile;
-import top.cutexingluo.tools.utils.se.file.pkg.XTFile;
+import top.cutexingluo.core.utils.se.file.XTPath;
+import top.cutexingluo.core.utils.se.file.pkg.XTHuFile;
 import top.cutexingluo.tools.utils.se.file.pkg.XTFileBundle;
 
 import java.io.File;
@@ -25,14 +26,14 @@ public class XTFileHandler {
     public static final String separator = File.separator;
 
 
-    protected XTFile xtFile;
+    protected XTHuFile xtFile;
 
-    public XTFileHandler(XTFile xtFile) {
+    public XTFileHandler(XTHuFile xtFile) {
         this.xtFile = xtFile;
     }
 
     public static XTFileHandler of(File file) {
-        return new XTFileHandler(new XTFile(file));
+        return new XTFileHandler(new XTHuFile(file));
     }
 
     public static XTFileHandler of(MultipartFile file) throws IOException {

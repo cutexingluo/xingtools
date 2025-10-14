@@ -3,7 +3,7 @@ package top.cutexingluo.tools.utils.se.file;
 import cn.hutool.core.io.file.FileNameUtil;
 import cn.hutool.core.util.StrUtil;
 import org.springframework.web.multipart.MultipartFile;
-import top.cutexingluo.tools.utils.se.file.media.MimeTypeUtils;
+import top.cutexingluo.core.utils.se.file.media.MimeTypeUtils;
 
 import java.util.Objects;
 

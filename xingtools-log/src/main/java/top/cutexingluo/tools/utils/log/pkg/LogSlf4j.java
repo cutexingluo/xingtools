@@ -3,7 +3,7 @@ package top.cutexingluo.tools.utils.log.pkg;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
-import top.cutexingluo.tools.basepackage.baseimpl.XTRunnable;
+import top.cutexingluo.core.basepackage.baseimpl.XTRunnable;
 import top.cutexingluo.tools.utils.log.LogLevel;
 
 /**

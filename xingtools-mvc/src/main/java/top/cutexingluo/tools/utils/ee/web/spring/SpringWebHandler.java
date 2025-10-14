@@ -9,7 +9,7 @@ import org.springframework.web.servlet.mvc.condition.PathPatternsRequestConditio
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 import org.springframework.web.util.pattern.PathPattern;
-import top.cutexingluo.tools.common.data.TupleEntry;
+import top.cutexingluo.core.common.data.TupleEntry;
 
 import java.util.LinkedList;
 import java.util.Map;

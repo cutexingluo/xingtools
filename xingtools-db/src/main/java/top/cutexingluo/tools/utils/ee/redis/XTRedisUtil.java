@@ -6,7 +6,7 @@ import lombok.Data;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import top.cutexingluo.tools.designtools.juc.thread.XTThreadPool;
+import top.cutexingluo.core.designtools.juc.thread.XTThreadPool;
 
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -22,9 +22,9 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @version 1.0.0
  * @date 2023/2/4 16:07
  * @since 2022-12-14 <br>
- *
+ * <p>
  * 在java层面实现Redis高性能为目标
- *
+ * <p>
  * 里面很多方法，可实现异步操作
  */
 

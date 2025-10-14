@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.ContextualSerializer;
 import org.springframework.core.annotation.AnnotationUtils;
-import top.cutexingluo.tools.designtools.method.ClassMaker;
+import top.cutexingluo.core.designtools.method.ClassMaker;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;

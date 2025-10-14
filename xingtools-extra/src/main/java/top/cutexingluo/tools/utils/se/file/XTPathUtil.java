@@ -2,6 +2,7 @@ package top.cutexingluo.tools.utils.se.file;
 
 import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.system.ApplicationHome;
+import top.cutexingluo.core.utils.se.file.XTPath;
 
 import java.io.File;
 
@@ -15,7 +16,7 @@ import java.io.File;
  * @date 2024/7/12 16:03
  * @since 1.1.1
  */
-public class XTPathUtil  extends XTPath{
+public class XTPathUtil extends XTPath {
 
     //极力推荐用，后面发布会有用
     //由于class文件根目录是classes

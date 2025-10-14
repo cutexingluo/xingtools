@@ -15,9 +15,9 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import top.cutexingluo.core.designtools.protocol.serializer.impl.json.JacksonSerializer;
 import top.cutexingluo.tools.auto.server.XingToolsAutoConfiguration;
 import top.cutexingluo.tools.autoconfigure.utils.se.serializer.JacksonSerializerConfig;
-import top.cutexingluo.tools.designtools.protocol.serializer.impl.json.JacksonSerializer;
 import top.cutexingluo.tools.start.log.LogInfoAuto;
 import top.cutexingluo.tools.utils.ee.redis.core.RedisConfigInitFactory;
 

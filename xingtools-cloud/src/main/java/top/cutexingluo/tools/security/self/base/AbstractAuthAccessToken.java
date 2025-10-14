@@ -3,8 +3,8 @@ package top.cutexingluo.tools.security.self.base;
 import lombok.Data;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
-import top.cutexingluo.tools.basepackage.base.Checkable;
-import top.cutexingluo.tools.basepackage.base.Refreshable;
+import top.cutexingluo.core.basepackage.struct.Checkable;
+import top.cutexingluo.core.basepackage.struct.Refreshable;
 
 import java.time.Instant;
 import java.util.*;

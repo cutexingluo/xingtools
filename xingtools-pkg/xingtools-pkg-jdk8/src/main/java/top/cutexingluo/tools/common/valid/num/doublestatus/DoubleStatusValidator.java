@@ -3,8 +3,11 @@ package top.cutexingluo.tools.common.valid.num.doublestatus;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import top.cutexingluo.core.common.valid.num.doublestatus.DoubleRangeData;
+import top.cutexingluo.core.common.valid.num.doublestatus.DoubleStatusConfig;
+import top.cutexingluo.core.common.valid.num.doublestatus.DoubleValidator;
+import top.cutexingluo.core.utils.se.map.XTSetUtil;
 import top.cutexingluo.tools.common.valid.StatusValidator;
-import top.cutexingluo.tools.utils.se.map.XTSetUtil;
 
 import javax.validation.ConstraintValidatorContext;
 

@@ -9,11 +9,12 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import top.cutexingluo.core.common.base.IResult;
+import top.cutexingluo.core.common.result.Constants;
+import top.cutexingluo.core.common.result.Result;
+import top.cutexingluo.core.common.utils.GlobalResultFactory;
 import top.cutexingluo.tools.auto.server.XingToolsAutoConfiguration;
-import top.cutexingluo.tools.common.Constants;
-import top.cutexingluo.tools.common.Result;
-import top.cutexingluo.tools.common.base.IResult;
-import top.cutexingluo.tools.common.utils.GlobalResultFactory;
+
 
 /**
  * Sa-token 异常拦截

@@ -3,8 +3,8 @@ package top.cutexingluo.tools.utils.ee.redis;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.redis.core.RedisTemplate;
-import top.cutexingluo.tools.basepackage.chain.core.BuilderMapChain;
-import top.cutexingluo.tools.common.data.Entry;
+import top.cutexingluo.core.basepackage.chain.core.BuilderMapChain;
+import top.cutexingluo.core.common.data.Entry;
 
 import java.util.Arrays;
 

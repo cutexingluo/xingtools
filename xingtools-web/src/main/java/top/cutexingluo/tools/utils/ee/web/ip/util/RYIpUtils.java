@@ -2,7 +2,7 @@ package top.cutexingluo.tools.utils.ee.web.ip.util;
 
 
 import cn.hutool.core.util.StrUtil;
-import top.cutexingluo.tools.bridge.servlet.adapter.HttpServletRequestAdapter;
+import top.cutexingluo.core.bridge.servlet.adapter.HttpServletRequestAdapter;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;

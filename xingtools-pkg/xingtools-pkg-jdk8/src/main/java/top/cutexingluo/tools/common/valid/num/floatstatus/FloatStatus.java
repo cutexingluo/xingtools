@@ -1,5 +1,7 @@
 package top.cutexingluo.tools.common.valid.num.floatstatus;
 
+import top.cutexingluo.core.common.valid.num.floatstatus.FloatRange;
+
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.*;

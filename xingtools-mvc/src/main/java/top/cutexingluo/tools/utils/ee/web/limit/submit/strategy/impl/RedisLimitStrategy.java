@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.RedisScript;
-import top.cutexingluo.tools.designtools.juc.lock.handler.LockHandler;
+import top.cutexingluo.core.designtools.juc.lock.handler.LockHandler;
 import top.cutexingluo.tools.utils.ee.redis.RYRedisCache;
 import top.cutexingluo.tools.utils.ee.web.limit.submit.base.RequestLimitData;
 import top.cutexingluo.tools.utils.ee.web.limit.submit.strategy.LimitStrategy;

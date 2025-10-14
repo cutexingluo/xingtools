@@ -1,7 +1,7 @@
 package top.cutexingluo.tools.utils.log;
 
 import org.jetbrains.annotations.Nullable;
-import top.cutexingluo.tools.common.base.XTIntCode;
+import top.cutexingluo.core.common.base.IntCode;
 import top.cutexingluo.tools.utils.log.handler.ILogHandler;
 import top.cutexingluo.tools.utils.log.pkg.*;
 
@@ -14,7 +14,7 @@ import java.util.function.Supplier;
  * @version 1.0.0
  * @date 2024/1/10 11:17
  */
-public class LogPkg implements XTIntCode {
+public class LogPkg implements IntCode {
 
     /**
      * @see LogLog4j

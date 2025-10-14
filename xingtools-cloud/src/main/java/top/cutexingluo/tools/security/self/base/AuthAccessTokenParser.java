@@ -1,6 +1,7 @@
 package top.cutexingluo.tools.security.self.base;
 
-import top.cutexingluo.tools.basepackage.function.Parser;
+
+import top.cutexingluo.core.basepackage.function.Parser;
 
 /**
  * token  parser

@@ -4,8 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import top.cutexingluo.core.bridge.servlet.adapter.HttpServletRequestAdapter;
+import top.cutexingluo.core.common.base.IData;
 import top.cutexingluo.tools.bridge.servlet.HttpServletRequestData;
-import top.cutexingluo.tools.common.base.IData;
 
 import javax.servlet.http.Cookie;
 import java.io.BufferedReader;

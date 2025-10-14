@@ -1,5 +1,7 @@
 package top.cutexingluo.tools.common.valid.num.longstatus;
 
+import top.cutexingluo.core.common.valid.num.longstatus.LongRange;
+
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.*;

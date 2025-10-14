@@ -4,9 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import top.cutexingluo.core.bridge.servlet.adapter.HttpServletResponseAdapter;
+import top.cutexingluo.core.common.base.IData;
+import top.cutexingluo.core.common.base.IResult;
 import top.cutexingluo.tools.bridge.servlet.HttpServletResponseData;
-import top.cutexingluo.tools.common.base.IData;
-import top.cutexingluo.tools.common.base.IResult;
 import top.cutexingluo.tools.utils.ee.web.front.XTResponseUtil;
 
 import java.io.IOException;
@@ -25,7 +26,8 @@ public class HttpServletResponseDataAdapter implements HttpServletResponseAdapte
     protected HttpServletResponseData data;
 
     @Contract("_ -> new")
-    public static @NotNull HttpServletResponseDataAdapter of(HttpServletResponseData data) {
+    public static @NotNull
+    HttpServletResponseDataAdapter of(HttpServletResponseData data) {
         return new HttpServletResponseDataAdapter(data);
     }
 

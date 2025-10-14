@@ -6,7 +6,8 @@ import org.redisson.api.RedissonClient;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
-import top.cutexingluo.tools.designtools.juc.thread.XTThreadPool;
+import top.cutexingluo.core.designtools.juc.thread.XTThreadPool;
+
 
 /**
  * RedisData 元数据
