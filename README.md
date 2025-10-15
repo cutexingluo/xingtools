@@ -2,7 +2,7 @@
 
 ## :book:相关介绍
 
-**XingTools 是一个基于 Hutool 的多模块的 Java 工具包**，提供了一系列开箱即用的工具类和组件，涵盖 核心工具、加密、验证、日志、线程池、数据结构算法、AOP、Security、微服务等多个领域。
+**XingTools 是一个基于 XingCore 和 Hutool 的多模块的 Java 工具包**，提供了一系列开箱即用的工具类和组件，涵盖 核心工具、加密、验证、日志、线程池、数据结构算法、AOP、Security、微服务等多个领域。
 
 [旧版README](./README-OLD.md)
 
@@ -10,7 +10,7 @@
 
 是一个功能丰富且易用的 **Java工具库**，通过诸多实用工具类的使用，旨在帮助开发者快速、便捷地完成各类开发任务。
 
-这些封装的工具涵盖了hutool包（依赖[hutool包](https://gitee.com/dromara/hutool)）, 部分 ruoyi 工具类，包含了系列字符串、数字、集合、编码、日期、文件、IO、加密、数据库JDBC、JSON、HTTP客户端等一系列基础操作，还包含了 ACM算法，JDK版本兼容包，各种base接口，快速开发工具类（链式调用、逻辑建造）、注解AOP装配，配置自动装配，Spring 扩展，Security扩展，OAuth2扩展，Cloud扩展，可以满足各种不同的开发需求。
+这些封装的工具涵盖了xingcore包（依赖[xingcore包](https://github.com/cutexingluo/xingcore)），hutool包（依赖[hutool包](https://gitee.com/dromara/hutool)）, 部分 ruoyi 工具类，包含了系列字符串、数字、集合、编码、日期、文件、IO、加密、数据库JDBC、JSON、HTTP客户端等一系列基础操作，还包含了 ACM算法，JDK版本兼容包，各种base接口，快速开发工具类（链式调用、逻辑建造）、注解AOP装配，配置自动装配，Spring 扩展，Security扩展，OAuth2扩展，Cloud扩展，可以满足各种不同的开发需求。
 
 ###   :golf:本包说明
 
@@ -18,6 +18,8 @@
 
 该依赖为 xingtools sdk 工具包 分组版本。 它是一个整合各工具类的整合starter。具体详情详见 xingtool (不加s) [xingtool-spring-boot-starter](https://gitee.com/SangonomiyaKokomi/xingtool)  这个原sdk。 该分组工具包为升级版，将核心拆分应对不同使用情况，大大提高灵活性，未来原sdk可能会依赖该升级版的sdk。
 星天（xingtian）制作，基于 Java 8 和 Java 17，基于 SpringBoot 2.7.18 和 SpringBoot 3.0.5  ,  是一个整合各工具类的整合包。
+
+xingtools-core 于 v1.2.0 版本移植到 xingcore，用作核心公共库，详见 [gitee-xingcore](https://gitee.com/SangonomiyaKokomi/xingcore) [github-xingcore](https://github.com/cutexingluo/xingcore)
 
 ## :bookmark:依赖使用
 
@@ -31,12 +33,12 @@ Maven 依赖（JDK8版本）
 <dependency>
 	<groupId>top.cutexingluo.tools</groupId>
 	<artifactId>xingtools-spring-boot-starter</artifactId>
-	<version>1.1.7</version>
+	<version>1.2.0</version>
 </dependency>
 <dependency>
 	<groupId>top.cutexingluo.tools</groupId>
 	<artifactId>xingtools-pkg-jdk8</artifactId>
-	<version>1.1.7</version>
+	<version>1.2.0</version>
 </dependency>
 ```
 
@@ -46,12 +48,12 @@ Maven 依赖（JDK17版本）
 <dependency>
 	<groupId>top.cutexingluo.tools</groupId>
 	<artifactId>xingtools-spring-boot-starter</artifactId>
-	<version>1.1.7</version>
+	<version>1.2.0</version>
 </dependency>
 <dependency>
 	<groupId>top.cutexingluo.tools</groupId>
 	<artifactId>xingtools-pkg-jdk17</artifactId>
-	<version>1.1.7</version>
+	<version>1.2.0</version>
 </dependency>
 ```
 
@@ -60,8 +62,8 @@ Maven 依赖（JDK17版本）
 目前推荐使用的版本如下：（其他版本有一定bug，如需使用请参考更新公告的版本使用攻略）
 
 ```wiki
-极力推荐使用最新版 v1.1.7
-xingtools v1.1.3, v1.1.4, v1.1.5, v1.1.6, v1.1.7
+极力推荐使用最新版 v1.2.0
+xingtools v1.1.3, v1.1.4, v1.1.5, v1.1.6, v1.1.7, v1.2.0
 xingtool v1.0.1, v1.0.4, v1.0.5
 ```
 
@@ -79,7 +81,7 @@ xingtool v1.0.1, v1.0.4, v1.0.5
 
 | 模块                                | 介绍                                                         |
 | ----------------------------------- | ------------------------------------------------------------ |
-| xingtools-core                      | 核心，包括各种接口，实体类和工具类                           |
+| xingtools-core                      | 核心，包括各种接口，实体类和工具类（现移植到xingcore）       |
 | xingtools-pkg-jdk8                  | 依赖core包，jdk 分类包，对不同的jdk版本提供兼容性            |
 | xingtools-pkg-jdk17                 | 依赖core包，jdk 分类包，对不同的jdk版本提供兼容性            |
 | xingtools-web                       | 依赖core和pkg包，提供一些 http 工具                          |
@@ -686,7 +688,18 @@ public class TestService {
 
 ##  :memo:更新公告
 
-**2025-7-26  v1.1.7 (推荐)**
+**2025-10-14  v1.2.0(推荐)**
+
+```
+中版本更新，拆分 xingtools.xing-core 为 xingcore，成为公共库
+
+xingtools 核心包更改 top.cutexingluo.tools -> top.cutexingluo.core
+详见
+https://github.com/cutexingluo/xingcore
+https://gitee.com/SangonomiyaKokomi/xingcore
+```
+
+**2025-7-26  v1.1.7(最后一版本推荐) **
 
 ```txt
 版本更新说明
@@ -930,4 +943,4 @@ bug修复
 
 在 properties/yml 配置文件输入 xingtools 即可查看相关自动配置。
 
-在最新版本中，使用 @EnableXingToolsServer 开启自动配置后，。
+在最新版本中，使用 @EnableXingToolsServer 开启自动配置后，无其他开启项。

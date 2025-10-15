@@ -37,6 +37,7 @@
 
     <dependencies>
 
+        <!--    xingcore    -->
         <dependency>
             <groupId>top.cutexingluo.core</groupId>
             <artifactId>xingcore-common-all</artifactId>
