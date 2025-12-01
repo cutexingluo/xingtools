@@ -28,6 +28,7 @@ import java.util.concurrent.TimeoutException;
  * @version 1.0.0
  * @date 2023/10/17 18:07
  */
+@Deprecated
 public final class RabbitMqTest {
 
     private RabbitMqTest() {

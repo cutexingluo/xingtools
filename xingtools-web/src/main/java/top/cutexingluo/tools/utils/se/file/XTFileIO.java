@@ -21,6 +21,7 @@ import java.util.List;
  *
  * <p>该类部分方法过时，仅做参考</p>
  * <p>1.0.4 更新 , 未来可能重构, 现在详见 {@link XTFileHandler}</p>
+ * <p>计划 1.2.1 过时，未来将重构或移除</p>
  *
  * @author XingTian
  * @version 1.1.0
@@ -28,6 +29,7 @@ import java.util.List;
  * @update 2024/3/2 16:35
  * @updateFrom 1.0.4
  */
+@Deprecated
 public class XTFileIO {
     public static final Charset UTF_8 = StandardCharsets.UTF_8;
     public static final String separator = File.separator;

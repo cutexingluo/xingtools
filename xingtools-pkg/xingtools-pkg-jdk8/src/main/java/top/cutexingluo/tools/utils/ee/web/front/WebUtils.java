@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.function.Consumer;
+import java.nio.charset.StandardCharsets;
 
 /**
  * web 返回工具类
@@ -19,8 +19,6 @@ import java.util.function.Consumer;
  */
 public class WebUtils {
 
-    public static boolean printTrace = true;
-    public static Consumer<Exception> exceptionHandler = null;
 
     /**
      * 返回请求封装
@@ -32,8 +30,6 @@ public class WebUtils {
     public static <C, T> void response(HttpServletResponse rsp, IResult<C, T> result, int rspStatusCode) throws IOException {
         JacksonSerializer serializer = new JacksonSerializer();
         String stringify = serializer.stringify(result);
-//        byte[] responseBytes = new ObjectMapper().writeValueAsBytes(result);
-//        new String(responseBytes)
         response(rsp, stringify, rspStatusCode);
     }
 
@@ -53,35 +49,34 @@ public class WebUtils {
     /**
      * 返回请求
      *
-     * @param rsp           返回请求
+     * @param response      返回请求
      * @param result        返回消息
      * @param rspStatusCode 返回码
      */
-    public static <C, T> void response(HttpServletResponse rsp, String result, int rspStatusCode) throws IOException {
-        rsp.addHeader("Content-Type", "application/json;charset=UTF-8");
-        rsp.setStatus(rspStatusCode);
-        rsp.getWriter().write(result);
+    public static <C, T> void response(HttpServletResponse response, String result, int rspStatusCode) throws IOException {
+        setJsonHeader(response, rspStatusCode);
+        response.getWriter().print(result);
     }
 
     /**
-     * 将字符串渲染到客户端
-     * <p>未来将被移除</p>
+     * 返回请求
      *
-     * @param response 渲染对象
-     * @param string   待渲染的字符串
+     * @param response 返回请求
+     * @param result   返回消息
      */
-    @Deprecated
-    public static void renderString(HttpServletResponse response, String string) {
-        try {
-            response.setStatus(200);
-            response.setContentType("application/json");
-            response.setCharacterEncoding("utf-8");
-            response.getWriter().print(string);
-        } catch (IOException e) {
-            if (exceptionHandler != null) exceptionHandler.accept(e);
-            else if (printTrace) e.printStackTrace();
-        }
+    public static void renderString(HttpServletResponse response, String result) throws IOException {
+        response(response, result, HttpServletResponse.SC_OK);
     }
+
+    /**
+     * 设置json头
+     */
+    public static void setJsonHeader(HttpServletResponse response, int rspStatusCode) {
+        response.setStatus(rspStatusCode);
+        response.setContentType("application/json");
+        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+    }
+
 
     /**
      * 设置下载文件头
@@ -89,10 +84,7 @@ public class WebUtils {
     public static void setDownLoadHeader(String filename, ServletContext context, HttpServletResponse response) throws UnsupportedEncodingException {
         String mimeType = context.getMimeType(filename);//获取文件的mime类型
         response.setHeader("content-type", mimeType);
-        String fname = URLEncoder.encode(filename, "UTF-8");
+        String fname = URLEncoder.encode(filename, StandardCharsets.UTF_8.name());
         response.setHeader("Content-disposition", "attachment; filename=" + fname);
-
-//        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-//        response.setCharacterEncoding("utf-8");
     }
 }

@@ -10,15 +10,15 @@ import java.util.Map;
  * @version 1.0.0
  * @date 2024/7/16 12:25
  */
-public class ImportSelectorUtil {
+public abstract class ImportSelectorUtil {
 
     /**
      * 获取 AnnotationAttributes 对象
      */
-    public static<T> AnnotationAttributes getAnnotationAttributes(AnnotationMetadata importingClassMetadata,Class<T> annoType ){
+    public static <T> AnnotationAttributes getAnnotationAttributes(AnnotationMetadata importingClassMetadata, Class<T> annoType) {
         Map<String, Object> annotationAttributes = importingClassMetadata
                 .getAnnotationAttributes(annoType.getName(), false);
         return annotationAttributes != null ?
-                AnnotationAttributes.fromMap(annotationAttributes):null;
+                AnnotationAttributes.fromMap(annotationAttributes) : null;
     }
 }

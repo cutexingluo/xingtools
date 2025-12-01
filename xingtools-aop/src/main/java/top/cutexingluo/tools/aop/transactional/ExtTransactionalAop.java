@@ -3,7 +3,6 @@ package top.cutexingluo.tools.aop.transactional;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionStatus;
 
 import java.util.function.Consumer;
@@ -20,11 +19,15 @@ import java.util.function.Consumer;
 @Aspect
 //@Component
 public class ExtTransactionalAop {
-    @Autowired
+
     TransactionalUtils transactionalUtils;
 
-    public static boolean printTrace = true;
-    public static Consumer<Throwable> exceptionHandler = null;
+    public boolean printTrace = true;
+    public Consumer<Throwable> exceptionHandler = null;
+
+    public ExtTransactionalAop(TransactionalUtils transactionalUtils) {
+        this.transactionalUtils = transactionalUtils;
+    }
 
     @Around("@annotation(top.cutexingluo.tools.aop.transactional.ExtTransactional)")
     public Object around(ProceedingJoinPoint joinPoint) {

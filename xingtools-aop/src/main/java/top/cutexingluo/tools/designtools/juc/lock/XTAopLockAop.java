@@ -5,7 +5,6 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import top.cutexingluo.tools.designtools.method.ClassUtil;
@@ -25,14 +24,16 @@ import java.util.function.Consumer;
 @ConditionalOnClass({RedissonClient.class, Config.class})
 @ConditionalOnBean(RedissonClient.class)
 @Aspect
-//@Component
 public class XTAopLockAop {
 
-    @Autowired
     RedissonClient redissonClient;
 
-    public static boolean printTrace = false;
-    public static Consumer<Throwable> exceptionHandler = null;
+    public boolean printTrace = false;
+    public Consumer<Throwable> exceptionHandler = null;
+
+    public XTAopLockAop(RedissonClient redissonClient) {
+        this.redissonClient = redissonClient;
+    }
 
     @Around("@annotation(xtAopLock)")
     public Object around(ProceedingJoinPoint joinPoint, XTAopLock xtAopLock) {

@@ -5,7 +5,6 @@ import cn.hutool.core.collection.CollUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
@@ -29,7 +28,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 @EnableAsync
 @Aspect
-//@Component
 public class AsyncTransactionAop {
 
     //用来存储各线程计数器数据(每次执行后会从map中删除)
@@ -38,7 +36,7 @@ public class AsyncTransactionAop {
 
     private PlatformTransactionManager transactionManager;
 
-    @Autowired
+
     public AsyncTransactionAop(PlatformTransactionManager transactionManager) {
         this.transactionManager = transactionManager;
     }

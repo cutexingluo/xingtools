@@ -1,5 +1,6 @@
 package top.cutexingluo.tools.aop.exception;
 
+import lombok.Data;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -15,22 +16,21 @@ import java.util.function.Consumer;
  * @version 1.0.0
  * @date 2023/2/2 16:12
  */
+@Data
 @Aspect
-//@Component
 public class XTExceptionAop {
 
-//    @XTException(name = "内部错误", desc = "run方法内部错误")
-//    public static void run(Runnable runnable) { //run带注释的接口
-//        runnable.run();
-//    }
-//
-//    @XTException(name = "内部错误", desc = "run方法内部错误", wrong = true)
-//    public static void runTick(Runnable runnable) { //run带注释的接口输出系统错误
-//        runnable.run();
-//    }
 
-    public static boolean printTrace = true;
-    public static Consumer<Throwable> exceptionHandler = null;
+    public boolean printTrace = true;
+    public Consumer<Throwable> exceptionHandler = null;
+
+    public XTExceptionAop() {
+    }
+
+    public XTExceptionAop(boolean printTrace, Consumer<Throwable> exceptionHandler) {
+        this.printTrace = printTrace;
+        this.exceptionHandler = exceptionHandler;
+    }
 
     /**
      * 这里定义了一个总的匹配规则，以后拦截的时候直接拦截log()方法即可，无须去重复写execution表达式

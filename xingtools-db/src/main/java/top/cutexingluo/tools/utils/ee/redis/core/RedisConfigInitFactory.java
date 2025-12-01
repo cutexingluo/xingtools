@@ -75,7 +75,9 @@ public class RedisConfigInitFactory {
     @Contract("_ -> param1")
     public static <T, V> @NotNull RedisTemplate<T, V> initTemplateByFastJson(@NotNull RedisTemplate<T, V> template) {
 
-        FastJsonRedisSerializer<Object> serializer = new FastJsonRedisSerializer<>(Object.class);
+        FastJsonRedisSerializer<Object> serializer =
+                new FastJsonRedisSerializer<>(Object.class)
+                        .initSelf(); // 开启类型标注
         // 使用StringRedisSerializer来序列化和反序列化redis的key值
         template.setKeySerializer(new StringRedisSerializer());
         template.setValueSerializer(serializer);

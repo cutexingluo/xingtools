@@ -7,7 +7,7 @@
     <parent>
         <artifactId>xingtools-parent</artifactId>
         <groupId>top.cutexingluo.tools</groupId>
-        <version>1.2.0</version>
+        <version>${revision}</version>
     </parent>
 
     <artifactId>xingtools-db</artifactId>
@@ -28,7 +28,6 @@
         <dependency>
             <groupId>top.cutexingluo.tools</groupId>
             <artifactId>xingtools-core</artifactId>
-            <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
@@ -43,35 +42,16 @@
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-core</artifactId>
-            <version>${mybatis-plus.version}</version>
             <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-extension</artifactId>
-            <version>${mybatis-plus.version}</version>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-generator</artifactId>
-            <version>${mybatis-plus.version}</version>
-            <optional>true</optional>
-        </dependency>
-        <!-- 若使用redisson作为分布式锁底层，则需要引入 -->
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>lock4j-core</artifactId>
-            <!--            <version>${lock4j.version}</version>-->
             <optional>true</optional>
         </dependency>
 
+
         <!--        redis  -->
-        <!--        <dependency>-->
-        <!--            <groupId>org.springframework.boot</groupId>-->
-        <!--            <artifactId>spring-boot-starter-data-redis</artifactId>-->
-        <!--            <optional>true</optional>-->
-        <!--        </dependency>-->
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-redis</artifactId>
@@ -79,28 +59,11 @@
         </dependency>
 
         <!--        redisson -->
-        <!--        <dependency>-->
-        <!--            <groupId>org.redisson</groupId>-->
-        <!--            <artifactId>redisson-spring-boot-starter</artifactId>-->
-        <!--            <version>${redisson.version}</version>-->
-        <!--        </dependency>-->
         <dependency>
             <groupId>org.redisson</groupId>
             <artifactId>redisson</artifactId>
             <optional>true</optional>
         </dependency>
-
-        <!--        mongodb -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-mongodb</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>org.springframework.data</groupId>-->
-        <!--            <artifactId>spring-data-mongodb</artifactId>-->
-        <!--            <optional>true</optional>-->
-        <!--        </dependency>-->
 
 
         <!--        rabbit-mq -->
@@ -122,13 +85,6 @@
         <!--            <optional>true</optional>-->
         <!--        </dependency>-->
 
-        <!--        fastjson -->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>${fastjson.version}</version>
-            <optional>true</optional>
-        </dependency>
 
     </dependencies>
 

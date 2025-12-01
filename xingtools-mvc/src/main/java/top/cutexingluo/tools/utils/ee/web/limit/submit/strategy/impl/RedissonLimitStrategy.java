@@ -3,7 +3,6 @@ package top.cutexingluo.tools.utils.ee.web.limit.submit.strategy.impl;
 import org.jetbrains.annotations.NotNull;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
-import org.springframework.beans.factory.annotation.Autowired;
 import top.cutexingluo.tools.basepackage.bundle.AspectBundle;
 import top.cutexingluo.tools.utils.ee.web.limit.submit.base.RequestLimitData;
 import top.cutexingluo.tools.utils.ee.web.limit.submit.strategy.LimitStrategy;
@@ -23,7 +22,6 @@ public class RedissonLimitStrategy implements LimitStrategy {
 
     protected RedissonClient redissonClient;
 
-    @Autowired
     public RedissonLimitStrategy(RedissonClient redissonClient) {
         this.redissonClient = redissonClient;
     }

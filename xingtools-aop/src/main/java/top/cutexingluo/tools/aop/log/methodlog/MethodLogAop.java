@@ -7,7 +7,6 @@ import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationUtils;
 import top.cutexingluo.core.basepackage.basehandler.aop.BaseAspectHandler;
 import top.cutexingluo.core.utils.se.character.XTStrUtil;
@@ -26,8 +25,15 @@ import top.cutexingluo.tools.utils.log.handler.LogHandler;
 @Aspect
 public class MethodLogAop implements BaseAspectAroundHandler<MethodLog>, BaseAspectHandler<MethodLog> {
 
-    @Autowired(required = false)
+
     protected MethodLogAdapter methodLogAdapter;
+
+    public MethodLogAop() {
+    }
+
+    public MethodLogAop(MethodLogAdapter methodLogAdapter) {
+        this.methodLogAdapter = methodLogAdapter;
+    }
 
     public static final String[] printKeys = {
             "Before Msg", // 打印方法执行前msg

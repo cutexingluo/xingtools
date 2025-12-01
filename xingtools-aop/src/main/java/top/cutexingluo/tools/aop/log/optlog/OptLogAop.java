@@ -6,7 +6,6 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationUtils;
 import top.cutexingluo.core.basepackage.basehandler.aop.BaseAspectHandler;
 import top.cutexingluo.tools.aop.log.optlog.custom.OptLogAdapter;
@@ -23,7 +22,6 @@ import top.cutexingluo.tools.utils.log.handler.LogHandler;
 @Aspect
 public class OptLogAop implements BaseAspectHandler<OptLog>, BaseAspectAroundHandler<OptLog> {
 
-    @Autowired(required = false)
     protected OptLogAdapter optLogAdapter;
 
     protected LogHandler log;
@@ -33,6 +31,12 @@ public class OptLogAop implements BaseAspectHandler<OptLog>, BaseAspectAroundHan
 
     protected OptConfig optConfig;
 
+    public OptLogAop() {
+    }
+
+    public OptLogAop(OptLogAdapter optLogAdapter) {
+        this.optLogAdapter = optLogAdapter;
+    }
 
     @Override
     public void before(OptLog printLog) {

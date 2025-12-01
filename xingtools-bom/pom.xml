@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>top.cutexingluo.tools</groupId>
+    <artifactId>xingtools-bom</artifactId>
+    <version>${revision}</version>
+
+    <name>xingtools-bom</name>
+    <description>xingtools-bom</description>
+    <packaging>pom</packaging>
+
+
+    <properties>
+        <revision>1.2.0</revision>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+
+            <dependency>
+                <groupId>top.cutexingluo.tools</groupId>
+                <artifactId>xingtools-pkg-jdk8</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.cutexingluo.tools</groupId>
+                <artifactId>xingtools-pkg-jdk17</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>top.cutexingluo.tools</groupId>
+                <artifactId>xingtools-core</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.cutexingluo.tools</groupId>
+                <artifactId>xingtools-log</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.cutexingluo.tools</groupId>
+                <artifactId>xingtools-extra</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.cutexingluo.tools</groupId>
+                <artifactId>xingtools-db</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.cutexingluo.tools</groupId>
+                <artifactId>xingtools-web</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.cutexingluo.tools</groupId>
+                <artifactId>xingtools-cloud</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.cutexingluo.tools</groupId>
+                <artifactId>xingtools-aop</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>top.cutexingluo.tools</groupId>
+                <artifactId>xingtools-unified</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>top.cutexingluo.tools</groupId>
+                <artifactId>xingtools-spring-boot</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.cutexingluo.tools</groupId>
+                <artifactId>xingtools-spring-boot-autoconfigure</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.cutexingluo.tools</groupId>
+                <artifactId>xingtools-spring-boot-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+
+        </dependencies>
+    </dependencyManagement>
+
+</project>

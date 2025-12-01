@@ -8,8 +8,7 @@
     <parent>
         <artifactId>xingtools-pkg</artifactId>
         <groupId>top.cutexingluo.tools</groupId>
-        <version>1.2.0</version>
-        <!--        <relativePath />-->
+        <version>${revision}</version>
     </parent>
 
 
@@ -32,11 +31,7 @@
 
         <!--        optional -->
 
-        <!--        <dependency>-->
-        <!--            <groupId>org.springframework.boot</groupId>-->
-        <!--            <artifactId>spring-boot-starter-web</artifactId>-->
-        <!--            <optional>true</optional>-->
-        <!--        </dependency>-->
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
@@ -54,26 +49,6 @@
             <optional>true</optional>
         </dependency>
 
-
-        <!--        <dependency>-->
-        <!--            <groupId>com.baomidou</groupId>-->
-        <!--            <artifactId>mybatis-plus-core</artifactId>-->
-        <!--            <optional>true</optional>-->
-        <!--        </dependency>-->
-
-
-        <!--&lt;!&ndash;        redis &ndash;&gt;-->
-        <!--        <dependency>-->
-        <!--            <groupId>org.springframework.data</groupId>-->
-        <!--            <artifactId>spring-data-redis</artifactId>-->
-        <!--            <optional>true</optional>-->
-        <!--        </dependency>-->
-        <!--&lt;!&ndash;        redisson &ndash;&gt;-->
-        <!--        <dependency>-->
-        <!--            <groupId>org.redisson</groupId>-->
-        <!--            <artifactId>redisson</artifactId>-->
-        <!--            <optional>true</optional>-->
-        <!--        </dependency>-->
 
     </dependencies>
 </project>

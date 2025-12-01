@@ -5,7 +5,6 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationUtils;
 import top.cutexingluo.core.basepackage.basehandler.aop.BaseAspectHandler;
 import top.cutexingluo.tools.aop.log.printlog.custom.PrintLogAdapter;
@@ -22,13 +21,18 @@ import top.cutexingluo.tools.utils.log.handler.LogHandler;
 @Aspect
 public class PrintLogAop implements BaseAspectHandler<PrintLog>, BaseAspectAroundHandler<PrintLog> {
 
-    @Autowired(required = false)
     protected PrintLogAdapter printLogAdapter;
 
     protected LogHandler log;
     protected ProceedingJoinPoint currentJoinPoint;
     protected Object result = null;
 
+    public PrintLogAop() {
+    }
+
+    public PrintLogAop(PrintLogAdapter printLogAdapter) {
+        this.printLogAdapter = printLogAdapter;
+    }
 
     @Override
 //    @Before("@annotation(printLog)")

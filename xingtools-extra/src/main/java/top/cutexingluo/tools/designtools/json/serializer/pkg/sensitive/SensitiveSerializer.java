@@ -12,7 +12,7 @@ import top.cutexingluo.tools.designtools.json.serializer.StrJsonStrategy;
  */
 public class SensitiveSerializer implements StrJsonStrategy {
 
-    private final StrJsonStrategy desensitize;
+    protected final StrJsonStrategy desensitize;
 
     public SensitiveSerializer() {
         this("");
