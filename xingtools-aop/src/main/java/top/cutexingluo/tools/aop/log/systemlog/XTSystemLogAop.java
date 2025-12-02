@@ -61,13 +61,13 @@ public class XTSystemLogAop implements BaseAspectHandler<Map<String,Object>>, Ba
             context.put("signature", signature);
             LogHandler log = new LogHandler(xtSystemLog.type().intCode());
             context.put("log", log);
-            if (xtSystemLog.enableStartAndEnd()) log.send("========== Start ==========");
+            if (xtSystemLog.enableStartEndLine()) log.send("========== Start ==========");
             try {
                 before(context);
                 result = joinPoint.proceed();
                 after(context);
             } finally {
-                if (xtSystemLog.enableStartAndEnd()) log.send("========== End ==========");
+                if (xtSystemLog.enableStartEndLine()) log.send("========== End ==========");
             }
         }else {
             result = joinPoint.proceed();

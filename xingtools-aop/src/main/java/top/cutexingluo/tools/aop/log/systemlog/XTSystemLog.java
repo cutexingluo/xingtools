@@ -54,5 +54,5 @@ public @interface XTSystemLog {
     /**
      * 是否打印分割线
      */
-    boolean enableStartAndEnd() default true;
+    boolean enableStartEndLine() default true;
 }
