@@ -1,5 +1,8 @@
 package top.cutexingluo.tools.utils.ee.feign.retry;
 
+import top.cutexingluo.tools.utils.log.LogLevel;
+import top.cutexingluo.tools.utils.log.LogType;
+
 import java.lang.annotation.*;
 
 /**
@@ -35,4 +38,10 @@ public @interface FeignRetry {
      * @return 包含的异常
      */
     Class<? extends Throwable>[] include() default {};
+
+
+    /**
+     * 日志级别
+     */
+    LogType logType() default LogType.Info;
 }

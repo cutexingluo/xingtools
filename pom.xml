@@ -36,7 +36,7 @@
 
     <properties>
         <!--        版本号 -->
-        <revision>1.2.0</revision>
+        <revision>1.2.1</revision>
 
 
         <projectUrl>https://gitee.com/SangonomiyaKokomi/xingtools.git</projectUrl>
@@ -67,6 +67,16 @@
 
         <guava.version>16.0</guava.version>
     </properties>
+
+
+    <dependencies>
+        <!--   全局使用 lombok     -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 
 
     <!-- 依赖管理    -->

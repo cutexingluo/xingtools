@@ -4,6 +4,7 @@ package top.cutexingluo.tools.auto.server;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import top.cutexingluo.core.basepackage.struct.Initializable;
 
 /**
  * 自动配置标识
@@ -17,13 +18,13 @@ import org.springframework.context.annotation.Import;
 @Import({XingToolsImportSelector.class})
 @Configuration
 @Slf4j
-public class XingToolsAutoConfiguration {
+public class XingToolsAutoConfiguration implements Initializable {
     public static final String ORIGIN_INFO = "@author XingTian\n" +
             "  @version 1.0.0\n" +
             " @since 2022/10/1";
 
     public static boolean printBanner = true;
-    public static boolean printBannerLogInfo = true;
+    public static boolean printBannerLogInfo = false;
 
 
     public static final String BOOT_BANNER =
@@ -34,7 +35,8 @@ public class XingToolsAutoConfiguration {
                     " /_/\\_\\_|_| |_|\\__, |\\__\\___/ \\___/|_|\n" +
                     "               |___/                  ";
 
-    //    @PostConstruct //  移除支持jdk 17
+    //    @PostConstruct //  移除支持jdk 17 以下
+    @Override
     public void init() {
         if (printBanner) {
             if (printBannerLogInfo) log.info(" \n {}", BOOT_BANNER);

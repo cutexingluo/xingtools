@@ -35,7 +35,6 @@ public class TransactionHandler implements CallableHandler, Initializable {
     private int propagationBehavior = TransactionDefinition.PROPAGATION_REQUIRES_NEW;
 
 
-    @Autowired(required = false)
     public TransactionHandler(PlatformTransactionManager transactionManager) {
         transaction = true;
         this.transactionManager = transactionManager;

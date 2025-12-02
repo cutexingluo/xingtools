@@ -4,7 +4,9 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.transaction.TransactionStatus;
+import top.cutexingluo.tools.exception.base.ExceptionDelegate;
 
+import java.util.Arrays;
 import java.util.function.Consumer;
 
 /**
@@ -22,11 +24,16 @@ public class ExtTransactionalAop {
 
     TransactionalUtils transactionalUtils;
 
-    public boolean printTrace = true;
-    public Consumer<Throwable> exceptionHandler = null;
+    ExceptionDelegate<Throwable> exceptionDelegate;
+
 
     public ExtTransactionalAop(TransactionalUtils transactionalUtils) {
         this.transactionalUtils = transactionalUtils;
+    }
+
+    public ExtTransactionalAop(TransactionalUtils transactionalUtils, ExceptionDelegate<Throwable> exceptionDelegate) {
+        this.transactionalUtils = transactionalUtils;
+        this.exceptionDelegate = exceptionDelegate;
     }
 
     @Around("@annotation(top.cutexingluo.tools.aop.transactional.ExtTransactional)")
@@ -38,8 +45,7 @@ public class ExtTransactionalAop {
             transactionalUtils.commit(begin);
         } catch (Throwable e) {
             if (begin != null) transactionalUtils.rollback(begin);
-            if (exceptionHandler != null) exceptionHandler.accept(e);
-            else if (printTrace) e.printStackTrace();
+            if (exceptionDelegate != null) exceptionDelegate.handle(e, Arrays.asList(joinPoint, transactionalUtils, begin));
         }
         return null;
     }

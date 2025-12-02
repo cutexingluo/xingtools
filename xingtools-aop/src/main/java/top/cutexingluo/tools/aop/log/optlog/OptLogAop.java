@@ -12,6 +12,9 @@ import top.cutexingluo.tools.aop.log.optlog.custom.OptLogAdapter;
 import top.cutexingluo.tools.basepackage.basehandler.aop.BaseAspectAroundHandler;
 import top.cutexingluo.tools.utils.log.handler.LogHandler;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 操作日志aop
  *
@@ -20,16 +23,10 @@ import top.cutexingluo.tools.utils.log.handler.LogHandler;
  * @date 2022/11/22 19:27
  */
 @Aspect
-public class OptLogAop implements BaseAspectHandler<OptLog>, BaseAspectAroundHandler<OptLog> {
+public class OptLogAop implements BaseAspectHandler<Map<String,Object>>, BaseAspectAroundHandler<OptLog> {
 
     protected OptLogAdapter optLogAdapter;
 
-    protected LogHandler log;
-    protected ProceedingJoinPoint currentJoinPoint;
-    protected Object result = null;
-
-
-    protected OptConfig optConfig;
 
     public OptLogAop() {
     }
@@ -38,33 +35,22 @@ public class OptLogAop implements BaseAspectHandler<OptLog>, BaseAspectAroundHan
         this.optLogAdapter = optLogAdapter;
     }
 
-    @Override
-    public void before(OptLog printLog) {
-        if (StrUtil.isNotBlank(printLog.before())) {
-            log.send(printLog.before());
-        }
-        if (optLogAdapter != null) { //执行自定义方法
-            optConfig = optLogAdapter.beforeRun(currentJoinPoint, (MethodSignature) currentJoinPoint.getSignature(), printLog, optConfig);
-        }
-    }
-
-    @Override
-    public void after(OptLog printLog) {
-        if (StrUtil.isNotBlank(printLog.after())) {
-            log.send(printLog.after());
-        }
-    }
 
     @Override
     @Around("@annotation(optLog)")
     public Object around(@NotNull ProceedingJoinPoint joinPoint, OptLog optLog) throws Throwable {
         optLog = AnnotationUtils.getAnnotation(optLog, OptLog.class);
-        result = null;
+        Object result = null;
         if (optLog != null) {
-            currentJoinPoint = joinPoint;
-            log = new LogHandler(optLog.type().intCode());
-            optConfig = new OptConfig();
-            before(optLog);
+            Map<String, Object> context = new HashMap<>();
+            context.put("currentJoinPoint", joinPoint);
+            context.put("optLog", optLog);
+            LogHandler log = new LogHandler(optLog.type().intCode());
+            context.put("log", log);
+            OptConfig optConfig = new OptConfig();
+            context.put("optConfig", optConfig);
+            before(context);
+            optConfig = (OptConfig) context.get("optConfig");
             if (optLogAdapter != null) { //执行自定义方法
                 if (optConfig.enabled) {
                     if (optConfig.returnNull) return null;
@@ -75,10 +61,36 @@ public class OptLogAop implements BaseAspectHandler<OptLog>, BaseAspectAroundHan
             } else {
                 result = joinPoint.proceed();
             }
-            after(optLog);
+            after(context);
         } else {
             result = joinPoint.proceed();
         }
         return result;
+    }
+
+    @Override
+    public void before(Map<String, Object> context) throws Exception {
+        OptLog printLog = (OptLog) context.get("optLog");
+        ProceedingJoinPoint currentJoinPoint = (ProceedingJoinPoint) context.get("currentJoinPoint");
+        LogHandler log = (LogHandler) context.get("log");
+        OptConfig optConfig = (OptConfig) context.get("optConfig");
+
+        if (StrUtil.isNotBlank(printLog.before())) {
+            log.send(printLog.before());
+        }
+        if (optLogAdapter != null) { //执行自定义方法
+            optConfig = optLogAdapter.beforeRun(currentJoinPoint, (MethodSignature) currentJoinPoint.getSignature(), printLog, optConfig);
+            context.put("optConfig", optConfig);
+        }
+    }
+
+    @Override
+    public void after(Map<String, Object> context) throws Exception {
+        OptLog printLog = (OptLog) context.get("optLog");
+        LogHandler log = (LogHandler) context.get("log");
+
+        if (StrUtil.isNotBlank(printLog.after())) {
+            log.send(printLog.after());
+        }
     }
 }

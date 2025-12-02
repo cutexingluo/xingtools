@@ -33,6 +33,7 @@
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-log</artifactId>
+            <scope>provided</scope>
         </dependency>
 
 

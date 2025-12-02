@@ -25,8 +25,42 @@ import java.util.concurrent.Future;
 public class ThreadResults {
     public final ConcurrentHashMap<String, Object> map;
 
+
+    // new
+
     /**
      * 获取Futures结果
+     * <p>可自行 get () 阻塞线程</p>
+     * <p>按策略排序</p>
+     */
+    @Nullable
+    public List<Future<Object>> getFuturesClear() {
+        String name = ThreadAopFactory.getMainThreadNameInMain();
+        List<Future<Object>> futures = (List<Future<Object>>) map.get(name + ":futures");
+        map.remove(name + ":futures");
+        return futures;
+    }
+
+    /**
+     * 获取子线程的执行结果
+     * <p>按策略排序</p>
+     */
+    @Nullable
+    public List<Object> getResultsClear() {
+        String name = ThreadAopFactory.getMainThreadNameInMain();
+        List<Object> results = (List<Object>) map.get(name + ":results");
+        map.remove(name + ":results");
+        return results;
+    }
+
+
+
+
+
+    // old
+
+    /**
+     * 获取Futures结果 (需要手动清理)
      * <p>可自行 get () 阻塞线程</p>
      * <p>按策略排序</p>
      */
@@ -35,8 +69,19 @@ public class ThreadResults {
         return (List<Future<Object>>) map.get(name + ":futures");
     }
 
+
     /**
-     * 获取子线程的执行结果
+     * 清理执行结果
+     */
+    public void clearFutures() {
+        String name = ThreadAopFactory.getMainThreadNameInMain();
+        map.remove(name + ":futures");
+    }
+
+
+
+    /**
+     * 获取子线程的执行结果 (需要手动清理)
      * <p>按策略排序</p>
      */
     @Nullable
@@ -44,5 +89,15 @@ public class ThreadResults {
         String name = ThreadAopFactory.getMainThreadNameInMain();
         return (List<Object>) map.get(name + ":results");
     }
+
+    /**
+     * 清理执行结果
+     */
+    public void clearResults() {
+        String name = ThreadAopFactory.getMainThreadNameInMain();
+        map.remove(name + ":results");
+    }
+
+
 
 }

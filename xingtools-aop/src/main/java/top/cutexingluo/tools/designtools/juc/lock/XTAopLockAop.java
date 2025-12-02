@@ -8,7 +8,9 @@ import org.redisson.config.Config;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import top.cutexingluo.tools.designtools.method.ClassUtil;
+import top.cutexingluo.tools.exception.base.ExceptionDelegate;
 
+import java.util.Arrays;
 import java.util.function.Consumer;
 
 /**
@@ -28,10 +30,14 @@ public class XTAopLockAop {
 
     RedissonClient redissonClient;
 
-    public boolean printTrace = false;
-    public Consumer<Throwable> exceptionHandler = null;
+    ExceptionDelegate<Throwable> exceptionDelegate;
 
     public XTAopLockAop(RedissonClient redissonClient) {
+        this.redissonClient = redissonClient;
+    }
+
+    public XTAopLockAop(ExceptionDelegate<Throwable> exceptionDelegate, RedissonClient redissonClient) {
+        this.exceptionDelegate = exceptionDelegate;
         this.redissonClient = redissonClient;
     }
 
@@ -45,14 +51,16 @@ public class XTAopLockAop {
                 try {
                     return joinPoint.proceed();
                 } catch (Throwable e) {
-                    if (exceptionHandler != null) exceptionHandler.accept(e);
-                    else if (printTrace) e.printStackTrace();
+                    if (exceptionDelegate != null) {
+                        exceptionDelegate.handle(e, Arrays.asList(joinPoint, lockAnno));
+                    }
                 }
                 return null;
             });
         } catch (Exception e) {
-            if (exceptionHandler != null) exceptionHandler.accept(e);
-            else if (printTrace) e.printStackTrace();
+            if (exceptionDelegate != null) {
+                exceptionDelegate.handle(e, Arrays.asList(joinPoint, lockAnno));
+            }
         }
         return result;
     }

@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.stereotype.Component;
 import top.cutexingluo.tools.auto.cloud.XTSpringCloudAutoConfiguration;
@@ -21,7 +22,7 @@ import top.cutexingluo.tools.start.log.LogInfoAuto;
  */
 @ConditionalOnBean(XTSpringCloudAutoConfiguration.class)
 @ConditionalOnProperty(prefix = "xingtool.cloud.enabled", name = "dynamic-feign", havingValue = "true", matchIfMissing = false)
-@Component
+@Configuration(proxyBeanMethods = false)
 @Slf4j
 @Import(DynamicClient.class)
 public class DynamicFeignClientFactoryAuto {

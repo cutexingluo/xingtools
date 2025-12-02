@@ -39,7 +39,7 @@
             <groupId>top.cutexingluo.tools</groupId>
             <artifactId>xingtools-pkg-jdk8</artifactId>
             <version>${project.parent.version}</version>
-            <optional>true</optional>
+            <scope>provided</scope>
         </dependency>
 
         <!--        pkg版本依赖，后面需要自行导入 -->
@@ -47,7 +47,7 @@
             <groupId>top.cutexingluo.tools</groupId>
             <artifactId>xingtools-pkg-jdk17</artifactId>
             <version>${project.parent.version}</version>
-            <optional>true</optional>
+            <scope>provided</scope>
         </dependency>
 
         <!--        配置提示 -->
@@ -101,6 +101,11 @@
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-extension</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-jsqlparser</artifactId>
             <optional>true</optional>
         </dependency>
 

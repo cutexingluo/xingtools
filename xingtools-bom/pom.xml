@@ -14,7 +14,7 @@
 
 
     <properties>
-        <revision>1.2.0</revision>
+        <revision>1.2.1</revision>
     </properties>
 
     <dependencyManagement>
@@ -59,6 +59,11 @@
             <dependency>
                 <groupId>top.cutexingluo.tools</groupId>
                 <artifactId>xingtools-cloud</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.cutexingluo.tools</groupId>
+                <artifactId>xingtools-mvc</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>

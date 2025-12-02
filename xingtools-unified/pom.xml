@@ -24,12 +24,12 @@
         <dependency>
             <groupId>top.cutexingluo.tools</groupId>
             <artifactId>xingtools-pkg-jdk8</artifactId>
-            <optional>true</optional>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>top.cutexingluo.tools</groupId>
             <artifactId>xingtools-pkg-jdk17</artifactId>
-            <optional>true</optional>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -58,12 +58,17 @@
         </dependency>
         <dependency>
             <groupId>top.cutexingluo.tools</groupId>
+            <artifactId>xingtools-mvc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>top.cutexingluo.tools</groupId>
             <artifactId>xingtools-aop</artifactId>
         </dependency>
 
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
+            <scope>provided</scope>
         </dependency>
 
 

@@ -59,5 +59,5 @@ public @interface OptLog {
      */
     int num() default 0;
 
-    LogType type() default LogType.System;
+    LogType type() default LogType.Debug;
 }

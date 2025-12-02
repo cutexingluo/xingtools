@@ -18,8 +18,9 @@
     <properties>
         <!-- versions -->
 
-        <lock4j.version>2.2.5</lock4j.version>
-        <fastjson.version>1.2.83</fastjson.version>
+        <fastjson.version>2.0.52</fastjson.version>
+        <lock4k.version>2.2.7</lock4k.version>
+
         <!--        <amqp-client.version>5.14.3</amqp-client.version>-->
     </properties>
 
@@ -33,6 +34,7 @@
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-db</artifactId>
+            <scope>provided</scope>
         </dependency>
 
 
@@ -47,6 +49,19 @@
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-extension</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>lock4j-core</artifactId>
+            <version>${lock4k.version}</version>
+            <optional>true</optional>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
             <optional>true</optional>
         </dependency>
 
@@ -72,6 +87,15 @@
             <artifactId>spring-boot-starter-amqp</artifactId>
             <optional>true</optional>
         </dependency>
+
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
+            <optional>true</optional>
+        </dependency>
+
         <!--        <dependency>-->
         <!--            <groupId>org.springframework.amqp</groupId>-->
         <!--            <artifactId>spring-rabbit</artifactId>-->

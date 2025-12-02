@@ -21,7 +21,6 @@ public class XTCloudImportSelector implements ImportSelector {
     public String[] selectImports(@NotNull AnnotationMetadata importingClassMetadata) {
         log.info("XingToolsCloudServer 启动成功 !  请享受你的日常的乐趣 !");
         return new String[]{
-                FeignRetryAop.class.getName(),
         };
     }
 }

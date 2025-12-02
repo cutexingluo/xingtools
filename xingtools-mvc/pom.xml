@@ -38,6 +38,12 @@
             <version>${project.parent.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>top.cutexingluo.tools</groupId>
+            <artifactId>xingtools-pkg-jdk8</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
 
         <!--        optional -->
 

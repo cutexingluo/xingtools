@@ -6,8 +6,11 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.core.annotation.AnnotationUtils;
+import top.cutexingluo.tools.exception.ExceptionPrintDelegate;
+import top.cutexingluo.tools.exception.base.ExceptionDelegate;
+import top.cutexingluo.tools.utils.log.handler.LogHandler;
 
-import java.util.function.Consumer;
+import java.util.Arrays;
 
 /**
  * 历史遗留aop
@@ -20,16 +23,17 @@ import java.util.function.Consumer;
 @Aspect
 public class XTExceptionAop {
 
+    /**
+     * 异常处理
+     */
+    protected ExceptionDelegate<Throwable> exceptionDelegate;
 
-    public boolean printTrace = true;
-    public Consumer<Throwable> exceptionHandler = null;
 
     public XTExceptionAop() {
     }
 
-    public XTExceptionAop(boolean printTrace, Consumer<Throwable> exceptionHandler) {
-        this.printTrace = printTrace;
-        this.exceptionHandler = exceptionHandler;
+    public XTExceptionAop(ExceptionDelegate<Throwable> exceptionDelegate) {
+        this.exceptionDelegate = exceptionDelegate;
     }
 
     /**
@@ -47,12 +51,12 @@ public class XTExceptionAop {
         } catch (Throwable e) {
             exception = AnnotationUtils.getAnnotation(exception, XTException.class);
             if (exception == null || exception.wrong()) {
-                if (exceptionHandler != null) exceptionHandler.accept(e);
-                else if (printTrace) e.printStackTrace();
+                if (exceptionDelegate != null) exceptionDelegate.handle(e, Arrays.asList(joinPoint, exception));
             }
             if (exception != null) {
-                if (!exception.name().isEmpty()) System.out.println("发现异常: " + exception.name());
-                if (!exception.desc().isEmpty()) System.out.println("异常描述: " + exception.desc());
+                LogHandler log = new LogHandler(exception.logType().intCode());
+                if (!exception.name().isEmpty()) log.send("发现异常: " + exception.name());
+                if (!exception.desc().isEmpty()) log.send("异常描述: " + exception.desc());
             }
         }
         return result;

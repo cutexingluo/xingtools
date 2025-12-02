@@ -23,7 +23,6 @@ import java.util.function.Predicate;
  */
 @Slf4j
 @Primary
-//@Configuration
 @AutoConfigureAfter({LogInfoAuto.class, XingToolsAutoConfiguration.class})
 public class XingToolsImportSelector implements ImportSelector {
 
@@ -31,10 +30,6 @@ public class XingToolsImportSelector implements ImportSelector {
     public String[] selectImports(@NotNull AnnotationMetadata annotationMetadata) {
         log.info("XingToolsServer 启动成功 !  请享受你的日常的乐趣 !");
         return new String[]{
-                XTLockAopAutoConfigure.class.getName(),
-                SaTokenConfiguration.class.getName(),
-                SpringUtilsAutoConfiguration.class.getName(),
-                SpringCacheAutoConfiguration.class.getName()
         };
     }
 
