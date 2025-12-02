@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import top.cutexingluo.tools.utils.se.algo.tree.TreeNode;
+import top.cutexingluo.core.utils.se.algo.tree.TreeNode;
 
 import java.util.Collection;
 

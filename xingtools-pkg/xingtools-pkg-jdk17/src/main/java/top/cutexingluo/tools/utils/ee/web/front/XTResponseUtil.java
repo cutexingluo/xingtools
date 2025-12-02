@@ -1,9 +1,9 @@
 package top.cutexingluo.tools.utils.ee.web.front;
 
 import jakarta.servlet.http.HttpServletResponse;
-import top.cutexingluo.tools.common.Constants;
-import top.cutexingluo.tools.common.Result;
-import top.cutexingluo.tools.common.base.IResult;
+import top.cutexingluo.core.common.base.IResult;
+import top.cutexingluo.core.common.result.Constants;
+import top.cutexingluo.core.common.result.Result;
 
 import java.io.IOException;
 

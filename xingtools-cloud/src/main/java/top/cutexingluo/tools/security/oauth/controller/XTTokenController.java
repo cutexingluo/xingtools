@@ -7,9 +7,9 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.endpoint.TokenEndpoint;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
-import top.cutexingluo.tools.common.Result;
-import top.cutexingluo.tools.common.base.IResult;
-import top.cutexingluo.tools.common.utils.GlobalResultFactory;
+import top.cutexingluo.core.common.base.IResult;
+import top.cutexingluo.core.common.result.Result;
+import top.cutexingluo.core.common.utils.GlobalResultFactory;
 
 import java.security.Principal;
 import java.util.Map;
@@ -27,16 +27,16 @@ public class XTTokenController {
 
     protected GlobalResultFactory globalResultFactory;
 
-    public <C, T> IResult<C, T> postAccessToken(TokenEndpoint tokenEndpoint,Principal principal,
+    public <C, T> IResult<C, T> postAccessToken(TokenEndpoint tokenEndpoint, Principal principal,
                                                 Map<String, String> parameters) throws HttpRequestMethodNotSupportedException {
         return (IResult<C, T>) postAccessToken(tokenEndpoint, principal, parameters, accessToken -> {
             Result error = Result.success(accessToken);
-            return GlobalResultFactory.selectResult(globalResultFactory,error);
+            return GlobalResultFactory.selectResult(globalResultFactory, error);
         });
     }
 
     public <C, T> IResult<C, T> postAccessToken(TokenEndpoint tokenEndpoint, Principal principal,
-                                                Map<String, String> parameters,@NotNull Function<OAuth2AccessToken,IResult<C, T>>  filter) throws HttpRequestMethodNotSupportedException {
+                                                Map<String, String> parameters, @NotNull Function<OAuth2AccessToken, IResult<C, T>> filter) throws HttpRequestMethodNotSupportedException {
         OAuth2AccessToken accessToken = tokenEndpoint.postAccessToken(principal, parameters).getBody();
         return filter.apply(accessToken);
     }

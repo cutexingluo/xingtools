@@ -1,7 +1,7 @@
 package top.cutexingluo.tools.aop.log.xtlog.pkg;
 
 import org.jetbrains.annotations.NotNull;
-import top.cutexingluo.tools.common.data.Entry;
+import top.cutexingluo.core.common.data.Entry;
 
 import java.util.Map;
 

@@ -3,12 +3,12 @@ package top.cutexingluo.tools.aop.log.xtlog.pkg;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.jetbrains.annotations.NotNull;
+import top.cutexingluo.core.utils.se.map.XTHashMap;
 import top.cutexingluo.tools.aop.log.xtlog.LogKey;
 import top.cutexingluo.tools.aop.log.xtlog.LogVarKey;
 import top.cutexingluo.tools.aop.log.xtlog.base.WebLogConfig;
 import top.cutexingluo.tools.basepackage.bundle.AspectBundle;
 import top.cutexingluo.tools.designtools.convert.WebHandler;
-import top.cutexingluo.tools.utils.se.map.XTHashMap;
 
 import java.util.HashMap;
 import java.util.function.Supplier;

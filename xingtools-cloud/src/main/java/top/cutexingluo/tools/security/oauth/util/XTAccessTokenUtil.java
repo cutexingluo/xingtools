@@ -13,7 +13,7 @@ import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-import top.cutexingluo.tools.utils.ee.token.XTTokenUtil;
+import top.cutexingluo.core.utils.ee.token.XTTokenUtil;
 
 import java.util.*;
 import java.util.stream.Collectors;

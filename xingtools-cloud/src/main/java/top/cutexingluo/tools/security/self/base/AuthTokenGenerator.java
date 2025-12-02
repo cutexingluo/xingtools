@@ -1,7 +1,8 @@
 package top.cutexingluo.tools.security.self.base;
 
-import top.cutexingluo.tools.basepackage.base.ExtInitializable;
-import top.cutexingluo.tools.basepackage.function.UniGenerator;
+
+import top.cutexingluo.core.basepackage.function.UniGenerator;
+import top.cutexingluo.core.basepackage.struct.ExtInitializable;
 
 /**
  * token generator

@@ -2,6 +2,7 @@ package top.cutexingluo.tools.common.valid.num.intstatus;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
+import top.cutexingluo.core.common.valid.num.intstatus.IntRange;
 
 import java.lang.annotation.*;
 

@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import top.cutexingluo.core.common.base.IResult;
+import top.cutexingluo.core.common.utils.GlobalResultFactory;
 import top.cutexingluo.tools.auto.server.XingToolsAutoConfiguration;
-import top.cutexingluo.tools.common.base.IResult;
-import top.cutexingluo.tools.common.utils.GlobalResultFactory;
 import top.cutexingluo.tools.security.oauth.controller.XTTokenController;
 import top.cutexingluo.tools.start.log.LogInfoAuto;
 

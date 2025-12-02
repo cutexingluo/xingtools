@@ -1,9 +1,9 @@
 package top.cutexingluo.tools.utils.ee.web.limit.submit.strategy;
 
 import org.jetbrains.annotations.NotNull;
+import top.cutexingluo.core.common.result.Constants;
+import top.cutexingluo.core.exception.ServiceException;
 import top.cutexingluo.tools.basepackage.bundle.AspectBundle;
-import top.cutexingluo.tools.common.Constants;
-import top.cutexingluo.tools.exception.ServiceException;
 import top.cutexingluo.tools.utils.ee.web.limit.submit.base.RequestLimitConfig;
 import top.cutexingluo.tools.utils.ee.web.limit.submit.base.RequestLimitData;
 import top.cutexingluo.tools.utils.ee.web.limit.submit.pkg.RequestLimitInterceptor;

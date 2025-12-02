@@ -2,6 +2,7 @@ package top.cutexingluo.tools.common.valid.num.longstatus;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
+import top.cutexingluo.core.common.valid.num.longstatus.LongRange;
 
 import java.lang.annotation.*;
 

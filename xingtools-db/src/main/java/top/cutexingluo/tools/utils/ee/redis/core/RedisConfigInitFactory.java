@@ -8,7 +8,7 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
-import top.cutexingluo.tools.designtools.protocol.serializer.impl.json.JacksonSerializer;
+import top.cutexingluo.core.designtools.protocol.serializer.impl.json.JacksonSerializer;
 import top.cutexingluo.tools.utils.ee.fastjson.FastJsonRedisSerializer;
 
 import java.util.Objects;
@@ -59,7 +59,8 @@ public class RedisConfigInitFactory {
      *
      * @param redisConnectionFactory 连接工厂
      */
-    public static @NotNull RedisTemplate<String, Object> initTemplate(RedisConnectionFactory redisConnectionFactory, @Nullable ObjectMapper objectMapper) {
+    public static @NotNull
+    RedisTemplate<String, Object> initTemplate(RedisConnectionFactory redisConnectionFactory, @Nullable ObjectMapper objectMapper) {
         RedisTemplate<String, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(redisConnectionFactory);
         initTemplate(template, objectMapper);
@@ -92,7 +93,8 @@ public class RedisConfigInitFactory {
      *
      * @param redisConnectionFactory 连接工厂
      */
-    public static @NotNull RedisTemplate<String, Object> initTemplateByFastJson(RedisConnectionFactory redisConnectionFactory) {
+    public static @NotNull
+    RedisTemplate<String, Object> initTemplateByFastJson(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<String, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(redisConnectionFactory);
         initTemplateByFastJson(template);

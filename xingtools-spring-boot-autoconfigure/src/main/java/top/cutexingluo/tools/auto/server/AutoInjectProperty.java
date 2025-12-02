@@ -115,7 +115,7 @@ public class AutoInjectProperty {
      *
      * <p>jackson-serializer</p>
      *
-     * @see top.cutexingluo.tools.designtools.protocol.serializer.impl.json.JacksonSerializer
+     * @see top.cutexingluo.core.designtools.protocol.serializer.impl.json.JacksonSerializer
      */
     private boolean jacksonSerializer = false;
 

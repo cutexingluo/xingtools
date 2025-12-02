@@ -2,8 +2,8 @@ package top.cutexingluo.tools.designtools.juc.lock.handler;
 
 import org.jetbrains.annotations.NotNull;
 import org.redisson.api.RedissonClient;
-import top.cutexingluo.tools.basepackage.base.ExtInitializable;
-import top.cutexingluo.tools.designtools.juc.lock.extra.XTLockMeta;
+import top.cutexingluo.core.basepackage.struct.ExtInitializable;
+import top.cutexingluo.core.designtools.juc.lock.extra.XTLockMeta;
 import top.cutexingluo.tools.utils.spring.SpringUtils;
 
 /**
@@ -15,7 +15,7 @@ import top.cutexingluo.tools.utils.spring.SpringUtils;
  * @author XingTian
  * @version 1.0.0
  * @date 2024/7/16 9:38
- * @since  1.1.1
+ * @since 1.1.1
  */
 
 public class XTExtLockHandler extends XTLockHandler implements ExtInitializable<XTExtLockHandler> {
@@ -37,7 +37,7 @@ public class XTExtLockHandler extends XTLockHandler implements ExtInitializable<
         super(handlerMeta);
     }
 
-    public XTExtLockHandler(XTLockMeta lockMeta,boolean openRedissonClient ) {
+    public XTExtLockHandler(XTLockMeta lockMeta, boolean openRedissonClient) {
         super(lockMeta);
         this.useRedissonClient = openRedissonClient;
     }

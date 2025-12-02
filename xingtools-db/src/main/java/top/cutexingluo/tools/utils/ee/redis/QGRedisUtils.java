@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
  * QGRedisUtils 简化版本<br>
  *
  * <p>需要导入 spring-data-redis 相关的包 </p>
- *
+ * <p>
  * 青戈版本的工具类
  *
  * <p>

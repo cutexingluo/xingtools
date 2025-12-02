@@ -6,15 +6,15 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
+import top.cutexingluo.core.designtools.juc.lock.extra.XTLockMeta;
+import top.cutexingluo.core.designtools.juc.thread.XTThreadPool;
 import top.cutexingluo.tools.aop.thread.MainThread;
 import top.cutexingluo.tools.aop.thread.SonThread;
 import top.cutexingluo.tools.aop.thread.policy.ThreadAopFactory;
 import top.cutexingluo.tools.aop.transactional.TransactionHandler;
 import top.cutexingluo.tools.aop.transactional.TransactionMeta;
 import top.cutexingluo.tools.basepackage.basehandler.aop.BaseJoinPointTaskHandler;
-import top.cutexingluo.tools.designtools.juc.lock.extra.XTLockMeta;
 import top.cutexingluo.tools.designtools.juc.lock.handler.XTExtLockHandler;
-import top.cutexingluo.tools.designtools.juc.thread.XTThreadPool;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,7 +80,7 @@ public interface ThreadAopHandler extends BaseJoinPointTaskHandler {
     /**
      * 数据存储
      */
-    void setMap(@NotNull  ConcurrentHashMap<String, Object> map);
+    void setMap(@NotNull ConcurrentHashMap<String, Object> map);
 
     /**
      * 数据存储

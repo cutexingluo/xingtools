@@ -2,7 +2,7 @@ package top.cutexingluo.tools.utils.log.pkg;
 
 import lombok.extern.log4j.Log4j;
 import org.apache.log4j.Logger;
-import top.cutexingluo.tools.basepackage.baseimpl.XTRunnable;
+import top.cutexingluo.core.basepackage.baseimpl.XTRunnable;
 import top.cutexingluo.tools.utils.log.LogLevel;
 
 

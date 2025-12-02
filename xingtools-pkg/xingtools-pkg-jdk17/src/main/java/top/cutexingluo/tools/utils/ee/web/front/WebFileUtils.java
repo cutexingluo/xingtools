@@ -4,7 +4,7 @@ import cn.hutool.core.io.FileUtil;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import org.jetbrains.annotations.NotNull;
-import top.cutexingluo.tools.utils.se.file.XTPath;
+import top.cutexingluo.core.utils.se.file.XTPath;
 
 import java.io.File;
 import java.io.IOException;

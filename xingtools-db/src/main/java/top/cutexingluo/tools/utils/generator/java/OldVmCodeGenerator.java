@@ -6,15 +6,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
+import top.cutexingluo.core.utils.se.file.XTPath;
 import top.cutexingluo.tools.common.database.DBProp;
-import top.cutexingluo.tools.utils.se.file.XTPath;
 
 import java.util.Collections;
 
 /**
  * 代码生成器，<br>
  * 不推荐使用，建议自己使用 EasyCode 自行配置
- *
+ * <p>
  * mp CodeGenerator <br>
  * <p> 需要导入 com.baomidou:mybatis-plus-generator 包</p>
  *

@@ -6,7 +6,7 @@
 
     <groupId>top.cutexingluo.tools</groupId>
     <artifactId>xingtools-parent</artifactId>
-    <version>1.1.7</version>
+    <version>1.2.0</version>
     <name>xingtools</name>
     <description>xingtools 是一个Java工具 sdk 库，通过提供许多方法，降低相关API的学习成本，提高工作效率。
         please don't use it for project, please use xingtools-spring-boot-starter for your own project.
@@ -41,7 +41,9 @@
         <lombok.version>1.18.30</lombok.version>
         <jetbrains.annotations.version>1.7.0</jetbrains.annotations.version>
 
-        <hutool.version>5.8.26</hutool.version>
+        <xingcore.version>1.2.0</xingcore.version>
+
+        <hutool.version>5.8.40</hutool.version>
         <spring-boot.version>2.7.18</spring-boot.version>
         <spring-cloud.version>2021.0.5</spring-cloud.version>
         <spring-cloud-alibaba.version>2021.0.5.0</spring-cloud-alibaba.version>
@@ -64,6 +66,13 @@
     <!-- 依赖管理    -->
     <dependencyManagement>
         <dependencies>
+            <!--      xingcore 核心      -->
+            <dependency>
+                <groupId>top.cutexingluo.core</groupId>
+                <artifactId>xingcore-common-all</artifactId>
+                <version>${xingcore.version}</version>
+            </dependency>
+
             <!-- 注解 -->
             <dependency>
                 <groupId>org.realityforge.org.jetbrains.annotations</groupId>
