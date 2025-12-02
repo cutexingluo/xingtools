@@ -5,7 +5,6 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ImportSelector;
 import org.springframework.core.type.AnnotationMetadata;
-import top.cutexingluo.tools.utils.ee.feign.retry.FeignRetryAop;
 
 
 /**

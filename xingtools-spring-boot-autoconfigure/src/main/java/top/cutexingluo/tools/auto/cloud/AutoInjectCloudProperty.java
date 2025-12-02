@@ -5,9 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Primary;
 
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * 需要打开@EnableXingToolsCloudServer 注解
  *

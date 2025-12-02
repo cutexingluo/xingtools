@@ -7,7 +7,6 @@ import org.springframework.transaction.TransactionStatus;
 import top.cutexingluo.tools.exception.base.ExceptionDelegate;
 
 import java.util.Arrays;
-import java.util.function.Consumer;
 
 /**
  * 事务异常拦截，回滚

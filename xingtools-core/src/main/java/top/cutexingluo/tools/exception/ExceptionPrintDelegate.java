@@ -2,15 +2,11 @@ package top.cutexingluo.tools.exception;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.extern.slf4j.Slf4j;
 import top.cutexingluo.tools.exception.base.AbstractExceptionDelegate;
-import top.cutexingluo.tools.exception.base.ExceptionDelegate;
 import top.cutexingluo.tools.exception.base.ExceptionHandler;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.BiFunction;
-import java.util.function.Consumer;
 
 
 /**

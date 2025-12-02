@@ -1,7 +1,7 @@
 package top.cutexingluo.tools.aop.log.methodlog;
 
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.json.JSONUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
@@ -9,12 +9,9 @@ import org.aspectj.lang.annotation.Aspect;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.core.annotation.AnnotationUtils;
 import top.cutexingluo.core.basepackage.basehandler.aop.BaseAspectHandler;
-import top.cutexingluo.core.common.data.Entry;
-import top.cutexingluo.core.common.data.PairEntry;
 import top.cutexingluo.core.utils.se.character.XTStrUtil;
 import top.cutexingluo.tools.aop.log.methodlog.custom.MethodLogAdapter;
 import top.cutexingluo.tools.basepackage.basehandler.aop.BaseAspectAroundHandler;
-import top.cutexingluo.tools.exception.base.ExceptionDelegate;
 import top.cutexingluo.tools.utils.log.handler.LogHandler;
 
 import java.util.HashMap;
@@ -34,11 +31,22 @@ public class MethodLogAop implements BaseAspectAroundHandler<MethodLog>, BaseAsp
 
     protected MethodLogAdapter methodLogAdapter;
 
+    protected ObjectMapper objectMapper;
+
+
+
     public MethodLogAop() {
+        objectMapper = new ObjectMapper();
     }
 
     public MethodLogAop(MethodLogAdapter methodLogAdapter) {
         this.methodLogAdapter = methodLogAdapter;
+        objectMapper = new ObjectMapper();
+    }
+
+    public MethodLogAop(MethodLogAdapter methodLogAdapter, ObjectMapper objectMapper) {
+        this.methodLogAdapter = methodLogAdapter;
+        this.objectMapper = objectMapper;
     }
 
     public static final String[] printKeys = {
@@ -107,7 +115,7 @@ public class MethodLogAop implements BaseAspectAroundHandler<MethodLog>, BaseAsp
             log.send(getStr(2, signature.getDeclaringTypeName() + ". " + signature.getName()));
         }
         if (methodLog.showArgs()) {
-            log.send(getStr(3, JSONUtil.toJsonStr(currentJoinPoint.getArgs())));
+            log.send(getStr(3, objectMapper.writeValueAsString(currentJoinPoint.getArgs())));
         }
     }
 
@@ -124,7 +132,7 @@ public class MethodLogAop implements BaseAspectAroundHandler<MethodLog>, BaseAsp
             context.put("result", result);
         }
         if (methodLog.showReturn()) {
-            log.send(getStr(4, JSONUtil.toJsonStr(result)));
+            log.send(getStr(4, objectMapper.writeValueAsString(result)));
         }
         if (StrUtil.isNotBlank(methodLog.afterMsg())) {
             log.send(getStr(5, methodLog.afterMsg()));

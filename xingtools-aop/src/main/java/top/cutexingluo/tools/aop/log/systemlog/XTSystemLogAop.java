@@ -1,6 +1,7 @@
 package top.cutexingluo.tools.aop.log.systemlog;
 
-import cn.hutool.json.JSONUtil;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
@@ -26,7 +27,6 @@ import java.util.Map;
 @Aspect
 public class XTSystemLogAop implements BaseAspectHandler<Map<String,Object>>, BaseAspectAroundHandler<XTSystemLog> {
 
-
     public static final String[] printKeys = {
             "URL", // 请求url
             "BusinessName", // 打印描述信息
@@ -37,7 +37,15 @@ public class XTSystemLogAop implements BaseAspectHandler<Map<String,Object>>, Ba
             "Response", // 打印响应数据
     };
 
+    protected ObjectMapper objectMapper;
 
+    public XTSystemLogAop() {
+        objectMapper = new ObjectMapper();
+    }
+
+    public XTSystemLogAop(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
 
     @Override
     @Around("@annotation(xtSystemLog)")
@@ -86,7 +94,7 @@ public class XTSystemLogAop implements BaseAspectHandler<Map<String,Object>>, Ba
             log.send(padRight(printKeys[3]) + ":  " + signature.getDeclaringTypeName() +". "+ signature.getName());
             log.send(padRight(printKeys[4]) + ":  " + attributes.getRequest().getRemoteHost());
             if (currentSystemLog.showRequestArgs())
-                log.send(padRight(printKeys[5]) + ":  " + JSONUtil.toJsonStr(currentJoinPoint.getArgs()));
+                log.send(padRight(printKeys[5]) + ":  " + objectMapper.writeValueAsString(currentJoinPoint.getArgs()));
         }
     }
 
@@ -100,7 +108,7 @@ public class XTSystemLogAop implements BaseAspectHandler<Map<String,Object>>, Ba
         Object result = currentJoinPoint.getArgs()[0];
 
         if (currentSystemLog.showResponseArgs())
-            log.send(padRight(printKeys[6]) + ":  "+ JSONUtil.toJsonStr(result));
+            log.send(padRight(printKeys[6]) + ":  "+ objectMapper.writeValueAsString(result));
     }
 
 

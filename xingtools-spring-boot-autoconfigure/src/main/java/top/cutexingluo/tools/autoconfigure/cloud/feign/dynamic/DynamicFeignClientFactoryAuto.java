@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.stereotype.Component;
 import top.cutexingluo.tools.auto.cloud.XTSpringCloudAutoConfiguration;
 import top.cutexingluo.tools.cloud.feign.dynamic.DynamicClient;
 import top.cutexingluo.tools.cloud.feign.dynamic.DynamicFeignClientFactory;

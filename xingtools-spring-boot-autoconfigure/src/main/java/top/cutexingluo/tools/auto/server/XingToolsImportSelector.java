@@ -7,10 +7,6 @@ import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.context.annotation.ImportSelector;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.type.AnnotationMetadata;
-import top.cutexingluo.tools.autoconfigure.satoken.SaTokenConfiguration;
-import top.cutexingluo.tools.autoconfigure.server.aop.xtlock.XTLockAopAutoConfigure;
-import top.cutexingluo.tools.autoconfigure.server.spring.SpringCacheAutoConfiguration;
-import top.cutexingluo.tools.autoconfigure.server.spring.SpringUtilsAutoConfiguration;
 import top.cutexingluo.tools.start.log.LogInfoAuto;
 
 import java.util.function.Predicate;

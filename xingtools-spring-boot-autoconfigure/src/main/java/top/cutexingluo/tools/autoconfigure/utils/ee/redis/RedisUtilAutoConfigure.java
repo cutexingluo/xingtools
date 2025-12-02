@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
 import top.cutexingluo.tools.auto.server.XingToolsAutoConfiguration;
 import top.cutexingluo.tools.start.log.LogInfoAuto;
-import top.cutexingluo.tools.utils.ee.redis.*;
+import top.cutexingluo.tools.utils.ee.redis.RYRedisCache;
 
 /**
  * RedisUtil 工具

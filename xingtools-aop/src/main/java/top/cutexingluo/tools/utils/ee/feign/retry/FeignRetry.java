@@ -1,6 +1,5 @@
 package top.cutexingluo.tools.utils.ee.feign.retry;
 
-import top.cutexingluo.tools.utils.log.LogLevel;
 import top.cutexingluo.tools.utils.log.LogType;
 
 import java.lang.annotation.*;
