@@ -1,5 +1,7 @@
 package top.cutexingluo.tools.common.valid.num.shortstatus;
 
+import top.cutexingluo.core.common.valid.num.shortstatus.ShortRange;
+
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.*;

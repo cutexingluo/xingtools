@@ -5,7 +5,7 @@ import cn.hutool.log.LogFactory;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
-import top.cutexingluo.tools.basepackage.baseimpl.XTRunnable;
+import top.cutexingluo.core.basepackage.baseimpl.XTRunnable;
 import top.cutexingluo.tools.utils.log.pkg.ILog;
 import top.cutexingluo.tools.utils.log.pkg.ILogProvider;
 import top.cutexingluo.tools.utils.log.strategy.LogStrategy;

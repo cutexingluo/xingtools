@@ -10,9 +10,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
-import top.cutexingluo.tools.basepackage.base.ExtInitializable;
+import top.cutexingluo.core.basepackage.struct.ExtInitializable;
+import top.cutexingluo.core.designtools.builder.XTBuilder;
 import top.cutexingluo.tools.bridge.servlet.HttpServletRequestData;
-import top.cutexingluo.tools.designtools.builder.XTBuilder;
 import top.cutexingluo.tools.security.base.function.BaseAccessTokenAdditionalConverter;
 import top.cutexingluo.tools.security.base.function.BaseAuthenticationConsumer;
 import top.cutexingluo.tools.security.base.function.BasePreAuthenticatedFilter;
@@ -225,17 +225,20 @@ public class XTAuthenticationBuilder extends XTBuilder<Authentication> implement
     // -static-
 
     @Contract("_, _ -> new")
-    public static @NotNull XTAuthenticationBuilder builder(@NotNull HttpServletRequestData request, int mode) {
+    public static @NotNull
+    XTAuthenticationBuilder builder(@NotNull HttpServletRequestData request, int mode) {
         return new XTAuthenticationBuilder(request, mode);
     }
 
     @Contract("_ -> new")
-    public static @NotNull XTAuthenticationBuilder builder(@NotNull HttpServletRequestData request) {
+    public static @NotNull
+    XTAuthenticationBuilder builder(@NotNull HttpServletRequestData request) {
         return new XTAuthenticationBuilder(request);
     }
 
     @Contract("_ -> new")
-    public static @NotNull XTAuthenticationBuilder builder(@NotNull String token) {
+    public static @NotNull
+    XTAuthenticationBuilder builder(@NotNull String token) {
         return new XTAuthenticationBuilder(token);
     }
 

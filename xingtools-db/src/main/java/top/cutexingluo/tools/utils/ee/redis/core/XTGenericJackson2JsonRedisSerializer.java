@@ -14,7 +14,7 @@ import java.nio.charset.StandardCharsets;
  * @version 1.0.0
  * @date 2024/7/16 11:04
  */
-public class XTGenericJackson2JsonRedisSerializer  extends GenericJackson2JsonRedisSerializer {
+public class XTGenericJackson2JsonRedisSerializer extends GenericJackson2JsonRedisSerializer {
 
     @Override
     public byte[] serialize(Object object) throws SerializationException {

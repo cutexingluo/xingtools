@@ -1,7 +1,7 @@
 package top.cutexingluo.tools.designtools.convert;
 
 import org.jetbrains.annotations.NotNull;
-import top.cutexingluo.tools.common.data.Entry;
+import top.cutexingluo.core.common.data.Entry;
 
 import java.util.Map;
 

@@ -1,7 +1,7 @@
 package top.cutexingluo.tools.aop.log.xtlog;
 
 
-import top.cutexingluo.tools.designtools.convert.KeyManager;
+import top.cutexingluo.core.designtools.convert.KeyManager;
 
 /**
  * WebLog 基本字符串常量

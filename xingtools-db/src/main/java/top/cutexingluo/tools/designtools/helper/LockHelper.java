@@ -1,7 +1,7 @@
 package top.cutexingluo.tools.designtools.helper;
 
 import org.jetbrains.annotations.NotNull;
-import top.cutexingluo.tools.designtools.juc.lock.handler.LockHandler;
+import top.cutexingluo.core.designtools.juc.lock.handler.LockHandler;
 import top.cutexingluo.tools.designtools.juc.lock.handler.XTLockHandler;
 import top.cutexingluo.tools.designtools.juc.lock.handler.XTLockHandlerMeta;
 

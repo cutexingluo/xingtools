@@ -3,8 +3,8 @@ package top.cutexingluo.tools.utils.ee.web.request;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.util.LinkedMultiValueMap;
-import top.cutexingluo.tools.basepackage.function.TriFunction;
-import top.cutexingluo.tools.bridge.servlet.adapter.HttpServletRequestAdapter;
+import top.cutexingluo.core.basepackage.function.TriFunction;
+import top.cutexingluo.core.bridge.servlet.adapter.HttpServletRequestAdapter;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

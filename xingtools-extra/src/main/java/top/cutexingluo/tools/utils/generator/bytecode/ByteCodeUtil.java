@@ -4,7 +4,7 @@ package top.cutexingluo.tools.utils.generator.bytecode;
 import org.springframework.asm.ClassReader;
 import org.springframework.asm.ClassVisitor;
 import org.springframework.asm.ClassWriter;
-import top.cutexingluo.tools.utils.se.file.XTIOUtil;
+import top.cutexingluo.core.utils.se.file.XTIOUtil;
 
 import java.io.IOException;
 

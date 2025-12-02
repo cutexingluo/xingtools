@@ -1,6 +1,6 @@
 package top.cutexingluo.tools.utils.log;
 
-import top.cutexingluo.tools.common.base.XTIntCode;
+import top.cutexingluo.core.common.base.IntCode;
 
 /**
  * 日志类型
@@ -9,7 +9,7 @@ import top.cutexingluo.tools.common.base.XTIntCode;
  * @version 1.0.0
  * @date 2023/4/6 18:59
  */
-public enum LogType implements XTIntCode {
+public enum LogType implements IntCode {
     /**
      * System 类型, 输出到终端, 即 System.out.println
      */

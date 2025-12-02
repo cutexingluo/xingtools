@@ -2,7 +2,7 @@ package top.cutexingluo.tools.utils.ee.web.front;
 
 import cn.hutool.core.io.FileUtil;
 import org.jetbrains.annotations.NotNull;
-import top.cutexingluo.tools.utils.se.file.XTPath;
+import top.cutexingluo.core.utils.se.file.XTPath;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;

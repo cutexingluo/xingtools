@@ -3,10 +3,10 @@ package top.cutexingluo.tools.utils.se.file;
 import cn.hutool.core.util.ReflectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.web.multipart.MultipartFile;
-import top.cutexingluo.tools.designtools.method.XTObjUtil;
-import top.cutexingluo.tools.utils.se.file.pkg.XTFile;
+import top.cutexingluo.core.designtools.method.XTObjUtil;
+import top.cutexingluo.core.utils.se.file.pkg.XTFileSource;
+import top.cutexingluo.core.utils.se.file.pkg.XTHuFile;
 import top.cutexingluo.tools.utils.se.file.pkg.XTFileBundle;
-import top.cutexingluo.tools.utils.se.file.pkg.XTFileSource;
 
 import java.io.File;
 import java.io.IOException;
@@ -115,7 +115,7 @@ public class XTFileIO {
      * @param <TM>       数据库的DAO层Mapper类型
      */
     @Deprecated
-    public static <T, TM> void saveToDB(T DBFile, TM fileMapper, String[] fieldName, XTFile xtFile, String url) {
+    public static <T, TM> void saveToDB(T DBFile, TM fileMapper, String[] fieldName, XTHuFile xtFile, String url) {
         ReflectUtil.setFieldValue(DBFile, "url", url);
         ReflectUtil.setFieldValue(DBFile, fieldName[0], xtFile.getOriginalFilename());
         ReflectUtil.setFieldValue(DBFile, fieldName[1], xtFile.getType());
@@ -131,14 +131,14 @@ public class XTFileIO {
      * <p>当前方法已过时，因为涉及数据库操作，未来将被移除</p>
      */
     @Deprecated
-    public static <T, TM> void saveToDB(T DBFile, TM fileMapper, XTFile xtFile, String url) {
+    public static <T, TM> void saveToDB(T DBFile, TM fileMapper, XTHuFile xtFile, String url) {
         String[] fieldName = {"name", "type", "size", "md5"};
         saveToDB(DBFile, fileMapper, fieldName, xtFile, url);
     }
 
     /**
      * <p>当前方法已过时，因为涉及数据库操作，未来将被移除</p>
-     *
+     * <p>
      * 上传反射备用版
      * <p>
      * 参数为 上传文件，DB文件类型，DBMapper对象,url前缀，磁盘父路径
@@ -161,7 +161,7 @@ public class XTFileIO {
     public static <T, TM> String upload(MultipartFile file, Class<T> fileType, TM fileMapper, String urlPrefix, String fileUploadPath)
             throws IOException, InvocationTargetException, IllegalAccessException, NoSuchMethodException, InstantiationException {
         XTFileBundle bundle = new XTFileBundle(file);
-        XTFile xtFile = bundle.getXtFile();
+        XTHuFile xtFile = bundle.getXtFile();
         bundle.genMd5(file); // 生成md5
         xtFile.genUUID();
         xtFile.genFileUUID();

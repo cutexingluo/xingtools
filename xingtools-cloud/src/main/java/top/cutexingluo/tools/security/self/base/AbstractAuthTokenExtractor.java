@@ -3,9 +3,9 @@ package top.cutexingluo.tools.security.self.base;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
-import top.cutexingluo.tools.basepackage.function.Parser;
+import top.cutexingluo.core.bridge.servlet.adapter.HttpServletRequestAdapter;
+import top.cutexingluo.core.basepackage.function.Parser;
 import top.cutexingluo.tools.bridge.servlet.HttpServletRequestData;
-import top.cutexingluo.tools.bridge.servlet.adapter.HttpServletRequestAdapter;
 
 import java.util.Enumeration;
 

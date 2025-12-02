@@ -2,6 +2,7 @@ package top.cutexingluo.tools.common.valid.num.shortstatus;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
+import top.cutexingluo.core.common.valid.num.shortstatus.ShortRange;
 
 import java.lang.annotation.*;
 

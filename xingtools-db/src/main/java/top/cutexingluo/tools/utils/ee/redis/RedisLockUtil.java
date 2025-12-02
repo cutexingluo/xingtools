@@ -4,7 +4,7 @@ import cn.hutool.core.lang.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
-import top.cutexingluo.tools.basepackage.baseimpl.XTRunCallUtil;
+import top.cutexingluo.core.basepackage.baseimpl.XTRunCallUtil;
 
 import java.util.Arrays;
 import java.util.concurrent.Callable;

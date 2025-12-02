@@ -6,9 +6,9 @@ import lombok.experimental.Accessors;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.redisson.api.RedissonClient;
-import top.cutexingluo.tools.basepackage.base.ExtInitializable;
-import top.cutexingluo.tools.basepackage.basehandler.CallableHandler;
-import top.cutexingluo.tools.designtools.juc.lock.extra.XTLockMeta;
+import top.cutexingluo.core.basepackage.basehandler.CallableHandler;
+import top.cutexingluo.core.basepackage.struct.ExtInitializable;
+import top.cutexingluo.core.designtools.juc.lock.extra.XTLockMeta;
 import top.cutexingluo.tools.designtools.juc.lock.handler.XTExtLockHandler;
 import top.cutexingluo.tools.designtools.juc.lock.handler.XTLockHandler;
 import top.cutexingluo.tools.utils.spring.SpringUtils;
@@ -55,7 +55,8 @@ public class XTAopLockHandler implements CallableHandler, ExtInitializable<XTAop
      * 获取 XTLockMeta 对象
      */
     @Contract("_ -> new")
-    public static @NotNull XTLockMeta parseMeta(@NotNull XTAopLock lockAnno) {
+    public static @NotNull
+    XTLockMeta parseMeta(@NotNull XTAopLock lockAnno) {
         return new XTLockMeta(lockAnno.name(), lockAnno.lockType(), lockAnno.isFair(), lockAnno.tryTimeout());
     }
 

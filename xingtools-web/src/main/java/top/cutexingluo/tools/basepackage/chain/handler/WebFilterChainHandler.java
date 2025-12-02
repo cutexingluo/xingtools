@@ -1,7 +1,7 @@
 package top.cutexingluo.tools.basepackage.chain.handler;
 
 
-import top.cutexingluo.tools.basepackage.chain.base.FilterChainProcessor;
+import top.cutexingluo.core.basepackage.chain.base.FilterChainProcessor;
 import top.cutexingluo.tools.bridge.servlet.HttpServletBundle;
 
 /**

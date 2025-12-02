@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2RefreshToken;
-import top.cutexingluo.tools.common.MSResult;
+import top.cutexingluo.core.common.result.MSResult;
 
 import java.util.Date;
 import java.util.Map;

@@ -2,7 +2,7 @@ package top.cutexingluo.tools.utils.log.handler;
 
 import lombok.Data;
 import org.jetbrains.annotations.NotNull;
-import top.cutexingluo.tools.basepackage.baseimpl.XTRunnable;
+import top.cutexingluo.core.basepackage.baseimpl.XTRunnable;
 import top.cutexingluo.tools.utils.log.LogType;
 import top.cutexingluo.tools.utils.log.pkg.LogSlf4j;
 import top.cutexingluo.tools.utils.log.utils.XTLogUtil;

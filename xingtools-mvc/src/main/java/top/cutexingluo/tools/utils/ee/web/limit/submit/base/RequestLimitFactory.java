@@ -2,10 +2,10 @@ package top.cutexingluo.tools.utils.ee.web.limit.submit.base;
 
 import lombok.Data;
 import org.jetbrains.annotations.NotNull;
+import top.cutexingluo.core.utils.se.obj.ChooseUtil;
 import top.cutexingluo.tools.utils.ee.web.limit.submit.pkg.KeyStrategy;
 import top.cutexingluo.tools.utils.ee.web.limit.submit.strategy.LimitStrategy;
 import top.cutexingluo.tools.utils.ee.web.limit.submit.strategy.impl.RedisLimitStrategy;
-import top.cutexingluo.tools.utils.se.obj.ChooseUtil;
 
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;

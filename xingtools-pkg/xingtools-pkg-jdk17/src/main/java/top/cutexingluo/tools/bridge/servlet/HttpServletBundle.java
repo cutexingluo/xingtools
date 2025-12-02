@@ -6,7 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import top.cutexingluo.tools.common.data.Tuple;
+import top.cutexingluo.core.common.data.Tuple;
+
 
 /**
  * HttpServletRequest 和 HttpServletResponse 封装类

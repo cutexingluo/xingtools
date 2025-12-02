@@ -3,7 +3,7 @@ package top.cutexingluo.tools.utils.ee.redisson;
 
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
-import top.cutexingluo.tools.basepackage.baseimpl.XTRunCallUtil;
+import top.cutexingluo.core.basepackage.baseimpl.XTRunCallUtil;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;

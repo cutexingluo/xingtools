@@ -8,8 +8,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import top.cutexingluo.core.designtools.juc.thread.XTThreadPool;
 import top.cutexingluo.tools.auto.server.XingToolsAutoConfiguration;
-import top.cutexingluo.tools.designtools.juc.thread.XTThreadPool;
 import top.cutexingluo.tools.start.log.LogInfoAuto;
 import top.cutexingluo.tools.utils.ee.redis.RedisUtil;
 import top.cutexingluo.tools.utils.ee.redis.XTRedisData;

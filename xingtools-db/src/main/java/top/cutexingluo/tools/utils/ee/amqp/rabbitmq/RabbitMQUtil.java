@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.amqp.core.CustomExchange;
 import org.springframework.boot.autoconfigure.amqp.RabbitProperties;
-import top.cutexingluo.tools.designtools.builder.XTBuilder;
+import top.cutexingluo.core.designtools.builder.XTBuilder;
 
 import java.io.IOException;
 import java.util.HashMap;

@@ -9,7 +9,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationConsent;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationConsentService;
 import org.springframework.util.Assert;
-import top.cutexingluo.tools.basepackage.base.ExtInitializable;
+import top.cutexingluo.core.basepackage.struct.ExtInitializable;
 import top.cutexingluo.tools.utils.ee.redis.RYRedisCache;
 
 import java.util.HashMap;
@@ -22,7 +22,7 @@ import java.util.function.BiFunction;
 /**
  * OAuth2AuthorizationConsent Redis 存储服务
  * <p>OAuth2AuthorizationConsentService 实现</p>
- *
+ * <p>
  * redis oauth2 authorization service (redis oauth2 授权同意服务)
  *
  * @author XingTian

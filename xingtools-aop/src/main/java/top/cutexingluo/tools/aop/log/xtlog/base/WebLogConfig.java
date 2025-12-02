@@ -4,6 +4,7 @@ package top.cutexingluo.tools.aop.log.xtlog.base;
 import cn.hutool.core.util.StrUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import top.cutexingluo.core.utils.se.obj.ChooseUtil;
 import top.cutexingluo.tools.aop.log.systemlog.XTSystemLog;
 import top.cutexingluo.tools.aop.log.xtlog.pkg.WebLogKeyMap;
 import top.cutexingluo.tools.aop.log.xtlog.strategy.WebLogStrategy;
@@ -14,7 +15,7 @@ import top.cutexingluo.tools.utils.log.XTLogConfig;
 import top.cutexingluo.tools.utils.log.pkg.ILogProvider;
 import top.cutexingluo.tools.utils.log.pkg.LogSlf4j;
 import top.cutexingluo.tools.utils.log.utils.XTLogUtil;
-import top.cutexingluo.tools.utils.se.obj.ChooseUtil;
+
 
 /**
  * WebLogConfig 配置

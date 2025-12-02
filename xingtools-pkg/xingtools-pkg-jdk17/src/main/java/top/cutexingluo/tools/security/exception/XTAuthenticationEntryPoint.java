@@ -5,9 +5,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
-import top.cutexingluo.tools.common.Constants;
-import top.cutexingluo.tools.common.Result;
-import top.cutexingluo.tools.common.base.IResult;
+import top.cutexingluo.core.common.base.IResult;
+import top.cutexingluo.core.common.result.Constants;
+import top.cutexingluo.core.common.result.Result;
 import top.cutexingluo.tools.utils.ee.web.front.WebUtils;
 
 import java.io.IOException;

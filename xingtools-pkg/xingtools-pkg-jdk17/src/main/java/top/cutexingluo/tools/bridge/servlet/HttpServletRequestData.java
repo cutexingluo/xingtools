@@ -5,7 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
-import top.cutexingluo.tools.common.base.IData;
+import top.cutexingluo.core.common.base.IData;
+
 
 /**
  * HttpServletRequest 封装类

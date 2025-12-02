@@ -5,9 +5,9 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.Data;
 import org.jetbrains.annotations.NotNull;
+import top.cutexingluo.core.utils.se.character.UUIDUtils;
 import top.cutexingluo.tools.security.self.base.AuthAccessToken;
 import top.cutexingluo.tools.security.self.base.AuthTokenGenerator;
-import top.cutexingluo.tools.utils.se.character.UUIDUtils;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;

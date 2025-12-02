@@ -17,7 +17,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
  *      2. 使用 @EnableMongoRepositories 注解
  *      3. 注册 mongoTemplate
  *  </pre>
- *  <p>需要导入 spring-boot-starter-data-mongodb 包</p>
+ * <p>需要导入 spring-boot-starter-data-mongodb 包</p>
  *
  * @author XingTian
  * @version 1.0.0

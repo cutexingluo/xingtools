@@ -1,5 +1,7 @@
 package top.cutexingluo.tools.common.valid.num.doublestatus;
 
+import top.cutexingluo.core.common.valid.num.doublestatus.DoubleRange;
+
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.*;
