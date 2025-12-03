@@ -1,16 +1,13 @@
 package top.cutexingluo.tools.utils.ee.web.front;
 
-import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletResponse;
 import org.jetbrains.annotations.NotNull;
 import top.cutexingluo.core.common.base.IResult;
 import top.cutexingluo.core.designtools.protocol.serializer.impl.json.JacksonSerializer;
 import top.cutexingluo.tools.bridge.servlet.HttpServletResponseData;
+import top.cutexingluo.tools.utils.ee.web.data.WebResponse;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 
 /**
  * web 返回工具类
@@ -54,7 +51,8 @@ public class WebUtils {
      * @param rspStatusCode 返回码
      */
     public static <C, T> void response(HttpServletResponse response, String result, int rspStatusCode) throws IOException {
-        setJsonHeader(response, rspStatusCode);
+        WebResponse webResponse = new WebResponse(response);
+        webResponse.utf8().contentTypeJson().status(rspStatusCode);
         response.getWriter().print(result);
     }
 
@@ -68,23 +66,5 @@ public class WebUtils {
         response(response, result, HttpServletResponse.SC_OK);
     }
 
-    /**
-     * 设置json头
-     */
-    public static void setJsonHeader(HttpServletResponse response, int rspStatusCode) {
-        response.setStatus(rspStatusCode);
-        response.setContentType("application/json");
-        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
-    }
 
-
-    /**
-     * 设置下载文件头
-     */
-    public static void setDownLoadHeader(String filename, ServletContext context, HttpServletResponse response) throws UnsupportedEncodingException {
-        String mimeType = context.getMimeType(filename);//获取文件的mime类型
-        response.setHeader("content-type", mimeType);
-        String fname = URLEncoder.encode(filename, StandardCharsets.UTF_8);
-        response.setHeader("Content-disposition", "attachment; filename=" + fname);
-    }
 }

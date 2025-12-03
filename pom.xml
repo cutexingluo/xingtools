@@ -43,6 +43,12 @@
         <serverId>ossrh</serverId><!-- 服务id 也就是setting.xml中的servers.server.id -->
         <releaseId>release</releaseId>
 
+
+        <maven.compiler.source>${compile.version}</maven.compiler.source>
+        <maven.compiler.target>${compile.version}</maven.compiler.target>
+        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+
+
         <!--        versions -->
         <compile.version>8</compile.version>
         <lombok.version>1.18.30</lombok.version>
@@ -334,7 +340,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>3.2.8</version>
+                        <version>3.2.7</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
