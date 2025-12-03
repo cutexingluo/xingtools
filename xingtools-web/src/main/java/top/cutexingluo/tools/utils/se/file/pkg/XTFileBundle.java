@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import top.cutexingluo.core.utils.se.file.pkg.XTHuFile;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * XTFile 捆绑包
@@ -52,15 +53,19 @@ public class XTFileBundle {
         xtFile.setType(FileUtil.extName(xtFile.getOriginalFilename()));
         xtFile.setSize(file.getSize());//获取大小
         //获取md5码
-        if (genMd5) genMd5(file);
+        if (genMd5){
+            try (InputStream is = file.getInputStream()) {
+                genMd5(is);
+            }
+        }
         if (genUUID) {
             xtFile.genUUID();
             xtFile.genFileUUID();
         }
     }
 
-    public String genMd5(MultipartFile file) throws IOException {
-        if (StrUtil.isBlank(xtFile.getMd5())) xtFile.setMd5(SecureUtil.md5(file.getInputStream()));
+    public String genMd5(InputStream inputStream) {
+        if (StrUtil.isBlank(xtFile.getMd5())) xtFile.setMd5(SecureUtil.md5(inputStream));
         return xtFile.getMd5();
     }
 

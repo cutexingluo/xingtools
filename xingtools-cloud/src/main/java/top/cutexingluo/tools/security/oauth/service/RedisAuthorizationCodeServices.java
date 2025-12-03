@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.code.RandomValueAuthorizationCodeServices;
-import top.cutexingluo.tools.utils.ee.redis.RedisRepository;
+import top.cutexingluo.tools.utils.ee.redis.RYRedisCache;
 
 import java.util.concurrent.TimeUnit;
 
@@ -27,11 +27,11 @@ public class RedisAuthorizationCodeServices extends RandomValueAuthorizationCode
      */
     private String authCodePrefix = "common:auth:code:";
 
-    private final RedisRepository redisRepository;
+    private final RYRedisCache redisCache;
     private final RedisSerializer<Object> valueSerializer;
 
-    public RedisAuthorizationCodeServices(RedisRepository redisRepository) {
-        this.redisRepository = redisRepository;
+    public RedisAuthorizationCodeServices(RYRedisCache redisCache) {
+        this.redisCache = redisCache;
         this.valueSerializer = RedisSerializer.java();
     }
 
@@ -50,14 +50,14 @@ public class RedisAuthorizationCodeServices extends RandomValueAuthorizationCode
      */
     @Override
     protected void store(String code, OAuth2Authentication authentication) {
-        redisRepository.setExpire(redisKey(code), authentication, 10, TimeUnit.MINUTES, valueSerializer);
+        redisCache.setExpire(redisKey(code), authentication, 10, TimeUnit.MINUTES, valueSerializer);
     }
 
     @Override
     protected OAuth2Authentication remove(final String code) {
         String codeKey = redisKey(code);
-        OAuth2Authentication token = (OAuth2Authentication) redisRepository.get(codeKey, valueSerializer);
-        redisRepository.del(codeKey);
+        OAuth2Authentication token = (OAuth2Authentication) redisCache.get(codeKey, valueSerializer);
+        redisCache.deleteObject(codeKey);
         return token;
     }
 

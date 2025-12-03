@@ -1,11 +1,11 @@
 package top.cutexingluo.tools.aop.log.xtlog.aop;
 
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.json.JSONUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.jetbrains.annotations.NotNull;
+import top.cutexingluo.core.designtools.protocol.serializer.impl.json.JacksonSerializer;
 import top.cutexingluo.core.utils.se.string.XTPickUtil;
 import top.cutexingluo.tools.aop.log.xtlog.LogKey;
 import top.cutexingluo.tools.aop.log.xtlog.base.WebLog;
@@ -17,6 +17,7 @@ import top.cutexingluo.tools.basepackage.bundle.AspectBundle;
 import top.cutexingluo.tools.designtools.method.ClassUtil;
 import top.cutexingluo.tools.utils.ee.web.holder.HttpContextUtil;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -96,15 +97,16 @@ public class WebLogAspect implements BaseAspectAroundHandler<WebLog> {
     /**
      * 组装返回值
      */
-    protected void sendRet(@NotNull WebLog webLog, @NotNull String ret, WebLogHandler handler, WebLogConfig config, @NotNull AspectBundle bundle) {
+    protected void sendRet(@NotNull WebLog webLog, @NotNull String ret, WebLogHandler handler, WebLogConfig config, @NotNull AspectBundle bundle) throws IOException {
         if (StrUtil.isBlank(ret)) return;
+        JacksonSerializer jacksonSerializer = new JacksonSerializer();
         if (webLog.before()) {
-            handler.getMsgMap().put(LogKey.RET_KEY, 1, JSONUtil.toJsonStr(bundle.getResult()));
+            handler.getMsgMap().put(LogKey.RET_KEY, 1, jacksonSerializer.stringify(bundle.getResult()));
             config.setMsg(ret);  // 重置消息
             config.setSpEL(null); // 清空 SpEL
             handler.send(bundle); // 继续调用策略
         } else {
-            String msg = XTPickUtil.putAllValueFromBraces(ret, (s) -> LogKey.RET_KEY.equals(s.trim()), JSONUtil.toJsonStr(bundle.getResult()));
+            String msg = XTPickUtil.putAllValueFromBraces(ret, (s) -> LogKey.RET_KEY.equals(s.trim()), jacksonSerializer.stringify(bundle.getResult()));
             handler.getMsgMap().put(LogKey.RET_KEY, 1, msg);
         }
     }

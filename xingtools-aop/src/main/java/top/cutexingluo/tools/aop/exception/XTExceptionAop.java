@@ -1,12 +1,16 @@
 package top.cutexingluo.tools.aop.exception;
 
+import lombok.Data;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.core.annotation.AnnotationUtils;
+import top.cutexingluo.tools.exception.ExceptionPrintDelegate;
+import top.cutexingluo.tools.exception.base.ExceptionDelegate;
+import top.cutexingluo.tools.utils.log.handler.LogHandler;
 
-import java.util.function.Consumer;
+import java.util.Arrays;
 
 /**
  * 历史遗留aop
@@ -15,22 +19,22 @@ import java.util.function.Consumer;
  * @version 1.0.0
  * @date 2023/2/2 16:12
  */
+@Data
 @Aspect
-//@Component
 public class XTExceptionAop {
 
-//    @XTException(name = "内部错误", desc = "run方法内部错误")
-//    public static void run(Runnable runnable) { //run带注释的接口
-//        runnable.run();
-//    }
-//
-//    @XTException(name = "内部错误", desc = "run方法内部错误", wrong = true)
-//    public static void runTick(Runnable runnable) { //run带注释的接口输出系统错误
-//        runnable.run();
-//    }
+    /**
+     * 异常处理，不提供则默认使用log 打印异常
+     */
+    protected ExceptionDelegate<Throwable> exceptionDelegate;
 
-    public static boolean printTrace = true;
-    public static Consumer<Throwable> exceptionHandler = null;
+
+    public XTExceptionAop() {
+    }
+
+    public XTExceptionAop(ExceptionDelegate<Throwable> exceptionDelegate) {
+        this.exceptionDelegate = exceptionDelegate;
+    }
 
     /**
      * 这里定义了一个总的匹配规则，以后拦截的时候直接拦截log()方法即可，无须去重复写execution表达式
@@ -46,13 +50,20 @@ public class XTExceptionAop {
             result = joinPoint.proceed();
         } catch (Throwable e) {
             exception = AnnotationUtils.getAnnotation(exception, XTException.class);
-            if (exception == null || exception.wrong()) {
-                if (exceptionHandler != null) exceptionHandler.accept(e);
-                else if (printTrace) e.printStackTrace();
-            }
-            if (exception != null) {
-                if (!exception.name().isEmpty()) System.out.println("发现异常: " + exception.name());
-                if (!exception.desc().isEmpty()) System.out.println("异常描述: " + exception.desc());
+            if(exception !=null){
+                LogHandler log = new LogHandler(exception.logType().intCode());
+                if(exception.wrong()){
+                    if (exceptionDelegate != null) exceptionDelegate.handle(e, Arrays.asList(joinPoint, exception));
+                    else{
+                        new ExceptionPrintDelegate<>((throwable,list)->{
+                            log.send( throwable.getMessage());
+                            return null;
+                        }).handle(e, Arrays.asList(joinPoint, exception));
+                    }
+                }else{
+                    if (!exception.name().isEmpty()) log.send("发现异常: " + exception.name());
+                    if (!exception.desc().isEmpty()) log.send("异常描述: " + exception.desc());
+                }
             }
         }
         return result;

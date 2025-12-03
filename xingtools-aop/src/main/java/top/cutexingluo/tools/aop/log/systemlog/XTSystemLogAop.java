@@ -1,7 +1,7 @@
 package top.cutexingluo.tools.aop.log.systemlog;
 
-import cn.hutool.json.JSONUtil;
-import lombok.extern.slf4j.Slf4j;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
@@ -11,7 +11,12 @@ import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import top.cutexingluo.core.basepackage.basehandler.BaseAroundHandler;
+import top.cutexingluo.core.basepackage.basehandler.aop.BaseAspectHandler;
+import top.cutexingluo.tools.basepackage.basehandler.aop.BaseAspectAroundHandler;
+import top.cutexingluo.tools.utils.log.handler.LogHandler;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -20,9 +25,7 @@ import top.cutexingluo.core.basepackage.basehandler.BaseAroundHandler;
  * @date 2023/6/27 9:08
  */
 @Aspect
-@Slf4j
-public class XTSystemLogAop implements BaseAroundHandler {
-
+public class XTSystemLogAop implements BaseAspectHandler<Map<String,Object>>, BaseAspectAroundHandler<XTSystemLog> {
 
     public static final String[] printKeys = {
             "URL", // 请求url
@@ -34,67 +37,82 @@ public class XTSystemLogAop implements BaseAroundHandler {
             "Response", // 打印响应数据
     };
 
-    public static int length = maxLength();
+    protected ObjectMapper objectMapper;
 
+    public XTSystemLogAop() {
+        objectMapper = new ObjectMapper();
+    }
 
-    protected XTSystemLog currentSystemLog = null;
-    protected ProceedingJoinPoint currentJoinPoint = null;
-    protected Signature signature = null;
-    protected Object result = null;
+    public XTSystemLogAop(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
 
+    @Override
     @Around("@annotation(xtSystemLog)")
     public Object around(@NotNull ProceedingJoinPoint joinPoint, XTSystemLog xtSystemLog) throws Throwable {
         xtSystemLog = AnnotationUtils.getAnnotation(xtSystemLog, XTSystemLog.class);
-        currentSystemLog = xtSystemLog;
-        currentJoinPoint = joinPoint;
-        signature = joinPoint.getSignature();
-        result = null;
-//        System.out.println(joinPoint.getSignature().getName());
-        log.info("========== Start ==========");
-        try {
-            if (xtSystemLog != null) handleBefore();
+
+        Object result = null;
+        if(xtSystemLog != null){
+            Map<String, Object> context = new HashMap<>();
+            context.put("currentJoinPoint", joinPoint);
+            context.put("xtSystemLog", xtSystemLog);
+            Signature signature = joinPoint.getSignature();
+            context.put("signature", signature);
+            LogHandler log = new LogHandler(xtSystemLog.type().intCode());
+            context.put("log", log);
+            if (xtSystemLog.enableStartEndLine()) log.send("========== Start ==========");
+            try {
+                before(context);
+                result = joinPoint.proceed();
+                after(context);
+            } finally {
+                if (xtSystemLog.enableStartEndLine()) log.send("========== End ==========");
+            }
+        }else {
             result = joinPoint.proceed();
-            if (xtSystemLog != null) handleAfter();
-        } finally {
-            log.info("========== End ==========");
         }
+
         return result;
     }
 
+
     @Override
-    public Object handleBefore() {
+    public void before(Map<String, Object> context) throws Exception {
+        // 从 context 获取当前请求的信息
+        ProceedingJoinPoint currentJoinPoint = (ProceedingJoinPoint) context.get("currentJoinPoint");
+        Signature signature = (Signature) context.get("signature");
+        XTSystemLog currentSystemLog = (XTSystemLog) context.get("xtSystemLog");
+        LogHandler log = (LogHandler) context.get("log");
+
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
         if (requestAttributes instanceof ServletRequestAttributes) {
             ServletRequestAttributes attributes = (ServletRequestAttributes) requestAttributes;
-            log.info(padRight(printKeys[0], length + 2) + ":  {}", attributes.getRequest().getRequestURL());
-            log.info(padRight(printKeys[1], length + 2) + ":  {}", currentSystemLog.businessName());
-            log.info(padRight(printKeys[2], length + 2) + ":  {}", attributes.getRequest().getMethod());
-            log.info(padRight(printKeys[3], length + 2) + ":  {}. {}", signature.getDeclaringTypeName(), signature.getName());
-            log.info(padRight(printKeys[4], length + 2) + ":  {}", attributes.getRequest().getRemoteHost());
+            log.send(padRight(printKeys[0]) + ":  " + attributes.getRequest().getRequestURL());
+            log.send(padRight(printKeys[1]) + ":  " +currentSystemLog.businessName());
+            log.send(padRight(printKeys[2]) + ":  "+ attributes.getRequest().getMethod());
+            log.send(padRight(printKeys[3]) + ":  " + signature.getDeclaringTypeName() +". "+ signature.getName());
+            log.send(padRight(printKeys[4]) + ":  " + attributes.getRequest().getRemoteHost());
             if (currentSystemLog.showRequestArgs())
-                log.info(padRight(printKeys[5], length + 2) + ":  {}", JSONUtil.toJsonStr(currentJoinPoint.getArgs()));
+                log.send(padRight(printKeys[5]) + ":  " + objectMapper.writeValueAsString(currentJoinPoint.getArgs()));
         }
-        return null;
     }
-
 
     @Override
-    public Object handleAfter() {
+    public void after(Map<String, Object> context) throws Exception {
+        // 从 context 获取当前请求的信息
+        ProceedingJoinPoint currentJoinPoint = (ProceedingJoinPoint) context.get("currentJoinPoint");
+        XTSystemLog currentSystemLog = (XTSystemLog) context.get("xtSystemLog");
+        LogHandler log = (LogHandler) context.get("log");
+
+        Object result = currentJoinPoint.getArgs()[0];
+
         if (currentSystemLog.showResponseArgs())
-            log.info(padRight(printKeys[6], length + 2) + ":  {}", JSONUtil.toJsonStr(result));
-        return null;
+            log.send(padRight(printKeys[6]) + ":  "+ objectMapper.writeValueAsString(result));
     }
 
 
-    protected static String padRight(String inputString, int length) {
-        return String.format("%-" + length + "s", inputString);
-    }
-
-    protected static int maxLength() {
-        int maxLength = 0;
-        for (String key : printKeys) {
-            maxLength = Math.max(maxLength, key.length());
-        }
-        return maxLength;
+    protected static String padRight(String inputString) {
+        return String.format("%-" + 14 + "s", inputString);
     }
 }

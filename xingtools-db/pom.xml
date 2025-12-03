@@ -7,19 +7,21 @@
     <parent>
         <artifactId>xingtools-parent</artifactId>
         <groupId>top.cutexingluo.tools</groupId>
-        <version>1.2.0</version>
+        <version>${revision}</version>
     </parent>
 
     <artifactId>xingtools-db</artifactId>
     <name>${project.artifactId}</name>
+    <version>${revision}</version>
     <description>xingtools 依赖core，数据库操作，包含mybatis-plus等操作</description>
 
 
     <properties>
         <!-- versions -->
 
-        <lock4j.version>2.2.5</lock4j.version>
-        <fastjson.version>1.2.83</fastjson.version>
+        <fastjson.version>2.0.52</fastjson.version>
+        <lock4k.version>2.2.7</lock4k.version>
+
         <!--        <amqp-client.version>5.14.3</amqp-client.version>-->
     </properties>
 
@@ -28,12 +30,12 @@
         <dependency>
             <groupId>top.cutexingluo.tools</groupId>
             <artifactId>xingtools-core</artifactId>
-            <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-db</artifactId>
+            <scope>provided</scope>
         </dependency>
 
 
@@ -43,35 +45,29 @@
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-core</artifactId>
-            <version>${mybatis-plus.version}</version>
             <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-extension</artifactId>
-            <version>${mybatis-plus.version}</version>
             <optional>true</optional>
         </dependency>
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-generator</artifactId>
-            <version>${mybatis-plus.version}</version>
-            <optional>true</optional>
-        </dependency>
-        <!-- 若使用redisson作为分布式锁底层，则需要引入 -->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>lock4j-core</artifactId>
-            <!--            <version>${lock4j.version}</version>-->
+            <version>${lock4k.version}</version>
             <optional>true</optional>
         </dependency>
 
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+
         <!--        redis  -->
-        <!--        <dependency>-->
-        <!--            <groupId>org.springframework.boot</groupId>-->
-        <!--            <artifactId>spring-boot-starter-data-redis</artifactId>-->
-        <!--            <optional>true</optional>-->
-        <!--        </dependency>-->
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-redis</artifactId>
@@ -79,28 +75,11 @@
         </dependency>
 
         <!--        redisson -->
-        <!--        <dependency>-->
-        <!--            <groupId>org.redisson</groupId>-->
-        <!--            <artifactId>redisson-spring-boot-starter</artifactId>-->
-        <!--            <version>${redisson.version}</version>-->
-        <!--        </dependency>-->
         <dependency>
             <groupId>org.redisson</groupId>
             <artifactId>redisson</artifactId>
             <optional>true</optional>
         </dependency>
-
-        <!--        mongodb -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-mongodb</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>org.springframework.data</groupId>-->
-        <!--            <artifactId>spring-data-mongodb</artifactId>-->
-        <!--            <optional>true</optional>-->
-        <!--        </dependency>-->
 
 
         <!--        rabbit-mq -->
@@ -109,6 +88,15 @@
             <artifactId>spring-boot-starter-amqp</artifactId>
             <optional>true</optional>
         </dependency>
+
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
+            <optional>true</optional>
+        </dependency>
+
         <!--        <dependency>-->
         <!--            <groupId>org.springframework.amqp</groupId>-->
         <!--            <artifactId>spring-rabbit</artifactId>-->
@@ -122,13 +110,6 @@
         <!--            <optional>true</optional>-->
         <!--        </dependency>-->
 
-        <!--        fastjson -->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>${fastjson.version}</version>
-            <optional>true</optional>
-        </dependency>
 
     </dependencies>
 

@@ -1,4 +1,4 @@
-package top.cutexingluo.tools.utils.ee.web.upload;
+package top.cutexingluo.tools.utils.ee.web.front;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.Consts;
@@ -12,12 +12,12 @@ import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * HttpClient upload工具类
@@ -25,14 +25,13 @@ import java.util.Map;
  *
  * @author ican
  */
-@ConditionalOnClass(HttpMultipartMode.class)
 @Slf4j
-public class HttpClientUtils {
+public class HttpClientUtil {
 
     /**
      * 默认超时时间5秒
      */
-    private static final int DEFAULT_TIMEOUT = 5 * 1000;
+    public static int DEFAULT_TIMEOUT = 5 * 1000;
 
     /**
      * HttpClient上传文件
@@ -43,7 +42,7 @@ public class HttpClientUtils {
      * @param file    文件
      * @return 响应结果
      */
-    public static String uploadFileByHttpClient(String url, String csrf, Map<String, String> headers, MultipartFile file) {
+    public static String uploadFileByHttpClient(String url, String csrf, Map<String, String> headers, MultipartFile file, Consumer<Exception> exceptionConsumer) {
         String resultString = "";
         CloseableHttpClient httpClient = HttpClients.createDefault();
         CloseableHttpResponse response = null;
@@ -73,7 +72,8 @@ public class HttpClientUtils {
                 resultString = EntityUtils.toString(response.getEntity(), Consts.UTF_8);
             }
         } catch (Exception e) {
-            log.error("上传文件失败：", e);
+//            log.error("上传文件失败：", e);
+            exceptionConsumer.accept(e);
         } finally {
             try {
                 if (httpClient != null) {
@@ -83,7 +83,8 @@ public class HttpClientUtils {
                     response.close();
                 }
             } catch (IOException e) {
-                log.error("关闭异常" + e);
+//                log.error("关闭异常" + e);
+                exceptionConsumer.accept(e);
             }
         }
         return resultString;

@@ -8,12 +8,13 @@
     <parent>
         <artifactId>xingtools-parent</artifactId>
         <groupId>top.cutexingluo.tools</groupId>
-        <version>1.2.0</version>
+        <version>${revision}</version>
     </parent>
 
     <artifactId>xingtools-cloud</artifactId>
     <name>${project.artifactId}</name>
-    <description>xingtools 依赖mvc，可以基于SpringCloud，包括各种 cloud，security，oauth 的工具</description>
+    <version>${revision}</version>
+    <description>xingtools 依赖db和pkg包，可以基于SpringCloud，包括各种 cloud，security，oauth 的工具</description>
 
     <properties>
         <!-- versions -->
@@ -26,8 +27,19 @@
     <dependencies>
         <dependency>
             <groupId>top.cutexingluo.tools</groupId>
-            <artifactId>xingtools-mvc</artifactId>
-            <version>${project.parent.version}</version>
+            <artifactId>xingtools-db</artifactId>
+        </dependency>
+        <!--    default  pkg  -->
+        <dependency>
+            <groupId>top.cutexingluo.tools</groupId>
+            <artifactId>xingtools-pkg-jdk8</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-jwt</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <!--        springcloud-->

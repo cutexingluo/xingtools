@@ -8,7 +8,6 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.beans.factory.annotation.Autowired;
 import top.cutexingluo.core.common.base.IResult;
 import top.cutexingluo.core.common.result.Constants;
 import top.cutexingluo.core.common.result.HttpStatus;
@@ -39,16 +38,24 @@ import java.util.Map;
  * @version 1.0.0
  * @date 2023/5/6 16:31
  */
+@Deprecated
 @Aspect
 @Slf4j
 @Data
 public class LimitAop {
 
-    @Autowired(required = false)
     private GlobalResultFactory globalResultFactory;
 
     boolean logEnabled = true;
 
+    public LimitAop(GlobalResultFactory globalResultFactory) {
+        this.globalResultFactory = globalResultFactory;
+    }
+
+    public LimitAop(GlobalResultFactory globalResultFactory, boolean logEnabled) {
+        this.globalResultFactory = globalResultFactory;
+        this.logEnabled = logEnabled;
+    }
 
     /**
      * 不同的接口，不同的流量控制

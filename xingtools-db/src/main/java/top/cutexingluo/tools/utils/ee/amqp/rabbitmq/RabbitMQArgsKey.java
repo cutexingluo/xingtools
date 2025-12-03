@@ -1,6 +1,7 @@
 package top.cutexingluo.tools.utils.ee.amqp.rabbitmq;
 
 
+import lombok.Getter;
 import top.cutexingluo.core.common.base.StrCode;
 
 /**
@@ -11,8 +12,8 @@ import top.cutexingluo.core.common.base.StrCode;
  * @date 2023/10/18 17:25
  * @since 1.0.2
  */
+@Getter
 public enum RabbitMQArgsKey implements StrCode {
-
 
     /**
      * 延迟类型  x-delay-type
@@ -56,9 +57,6 @@ public enum RabbitMQArgsKey implements StrCode {
         this.key = key;
     }
 
-    public String getKey() {
-        return key;
-    }
 
     @Override
     public String toString() {

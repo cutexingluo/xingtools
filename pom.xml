@@ -6,15 +6,17 @@
 
     <groupId>top.cutexingluo.tools</groupId>
     <artifactId>xingtools-parent</artifactId>
-    <version>1.2.0</version>
+    <version>${revision}</version>
+
     <name>xingtools</name>
     <description>xingtools 是一个Java工具 sdk 库，通过提供许多方法，降低相关API的学习成本，提高工作效率。
         please don't use it for project, please use xingtools-spring-boot-starter for your own project.
     </description>
 
-    <!--    修改版本同时需要修改 core  XingTools 类的 VERSION 常量-->
 
     <modules>
+        <module>xingtools-bom</module>
+
         <module>xingtools-core</module>
         <module>xingtools-web</module>
         <module>xingtools-extra</module>
@@ -30,18 +32,29 @@
         <module>xingtools-spring-boot-starter</module>
     </modules>
 
+    <!--    修改版本同时需要修改 core  XingTools 类的 VERSION 常量-->
 
     <properties>
+        <!--        版本号 -->
+        <revision>1.2.1</revision>
+        <xingcore.version>1.2.0</xingcore.version>
+        <!--    xingcore 与 xingtools 版本脱钩    -->
+
+
         <projectUrl>https://gitee.com/SangonomiyaKokomi/xingtools.git</projectUrl>
         <serverId>ossrh</serverId><!-- 服务id 也就是setting.xml中的servers.server.id -->
         <releaseId>release</releaseId>
+
+
+        <maven.compiler.source>${compile.version}</maven.compiler.source>
+        <maven.compiler.target>${compile.version}</maven.compiler.target>
+        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+
 
         <!--        versions -->
         <compile.version>8</compile.version>
         <lombok.version>1.18.30</lombok.version>
         <jetbrains.annotations.version>1.7.0</jetbrains.annotations.version>
-
-        <xingcore.version>1.2.0</xingcore.version>
 
         <hutool.version>5.8.40</hutool.version>
         <spring-boot.version>2.7.18</spring-boot.version>
@@ -56,22 +69,140 @@
         <aspectj.version>1.9.7</aspectj.version>
         <redisson.version>3.24.3</redisson.version>
 
-        <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
-        <lock4j.version>2.2.5</lock4j.version>
+        <mybatis-plus.version>3.5.14</mybatis-plus.version>
 
         <guava.version>16.0</guava.version>
     </properties>
 
 
+    <dependencies>
+        <!--   全局使用 lombok     -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+
     <!-- 依赖管理    -->
     <dependencyManagement>
         <dependencies>
+
             <!--      xingcore 核心      -->
+            <dependency>
+                <groupId>top.cutexingluo.core</groupId>
+                <artifactId>xingcore-bom</artifactId>
+                <version>${xingcore.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>top.cutexingluo.core</groupId>
+                <artifactId>xingcore-mini</artifactId>
+                <version>${xingcore.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.cutexingluo.core</groupId>
+                <artifactId>xingcore-mini-all</artifactId>
+                <version>${xingcore.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.cutexingluo.core</groupId>
+                <artifactId>xingcore-common</artifactId>
+                <version>${xingcore.version}</version>
+            </dependency>
             <dependency>
                 <groupId>top.cutexingluo.core</groupId>
                 <artifactId>xingcore-common-all</artifactId>
                 <version>${xingcore.version}</version>
             </dependency>
+
+
+            <!--     xingtools       -->
+
+            <dependency>
+                <groupId>top.cutexingluo.tools</groupId>
+                <artifactId>xingtools-pkg-jdk8</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.cutexingluo.tools</groupId>
+                <artifactId>xingtools-pkg-jdk17</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>top.cutexingluo.tools</groupId>
+                <artifactId>xingtools-core</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.cutexingluo.tools</groupId>
+                <artifactId>xingtools-log</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.cutexingluo.tools</groupId>
+                <artifactId>xingtools-extra</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.cutexingluo.tools</groupId>
+                <artifactId>xingtools-db</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.cutexingluo.tools</groupId>
+                <artifactId>xingtools-web</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.cutexingluo.tools</groupId>
+                <artifactId>xingtools-cloud</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.cutexingluo.tools</groupId>
+                <artifactId>xingtools-mvc</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.cutexingluo.tools</groupId>
+                <artifactId>xingtools-aop</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>top.cutexingluo.tools</groupId>
+                <artifactId>xingtools-unified</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>top.cutexingluo.tools</groupId>
+                <artifactId>xingtools-spring-boot</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.cutexingluo.tools</groupId>
+                <artifactId>xingtools-spring-boot-autoconfigure</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.cutexingluo.tools</groupId>
+                <artifactId>xingtools-spring-boot-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+
+            <!--      other      -->
 
             <!-- 注解 -->
             <dependency>
@@ -120,30 +251,14 @@
                 <version>${redisson.version}</version>
             </dependency>
 
+
+            <!--            mybatis-plus -->
             <dependency>
                 <groupId>com.baomidou</groupId>
-                <artifactId>lock4j-core</artifactId>
-                <version>${lock4j.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.baomidou</groupId>
-                <artifactId>mybatis-plus-core</artifactId>
+                <artifactId>mybatis-plus-bom</artifactId>
                 <version>${mybatis-plus.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.baomidou</groupId>
-                <artifactId>mybatis-plus-extension</artifactId>
-                <version>${mybatis-plus.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.baomidou</groupId>
-                <artifactId>mybatis-plus-generator</artifactId>
-                <version>${mybatis-plus.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.baomidou</groupId>
-                <artifactId>mybatis-plus-boot-starter</artifactId>
-                <version>${mybatis-plus.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
 
 
@@ -216,7 +331,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.9.0</version>
+                <version>3.14.0</version>
                 <configuration>
                     <source>${compile.version}</source>
                     <target>${compile.version}</target>
@@ -226,7 +341,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.3.0</version>
+                <version>3.4.2</version>
                 <configuration>
                     <archive>
                         <index>true</index>
@@ -241,6 +356,32 @@
                         </manifestEntries>
                     </archive>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>1.5.0</version>
+                <configuration>
+                    <!-- 把真正解析后的版本写进 .flattened-pom.xml -->
+                    <updatePomFile>true</updatePomFile>
+                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>flatten-clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
@@ -282,7 +423,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
-                        <version>2.2.1</version>
+                        <version>3.3.1</version>
                         <executions>
                             <execution>
                                 <id>oss</id>

@@ -2,7 +2,6 @@ package top.cutexingluo.tools.utils.ee.web.spring;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.condition.PathPatternsRequestCondition;
@@ -27,7 +26,6 @@ import java.util.function.Predicate;
  */
 public class SpringWebHandler {
 
-    @Autowired
     ApplicationContext applicationContext;
 
     /**

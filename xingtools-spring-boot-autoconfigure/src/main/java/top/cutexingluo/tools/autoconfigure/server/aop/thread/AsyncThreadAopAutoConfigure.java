@@ -1,6 +1,7 @@
 package top.cutexingluo.tools.autoconfigure.server.aop.thread;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -30,9 +31,12 @@ import top.cutexingluo.tools.start.log.LogInfoAuto;
 @Slf4j
 public class AsyncThreadAopAutoConfigure {
 
+    @Autowired(required = false)
+    private PlatformTransactionManager transactionManager;
+
     @ConditionalOnMissingBean
     @Bean
-    public AsyncThreadAop asyncThreadAop(PlatformTransactionManager transactionManager) {
+    public AsyncThreadAop asyncThreadAop() {
         if (LogInfoAuto.enabled) log.info("AsyncThreadAop ---> {}",
                 "异步注解Aop @MainThread  @SonThread ，自动注册成功");
         return new AsyncThreadAop(transactionManager);

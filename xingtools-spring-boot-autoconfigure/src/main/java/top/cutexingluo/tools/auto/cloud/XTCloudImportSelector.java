@@ -5,7 +5,6 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ImportSelector;
 import org.springframework.core.type.AnnotationMetadata;
-import top.cutexingluo.tools.utils.ee.feign.retry.FeignRetryAop;
 
 
 /**
@@ -21,7 +20,6 @@ public class XTCloudImportSelector implements ImportSelector {
     public String[] selectImports(@NotNull AnnotationMetadata importingClassMetadata) {
         log.info("XingToolsCloudServer 启动成功 !  请享受你的日常的乐趣 !");
         return new String[]{
-                FeignRetryAop.class.getName(),
         };
     }
 }

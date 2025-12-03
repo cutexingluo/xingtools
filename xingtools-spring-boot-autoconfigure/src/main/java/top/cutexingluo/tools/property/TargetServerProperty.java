@@ -2,7 +2,7 @@ package top.cutexingluo.tools.property;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
 /**
  * 基础服务数据
@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Data
 @ConfigurationProperties(prefix = "target")
-@Configuration
+@Component
 public class TargetServerProperty {
 
     /**

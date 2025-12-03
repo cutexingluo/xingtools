@@ -14,7 +14,7 @@ import top.cutexingluo.tools.utils.ee.web.ip.util.IPUtil;
 
 import java.text.MessageFormat;
 
-
+@Deprecated
 @Aspect
 @Slf4j
 public class IpAspect {

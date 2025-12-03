@@ -7,10 +7,6 @@ import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.context.annotation.ImportSelector;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.type.AnnotationMetadata;
-import top.cutexingluo.tools.autoconfigure.satoken.SaTokenConfiguration;
-import top.cutexingluo.tools.autoconfigure.server.aop.xtlock.XTLockAopAutoConfigure;
-import top.cutexingluo.tools.autoconfigure.server.spring.SpringCacheAutoConfiguration;
-import top.cutexingluo.tools.autoconfigure.server.spring.SpringUtilsAutoConfiguration;
 import top.cutexingluo.tools.start.log.LogInfoAuto;
 
 import java.util.function.Predicate;
@@ -23,7 +19,6 @@ import java.util.function.Predicate;
  */
 @Slf4j
 @Primary
-//@Configuration
 @AutoConfigureAfter({LogInfoAuto.class, XingToolsAutoConfiguration.class})
 public class XingToolsImportSelector implements ImportSelector {
 
@@ -31,10 +26,6 @@ public class XingToolsImportSelector implements ImportSelector {
     public String[] selectImports(@NotNull AnnotationMetadata annotationMetadata) {
         log.info("XingToolsServer 启动成功 !  请享受你的日常的乐趣 !");
         return new String[]{
-                XTLockAopAutoConfigure.class.getName(),
-                SaTokenConfiguration.class.getName(),
-                SpringUtilsAutoConfiguration.class.getName(),
-                SpringCacheAutoConfiguration.class.getName()
         };
     }
 

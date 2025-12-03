@@ -1,12 +1,14 @@
 package top.cutexingluo.tools.autoconfigure.server.aop.log.methodlog;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import top.cutexingluo.tools.aop.log.methodlog.MethodLogAop;
+import top.cutexingluo.tools.aop.log.methodlog.custom.MethodLogAdapter;
 import top.cutexingluo.tools.auto.server.XingToolsAutoConfiguration;
 import top.cutexingluo.tools.start.log.LogInfoAuto;
 
@@ -24,10 +26,15 @@ import top.cutexingluo.tools.start.log.LogInfoAuto;
 @Configuration(proxyBeanMethods = false)
 public class MethodLogAutoConfigure {
 
+    @Autowired(required = false)
+    private MethodLogAdapter methodLogAdapter;
+
+
     @ConditionalOnMissingBean
     @Bean
     public MethodLogAop methodLogAop() {
         if (LogInfoAuto.enabled) log.info("MethodLog Aop ---> {}", "方法调用日志 AOP，自动注册成功");
-        return new MethodLogAop();
+        return new MethodLogAop(methodLogAdapter);
     }
+
 }

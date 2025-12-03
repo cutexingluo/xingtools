@@ -7,12 +7,13 @@
     <parent>
         <artifactId>xingtools-parent</artifactId>
         <groupId>top.cutexingluo.tools</groupId>
-        <version>1.2.0</version>
+        <version>${revision}</version>
     </parent>
 
 
     <artifactId>xingtools-web</artifactId>
     <name>${project.artifactId}</name>
+    <version>${revision}</version>
     <description>xingtools 依赖core和pkg包，提供一些 http 工具</description>
 
     <properties>
@@ -31,14 +32,20 @@
         <dependency>
             <groupId>top.cutexingluo.tools</groupId>
             <artifactId>xingtools-core</artifactId>
-            <version>${project.parent.version}</version>
         </dependency>
 
         <!--    default version -->
         <dependency>
             <groupId>top.cutexingluo.tools</groupId>
             <artifactId>xingtools-pkg-jdk8</artifactId>
-            <version>${project.parent.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!--   hutool     -->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-crypto</artifactId>
+            <scope>provided</scope>
         </dependency>
 
 
@@ -71,12 +78,13 @@
             <version>${httpcomponents.version}</version>
             <optional>true</optional>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>org.apache.httpcomponents</groupId>-->
-        <!--            <artifactId>httpmime</artifactId>-->
-        <!--            <version>${httpcomponents.version}</version>-->
-        <!--            <optional>true</optional>-->
-        <!--        </dependency>-->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpmime</artifactId>
+            <version>${httpcomponents.version}</version>
+            <optional>true</optional>
+        </dependency>
+
 
         <!-- 解析客户端操作系统、浏览器等 -->
         <dependency>

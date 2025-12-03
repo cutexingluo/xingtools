@@ -8,12 +8,13 @@
     <parent>
         <artifactId>xingtools-parent</artifactId>
         <groupId>top.cutexingluo.tools</groupId>
-        <version>1.2.0</version>
+        <version>${revision}</version>
     </parent>
 
 
     <artifactId>xingtools-extra</artifactId>
     <name>${project.artifactId}</name>
+    <version>${revision}</version>
     <description>xingtools 依赖core，附加，也就是基于 SpringBoot 的一些工具或实体类</description>
 
     <properties>
@@ -26,13 +27,8 @@
         <dependency>
             <groupId>top.cutexingluo.tools</groupId>
             <artifactId>xingtools-core</artifactId>
-            <version>${project.parent.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-extra</artifactId>
-        </dependency>
 
 
         <!--  optional      -->

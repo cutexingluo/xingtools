@@ -8,7 +8,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import top.cutexingluo.tools.aop.transactional.ExtTransactionalAop;
@@ -29,16 +28,23 @@ import top.cutexingluo.tools.start.log.LogInfoAuto;
 @ConditionalOnBean({XingToolsAutoConfiguration.class, DataSourceTransactionManager.class})
 @ConditionalOnProperty(prefix = "xingtools.ext-transaction-anno", value = "enabled", havingValue = "true",
         matchIfMissing = false)
-@Import({TransactionalUtils.class})
 //@EnableAspectJAutoProxy
 @EnableTransactionManagement
 @Slf4j
 public class ExtTransactionAutoConfigure {
     @ConditionalOnMissingBean
     @Bean
-    public ExtTransactionalAop extTransactionAop() {
+    public ExtTransactionalAop extTransactionAop(TransactionalUtils transactionalUtils) {
         if (LogInfoAuto.enabled) log.info("ExtTransactionalAop ---> {}", "Ext事务注解AOP，自动注册成功");
-        return new ExtTransactionalAop();
+        return new ExtTransactionalAop(transactionalUtils);
+    }
+
+    @ConditionalOnBean(DataSourceTransactionManager.class)
+    @ConditionalOnMissingBean
+    @Bean
+    public TransactionalUtils transactionalUtils(DataSourceTransactionManager dataSourceTransactionManager) {
+        if (LogInfoAuto.enabled) log.info("ExtTransactionalAop ---> {}", "Ext事务注解AOP，自动注册成功");
+        return new TransactionalUtils(dataSourceTransactionManager);
     }
 
 }

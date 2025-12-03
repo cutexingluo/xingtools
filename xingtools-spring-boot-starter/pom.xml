@@ -8,11 +8,12 @@
     <parent>
         <artifactId>xingtools-parent</artifactId>
         <groupId>top.cutexingluo.tools</groupId>
-        <version>1.2.0</version>
+        <version>${revision}</version>
     </parent>
 
     <artifactId>xingtools-spring-boot-starter</artifactId>
     <name>${project.artifactId}</name>
+    <version>${revision}</version>
     <description>xingtools 最终依赖包，该包是一个功能丰富的 Java工具库，通过诸多实用工具类的使用，旨在帮助开发者快速进行开发工作。
         详见仓库
         see repo: https://gitee.com/SangonomiyaKokomi/xingtools
@@ -29,20 +30,17 @@
         <dependency>
             <groupId>top.cutexingluo.tools</groupId>
             <artifactId>xingtools-spring-boot</artifactId>
-            <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
             <groupId>top.cutexingluo.tools</groupId>
             <artifactId>xingtools-spring-boot-autoconfigure</artifactId>
-            <version>${project.parent.version}</version>
         </dependency>
 
         <!--        pkg版本依赖，后面需要自行导入 -->
         <dependency>
             <groupId>top.cutexingluo.tools</groupId>
             <artifactId>xingtools-pkg-jdk8</artifactId>
-            <version>${project.parent.version}</version>
             <optional>true</optional>
         </dependency>
 
@@ -50,7 +48,6 @@
         <dependency>
             <groupId>top.cutexingluo.tools</groupId>
             <artifactId>xingtools-pkg-jdk17</artifactId>
-            <version>${project.parent.version}</version>
             <optional>true</optional>
         </dependency>
 

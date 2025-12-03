@@ -128,18 +128,4 @@ public class XTFileHandler {
     }
 
 
-//    /**
-//     * 把文件解析成字节数组到 response
-//     *
-//     * @param xtFileDirPath xtFile 目标文件的目录地址
-//     * @param response      response 对象
-//     */
-//    public XTFileHandler sendToResponse(@NotNull String xtFileDirPath, @NotNull HttpServletResponse response) throws IOException {
-//        xtFileDirPath = addSuffix(xtFileDirPath, separator);
-//        File file = new File(xtFileDirPath + xtFile.getFilename());
-//        sendToResponse(file, response);
-//        return this;
-//    }
-
-
 }
