@@ -4,9 +4,14 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.connection.RedisClusterNode;
+import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.*;
+import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.data.redis.serializer.SerializationUtils;
+import org.springframework.util.Assert;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -27,30 +32,19 @@ import java.util.function.Function;
  * </p>
  *
  * @author ruoyi, XingTian
- * @updateFrom 1.0.4
+ * @updateFrom 1.2.1
  **/
 @SuppressWarnings(value = {"unchecked", "rawtypes"})
-@ConditionalOnBean(RedisTemplate.class)
-//@AutoConfigureAfter(RedisTemplate.class)
-//@Component
 @Slf4j
 @Data
 public class RYRedisCache {
-    //    @Resource
-//    @Qualifier("redisTemplate")
-//    @Qualifier("xtRedisTemplate")
-    public RedisTemplate<String, Object> redisTemplate;
 
-    public RYRedisCache() {
-    }
+    protected RedisTemplate<String, Object> redisTemplate;
 
     public RYRedisCache(RedisTemplate<String, Object> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 
-
-    public static boolean printTrace = true;
-    public static Consumer<Exception> exceptionHandler = null;
 
     /**
      * 保证泛型是 String, Object
@@ -59,7 +53,7 @@ public class RYRedisCache {
      */
     public RedisTemplate<String, Object> get() {
         Objects.requireNonNull(redisTemplate, "redisTemplate is null !");
-        return (RedisTemplate<String, Object>) redisTemplate;
+        return redisTemplate;
     }
 
     /**
@@ -67,6 +61,23 @@ public class RYRedisCache {
      */
     public void setEnableTransactionSupport(boolean enableTransactionSupport) {
         redisTemplate.setEnableTransactionSupport(enableTransactionSupport);
+    }
+
+
+    /**
+     * 获取链接工厂
+     */
+    public RedisConnectionFactory getConnectionFactory() {
+        return this.redisTemplate.getConnectionFactory();
+    }
+
+    /**
+     * 清空DB
+     *
+     * @param node redis 节点
+     */
+    public void flushDB(RedisClusterNode node) {
+        this.redisTemplate.opsForCluster().flushDb(node);
     }
 
     //--------------------------common--------------------------------------
@@ -190,6 +201,35 @@ public class RYRedisCache {
      */
     public boolean expireCheck(final String key, final long timeout, final TimeUnit unit) {
         return Boolean.TRUE.equals(redisTemplate.expire(key, timeout, unit));
+    }
+
+    public void setExpire(final String key, final Object value, final long time, final TimeUnit timeUnit, RedisSerializer<Object> valueSerializer) {
+        byte[] rawKey = rawKey(key);
+        byte[] rawValue = rawValue(value, valueSerializer);
+
+        redisTemplate.execute(new RedisCallback<Object>() {
+            @Override
+            public Object doInRedis(RedisConnection connection) throws DataAccessException {
+                potentiallyUsePsetEx(connection);
+                return null;
+            }
+
+            public void potentiallyUsePsetEx(RedisConnection connection) {
+                if (!TimeUnit.MILLISECONDS.equals(timeUnit) || !failsafeInvokePsetEx(connection)) {
+                    connection.setEx(rawKey, TimeoutUtils.toSeconds(time, timeUnit), rawValue);
+                }
+            }
+
+            private boolean failsafeInvokePsetEx(RedisConnection connection) {
+                boolean failed = false;
+                try {
+                    connection.pSetEx(rawKey, time, rawValue);
+                } catch (UnsupportedOperationException e) {
+                    failed = true;
+                }
+                return !failed;
+            }
+        }, true);
     }
 
 
@@ -338,6 +378,19 @@ public class RYRedisCache {
         return null;
     }
 
+
+    /**
+     * 根据key获取对象
+     *
+     * @param key             the key
+     * @param valueSerializer 序列化
+     * @return the string
+     */
+    public Object get(final String key, RedisSerializer<Object> valueSerializer) {
+        byte[] rawKey = rawKey(key);
+        return redisTemplate.execute(connection -> deserializeValue(connection.get(rawKey), valueSerializer), true);
+    }
+
     /**
      * 删除单个对象
      */
@@ -479,41 +532,36 @@ public class RYRedisCache {
     public <T> void incrementCacheMapValue(final String key, final String hKey, final T value) {
         if (value == null) return;
         HashOperations hashOperations = redisTemplate.opsForHash();
-        if (value instanceof Integer)
-            hashOperations.increment(key, hKey, ((Integer) value).longValue());
-        else if (value instanceof Long) hashOperations.increment(key, hKey, (Long) value);
-        else if (value instanceof Double) hashOperations.increment(key, hKey, (Double) value);
-        else if (value instanceof String) {
+        if (value instanceof Number) {
+            if (value instanceof Integer)
+                hashOperations.increment(key, hKey, ((Number) value).longValue());
+            else if (value instanceof Long) hashOperations.increment(key, hKey, (Long) value);
+            else if (value instanceof Double) hashOperations.increment(key, hKey, (Double) value);
+        } else if (value instanceof String) {
             Object tar = hashOperations.get(key, hKey);
-            try {
-                if (tar instanceof String) {
+            if (tar instanceof String) {
+                try {
+                    String s = com((String) tar, (String) value, 0);
+                    hashOperations.put(key, hKey, s);
+                } catch (Exception e) {
                     try {
-                        String s = com((String) tar, (String) value, 0);
+                        String s = com((String) tar, (String) value, 1);
                         hashOperations.put(key, hKey, s);
-                    } catch (Exception e) {
+                    } catch (Exception e2) {
                         try {
-                            String s = com((String) tar, (String) value, 1);
+                            String s = com((String) tar, (String) value, 2);
                             hashOperations.put(key, hKey, s);
-                        } catch (Exception e2) {
-                            try {
-                                String s = com((String) tar, (String) value, 2);
-                                hashOperations.put(key, hKey, s);
-                            } catch (Exception e3) {
-                                String s = com((String) tar, (String) value, 3);
-                                hashOperations.put(key, hKey, s);
-                            }
+                        } catch (Exception e3) {
+                            String s = com((String) tar, (String) value, 3);
+                            hashOperations.put(key, hKey, s);
                         }
                     }
                 }
-            } catch (Exception e) {
-                if (exceptionHandler != null) exceptionHandler.accept(e);
-                else if (printTrace) e.printStackTrace();
-                log.error("update failed ...");
             }
         }
     }
 
-    protected String com(String v1, String v2, int switchMode) throws Exception {
+    protected String com(String v1, String v2, int switchMode) {
         if (switchMode == 0) {
             int i = Integer.parseInt(v1);
             int j = Integer.parseInt(v2);
@@ -640,4 +688,40 @@ public class RYRedisCache {
     public <T> T executeTransaction(SessionCallback<T> transactionTask) {
         return executeTransaction(transactionTask, null, true, null);
     }
+
+    // old repository method
+
+    public byte[] rawKey(Object key) {
+        Assert.notNull(key, "non null key required");
+
+        if (key instanceof byte[]) {
+            return (byte[]) key;
+        }
+        RedisSerializer<Object> redisSerializer = (RedisSerializer<Object>) redisTemplate.getKeySerializer();
+        return redisSerializer.serialize(key);
+    }
+
+    public byte[] rawValue(Object value, RedisSerializer valueSerializer) {
+        if (value instanceof byte[]) {
+            return (byte[]) value;
+        }
+
+        return valueSerializer.serialize(value);
+    }
+
+    public List deserializeValues(List<byte[]> rawValues, RedisSerializer<Object> valueSerializer) {
+        if (valueSerializer == null) {
+            return rawValues;
+        }
+        return SerializationUtils.deserialize(rawValues, valueSerializer);
+    }
+
+    public Object deserializeValue(byte[] value, RedisSerializer<Object> valueSerializer) {
+        if (valueSerializer == null) {
+            return value;
+        }
+        return valueSerializer.deserialize(value);
+    }
+
+
 }

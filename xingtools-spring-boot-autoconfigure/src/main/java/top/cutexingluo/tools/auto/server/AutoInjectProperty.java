@@ -140,24 +140,24 @@ public class AutoInjectProperty {
      */
     private boolean redissonConfig = false;
 
-    /**
-     * 分布式锁Aop是否开启 默认关闭<br>
-     * 需要引入 redisson 依赖 和 lock4j-redisson-spring-boot-starter依赖 <br>
-     * <p>
-     * <b>打开后，可使用@Lock4j 注解 和 LockTemplate</b>
-     * </p>
-     * <ul>
-     *     <li>1.使用方式：<br>   @Lock4j(keys = {"#key"}, acquireTimeout = 10, expire = 10000
-     *             ,executor = XTRedissonExecutor.class
-     *     )</li>
-     *     <li>
-     *         2.使用方式：<br>    @Autowired <br>
-     *     private LockTemplate lockTemplate;
-     *     </li>
-     * </ul>
-     * <p>redisson-aop</p>
-     */
-    private boolean redissonAop = false;
+//    /**
+//     * 分布式锁Aop是否开启 默认关闭<br>
+//     * 需要引入 redisson 依赖 和 lock4j-redisson-spring-boot-starter依赖 <br>
+//     * <p>
+//     * <b>打开后，可使用@Lock4j 注解 和 LockTemplate</b>
+//     * </p>
+//     * <ul>
+//     *     <li>1.使用方式：<br>   @Lock4j(keys = {"#key"}, acquireTimeout = 10, expire = 10000
+//     *             ,executor = XTRedissonExecutor.class
+//     *     )</li>
+//     *     <li>
+//     *         2.使用方式：<br>    @Autowired <br>
+//     *     private LockTemplate lockTemplate;
+//     *     </li>
+//     * </ul>
+//     * <p>redisson-aop</p>
+//     */
+//    private boolean redissonAop = false;
 
     /**
      * 全局异常拦截扩展是否开启，支持sa-token扩展<br>

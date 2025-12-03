@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -21,7 +20,7 @@ import java.util.concurrent.TimeUnit;
  * @version 1.0.0
  * @date 2023/5/6 18:10
  */
-@ConditionalOnClass({AbstractLockExecutor.class, RedissonClient.class})
+
 @Slf4j
 @RequiredArgsConstructor
 public class XTRedissonExecutor extends AbstractLockExecutor<RLock> {

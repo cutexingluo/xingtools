@@ -26,7 +26,7 @@ import top.cutexingluo.tools.start.log.LogInfoAuto;
 //@EnableAspectJAutoProxy
 @Slf4j
 public class XTExceptionAutoConfigure {
-    @ConditionalOnMissingBean(XTExceptionAop.class)
+    @ConditionalOnMissingBean
     @Bean
     public XTExceptionAop xtExceptionAop() {
         if (LogInfoAuto.enabled) log.info("XTExceptionAop ---> {}", "异常拦截AOP，自动注册成功");

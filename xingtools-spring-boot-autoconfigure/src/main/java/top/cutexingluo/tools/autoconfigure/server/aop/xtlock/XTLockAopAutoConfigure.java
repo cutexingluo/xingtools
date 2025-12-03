@@ -32,8 +32,8 @@ public class XTLockAopAutoConfigure {
     @ConditionalOnBean(RedissonClient.class)
     @ConditionalOnMissingBean
     @Bean
-    public XTAopLockAop xtAopLockAop() {
+    public XTAopLockAop xtAopLockAop(RedissonClient redissonClient) {
         if (LogInfoAuto.enabled) log.info("LogInfoAuto ---> {}", "XT锁注解AOP，自动注册成功");
-        return new XTAopLockAop();
+        return new XTAopLockAop(redissonClient);
     }
 }

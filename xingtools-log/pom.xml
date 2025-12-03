@@ -9,13 +9,14 @@
     <parent>
         <artifactId>xingtools-parent</artifactId>
         <groupId>top.cutexingluo.tools</groupId>
-        <version>1.2.0</version>
+        <version>${revision}</version>
     </parent>
 
 
     <artifactId>xingtools-log</artifactId>
     <name>${project.artifactId}</name>
-    <description>xingtools 依赖mvc，包含日志扩展操作的封装</description>
+    <version>${revision}</version>
+    <description>xingtools 依赖xingcore-base-impl，包含日志扩展操作的封装</description>
 
     <properties>
         <!-- versions -->
@@ -25,15 +26,23 @@
     </properties>
 
     <dependencies>
+
+        <dependency>
+            <groupId>top.cutexingluo.core</groupId>
+            <artifactId>xingcore-base-impl</artifactId>
+        </dependency>
+
+        <!-- 需要调用 XTLogUtil        -->
         <dependency>
             <groupId>top.cutexingluo.tools</groupId>
-            <artifactId>xingtools-mvc</artifactId>
-            <version>${project.parent.version}</version>
+            <artifactId>xingtools-extra</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-log</artifactId>
+            <scope>provided</scope>
         </dependency>
 
 
@@ -65,6 +74,7 @@
             <version>${log4j2.version}</version>
             <optional>true</optional>
         </dependency>
+
     </dependencies>
 
 

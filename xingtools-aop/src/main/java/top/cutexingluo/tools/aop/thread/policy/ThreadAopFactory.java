@@ -1,7 +1,6 @@
 package top.cutexingluo.tools.aop.thread.policy;
 
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.extra.spring.SpringUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -9,6 +8,7 @@ import top.cutexingluo.tools.aop.thread.MainThread;
 import top.cutexingluo.tools.aop.thread.run.ThreadAopHandler;
 import top.cutexingluo.tools.aop.thread.run.ThreadPolicy;
 import top.cutexingluo.tools.aop.thread.run.ThreadTimePolicy;
+import top.cutexingluo.tools.utils.spring.SpringUtils;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -36,10 +36,10 @@ public class ThreadAopFactory {
             case Custom:
                 ThreadAopHandler bean = null;
                 if (StrUtil.isNotBlank(mainThread.customAopBean())) {
-                    bean = SpringUtil.getBean(mainThread.customAopBean());
+                    bean = SpringUtils.getBean(mainThread.customAopBean(),ThreadAopHandler.class);
                 }
                 if (bean == null) {
-                    bean = SpringUtil.getBean(ThreadAopHandler.class);
+                    bean = SpringUtils.getBean(ThreadAopHandler.class);
                 }
                 if (bean != null) {
                     if (bean.needAutowired()) {

@@ -1,10 +1,11 @@
 package top.cutexingluo.tools.aop.log.xtlog;
 
-import cn.hutool.json.JSONUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 import top.cutexingluo.tools.aop.log.xtlog.pkg.LogKeyHttpConvertor;
 import top.cutexingluo.tools.designtools.convert.KeyHttpManager;
+
+import java.util.Arrays;
 
 
 /**
@@ -69,7 +70,7 @@ public class LogVarKey extends KeyHttpManager {
         if (joinPoint == null) {
             return "";
         }
-        return JSONUtil.toJsonStr(joinPoint.getArgs());
+        return Arrays.toString((joinPoint.getArgs()));
     });
 
 }

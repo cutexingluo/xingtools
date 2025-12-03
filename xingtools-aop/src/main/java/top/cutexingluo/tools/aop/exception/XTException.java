@@ -2,6 +2,7 @@ package top.cutexingluo.tools.aop.exception;
 
 
 import org.springframework.core.annotation.AliasFor;
+import top.cutexingluo.tools.utils.log.LogType;
 
 import java.lang.annotation.*;
 
@@ -34,4 +35,12 @@ public @interface XTException {
 
     @AliasFor("wrong")
     boolean printStackTrace() default false;
+
+    /**
+     * 日志输出类型
+     *
+     * @return {@link LogType}
+     */
+    LogType logType() default LogType.Error;
+
 }

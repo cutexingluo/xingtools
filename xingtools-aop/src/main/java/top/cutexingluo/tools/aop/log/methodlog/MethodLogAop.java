@@ -1,19 +1,21 @@
 package top.cutexingluo.tools.aop.log.methodlog;
 
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.json.JSONUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationUtils;
 import top.cutexingluo.core.basepackage.basehandler.aop.BaseAspectHandler;
 import top.cutexingluo.core.utils.se.character.XTStrUtil;
 import top.cutexingluo.tools.aop.log.methodlog.custom.MethodLogAdapter;
 import top.cutexingluo.tools.basepackage.basehandler.aop.BaseAspectAroundHandler;
 import top.cutexingluo.tools.utils.log.handler.LogHandler;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -24,10 +26,28 @@ import top.cutexingluo.tools.utils.log.handler.LogHandler;
  * @date 2023/7/16 14:58
  */
 @Aspect
-public class MethodLogAop implements BaseAspectAroundHandler<MethodLog>, BaseAspectHandler<MethodLog> {
+public class MethodLogAop implements BaseAspectAroundHandler<MethodLog>, BaseAspectHandler<Map<String,Object>> {
 
-    @Autowired(required = false)
+
     protected MethodLogAdapter methodLogAdapter;
+
+    protected ObjectMapper objectMapper;
+
+
+
+    public MethodLogAop() {
+        objectMapper = new ObjectMapper();
+    }
+
+    public MethodLogAop(MethodLogAdapter methodLogAdapter) {
+        this.methodLogAdapter = methodLogAdapter;
+        objectMapper = new ObjectMapper();
+    }
+
+    public MethodLogAop(MethodLogAdapter methodLogAdapter, ObjectMapper objectMapper) {
+        this.methodLogAdapter = methodLogAdapter;
+        this.objectMapper = objectMapper;
+    }
 
     public static final String[] printKeys = {
             "Before Msg", // 打印方法执行前msg
@@ -38,24 +58,24 @@ public class MethodLogAop implements BaseAspectAroundHandler<MethodLog>, BaseAsp
             "After Msg", // 打印方法执行完成msg
     };
 
-    public static int keyLen = XTStrUtil.getMaxLength(printKeys);
-    protected LogHandler log;
-    protected ProceedingJoinPoint currentJoinPoint = null;
-    protected Object result = null;
-
 
     @Override
     @Around("@annotation(methodLog)")
     public Object around(@NotNull ProceedingJoinPoint joinPoint, MethodLog methodLog) throws Throwable {
         methodLog = AnnotationUtils.getAnnotation(methodLog, MethodLog.class);
-        result = null;
+        Object result = null;
         if (methodLog != null) {
-            currentJoinPoint = joinPoint;
-            log = new LogHandler(methodLog.type().intCode());
+            Map<String, Object> context = new HashMap<>();
+            context.put("methodLog", methodLog);
+            context.put("currentJoinPoint", joinPoint);
+            LogHandler log = new LogHandler(methodLog.type().intCode());
+            context.put("log", log);
             log.send("========== Start ==========");
-            before(methodLog);
+            before(context);
             result = joinPoint.proceed();
-            after(methodLog);
+            context.put("result", result);
+            after(context);
+            result = context.get("result");
             log.send("========== End ==========");
         } else {
             result = joinPoint.proceed();
@@ -65,12 +85,18 @@ public class MethodLogAop implements BaseAspectAroundHandler<MethodLog>, BaseAsp
     }
 
     protected String getStr(int index, String str) {
-        String format = XTStrUtil.padRight(printKeys[index], keyLen + 2) + ":  {}";
+        String format = XTStrUtil.padRight(printKeys[index], 14) + ":  {}";
         return StrUtil.format(format, str);
     }
 
+
     @Override
-    public void before(MethodLog methodLog) throws Exception {
+    public void before(Map<String, Object> context) throws Exception {
+        ProceedingJoinPoint  currentJoinPoint = (ProceedingJoinPoint) context.get("currentJoinPoint");
+        MethodLog methodLog = (MethodLog) context.get("methodLog");
+        LogHandler log = (LogHandler) context.get("log");
+
+
         if (StrUtil.isNotBlank(methodLog.beforeMsg())) {
             log.send(getStr(0, methodLog.beforeMsg()));
         }
@@ -89,18 +115,24 @@ public class MethodLogAop implements BaseAspectAroundHandler<MethodLog>, BaseAsp
             log.send(getStr(2, signature.getDeclaringTypeName() + ". " + signature.getName()));
         }
         if (methodLog.showArgs()) {
-            log.send(getStr(3, JSONUtil.toJsonStr(currentJoinPoint.getArgs())));
+            log.send(getStr(3, objectMapper.writeValueAsString(currentJoinPoint.getArgs())));
         }
     }
 
     @Override
-    public void after(MethodLog methodLog) throws Exception {
+    public void after(Map<String, Object> context) throws Exception {
+        ProceedingJoinPoint  currentJoinPoint = (ProceedingJoinPoint) context.get("currentJoinPoint");
+        MethodLog methodLog = (MethodLog) context.get("methodLog");
+        LogHandler log = (LogHandler) context.get("log");
+        Object result = context.get("result");
+
         // 执行自定义方法
         if (methodLogAdapter != null) {
             result = methodLogAdapter.afterRun(result);
+            context.put("result", result);
         }
         if (methodLog.showReturn()) {
-            log.send(getStr(4, JSONUtil.toJsonStr(result)));
+            log.send(getStr(4, objectMapper.writeValueAsString(result)));
         }
         if (StrUtil.isNotBlank(methodLog.afterMsg())) {
             log.send(getStr(5, methodLog.afterMsg()));

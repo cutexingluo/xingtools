@@ -1,16 +1,9 @@
 package top.cutexingluo.tools.utils.ee.web.ip.util;
 
 
-import org.lionsoul.ip2region.xdb.Searcher;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.util.StringUtils;
 import top.cutexingluo.core.bridge.servlet.adapter.HttpServletRequestAdapter;
-import top.cutexingluo.core.common.result.Constants;
-import top.cutexingluo.core.exception.ServiceException;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Objects;
@@ -25,20 +18,6 @@ import java.util.Objects;
 @SuppressWarnings("all")
 public class IpUtils {
 
-    private static Searcher searcher;
-
-    static {
-        // 解决项目打包找不到ip2region.xdb
-        try {
-            InputStream inputStream = new ClassPathResource("/ipdb/ip2region.xdb").getInputStream();
-            //将 ip2region.db 转为 ByteArray
-            byte[] cBuff = FileCopyUtils.copyToByteArray(inputStream);
-            searcher = Searcher.newWithBuffer(cBuff);
-        } catch (IOException e) {
-            throw new ServiceException(Constants.CODE_500, "ip2region.xdb加载失败");
-        }
-
-    }
 
     /**
      * 在Nginx等代理之后获取用户真实IP地址
@@ -88,24 +67,5 @@ public class IpUtils {
         return ip;
     }
 
-    /**
-     * 根据ip从 ip2region.db 中获取地理位置
-     *
-     * @param ip
-     * @return
-     */
-    public static String getIpSource(String ip) {
-        try {
-            String address = searcher.search(ip);
-            if (StringUtils.hasText(address)) {
-                address = address.replace("|0", "");
-                address = address.replace("0|", "");
-                return address;
-            }
-            return address;
-        } catch (Exception e) {
-            return "";
-        }
-    }
 
 }

@@ -3,10 +3,10 @@ package top.cutexingluo.tools.aop.transactional;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionStatus;
+import top.cutexingluo.tools.exception.base.ExceptionDelegate;
 
-import java.util.function.Consumer;
+import java.util.Arrays;
 
 /**
  * 事务异常拦截，回滚
@@ -20,11 +20,20 @@ import java.util.function.Consumer;
 @Aspect
 //@Component
 public class ExtTransactionalAop {
-    @Autowired
+
     TransactionalUtils transactionalUtils;
 
-    public static boolean printTrace = true;
-    public static Consumer<Throwable> exceptionHandler = null;
+    ExceptionDelegate<Throwable> exceptionDelegate;
+
+
+    public ExtTransactionalAop(TransactionalUtils transactionalUtils) {
+        this.transactionalUtils = transactionalUtils;
+    }
+
+    public ExtTransactionalAop(TransactionalUtils transactionalUtils, ExceptionDelegate<Throwable> exceptionDelegate) {
+        this.transactionalUtils = transactionalUtils;
+        this.exceptionDelegate = exceptionDelegate;
+    }
 
     @Around("@annotation(top.cutexingluo.tools.aop.transactional.ExtTransactional)")
     public Object around(ProceedingJoinPoint joinPoint) {
@@ -35,8 +44,7 @@ public class ExtTransactionalAop {
             transactionalUtils.commit(begin);
         } catch (Throwable e) {
             if (begin != null) transactionalUtils.rollback(begin);
-            if (exceptionHandler != null) exceptionHandler.accept(e);
-            else if (printTrace) e.printStackTrace();
+            if (exceptionDelegate != null) exceptionDelegate.handle(e, Arrays.asList(joinPoint, transactionalUtils, begin));
         }
         return null;
     }

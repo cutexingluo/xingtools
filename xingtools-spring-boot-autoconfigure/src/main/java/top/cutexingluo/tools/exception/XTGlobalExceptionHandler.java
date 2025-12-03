@@ -21,6 +21,8 @@ import top.cutexingluo.tools.start.log.LogInfoAuto;
 /**
  * 业务拦截返回异常并封装返回
  *
+ * <p>老，不灵活不推荐使用，仅供参考</p>
+ *
  * @author XingTian
  * @version 1.0.2
  * @updateFrom 1.0.3
@@ -87,17 +89,5 @@ public class XTGlobalExceptionHandler {
         IResult<Object, Object> result = GlobalResultFactory.selectResult(globalResultFactory, error);
         return (IResult<C, T>) result;
     }
-    /**
-     *  too many ServiceException.class will be error
-     */
-//    /**
-//     * @param se 业务异常
-//     * @return Result
-//     */
-//    @Deprecated
-//    @ExceptionHandler({ServiceException.class})
-////    @ResponseBody
-//    public Result handle(ServiceException se) {
-//        return Result.error(se.getCode(), se.getMessage());
-//    }
+
 }

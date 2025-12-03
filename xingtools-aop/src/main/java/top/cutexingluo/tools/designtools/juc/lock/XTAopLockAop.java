@@ -5,12 +5,12 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import top.cutexingluo.tools.designtools.method.ClassUtil;
+import top.cutexingluo.tools.exception.base.ExceptionDelegate;
 
-import java.util.function.Consumer;
+import java.util.Arrays;
 
 /**
  * 普通注解锁切面
@@ -25,14 +25,20 @@ import java.util.function.Consumer;
 @ConditionalOnClass({RedissonClient.class, Config.class})
 @ConditionalOnBean(RedissonClient.class)
 @Aspect
-//@Component
 public class XTAopLockAop {
 
-    @Autowired
     RedissonClient redissonClient;
 
-    public static boolean printTrace = false;
-    public static Consumer<Throwable> exceptionHandler = null;
+    ExceptionDelegate<Throwable> exceptionDelegate;
+
+    public XTAopLockAop(RedissonClient redissonClient) {
+        this.redissonClient = redissonClient;
+    }
+
+    public XTAopLockAop(ExceptionDelegate<Throwable> exceptionDelegate, RedissonClient redissonClient) {
+        this.exceptionDelegate = exceptionDelegate;
+        this.redissonClient = redissonClient;
+    }
 
     @Around("@annotation(xtAopLock)")
     public Object around(ProceedingJoinPoint joinPoint, XTAopLock xtAopLock) {
@@ -44,14 +50,16 @@ public class XTAopLockAop {
                 try {
                     return joinPoint.proceed();
                 } catch (Throwable e) {
-                    if (exceptionHandler != null) exceptionHandler.accept(e);
-                    else if (printTrace) e.printStackTrace();
+                    if (exceptionDelegate != null) {
+                        exceptionDelegate.handle(e, Arrays.asList(joinPoint, lockAnno));
+                    }
                 }
                 return null;
             });
         } catch (Exception e) {
-            if (exceptionHandler != null) exceptionHandler.accept(e);
-            else if (printTrace) e.printStackTrace();
+            if (exceptionDelegate != null) {
+                exceptionDelegate.handle(e, Arrays.asList(joinPoint, lockAnno));
+            }
         }
         return result;
     }

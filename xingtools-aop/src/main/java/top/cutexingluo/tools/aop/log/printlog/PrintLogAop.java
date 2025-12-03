@@ -5,12 +5,14 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationUtils;
 import top.cutexingluo.core.basepackage.basehandler.aop.BaseAspectHandler;
 import top.cutexingluo.tools.aop.log.printlog.custom.PrintLogAdapter;
 import top.cutexingluo.tools.basepackage.basehandler.aop.BaseAspectAroundHandler;
 import top.cutexingluo.tools.utils.log.handler.LogHandler;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * PrintLog 的 Aop
@@ -20,19 +22,48 @@ import top.cutexingluo.tools.utils.log.handler.LogHandler;
  * @date 2022/11/22 19:27
  */
 @Aspect
-public class PrintLogAop implements BaseAspectHandler<PrintLog>, BaseAspectAroundHandler<PrintLog> {
+public class PrintLogAop implements BaseAspectHandler<Map<String,Object>>, BaseAspectAroundHandler<PrintLog> {
 
-    @Autowired(required = false)
     protected PrintLogAdapter printLogAdapter;
 
-    protected LogHandler log;
-    protected ProceedingJoinPoint currentJoinPoint;
-    protected Object result = null;
+
+    public PrintLogAop() {
+    }
+
+    public PrintLogAop(PrintLogAdapter printLogAdapter) {
+        this.printLogAdapter = printLogAdapter;
+    }
 
 
     @Override
-//    @Before("@annotation(printLog)")
-    public void before(PrintLog printLog) {
+    @Around("@annotation(printLog)")
+    public Object around(@NotNull ProceedingJoinPoint joinPoint, PrintLog printLog) throws Throwable {
+        printLog = AnnotationUtils.getAnnotation(printLog, PrintLog.class);
+        Object result = null;
+        if (printLog != null) {
+            Map<String, Object> context = new HashMap<>();
+            context.put("currentJoinPoint", joinPoint);
+            context.put("printLog", printLog);
+
+            LogHandler log = new LogHandler(printLog.type().intCode());
+            context.put("log", log);
+            before(context);
+            result = joinPoint.proceed();
+            context.put("result", result);
+            after(context);
+            result = context.get("result");
+        } else {
+            result = joinPoint.proceed();
+        }
+        return result;
+    }
+
+    @Override
+    public void before(Map<String, Object> context) throws Exception {
+        ProceedingJoinPoint currentJoinPoint = (ProceedingJoinPoint) context.get("currentJoinPoint");
+        PrintLog printLog = (PrintLog) context.get("printLog");
+        LogHandler log = (LogHandler) context.get("log");
+
         if (StrUtil.isNotBlank(printLog.before())) {
             log.send(printLog.before());
         }
@@ -42,30 +73,17 @@ public class PrintLogAop implements BaseAspectHandler<PrintLog>, BaseAspectAroun
     }
 
     @Override
-//    @After("@annotation(printLog)")
-    public void after(PrintLog printLog) {
+    public void after(Map<String, Object> context) throws Exception {
+        PrintLog printLog = (PrintLog) context.get("printLog");
+        LogHandler log = (LogHandler) context.get("log");
+        Object result = context.get("result");
+
         if (printLogAdapter != null) { //执行自定义方法
             result = printLogAdapter.afterRun(result);
+            context.put("result", result);
         }
         if (StrUtil.isNotBlank(printLog.after())) {
             log.send(printLog.after());
         }
-    }
-
-    @Override
-    @Around("@annotation(printLog)")
-    public Object around(@NotNull ProceedingJoinPoint joinPoint, PrintLog printLog) throws Throwable {
-        printLog = AnnotationUtils.getAnnotation(printLog, PrintLog.class);
-        result = null;
-        if (printLog != null) {
-            currentJoinPoint = joinPoint;
-            log = new LogHandler(printLog.type().intCode());
-            before(printLog);
-            result = joinPoint.proceed();
-            after(printLog);
-        } else {
-            result = joinPoint.proceed();
-        }
-        return result;
     }
 }

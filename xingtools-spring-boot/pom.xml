@@ -8,11 +8,12 @@
     <parent>
         <artifactId>xingtools-parent</artifactId>
         <groupId>top.cutexingluo.tools</groupId>
-        <version>1.2.0</version>
+        <version>${revision}</version>
     </parent>
 
     <artifactId>xingtools-spring-boot</artifactId>
     <name>${project.artifactId}</name>
+    <version>${revision}</version>
     <description>xingtools 整合版本，排除pkg-jdk依赖，在这之后需要配合pkg-jdk依赖使用</description>
 
     <properties>
@@ -26,15 +27,14 @@
         <dependency>
             <groupId>top.cutexingluo.tools</groupId>
             <artifactId>xingtools-unified</artifactId>
-            <version>${project.parent.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>top.cutexingluo.tools</groupId>
                     <artifactId>xingtools-pkg-jdk8</artifactId>
                 </exclusion>
                 <exclusion>
-                    <groupId>org.projectlombok</groupId>
-                    <artifactId>lombok</artifactId>
+                    <groupId>top.cutexingluo.tools</groupId>
+                    <artifactId>xingtools-pkg-jdk17</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>

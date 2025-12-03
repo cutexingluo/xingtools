@@ -1,6 +1,5 @@
 package top.cutexingluo.tools.designtools.convert;
 
-import cn.hutool.json.JSONUtil;
 import top.cutexingluo.tools.utils.ee.web.ip.util.IPUtil;
 
 /**
@@ -43,7 +42,8 @@ public class KeyHttpManager {
     /**
      * http_uri   uri
      */
-    public static final KeyHttpConvertor HEADER = new KeyHttpConvertor("header", (method, request) -> request == null ? "" : JSONUtil.toJsonStr(IPUtil.getHeader(request)));
+    public static final KeyHttpConvertor HEADER = new KeyHttpConvertor("header", (method, request) -> request == null ? "" :
+            (IPUtil.getHeader(request)).toString());
 
 
     /**

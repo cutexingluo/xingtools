@@ -1,6 +1,6 @@
 package top.cutexingluo.tools.utils.ee.web.limit.easylimit;
 
-import cn.hutool.json.JSONUtil;
+
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.context.ApplicationContext;
@@ -13,6 +13,7 @@ import top.cutexingluo.core.common.data.Entry;
 import top.cutexingluo.core.common.result.HttpStatus;
 import top.cutexingluo.core.common.result.Result;
 import top.cutexingluo.core.common.utils.GlobalResultFactory;
+import top.cutexingluo.core.designtools.protocol.serializer.impl.json.JacksonSerializer;
 import top.cutexingluo.tools.utils.ee.redis.RYRedisCache;
 import top.cutexingluo.tools.utils.ee.redis.RYRedisUtil;
 import top.cutexingluo.tools.utils.ee.web.ip.util.IPUtil;
@@ -268,7 +269,9 @@ public class AccessLimitUtil {
         if (Objects.nonNull(count) && count == 1) {
             redisCache.expire(redisKey, interval, TimeUnit.SECONDS);
         } else if (count > maxCount) {
-            response.response(JSONUtil.toJsonStr(responseResult), HttpStatus.SUCCESS.getCode());
+//            response.response(JSONUtil.toJsonStr(responseResult), HttpStatus.SUCCESS.getCode());
+            JacksonSerializer jacksonSerializer = new JacksonSerializer();
+            response.response(jacksonSerializer.stringify(responseResult),  HttpStatus.SUCCESS.getCode());
 //                XTResponseUtil.success(response.getResponse(), JSONUtil.toJsonStr(responseResult));
             if (showLog) log.warn(redisKey + "请求次数超过每" + interval + "秒" + maxCount + "次");
             result = false;

@@ -48,9 +48,9 @@ import java.util.Set;
  */
 public class HttpClientUtils {
 
-    public static final int connTimeout = 10000;
-    public static final int readTimeout = 10000;
-    public static final String charset = "UTF-8";
+    public static int connTimeout = 10000;
+    public static int readTimeout = 10000;
+    public static String charset = "UTF-8";
     private static HttpClient client = null;
 
     static {

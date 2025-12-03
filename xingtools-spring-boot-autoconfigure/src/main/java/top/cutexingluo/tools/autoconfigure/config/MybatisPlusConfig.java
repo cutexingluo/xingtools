@@ -2,6 +2,7 @@ package top.cutexingluo.tools.autoconfigure.config;
 
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.BlockAttackInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -25,8 +26,6 @@ import top.cutexingluo.tools.start.log.LogInfoAuto;
 @ConditionalOnClass({MybatisPlusInterceptor.class})
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(prefix = "xingtools.enabled", name = "mybatis-plus-config", havingValue = "true", matchIfMissing = false)
-//@MapperScan("scan.your.mapper.package")
-//@MapperScan("com.xing.springboot.mapper")
 @Slf4j
 public class MybatisPlusConfig {
 
@@ -36,8 +35,9 @@ public class MybatisPlusConfig {
     @ConditionalOnMissingBean
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
-        if (LogInfoAuto.enabled) log.info("MybatisPlusConfig ---> {}", "分页插件配置，自动注册成功");
+        if (LogInfoAuto.enabled) log.info("MybatisPlusConfig ---> {}", "分页插件, Block配置，自动注册成功");
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+        interceptor.addInnerInterceptor(new BlockAttackInnerInterceptor());
         interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
         return interceptor;
     }
