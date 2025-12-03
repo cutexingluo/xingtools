@@ -3,8 +3,6 @@ package top.cutexingluo.tools.utils.ee.web.limit.submit.strategy.impl;
 import com.google.common.util.concurrent.RateLimiter;
 import lombok.Data;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import top.cutexingluo.tools.utils.ee.web.limit.submit.base.RequestLimitData;
 import top.cutexingluo.tools.utils.ee.web.limit.submit.strategy.LimitStrategy;
 
@@ -22,7 +20,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * @date 2024/1/6 20:04
  * @since 1.0.4
  */
-@ConditionalOnClass(RateLimiter.class)
 @Data
 public class RateLimitStrategy implements LimitStrategy {
 
@@ -32,7 +29,6 @@ public class RateLimitStrategy implements LimitStrategy {
         this(new ConcurrentHashMap<>());
     }
 
-    @Autowired
     public RateLimitStrategy(Map<String, RateLimiter> limitMap) {
         this.limitMap = limitMap;
     }

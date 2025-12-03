@@ -8,7 +8,7 @@
     <parent>
         <artifactId>xingtools-parent</artifactId>
         <groupId>top.cutexingluo.tools</groupId>
-        <version>1.2.0</version>
+        <version>${revision}</version>
     </parent>
 
     <artifactId>xingtools-spring-boot</artifactId>
@@ -26,15 +26,14 @@
         <dependency>
             <groupId>top.cutexingluo.tools</groupId>
             <artifactId>xingtools-unified</artifactId>
-            <version>${project.parent.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>top.cutexingluo.tools</groupId>
                     <artifactId>xingtools-pkg-jdk8</artifactId>
                 </exclusion>
                 <exclusion>
-                    <groupId>org.projectlombok</groupId>
-                    <artifactId>lombok</artifactId>
+                    <groupId>top.cutexingluo.tools</groupId>
+                    <artifactId>xingtools-pkg-jdk17</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>

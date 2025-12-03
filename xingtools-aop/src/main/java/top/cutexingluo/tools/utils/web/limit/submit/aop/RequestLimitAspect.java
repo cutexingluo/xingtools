@@ -32,7 +32,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class RequestLimitAspect implements BaseAspectAroundHandler<RequestLimit> {
 
     /**
-     * 可供外部使用配置 map
+     * 可供外部使用配置 map (全局)
      */
     public Map<Class<?>, RequestLimitSetting> settingMap = new ConcurrentHashMap<>();
 

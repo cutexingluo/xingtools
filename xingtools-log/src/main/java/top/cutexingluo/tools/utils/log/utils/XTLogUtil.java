@@ -13,7 +13,7 @@ import top.cutexingluo.tools.utils.spring.SpringUtils;
 /**
  * 提供给系列 Log 接口和实现类 的工具类
  *
- * <p>该类部分方法需要使用 SpringUtils ，所以需要导入 spring-boot-starter</p>
+ * <p>该类部分方法需要使用 SpringUtils ，所以需要导入 spring-boot-starter, xingcore-extra</p>
  *
  * @author XingTian
  * @version 1.0.0

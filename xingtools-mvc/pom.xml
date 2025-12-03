@@ -8,7 +8,7 @@
     <parent>
         <artifactId>xingtools-parent</artifactId>
         <groupId>top.cutexingluo.tools</groupId>
-        <version>1.2.0</version>
+        <version>${revision}</version>
     </parent>
 
     <artifactId>xingtools-mvc</artifactId>
@@ -36,6 +36,12 @@
             <groupId>top.cutexingluo.tools</groupId>
             <artifactId>xingtools-db</artifactId>
             <version>${project.parent.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>top.cutexingluo.tools</groupId>
+            <artifactId>xingtools-pkg-jdk8</artifactId>
+            <scope>provided</scope>
         </dependency>
 
 

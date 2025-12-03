@@ -14,10 +14,13 @@ import top.cutexingluo.core.common.result.Constants;
 import top.cutexingluo.core.common.result.Result;
 import top.cutexingluo.core.common.utils.GlobalResultFactory;
 import top.cutexingluo.tools.auto.server.XingToolsAutoConfiguration;
+import top.cutexingluo.tools.start.log.LogInfoAuto;
 
 
 /**
  * Sa-token 异常拦截
+ *
+ * <p>老，不灵活不推荐使用，仅供参考</p>
  *
  * @author XingTian
  * @version 1.0.0
@@ -37,7 +40,8 @@ public class XTGlobalExceptionHandlerExt {
 
     //    @PostConstruct //  移除支持jdk 17
     public void init() {
-        log.info("XingTool GlobalExceptionHandlerExt is enabled ---> {}", "全局异常扩展拦截，已开启，支持sa-token");
+        if (LogInfoAuto.enabled)
+            log.info("XingTool GlobalExceptionHandlerExt is enabled ---> {}", "全局异常扩展拦截，已开启，支持sa-token");
     }
 
     public XTGlobalExceptionHandlerExt() {

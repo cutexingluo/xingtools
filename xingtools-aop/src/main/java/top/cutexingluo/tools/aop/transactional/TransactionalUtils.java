@@ -1,7 +1,6 @@
 package top.cutexingluo.tools.aop.transactional;
 
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
@@ -20,8 +19,12 @@ import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
 @Data
 public class TransactionalUtils {
 
-    @Autowired
+
     protected DataSourceTransactionManager dataSourceTransactionManager;
+
+    public TransactionalUtils(DataSourceTransactionManager dataSourceTransactionManager) {
+        this.dataSourceTransactionManager = dataSourceTransactionManager;
+    }
 
     // 开启事务
     // 只开不提交或回滚 会有行锁

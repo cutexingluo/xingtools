@@ -6,15 +6,18 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.CustomExchange;
 import org.springframework.boot.autoconfigure.amqp.RabbitProperties;
 import top.cutexingluo.core.designtools.builder.XTBuilder;
+import top.cutexingluo.tools.exception.ExceptionPrintDelegate;
+import top.cutexingluo.tools.exception.base.ExceptionDelegate;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeoutException;
-import java.util.function.Consumer;
 
 /**
  * RabbitMQ 执行工具
@@ -25,10 +28,10 @@ import java.util.function.Consumer;
  * @version 1.0.0
  * @date 2023/10/17 22:32
  */
+@Slf4j
 public class RabbitMQUtil {
 
-    public static boolean printTrace = true;
-    public static Consumer<Exception> exceptionHandler = null;
+    public static ExceptionDelegate<Throwable> exceptionDelegate;
 
     /**
      * 生成延时队列交换机
@@ -90,8 +93,13 @@ public class RabbitMQUtil {
                 try {
                     return getChannel();
                 } catch (IOException | TimeoutException e) {
-                    if (exceptionHandler != null) exceptionHandler.accept(e);
-                    else if (printTrace) e.printStackTrace();
+                    if(exceptionDelegate != null) exceptionDelegate.handle(e, Arrays.asList(this));
+                    else{
+                        new ExceptionPrintDelegate<>((throwable, list)->{
+                            log.error( throwable.getMessage());
+                            return null;
+                        }).handle(e, Arrays.asList(this));
+                    }
                 }
             }
             return this.target;

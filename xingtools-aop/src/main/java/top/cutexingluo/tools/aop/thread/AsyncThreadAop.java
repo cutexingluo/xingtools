@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -36,11 +36,9 @@ public class AsyncThreadAop {
     //用来存储各线程计数器数据(每次执行后会从map中删除)
     public final ConcurrentHashMap<String, Object> map = new ConcurrentHashMap<>();
 
-    @Autowired(required = false)
     private PlatformTransactionManager transactionManager;
 
-    @Autowired(required = false)
-    public AsyncThreadAop(PlatformTransactionManager transactionManager) {
+    public AsyncThreadAop(@Nullable PlatformTransactionManager transactionManager) {
         this.transactionManager = transactionManager;
     }
 

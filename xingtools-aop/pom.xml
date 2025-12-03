@@ -8,12 +8,12 @@
     <parent>
         <artifactId>xingtools-parent</artifactId>
         <groupId>top.cutexingluo.tools</groupId>
-        <version>1.2.0</version>
+        <version>${revision}</version>
     </parent>
 
     <artifactId>xingtools-aop</artifactId>
     <name>${project.artifactId}</name>
-    <description>xingtools 依赖mvc，log，cloud三包，提供前面依赖的aop注解和切面类</description>
+    <description>xingtools 依赖mvc，log，pkg三包，提供前面依赖的aop注解和切面类</description>
 
 
     <properties>
@@ -26,19 +26,17 @@
         <dependency>
             <groupId>top.cutexingluo.tools</groupId>
             <artifactId>xingtools-mvc</artifactId>
-            <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
             <groupId>top.cutexingluo.tools</groupId>
             <artifactId>xingtools-log</artifactId>
-            <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
             <groupId>top.cutexingluo.tools</groupId>
-            <artifactId>xingtools-cloud</artifactId>
-            <version>${project.parent.version}</version>
+            <artifactId>xingtools-pkg-jdk8</artifactId>
+            <scope>provided</scope>
         </dependency>
 
 

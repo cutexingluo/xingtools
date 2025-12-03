@@ -20,7 +20,7 @@ import java.util.List;
  * @since 1.1.4
  */
 @Data
-public class WebCompositeFilterChainFactory implements FilterChainProcessor<HttpServletBundle> {
+public class WebCompositeFilterChainDelegate implements FilterChainProcessor<HttpServletBundle> {
 
     /**
      * 过滤器链列表
@@ -28,11 +28,11 @@ public class WebCompositeFilterChainFactory implements FilterChainProcessor<Http
     @NotNull
     protected List<FilterChainProcessor<HttpServletBundle>> filters;
 
-    public WebCompositeFilterChainFactory() {
+    public WebCompositeFilterChainDelegate() {
         filters = new ArrayList<>();
     }
 
-    public WebCompositeFilterChainFactory(@NotNull List<FilterChainProcessor<HttpServletBundle>> filters) {
+    public WebCompositeFilterChainDelegate(@NotNull List<FilterChainProcessor<HttpServletBundle>> filters) {
         this.filters = filters;
     }
 

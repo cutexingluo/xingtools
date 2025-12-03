@@ -1,6 +1,7 @@
 package top.cutexingluo.tools.aop.log.systemlog;
 
 import org.springframework.core.annotation.AliasFor;
+import top.cutexingluo.tools.utils.log.LogType;
 
 import java.lang.annotation.*;
 
@@ -41,4 +42,17 @@ public @interface XTSystemLog {
      * @return boolean
      */
     boolean showResponseArgs() default true;
+
+    /**
+     * 日志输出类型
+     *
+     * @return {@link LogType}
+     */
+    LogType type() default LogType.Info;
+
+
+    /**
+     * 是否打印分割线
+     */
+    boolean enableStartEndLine() default true;
 }

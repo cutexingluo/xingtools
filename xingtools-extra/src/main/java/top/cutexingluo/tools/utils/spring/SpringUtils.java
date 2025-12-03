@@ -2,6 +2,7 @@ package top.cutexingluo.tools.utils.spring;
 
 
 import cn.hutool.core.util.ArrayUtil;
+import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.aop.framework.AopContext;
@@ -13,8 +14,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * <p>最迟注入的，要晚于@Autowired, InitializingBean, @PostConstruct, @Bean</p>
@@ -28,10 +29,12 @@ import java.util.List;
 
 public class SpringUtils implements BeanFactoryPostProcessor, ApplicationContextAware {
 
+    @Getter
     private static ApplicationContext applicationContext = null;
     /**
      * Spring应用上下文环境
      */
+    @Getter
     private static ConfigurableListableBeanFactory beanFactory;
 
     @Override
@@ -46,54 +49,31 @@ public class SpringUtils implements BeanFactoryPostProcessor, ApplicationContext
         }
     }
 
+
     /**
-     * 获取注册 XingToolsAutoConfiguration 的 bean 名称
-     * <br>
-     * 不包含 aop 注解 bean
+     * 获取所有XingToolsAutoConfiguration 的 bean 名称
      */
     public static List<String> getXingToolsBeans() {
-        return getXingToolsBeans(applicationContext);
-    }
-
-    /**
-     * 获取注册 XingToolsAutoConfiguration 的 bean 名称
-     * <br>
-     * 不包含 aop 注解 bean
-     */
-    public static List<String> getXingToolsBeans(ApplicationContext application) {
-        String[] names = application.getBeanDefinitionNames();
-        List<String> result = new ArrayList<>();
-        for (String name : names) {
-            if (name.startsWith("top.cutexingluo.tools") || name.startsWith("top.cutexingluo")) {
-                result.add(name);
-            }
-        }
-        return result;
+        return getXingToolsBeans(applicationContext, true);
     }
 
     /**
      * 获取所有XingToolsAutoConfiguration 的 bean 名称
-     * <br>
-     * 包含 aop 注解 bean
      */
-    public static List<String> getAllXingToolsBeans() {
-        return getAllXingToolsBeans(applicationContext);
-    }
-
-    /**
-     * 获取所有XingToolsAutoConfiguration 的 bean 名称
-     * <br>
-     * 包含 aop 注解 bean
-     */
-    public static List<String> getAllXingToolsBeans(ApplicationContext application) {
+    public static List<String> getXingToolsBeans(ApplicationContext application, boolean allPackage) {
         String[] names = getAllDefinitionBeans();
-        List<String> result = new ArrayList<>();
-        List<String> simpleBeans = Arrays.asList(XTBeanConfig.getSimpleBeanNames());
-        for (String name : names) {
-            if (name.startsWith("top.cutexingluo.tools") || name.startsWith("top.cutexingluo")) {
-                result.add(name);
-            } else if (simpleBeans.contains(name)) {
-                result.add(name);
+        List<String> result = new ArrayList<>(names.length);
+        if (allPackage) {
+            for (String name : names) {
+                if (name.startsWith("top.cutexingluo.tools") || name.startsWith("top.cutexingluo")) {
+                    result.add(name);
+                }
+            }
+        } else {
+            for (String name : names) {
+                if (name.startsWith("top.cutexingluo.tools")) {
+                    result.add(name);
+                }
             }
         }
 
@@ -123,14 +103,6 @@ public class SpringUtils implements BeanFactoryPostProcessor, ApplicationContext
         return applicationContext.getBeanDefinitionNames();
     }
 
-    //获取applicationContext
-
-    /**
-     * 获取applicationContext
-     */
-    public static ApplicationContext getApplicationContext() {
-        return applicationContext;
-    }
 
     //通过name获取 Bean.
 
@@ -273,13 +245,14 @@ public class SpringUtils implements BeanFactoryPostProcessor, ApplicationContext
     public static String[] getAliases(String name) throws NoSuchBeanDefinitionException {
         return beanFactory.getAliases(name);
     }
+
     /**
      * 获取aop代理对象
      */
     @SuppressWarnings("unchecked")
     @NotNull
-    public static <T> T getAopProxy(T invoker) {
-        return (T) AopContext.currentProxy();
+    public static <T> Supplier<T> getAopProxy(T invoker) {
+        return () -> (T) AopContext.currentProxy();
     }
 
 
@@ -300,7 +273,7 @@ public class SpringUtils implements BeanFactoryPostProcessor, ApplicationContext
     @Nullable
     public static String getActiveProfile() {
         final String[] activeProfiles = getActiveProfiles();
-        return ArrayUtil.isEmpty(activeProfiles) ? activeProfiles[0] : null;
+        return ArrayUtil.isNotEmpty(activeProfiles) ? activeProfiles[0] : null;
     }
 
     /**

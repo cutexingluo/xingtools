@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 import top.cutexingluo.tools.auto.cloud.XTSpringCloudAutoConfiguration;
 import top.cutexingluo.tools.start.log.LogInfoAuto;
 import top.cutexingluo.tools.utils.ee.feign.retry.FeignRetryAop;
@@ -23,7 +23,7 @@ import top.cutexingluo.tools.utils.ee.feign.retry.FeignRetryAop;
 @ConditionalOnBean(XTSpringCloudAutoConfiguration.class)
 @ConditionalOnProperty(prefix = "xingtool.cloud.enabled", name = "feign-retry", havingValue = "true", matchIfMissing = false)
 @Slf4j
-@Component
+@Configuration(proxyBeanMethods = false)
 public class FeignRetryAutoConfigure {
 
 

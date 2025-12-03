@@ -8,7 +8,7 @@
     <parent>
         <artifactId>xingtools-parent</artifactId>
         <groupId>top.cutexingluo.tools</groupId>
-        <version>1.2.0</version>
+        <version>${revision}</version>
     </parent>
 
     <artifactId>xingtools-core</artifactId>
@@ -44,31 +44,26 @@
         </dependency>
 
 
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
-            <!--            other modules need -->
-            <!--            <scope>provided</scope>-->
-        </dependency>
-
-
         <!--   hutool 工具  -->
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-core</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-jwt</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-json</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-captcha</artifactId>
+            <scope>provided</scope>
         </dependency>
 
 

@@ -8,7 +8,7 @@
     <parent>
         <artifactId>xingtools-parent</artifactId>
         <groupId>top.cutexingluo.tools</groupId>
-        <version>1.2.0</version>
+        <version>${revision}</version>
     </parent>
 
 
@@ -32,21 +32,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>top.cutexingluo.tools</groupId>
-            <artifactId>xingtools-core</artifactId>
-            <version>${project.parent.version}</version>
+            <groupId>top.cutexingluo.core</groupId>
+            <artifactId>xingcore-base-lib</artifactId>
         </dependency>
-        <!--        以下包进行移除 -->
-        <!--        <dependency>-->
-        <!--            <groupId>top.cutexingluo.tools</groupId>-->
-        <!--            <artifactId>xingtools-mvc</artifactId>-->
-        <!--            <version>${project.parent.version}</version>-->
-        <!--        </dependency>-->
-        <!--        <dependency>-->
-        <!--            <groupId>top.cutexingluo.tools</groupId>-->
-        <!--            <artifactId>xingtools-cloud</artifactId>-->
-        <!--            <version>${project.parent.version}</version>-->
-        <!--        </dependency>-->
     </dependencies>
 
     <dependencyManagement>

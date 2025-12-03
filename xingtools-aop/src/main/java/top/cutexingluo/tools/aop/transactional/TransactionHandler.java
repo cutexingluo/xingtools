@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.Nullable;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import top.cutexingluo.core.basepackage.basehandler.CallableHandler;
@@ -35,7 +34,6 @@ public class TransactionHandler implements CallableHandler, Initializable {
     private int propagationBehavior = TransactionDefinition.PROPAGATION_REQUIRES_NEW;
 
 
-    @Autowired(required = false)
     public TransactionHandler(PlatformTransactionManager transactionManager) {
         transaction = true;
         this.transactionManager = transactionManager;

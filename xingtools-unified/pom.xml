@@ -8,27 +8,67 @@
     <parent>
         <artifactId>xingtools-parent</artifactId>
         <groupId>top.cutexingluo.tools</groupId>
-        <version>1.2.0</version>
+        <version>${revision}</version>
     </parent>
 
     <artifactId>xingtools-unified</artifactId>
     <name>${project.artifactId}</name>
-    <description>xingtools 依赖aop，整合包，整合所有依赖并依赖 hutool-all</description>
+    <description>xingtools 所有依赖整合包</description>
 
     <properties>
         <!-- versions -->
     </properties>
 
     <dependencies>
+        <!--     optional   -->
+        <dependency>
+            <groupId>top.cutexingluo.tools</groupId>
+            <artifactId>xingtools-pkg-jdk8</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>top.cutexingluo.tools</groupId>
+            <artifactId>xingtools-pkg-jdk17</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>top.cutexingluo.tools</groupId>
+            <artifactId>xingtools-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>top.cutexingluo.tools</groupId>
+            <artifactId>xingtools-log</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>top.cutexingluo.tools</groupId>
+            <artifactId>xingtools-extra</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>top.cutexingluo.tools</groupId>
+            <artifactId>xingtools-db</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>top.cutexingluo.tools</groupId>
+            <artifactId>xingtools-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>top.cutexingluo.tools</groupId>
+            <artifactId>xingtools-cloud</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>top.cutexingluo.tools</groupId>
+            <artifactId>xingtools-mvc</artifactId>
+        </dependency>
         <dependency>
             <groupId>top.cutexingluo.tools</groupId>
             <artifactId>xingtools-aop</artifactId>
-            <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
+            <scope>provided</scope>
         </dependency>
 
 

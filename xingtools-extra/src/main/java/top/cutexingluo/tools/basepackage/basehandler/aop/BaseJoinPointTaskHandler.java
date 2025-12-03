@@ -7,6 +7,8 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
+ * JoinPoint 任务处理接口
+ *
  * @author XingTian
  * @version 1.0.0
  * @date 2024/1/5 18:47

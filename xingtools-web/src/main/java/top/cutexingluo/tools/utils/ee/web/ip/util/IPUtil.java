@@ -9,7 +9,6 @@ import java.net.UnknownHostException;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Consumer;
 
 /**
  * Iputil
@@ -35,9 +34,6 @@ public class IPUtil {
     private static final String SEPARATOR = ",";
 
 
-    public static boolean printTrace = true;
-    public static Consumer<Exception> exceptionHandler = null;
-
     @NotNull
     public static Map<String, String> getHeader(HttpServletRequestAdapter request) {
         if (request == null) {
@@ -60,7 +56,7 @@ public class IPUtil {
      *
      * @param localHost 是否获取localhost 取为 127.0.0.1
      */
-    public static String getRealIpAddress(HttpServletRequestAdapter request, boolean localHost) {
+    public static String getRealIpAddress(HttpServletRequestAdapter request, boolean localHost) throws UnknownHostException {
         if (request == null) {
             return "";
         }
@@ -88,12 +84,7 @@ public class IPUtil {
             if (!localHost && (LOCALHOST_IP.equalsIgnoreCase(ip) || LOCALHOST_IPV6.equalsIgnoreCase(ip))) {
                 // 根据网卡取本机配置的 IP
                 InetAddress iNet = null;
-                try {
-                    iNet = InetAddress.getLocalHost();
-                } catch (UnknownHostException e) {
-                    if (exceptionHandler != null) exceptionHandler.accept(e);
-                    else if (printTrace) e.printStackTrace();
-                }
+                iNet = InetAddress.getLocalHost();
                 if (iNet != null)
                     ip = iNet.getHostAddress();
             }
@@ -113,14 +104,22 @@ public class IPUtil {
      * 获取 ip
      */
     public static String getIpAddr(HttpServletRequestAdapter request) {
-        return getRealIpAddress(request, true);
+        try {
+            return getRealIpAddress(request, true);
+        } catch (UnknownHostException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
      * 获取真实 IP
      */
     public static String getRealIpAddr(HttpServletRequestAdapter request) {
-        return getRealIpAddress(request, false);
+        try {
+            return getRealIpAddress(request, false);
+        } catch (UnknownHostException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
