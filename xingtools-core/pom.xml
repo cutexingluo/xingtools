@@ -13,6 +13,7 @@
 
     <artifactId>xingtools-core</artifactId>
     <name>${project.artifactId}</name>
+    <version>${revision}</version>
     <description>xingtools 核心，包括各种接口，实体类和工具类</description>
 
     <properties>

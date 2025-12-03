@@ -14,6 +14,7 @@
 
     <artifactId>xingtools-extra</artifactId>
     <name>${project.artifactId}</name>
+    <version>${revision}</version>
     <description>xingtools 依赖core，附加，也就是基于 SpringBoot 的一些工具或实体类</description>
 
     <properties>

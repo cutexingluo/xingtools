@@ -14,6 +14,7 @@
 
     <artifactId>xingtools-pkg</artifactId>
     <name>${project.artifactId}</name>
+    <version>${revision}</version>
     <description>xingtool jdk 分类包，对不同的jdk版本提供兼容性</description>
 
     <modules>

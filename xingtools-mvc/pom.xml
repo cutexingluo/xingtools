@@ -13,6 +13,7 @@
 
     <artifactId>xingtools-mvc</artifactId>
     <name>${project.artifactId}</name>
+    <version>${revision}</version>
     <description>xingtools 依赖web，extra，db三包，基于 SpringBoot-Web 的一些集成工具或实体类</description>
 
 

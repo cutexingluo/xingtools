@@ -12,6 +12,7 @@
 
     <artifactId>xingtools-db</artifactId>
     <name>${project.artifactId}</name>
+    <version>${revision}</version>
     <description>xingtools 依赖core，数据库操作，包含mybatis-plus等操作</description>
 
 

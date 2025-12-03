@@ -37,6 +37,8 @@
     <properties>
         <!--        版本号 -->
         <revision>1.2.1</revision>
+        <xingcore.version>1.2.0</xingcore.version>
+        <!--    xingcore 与 xingtools 版本脱钩    -->
 
 
         <projectUrl>https://gitee.com/SangonomiyaKokomi/xingtools.git</projectUrl>
@@ -93,14 +95,114 @@
         <dependencies>
 
             <!--      xingcore 核心      -->
-            <!--  项目依赖        -->
             <dependency>
-                <groupId>top.cutexingluo.tools</groupId>
-                <artifactId>xingtools-bom</artifactId>
-                <version>${revision}</version>
+                <groupId>top.cutexingluo.core</groupId>
+                <artifactId>xingcore-bom</artifactId>
+                <version>${xingcore.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <dependency>
+                <groupId>top.cutexingluo.core</groupId>
+                <artifactId>xingcore-mini</artifactId>
+                <version>${xingcore.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.cutexingluo.core</groupId>
+                <artifactId>xingcore-mini-all</artifactId>
+                <version>${xingcore.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.cutexingluo.core</groupId>
+                <artifactId>xingcore-common</artifactId>
+                <version>${xingcore.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.cutexingluo.core</groupId>
+                <artifactId>xingcore-common-all</artifactId>
+                <version>${xingcore.version}</version>
+            </dependency>
+
+
+            <!--     xingtools       -->
+
+            <dependency>
+                <groupId>top.cutexingluo.tools</groupId>
+                <artifactId>xingtools-pkg-jdk8</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.cutexingluo.tools</groupId>
+                <artifactId>xingtools-pkg-jdk17</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>top.cutexingluo.tools</groupId>
+                <artifactId>xingtools-core</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.cutexingluo.tools</groupId>
+                <artifactId>xingtools-log</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.cutexingluo.tools</groupId>
+                <artifactId>xingtools-extra</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.cutexingluo.tools</groupId>
+                <artifactId>xingtools-db</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.cutexingluo.tools</groupId>
+                <artifactId>xingtools-web</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.cutexingluo.tools</groupId>
+                <artifactId>xingtools-cloud</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.cutexingluo.tools</groupId>
+                <artifactId>xingtools-mvc</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.cutexingluo.tools</groupId>
+                <artifactId>xingtools-aop</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>top.cutexingluo.tools</groupId>
+                <artifactId>xingtools-unified</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>top.cutexingluo.tools</groupId>
+                <artifactId>xingtools-spring-boot</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.cutexingluo.tools</groupId>
+                <artifactId>xingtools-spring-boot-autoconfigure</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.cutexingluo.tools</groupId>
+                <artifactId>xingtools-spring-boot-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+
+            <!--      other      -->
 
             <!-- 注解 -->
             <dependency>
@@ -255,6 +357,32 @@
                     </archive>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>1.5.0</version>
+                <configuration>
+                    <!-- 把真正解析后的版本写进 .flattened-pom.xml -->
+                    <updatePomFile>true</updatePomFile>
+                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>flatten-clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
@@ -267,7 +395,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>3.11.2</version>
+                        <version>3.5.0</version>
                         <configuration>
                             <!-- 忽略生成文档中的错误，如果想看下控制台中关于生成doc错误的去掉这个参数 -->
                             <doclint>none</doclint>  <!-- Turnoff all checks -->
@@ -295,7 +423,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
-                        <version>3.2.1</version>
+                        <version>3.3.1</version>
                         <executions>
                             <execution>
                                 <id>oss</id>
@@ -333,7 +461,7 @@
                     <plugin>
                         <groupId>org.sonatype.central</groupId>
                         <artifactId>central-publishing-maven-plugin</artifactId>
-                        <version>0.9.0</version>
+                        <version>0.7.0</version>
                         <extensions>true</extensions>
                         <configuration>
                             <publishingServerId>central</publishingServerId>
@@ -345,7 +473,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>3.2.7</version>
+                        <version>1.6</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>

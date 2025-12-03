@@ -13,6 +13,7 @@
 
     <artifactId>xingtools-spring-boot-autoconfigure</artifactId>
     <name>${project.artifactId}</name>
+    <version>${revision}</version>
     <description>xingtools 整合版本的自动装配，含各种自动装配配置，开关，注解，类等</description>
 
     <properties>

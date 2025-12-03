@@ -14,6 +14,7 @@
 
     <artifactId>xingtools-pkg-jdk8</artifactId>
     <name>${project.artifactId}</name>
+    <version>${revision}</version>
     <description>xingtools 依赖core包，jdk 分类包，对不同的jdk版本提供兼容性</description>
 
     <properties>

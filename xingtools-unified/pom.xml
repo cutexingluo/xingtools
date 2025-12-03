@@ -13,6 +13,7 @@
 
     <artifactId>xingtools-unified</artifactId>
     <name>${project.artifactId}</name>
+    <version>${revision}</version>
     <description>xingtools 所有依赖整合包</description>
 
     <properties>

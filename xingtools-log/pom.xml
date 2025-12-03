@@ -15,6 +15,7 @@
 
     <artifactId>xingtools-log</artifactId>
     <name>${project.artifactId}</name>
+    <version>${revision}</version>
     <description>xingtools 依赖xingcore-base-impl，包含日志扩展操作的封装</description>
 
     <properties>
@@ -73,10 +74,7 @@
             <version>${log4j2.version}</version>
             <optional>true</optional>
         </dependency>
-        <dependency>
-            <groupId>top.cutexingluo.tools</groupId>
-            <artifactId>xingtools-extra</artifactId>
-        </dependency>
+
     </dependencies>
 
 
