@@ -32,6 +32,21 @@
             </dependency>
             <dependency>
                 <groupId>top.cutexingluo.core</groupId>
+                <artifactId>xingcore-mini</artifactId>
+                <version>${xingcore.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.cutexingluo.core</groupId>
+                <artifactId>xingcore-mini-all</artifactId>
+                <version>${xingcore.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.cutexingluo.core</groupId>
+                <artifactId>xingcore-common</artifactId>
+                <version>${xingcore.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.cutexingluo.core</groupId>
                 <artifactId>xingcore-common-all</artifactId>
                 <version>${xingcore.version}</version>
             </dependency>
