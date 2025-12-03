@@ -15,10 +15,29 @@
 
     <properties>
         <revision>1.2.1</revision>
+
+        <!--    xingcool 与 xingtools 版本脱钩    -->
+        <xingcore.version>1.2.0</xingcore.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <!--     xingcore       -->
+            <dependency>
+                <groupId>top.cutexingluo.core</groupId>
+                <artifactId>xingcore-bom</artifactId>
+                <version>${xingcore.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>top.cutexingluo.core</groupId>
+                <artifactId>xingcore-common-all</artifactId>
+                <version>${xingcore.version}</version>
+            </dependency>
+
+
+            <!--     xingtools       -->
 
             <dependency>
                 <groupId>top.cutexingluo.tools</groupId>

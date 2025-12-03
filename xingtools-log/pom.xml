@@ -15,7 +15,7 @@
 
     <artifactId>xingtools-log</artifactId>
     <name>${project.artifactId}</name>
-    <description>xingtools 依赖mvc，包含日志扩展操作的封装</description>
+    <description>xingtools 依赖xingcore-base-impl，包含日志扩展操作的封装</description>
 
     <properties>
         <!-- versions -->
@@ -25,9 +25,10 @@
     </properties>
 
     <dependencies>
+
         <dependency>
-            <groupId>top.cutexingluo.tools</groupId>
-            <artifactId>xingtools-extra</artifactId>
+            <groupId>top.cutexingluo.core</groupId>
+            <artifactId>xingcore-base-impl</artifactId>
         </dependency>
 
         <dependency>

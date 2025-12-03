@@ -13,7 +13,7 @@
 
     <artifactId>xingtools-cloud</artifactId>
     <name>${project.artifactId}</name>
-    <description>xingtools 依赖mvc，可以基于SpringCloud，包括各种 cloud，security，oauth 的工具</description>
+    <description>xingtools 依赖db和pkg包，可以基于SpringCloud，包括各种 cloud，security，oauth 的工具</description>
 
     <properties>
         <!-- versions -->

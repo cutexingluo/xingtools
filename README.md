@@ -16,7 +16,7 @@
 
 本工具库遵从**面向接口**，所以接口可能分得特别细。
 
-该依赖为 xingtools sdk 工具包 分组版本。 它是一个整合各工具类的整合starter。具体详情详见 xingtool (不加s) [xingtool-spring-boot-starter](https://gitee.com/SangonomiyaKokomi/xingtool)  这个原sdk。 该分组工具包为升级版，将核心拆分应对不同使用情况，大大提高灵活性，未来原sdk可能会依赖该升级版的sdk。
+该依赖为 xingtools sdk 工具包 分组版本。 它是一个整合各工具类的整合starter。具体详情详见 xingtool (不加s) [xingtool-spring-boot-starter](https://gitee.com/SangonomiyaKokomi/xingtool)  这个原sdk。 该分组工具包为升级版，将核心拆分应对不同使用情况，大大提高灵活性，原sdk将停止维护。
 星天（xingtian）制作，基于 Java 8 和 Java 17，基于 SpringBoot 2.7.18 和 SpringBoot 3.0.5  ,  是一个整合各工具类的整合包。
 
 xingtools-core 于 v1.2.0 版本移植到 xingcore，用作核心公共库，详见 [gitee-xingcore](https://gitee.com/SangonomiyaKokomi/xingcore) [github-xingcore](https://github.com/cutexingluo/xingcore)
@@ -33,12 +33,12 @@ Maven 依赖（JDK8版本）
 <dependency>
 	<groupId>top.cutexingluo.tools</groupId>
 	<artifactId>xingtools-spring-boot-starter</artifactId>
-	<version>1.2.0</version>
+	<version>1.2.1</version>
 </dependency>
 <dependency>
 	<groupId>top.cutexingluo.tools</groupId>
 	<artifactId>xingtools-pkg-jdk8</artifactId>
-	<version>1.2.0</version>
+	<version>1.2.1</version>
 </dependency>
 ```
 
@@ -48,22 +48,27 @@ Maven 依赖（JDK17版本）
 <dependency>
 	<groupId>top.cutexingluo.tools</groupId>
 	<artifactId>xingtools-spring-boot-starter</artifactId>
-	<version>1.2.0</version>
+	<version>1.2.1</version>
 </dependency>
 <dependency>
 	<groupId>top.cutexingluo.tools</groupId>
 	<artifactId>xingtools-pkg-jdk17</artifactId>
-	<version>1.2.0</version>
+	<version>1.2.1</version>
 </dependency>
 ```
 
 第二个包 （pkg包） 代表存在兼容 jdk 版本的工具，必须存在。
 
-目前推荐使用的版本如下：（其他版本有一定bug，如需使用请参考更新公告的版本使用攻略）
+目前推荐使用的版本如下：
+
+（括号里代表依赖的 xingcore 版本，如果不太清楚，可引入 **xingtools-bom** 进行依赖管理）
+
+（其他版本有一定bug，如需使用请参考更新公告的版本使用攻略，每行版本不兼容）
 
 ```wiki
-极力推荐使用最新版 v1.2.0
-xingtools v1.1.3, v1.1.4, v1.1.5, v1.1.6, v1.1.7, v1.2.0
+极力推荐使用最新版 v1.2.1
+xingtools v1.2.1(v1.2.0), 
+xingtools v1.1.3, v1.1.4, v1.1.5, v1.1.6, v1.1.7, v1.2.0, 
 xingtool v1.0.1, v1.0.4, v1.0.5
 ```
 
@@ -81,34 +86,39 @@ xingtool v1.0.1, v1.0.4, v1.0.5
 
 | 模块                                | 介绍                                                         |
 | ----------------------------------- | ------------------------------------------------------------ |
+| xingtools-bom                       | bom 依赖管理，可以在项目依赖管理中引入                       |
 | xingtools-core                      | 核心，包括各种接口，实体类和工具类（现移植到xingcore）       |
-| xingtools-pkg-jdk8                  | 依赖core包，jdk 分类包，对不同的jdk版本提供兼容性            |
-| xingtools-pkg-jdk17                 | 依赖core包，jdk 分类包，对不同的jdk版本提供兼容性            |
+| xingtools-log                       | 依赖xingcore-base-impl，包含日志扩展操作的封装               |
+| xingtools-pkg-jdk8                  | 依赖xingcore-base-lib, jdk 分类包，对不同的jdk版本提供兼容性 |
+| xingtools-pkg-jdk17                 | 依赖xingcore-base-lib, jdk 分类包，对不同的jdk版本提供兼容性 |
 | xingtools-web                       | 依赖core和pkg包，提供一些 http 工具                          |
 | xingtools-extra                     | 依赖core，附加，也就是基于 SpringBoot 的一些工具或实体类     |
 | xingtools-db                        | 依赖core，数据库操作，包含mybatis-plus等操作                 |
 | xingtools-mvc                       | 依赖web，extra，db三包，基于 SpringBoot-Web的一些集成工具或实体类 |
-| xingtools-log                       | 依赖mvc，包含日志扩展操作的封装                              |
-| xingtools-cloud                     | 依赖mvc，基于SpringCloud，包括各种 cloud，security，oauth 的工具 |
-| xingtools-aop                       | 依赖mvc，log，cloud三包，提供前面依赖的aop注解和切面类       |
-| xingtools-unified                   | 依赖aop，整合包，整合所有依赖并依赖 hutool-all               |
+| xingtools-cloud                     | 依赖db和pkg包，基于SpringCloud，包括各种 cloud，security，oauth 的工具 |
+| xingtools-aop                       | 依赖mvc，log，pkg三包，提供前面依赖的aop注解和切面类         |
+| xingtools-unified                   | 所有依赖整合包                                               |
 | xingtools-spring-boot               | 整合版本，排除pkg-jdk依赖，在这之后需要配合pkg-jdk依赖使用   |
 | xingtools-spring-boot-autoconfigure | 整合版本的自动装配，含各种自动装配配置，开关，注解，类等     |
 | xingtools-spring-boot-starter       | 最终依赖包                                                   |
 
 当前版本组件之间的依赖关系如下：（v1.1.2 开始组件依赖更新，后续沿用该依赖关系）
 
-![image-20240808174556862](./assets/image-20240808174556862.png)
+![image-20251203104927780](assets/image-20251203104927780.png)
 
 ​																**组件依赖关系图**
 
-目前使 pkg包 仅依赖 core 包，可以按需导入从前面开始的依赖。
+实线代表实际依赖，虚线代表可引入的依赖(关于web的都需要导入兼容包pkg)。
+
+可以按需导入从实线开始的依赖。
 
 ## :apple:使用方式
 
 ### :lemon:使用讲解
 
 根据类名意思了解该功能，好处是暂时不用查文档，并且和hutool互补，能够加快开发效率.
+
+如果该类常用或有优势、公用，提升路线为 xingtools-core -> xingcore-base-extra -> xingcore-base-lib
 
 1. 可以通过`Util.`静态类的方式调出静态方法，一般由`XT`开头的类，例如`XTObjUtil`, `XTStrUtil` 等，以便直接调出类名、方法。
 2. 通过 new 一个工具操作类 `Handler`等
@@ -119,7 +129,7 @@ xingtool v1.0.1, v1.0.4, v1.0.5
 
 ### ⚙️ 工具类
 
-#### 1.数据封装接口 （`IResultData`, `IResult`）
+#### 1.数据封装接口 （`IResultData`, `IResult`）（详见 xingcore）
 
 `IR`, `IResultData`, `IResult` 分别追加提供 getMsg, getCode, getData 方法
 
@@ -217,7 +227,7 @@ public class CommonResult<C, T> implements IResultSource<C, T> {
 
 **贯彻面向接口！**
 
-#### 2.锁、异步(多线程)
+#### 2.锁、异步(多线程)（详见 xingcore）
 
 锁提供基本的 LockHandler 类，以及下面的子类 XTLockHandler , XTExtLockHandler 等类。
 
@@ -263,7 +273,7 @@ public class CommonResult<C, T> implements IResultSource<C, T> {
     }
 ```
 
-#### 3.各种工具类
+#### 3.各种工具类（详见 xingcore）
 
 比如 `XTStrUtil` , `XTCollUtil` , `XTMapUtil` 等等扩展类，均是继承 hutool 包的对应工具类，可以直接使用目标类或扩展类。
 
@@ -307,7 +317,7 @@ XX xx = cm.newInstanceNoExc(); // 静默实例化
 // 未完待续
 ```
 
-#### 4.高级建造工具（`BuilderMapChain`, `StreamChain`）
+#### 4.高级建造工具（`BuilderMapChain`, `StreamChain`）（详见 xingcore）
 
 ##### 1.HashMap扩展
 
@@ -461,7 +471,7 @@ void test{
 
 里面有许许多多快速开发的工具，还请多多研究。
 
-#### 5.*系列算法
+#### 5.*系列算法（详见 xingcore）
 
 算法都放在  top.cutexingluo.tools.utils.se.algo.cpp 包下，顾名思义，工具/SE/算法/C++，
 
@@ -543,7 +553,9 @@ System.out.println(contains); // true
 
 #### 1.***参数校验** （@XxxStatus）
 
-必须导入 validation 包 并且参数/类上 `@Valid`或`@Validated`
+最低需要依赖 xingcore-base-impl + xingtools-pkg 两包 或 **xingtools-pkg** 一个包(因为依赖了前者)
+
+必须导入 **validation** 包 并且参数/类上 `@Valid`或`@Validated`
 
 不同类型参数校验注解如：
 
@@ -591,7 +603,9 @@ public class MyUserQuery {
 
 #### 2.异步线程 
 
-1.可以使用**编程式**，例如 XTAsync, 或者你的类实现 ThreadHelper 接口或者  ThreadExecutorHelper 接口
+1.可以使用**编程式**（详见 xingcore）
+
+例如 XTAsync, 或者你的类实现 ThreadHelper 接口或者  ThreadExecutorHelper 接口
 
 下面示例作为 异步配置，同时兼容ThreadPoolTaskExecutor, AsyncConfigurer(支持@Async 注解)和 ThreadHelper (CompletableFuture 编程式操作)
 
@@ -624,7 +638,9 @@ public class AsyncConfig implements AsyncConfigurer, ThreadHelper {
 
 
 
-2.使用**声明式**，但不一定会得到预期结果
+2.使用**声明式**，（详见 xingtools-aop）
+
+但不一定会得到预期结果
 
 一般情况下，只使用 XTAsync 静态方法类  (继承`CompleteFuture`类) 或者 `XTCompletionService` 对象 (继承`ExecutorCompletionService`) 即可
 
@@ -688,7 +704,20 @@ public class TestService {
 
 ##  :memo:更新公告
 
-**2025-10-14  v1.2.0(推荐)**
+**2025-12.3  v1.2.1 (推荐)**
+
+```
+依赖(xingcore-v1.2.0)
+中版本更新，细化，和 xingcore 版本脱钩，更加灵活
+
+1.异常大量废弃类
+2.整理所有代码
+3.优化AOP类，自动配置代码，所有代码均比较优质
+4.新增 ExceptionDelegate 接口，用于处理所有异常
+5.* 如果该类常用或有优势、公用，提升路线为 xingtools-core -> xingcore-base-extra -> xingcore-base-lib
+```
+
+**2025-10-14  v1.2.0 (测试版)**
 
 ```
 中版本更新，拆分 xingtools.xing-core 为 xingcore，成为公共库
