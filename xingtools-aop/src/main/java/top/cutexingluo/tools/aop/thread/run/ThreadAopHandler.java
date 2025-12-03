@@ -1,6 +1,6 @@
 package top.cutexingluo.tools.aop.thread.run;
 
-import cn.hutool.extra.spring.SpringUtil;
+
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -15,6 +15,7 @@ import top.cutexingluo.tools.aop.transactional.TransactionHandler;
 import top.cutexingluo.tools.aop.transactional.TransactionMeta;
 import top.cutexingluo.tools.basepackage.basehandler.aop.BaseJoinPointTaskHandler;
 import top.cutexingluo.tools.designtools.juc.lock.handler.XTExtLockHandler;
+import top.cutexingluo.tools.utils.spring.SpringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -140,9 +141,9 @@ public interface ThreadAopHandler extends BaseJoinPointTaskHandler {
 
 
     default ExecutorService getExecutorService(SonThread sonThread) {
-        ExecutorService bean = SpringUtil.getBean(sonThread.threadPoolName());
+        ExecutorService bean = SpringUtils.getBean(sonThread.threadPoolName(), ExecutorService.class);
         if (bean == null) {
-            bean = SpringUtil.getBean(ExecutorService.class);
+            bean = SpringUtils.getBean(ExecutorService.class);
             if (bean == null) {
                 bean = XTThreadPool.getInstance().getThreadPool();
             }

@@ -26,7 +26,6 @@
         <dependency>
             <groupId>top.cutexingluo.tools</groupId>
             <artifactId>xingtools-unified</artifactId>
-            <version>${project.parent.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>top.cutexingluo.tools</groupId>
@@ -35,10 +34,6 @@
                 <exclusion>
                     <groupId>top.cutexingluo.tools</groupId>
                     <artifactId>xingtools-pkg-jdk17</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.projectlombok</groupId>
-                    <artifactId>lombok</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>

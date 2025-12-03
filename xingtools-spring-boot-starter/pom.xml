@@ -29,20 +29,17 @@
         <dependency>
             <groupId>top.cutexingluo.tools</groupId>
             <artifactId>xingtools-spring-boot</artifactId>
-            <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
             <groupId>top.cutexingluo.tools</groupId>
             <artifactId>xingtools-spring-boot-autoconfigure</artifactId>
-            <version>${project.parent.version}</version>
         </dependency>
 
         <!--        pkg版本依赖，后面需要自行导入 -->
         <dependency>
             <groupId>top.cutexingluo.tools</groupId>
             <artifactId>xingtools-pkg-jdk8</artifactId>
-            <version>${project.parent.version}</version>
             <optional>true</optional>
         </dependency>
 
@@ -50,7 +47,6 @@
         <dependency>
             <groupId>top.cutexingluo.tools</groupId>
             <artifactId>xingtools-pkg-jdk17</artifactId>
-            <version>${project.parent.version}</version>
             <optional>true</optional>
         </dependency>
 

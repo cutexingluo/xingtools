@@ -162,9 +162,8 @@ public class XTFileIO {
     @Deprecated
     public static <T, TM> String upload(MultipartFile file, Class<T> fileType, TM fileMapper, String urlPrefix, String fileUploadPath)
             throws IOException, InvocationTargetException, IllegalAccessException, NoSuchMethodException, InstantiationException {
-        XTFileBundle bundle = new XTFileBundle(file);
+        XTFileBundle bundle = new XTFileBundle(file,true, true, false);
         XTHuFile xtFile = bundle.getXtFile();
-        bundle.genMd5(file); // 生成md5
         xtFile.genUUID();
         xtFile.genFileUUID();
 //        return xtFile.getFileUUID();

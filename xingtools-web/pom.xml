@@ -40,6 +40,13 @@
             <scope>provided</scope>
         </dependency>
 
+        <!--   hutool     -->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-crypto</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
 
         <!--        optional -->
 
