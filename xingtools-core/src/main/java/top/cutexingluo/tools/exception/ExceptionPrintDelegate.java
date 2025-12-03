@@ -24,12 +24,12 @@ import java.util.List;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class ExceptionPrintDelegate extends AbstractExceptionDelegate<Throwable> {
+public class ExceptionPrintDelegate<T extends Throwable> extends AbstractExceptionDelegate<T> {
 
     /**
      * 异常处理器
      */
-    protected ExceptionHandler<Throwable> exceptionHandler;
+    protected ExceptionHandler<T> exceptionHandler;
 
     /**
      * 是否打印异常栈
@@ -41,27 +41,24 @@ public class ExceptionPrintDelegate extends AbstractExceptionDelegate<Throwable>
      */
     protected boolean printSystemErr = false;
 
-    public ExceptionPrintDelegate(boolean printTrace) {
-        this.printTrace = printTrace;
-    }
 
-    public ExceptionPrintDelegate(ExceptionHandler<Throwable> exceptionHandler) {
+    public ExceptionPrintDelegate(ExceptionHandler<T> exceptionHandler) {
         this.exceptionHandler = exceptionHandler;
     }
 
-    public ExceptionPrintDelegate(ExceptionHandler<Throwable> exceptionHandler, boolean printTrace) {
+    public ExceptionPrintDelegate(ExceptionHandler<T> exceptionHandler, boolean printTrace) {
         this.exceptionHandler = exceptionHandler;
         this.printTrace = printTrace;
     }
 
-    public ExceptionPrintDelegate(ExceptionHandler<Throwable> exceptionHandler, boolean printTrace, boolean printSystemErr) {
+    public ExceptionPrintDelegate(ExceptionHandler<T> exceptionHandler, boolean printTrace, boolean printSystemErr) {
         this.exceptionHandler = exceptionHandler;
         this.printTrace = printTrace;
         this.printSystemErr = printSystemErr;
     }
 
     @Override
-    public List<ExceptionHandler<Throwable>> exceptionHandlers() {
+    public List<ExceptionHandler<T>> exceptionHandlers() {
         return  Arrays.asList(
                 (e, o) -> {
                     if (exceptionHandler != null && exceptionHandler.support(e)) {
@@ -88,7 +85,7 @@ public class ExceptionPrintDelegate extends AbstractExceptionDelegate<Throwable>
      * 处理异常, 优先处理器处理, 处理器不存在, 后续根据配置打印异常栈, 系统错误流
      */
     @Override
-    public Object handle(Throwable e, Object otherArg) {
+    public Object handle(T e, Object otherArg) {
         return this.handleRetainFirst(e, otherArg);
     }
 }

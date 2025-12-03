@@ -6,6 +6,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.core.annotation.AnnotationUtils;
+import top.cutexingluo.tools.exception.ExceptionPrintDelegate;
 import top.cutexingluo.tools.exception.base.ExceptionDelegate;
 import top.cutexingluo.tools.utils.log.handler.LogHandler;
 
@@ -23,7 +24,7 @@ import java.util.Arrays;
 public class XTExceptionAop {
 
     /**
-     * 异常处理
+     * 异常处理，不提供则默认使用log 打印异常
      */
     protected ExceptionDelegate<Throwable> exceptionDelegate;
 
@@ -49,13 +50,20 @@ public class XTExceptionAop {
             result = joinPoint.proceed();
         } catch (Throwable e) {
             exception = AnnotationUtils.getAnnotation(exception, XTException.class);
-            if (exception == null || exception.wrong()) {
-                if (exceptionDelegate != null) exceptionDelegate.handle(e, Arrays.asList(joinPoint, exception));
-            }
-            if (exception != null) {
+            if(exception !=null){
                 LogHandler log = new LogHandler(exception.logType().intCode());
-                if (!exception.name().isEmpty()) log.send("发现异常: " + exception.name());
-                if (!exception.desc().isEmpty()) log.send("异常描述: " + exception.desc());
+                if(exception.wrong()){
+                    if (exceptionDelegate != null) exceptionDelegate.handle(e, Arrays.asList(joinPoint, exception));
+                    else{
+                        new ExceptionPrintDelegate<>((throwable,list)->{
+                            log.send( throwable.getMessage());
+                            return null;
+                        }).handle(e, Arrays.asList(joinPoint, exception));
+                    }
+                }else{
+                    if (!exception.name().isEmpty()) log.send("发现异常: " + exception.name());
+                    if (!exception.desc().isEmpty()) log.send("异常描述: " + exception.desc());
+                }
             }
         }
         return result;

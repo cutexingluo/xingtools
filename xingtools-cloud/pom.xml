@@ -35,6 +35,12 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-jwt</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
         <!--        springcloud-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>

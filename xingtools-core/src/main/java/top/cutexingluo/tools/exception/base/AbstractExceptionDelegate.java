@@ -1,5 +1,7 @@
 package top.cutexingluo.tools.exception.base;
 
+import java.util.List;
+
 /**
  * 异常处理委托
  *
@@ -26,8 +28,9 @@ public abstract class AbstractExceptionDelegate<T extends Throwable> implements 
      * @return 处理结果
      */
     public Object handleIgnoreRet(T e, Object otherArg){
-        if(exceptionHandlers() != null){
-            for (ExceptionHandler<T> handler : exceptionHandlers()) {
+        List<ExceptionHandler<T>> handlers = exceptionHandlers();
+        if(handlers != null){
+            for (ExceptionHandler<T> handler : handlers) {
                 if(handler != null && handler.support(e) ){
                     handler.apply(e, otherArg);
                 }
@@ -44,8 +47,9 @@ public abstract class AbstractExceptionDelegate<T extends Throwable> implements 
      * @return 处理结果
      */
     public Object handleStopFirst(T e, Object otherArg){
-        if(exceptionHandlers() != null){
-            for (ExceptionHandler<T> handler : exceptionHandlers()) {
+        List<ExceptionHandler<T>> handlers = exceptionHandlers();
+        if(handlers != null){
+            for (ExceptionHandler<T> handler : handlers) {
                 if (handler != null && handler.support(e)) {
                     Object o = handler.apply(e, otherArg);
                     if (o != null) {
@@ -67,8 +71,9 @@ public abstract class AbstractExceptionDelegate<T extends Throwable> implements 
      */
     public Object handleRetainFirst(T e, Object otherArg){
         Object ret = null;
-        if(exceptionHandlers() != null){
-            for (ExceptionHandler<T> handler : exceptionHandlers()) {
+        List<ExceptionHandler<T>> handlers = exceptionHandlers();
+        if(handlers != null){
+            for (ExceptionHandler<T> handler : handlers) {
                 if (handler != null && handler.support(e)) {
                     Object o = handler.apply(e, otherArg);
                     if (o != null && ret == null) {
@@ -90,8 +95,9 @@ public abstract class AbstractExceptionDelegate<T extends Throwable> implements 
      */
     public Object handleRetainLast(T e, Object otherArg){
         Object ret = null;
-        if(exceptionHandlers() != null){
-            for (ExceptionHandler<T> handler : exceptionHandlers()) {
+        List<ExceptionHandler<T>> handlers = exceptionHandlers();
+        if(handlers != null){
+            for (ExceptionHandler<T> handler : handlers) {
                 if (handler != null && handler.support(e)) {
                     Object o = handler.apply(e, otherArg);
                     if (o != null) {
