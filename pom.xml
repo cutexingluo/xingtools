@@ -36,8 +36,8 @@
 
     <properties>
         <!--        版本号 -->
-        <revision>1.2.1</revision>
-        <xingcore.version>1.2.0</xingcore.version>
+        <revision>1.2.2</revision>
+        <xingcore.version>1.2.1</xingcore.version>
         <!--    xingcore 与 xingtools 版本脱钩    -->
 
 
