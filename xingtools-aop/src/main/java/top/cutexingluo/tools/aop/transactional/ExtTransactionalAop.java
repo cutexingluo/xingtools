@@ -4,7 +4,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.transaction.TransactionStatus;
-import top.cutexingluo.tools.exception.base.ExceptionDelegate;
+import top.cutexingluo.core.exception.base.ExceptionDelegate;
 
 import java.util.Arrays;
 
@@ -44,7 +44,8 @@ public class ExtTransactionalAop {
             transactionalUtils.commit(begin);
         } catch (Throwable e) {
             if (begin != null) transactionalUtils.rollback(begin);
-            if (exceptionDelegate != null) exceptionDelegate.handle(e, Arrays.asList(joinPoint, transactionalUtils, begin));
+            if (exceptionDelegate != null)
+                exceptionDelegate.handle(e, Arrays.asList(joinPoint, transactionalUtils, begin));
         }
         return null;
     }

@@ -36,8 +36,8 @@
 
     <properties>
         <!--        版本号 -->
-        <revision>1.2.1</revision>
-        <xingcore.version>1.2.0</xingcore.version>
+        <revision>1.2.2</revision>
+        <xingcore.version>1.2.1</xingcore.version>
         <!--    xingcore 与 xingtools 版本脱钩    -->
 
 
@@ -53,10 +53,11 @@
 
         <!--        versions -->
         <compile.version>8</compile.version>
-        <lombok.version>1.18.30</lombok.version>
+        <lombok.version>1.18.42</lombok.version>
         <jetbrains.annotations.version>1.7.0</jetbrains.annotations.version>
 
-        <hutool.version>5.8.40</hutool.version>
+        <hutool.version>5.8.42</hutool.version>
+
         <spring-boot.version>2.7.18</spring-boot.version>
         <spring-cloud.version>2021.0.5</spring-cloud.version>
         <spring-cloud-alibaba.version>2021.0.5.0</spring-cloud-alibaba.version>

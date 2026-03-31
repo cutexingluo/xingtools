@@ -27,10 +27,11 @@ public class AutoInjectProperty {
     private boolean logInfo = true;
 
     /**
-     * spring getBean spring工具类是否开启，默认开启
+     * spring getBean spring工具类是否开启，默认关闭
      * <p>springutils</p>
+     * <p>于 1.2.2 起默认关闭</p>
      */
-    private boolean springutils = true;
+    private boolean springutils = false;
 
 
 //    /**

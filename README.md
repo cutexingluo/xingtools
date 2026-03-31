@@ -17,7 +17,7 @@
 本工具库遵从**面向接口**，所以接口可能分得特别细。
 
 该依赖为 xingtools sdk 工具包 分组版本。 它是一个整合各工具类的整合starter。具体详情详见 xingtool (不加s) [xingtool-spring-boot-starter](https://gitee.com/SangonomiyaKokomi/xingtool)  这个原sdk。 该分组工具包为升级版，将核心拆分应对不同使用情况，大大提高灵活性，原sdk将停止维护。
-星天（xingtian）制作，基于 Java 8 和 Java 17，基于 SpringBoot 2.7.18 和 SpringBoot 3.0.5  ,  是一个整合各工具类的整合包。
+星天（xingtian）制作，基于 Java 8 和 Java 17，基于 SpringBoot 2.7.18 和 SpringBoot 3.0.5 (v1.2.2版本基于3.4.13)  ,  是一个整合各工具类的整合包。
 
 xingtools-core 于 v1.2.0 版本移植到 xingcore，用作核心公共库，详见 [gitee-xingcore](https://gitee.com/SangonomiyaKokomi/xingcore) [github-xingcore](https://github.com/cutexingluo/xingcore)
 
@@ -33,27 +33,27 @@ Maven 依赖（JDK8版本）
 <dependency>
 	<groupId>top.cutexingluo.tools</groupId>
 	<artifactId>xingtools-spring-boot-starter</artifactId>
-	<version>1.2.1</version>
+	<version>1.2.2</version>
 </dependency>
 <dependency>
 	<groupId>top.cutexingluo.tools</groupId>
 	<artifactId>xingtools-pkg-jdk8</artifactId>
-	<version>1.2.1</version>
+	<version>1.2.2</version>
 </dependency>
 ```
 
-Maven 依赖（JDK17版本）
+Maven 依赖（JDK17+版本）
 
 ```xml
 <dependency>
 	<groupId>top.cutexingluo.tools</groupId>
 	<artifactId>xingtools-spring-boot-starter</artifactId>
-	<version>1.2.1</version>
+	<version>1.2.2</version>
 </dependency>
 <dependency>
 	<groupId>top.cutexingluo.tools</groupId>
 	<artifactId>xingtools-pkg-jdk17</artifactId>
-	<version>1.2.1</version>
+	<version>1.2.2</version>
 </dependency>
 ```
 
@@ -66,10 +66,22 @@ Maven 依赖（JDK17版本）
 （其他版本有一定bug，如需使用请参考更新公告的版本使用攻略，每行版本不兼容）
 
 ```wiki
-极力推荐使用最新版 v1.2.1
-xingtools v1.2.1(v1.2.0), 
+极力推荐使用最新版 v1.2.2
+xingtools v1.2.1(v1.2.0), v1.2.2(v1.2.1)
 xingtools v1.1.3, v1.1.4, v1.1.5, v1.1.6, v1.1.7, v1.2.0, 
 xingtool v1.0.1, v1.0.4, v1.0.5
+```
+
+ **xingtools-bom**依赖管理
+
+```xml
+<dependency>
+    <groupId>top.cutexingluo.tools</groupId>
+    <artifactId>xingtools-bom</artifactId>
+    <version>${xingtools.version}</version>
+    <type>pom</type>
+    <scope>import</scope>
+</dependency>
 ```
 
 如果想使用老版本依赖，可以使用以下依赖 (xingtool 仅支持 JDK8 )
@@ -98,7 +110,7 @@ xingtool v1.0.1, v1.0.4, v1.0.5
 | xingtools-cloud                     | 依赖db和pkg包，基于SpringCloud，包括各种 cloud，security，oauth 的工具 |
 | xingtools-aop                       | 依赖mvc，log，pkg三包，提供前面依赖的aop注解和切面类         |
 | xingtools-unified                   | 所有依赖整合包                                               |
-| xingtools-spring-boot               | 整合版本，排除pkg-jdk依赖，在这之后需要配合pkg-jdk依赖使用   |
+| xingtools-spring-boot               | 整合版本                                                     |
 | xingtools-spring-boot-autoconfigure | 整合版本的自动装配，含各种自动装配配置，开关，注解，类等     |
 | xingtools-spring-boot-starter       | 最终依赖包                                                   |
 
@@ -704,7 +716,17 @@ public class TestService {
 
 ##  :memo:更新公告
 
-**2025-12.3  v1.2.1 (推荐)**
+**2026-3-31  v1.2.2 (推荐)**
+
+```
+依赖(xingcore-v1.2.1)
+稳定版本，更新量少，推荐使用
+
+1.关闭所有工具bean的自动注册，可放心使用 @EnableXingToolsServer 注解 和 xingtools.enabled 配置或手动@Bean注册
+2.移植xingtools-core 到 xingcore，例如：异常委托 ExceptionDelegate 
+```
+
+**2025-12-3  v1.2.1 **
 
 ```
 依赖(xingcore-v1.2.0)

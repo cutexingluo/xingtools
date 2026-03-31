@@ -10,8 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.CustomExchange;
 import org.springframework.boot.autoconfigure.amqp.RabbitProperties;
 import top.cutexingluo.core.designtools.builder.XTBuilder;
-import top.cutexingluo.tools.exception.ExceptionPrintDelegate;
-import top.cutexingluo.tools.exception.base.ExceptionDelegate;
+import top.cutexingluo.core.exception.base.ExceptionDelegate;
+import top.cutexingluo.core.exception.impl.ExceptionPrintDelegate;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -93,10 +93,10 @@ public class RabbitMQUtil {
                 try {
                     return getChannel();
                 } catch (IOException | TimeoutException e) {
-                    if(exceptionDelegate != null) exceptionDelegate.handle(e, Arrays.asList(this));
-                    else{
-                        new ExceptionPrintDelegate<>((throwable, list)->{
-                            log.error( throwable.getMessage());
+                    if (exceptionDelegate != null) exceptionDelegate.handle(e, Arrays.asList(this));
+                    else {
+                        new ExceptionPrintDelegate<>((throwable, list) -> {
+                            log.error(throwable.getMessage());
                             return null;
                         }).handle(e, Arrays.asList(this));
                     }

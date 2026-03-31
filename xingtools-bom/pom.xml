@@ -10,7 +10,7 @@
         <version>${revision}</version>
     </parent>
 
-<!--    <groupId>top.cutexingluo.tools</groupId>-->
+    <!--    <groupId>top.cutexingluo.tools</groupId>-->
     <artifactId>xingtools-bom</artifactId>
     <version>${revision}</version>
 
@@ -21,8 +21,8 @@
 
     <properties>
         <!--    xingcore 与 xingtools 版本脱钩    -->
-        <revision>1.2.1</revision>
-        <xingcore.version>1.2.0</xingcore.version>
+        <revision>1.2.2</revision>
+        <xingcore.version>1.2.1</xingcore.version>
 
     </properties>
 
@@ -35,26 +35,6 @@
                 <version>${xingcore.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>top.cutexingluo.core</groupId>
-                <artifactId>xingcore-mini</artifactId>
-                <version>${xingcore.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>top.cutexingluo.core</groupId>
-                <artifactId>xingcore-mini-all</artifactId>
-                <version>${xingcore.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>top.cutexingluo.core</groupId>
-                <artifactId>xingcore-common</artifactId>
-                <version>${xingcore.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>top.cutexingluo.core</groupId>
-                <artifactId>xingcore-common-all</artifactId>
-                <version>${xingcore.version}</version>
             </dependency>
 
 

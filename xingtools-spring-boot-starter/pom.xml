@@ -41,14 +41,14 @@
         <dependency>
             <groupId>top.cutexingluo.tools</groupId>
             <artifactId>xingtools-pkg-jdk8</artifactId>
-            <optional>true</optional>
+            <scope>provided</scope>
         </dependency>
 
         <!--        pkg版本依赖，后面需要自行导入 -->
         <dependency>
             <groupId>top.cutexingluo.tools</groupId>
             <artifactId>xingtools-pkg-jdk17</artifactId>
-            <optional>true</optional>
+            <scope>provided</scope>
         </dependency>
 
     </dependencies>

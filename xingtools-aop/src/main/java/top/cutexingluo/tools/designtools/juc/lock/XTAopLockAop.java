@@ -7,8 +7,8 @@ import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import top.cutexingluo.core.exception.base.ExceptionDelegate;
 import top.cutexingluo.tools.designtools.method.ClassUtil;
-import top.cutexingluo.tools.exception.base.ExceptionDelegate;
 
 import java.util.Arrays;
 
