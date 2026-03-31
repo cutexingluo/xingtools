@@ -23,7 +23,9 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <!-- versions -->
-        <springboot.version>3.0.5</springboot.version>
+        <!--   v1.2.2 更新 springboot.version 为3.4.13，等待3.5.x最终版本发布 -->
+        <!--        <springboot.version>3.0.5</springboot.version>-->
+        <springboot.version>3.4.13</springboot.version>
 
     </properties>
 
